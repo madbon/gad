@@ -44,13 +44,14 @@ class GadPlanBudget extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'lead_responsible_office_id'], 'integer'],
+            [['lead_responsible_office_id','focused_id','issue_or_mandate','user_id'], 'integer'],
             [['issue_mandate', 'objective', 'relevant_lgu_program_project', 'activity', 'performance_indicator_target'], 'string'],
             [['budget_mooe', 'budget_ps', 'budget_co', 'sort'], 'number'],
+            // [['issue_mandate','ppa_value','objective','relevant_lgu_program_project','activity','performance_indicator_target'], 'required'],
+            [['issue_mandate','ppa_value'], 'required'],
             [['date_created', 'date_updated'], 'safe'],
-            [['region_c', 'province_c', 'citymun_c'], 'string', 'max' => 2],
             [['time_created', 'time_updated'], 'string', 'max' => 10],
-            [['tuc_parent'], 'string', 'max' => 150],
+            [['record_tuc','tuc'], 'string', 'max' => 150],
         ];
     }
 
@@ -61,10 +62,6 @@ class GadPlanBudget extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
-            'region_c' => 'Region C',
-            'province_c' => 'Province C',
-            'citymun_c' => 'Citymun C',
             'issue_mandate' => 'Issue Mandate',
             'objective' => 'Objective',
             'relevant_lgu_program_project' => 'Relevant Lgu Program Project',

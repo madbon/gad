@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\GadPlanBudget */
@@ -12,14 +13,10 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'user_id')->textInput() ?>
-
-    <?= $form->field($model, 'region_c')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'province_c')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'citymun_c')->textInput(['maxlength' => true]) ?>
-
+        <div class="row">
+            <div class="col-sm-2">
+            </div>
+        </div>
     <?= $form->field($model, 'issue_mandate')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'objective')->textarea(['rows' => 6]) ?>
@@ -37,18 +34,6 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'budget_co')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'lead_responsible_office_id')->textInput() ?>
-
-    <?= $form->field($model, 'date_created')->textInput() ?>
-
-    <?= $form->field($model, 'time_created')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'date_updated')->textInput() ?>
-
-    <?= $form->field($model, 'time_updated')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'sort')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'tuc_parent')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

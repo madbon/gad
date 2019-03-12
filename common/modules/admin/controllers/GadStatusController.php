@@ -1,23 +1,18 @@
 <?php
 
-namespace common\modules\report\controllers;
+namespace common\modules\admin\controllers;
 
 use Yii;
-use common\models\GadPlanBudget;
-use common\models\GadPlanBudgetSearch;
+use common\models\GadStatus;
+use common\modules\admin\models\GadStatusSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use niksko12\user\models\UserInfo;
-use niksko12\user\models\Region;
-use niksko12\user\models\Province;
-use niksko12\user\models\Citymun;
-use yii\helpers\ArrayHelper;
 
 /**
- * GadPlanBudgetController implements the CRUD actions for GadPlanBudget model.
+ * GadStatusController implements the CRUD actions for GadStatus model.
  */
-class GadPlanBudgetController extends Controller
+class GadStatusController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -35,37 +30,22 @@ class GadPlanBudgetController extends Controller
     }
 
     /**
-     * Lists all GadPlanBudget models.
+     * Lists all GadStatus models.
      * @return mixed
      */
-    public function actionIndex($ruc)
+    public function actionIndex()
     {
-        $dataRecord = \common\models\GadRecord::find()->where(['tuc' => $ruc])->all();
-        $dataPlanBudget = GadPlanBudget::find()
-        ->groupBy(['ppa_value','issue_mandate','objective','relevant_lgu_program_project','activity','performance_indicator_target'])
-        ->where(['record_tuc' => $ruc])
-        ->orderBy(['ppa_value' => SORT_ASC,'issue_mandate' => SORT_ASC])->all();
+        $searchModel = new GadStatusSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $objective_type = ArrayHelper::getColumn(GadPlanBudget::find()->select(['objective'])->distinct()->all(), 'objective');
-        $relevant_type       = ArrayHelper::getColumn(GadPlanBudget::find()
-                            ->select(['relevant_lgu_program_project'])
-                            ->distinct()
-                            ->all(), 'relevant_lgu_program_project');
-        $opt_org_focused = ArrayHelper::map(\common\models\GadPpaOrganizationalFocused::find()->all(), 'id', 'title');
-        $opt_cli_focused = ArrayHelper::map(\common\models\GadPpaClientFocused::find()->all(), 'id', 'title');
-        return $this->render('index3', [
-            'dataRecord' => $dataRecord,
-            'dataPlanBudget' => $dataPlanBudget,
-            'ruc' => $ruc,
-            'objective_type' => $objective_type,
-            'opt_org_focused' => $opt_org_focused,
-            'opt_cli_focused' => $opt_cli_focused,
-            'relevant_type' => $relevant_type,
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single GadPlanBudget model.
+     * Displays a single GadStatus model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -78,14 +58,13 @@ class GadPlanBudgetController extends Controller
     }
 
     /**
-     * Creates a new GadPlanBudget model.
+     * Creates a new GadStatus model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new GadPlanBudget();
-        $region = ArrayHelper::map(Region::find()->all(), 'region_c', 'region_m');
+        $model = new GadStatus();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -93,12 +72,11 @@ class GadPlanBudgetController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'region' => $region,
         ]);
     }
 
     /**
-     * Updates an existing GadPlanBudget model.
+     * Updates an existing GadStatus model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -118,7 +96,7 @@ class GadPlanBudgetController extends Controller
     }
 
     /**
-     * Deletes an existing GadPlanBudget model.
+     * Deletes an existing GadStatus model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -132,15 +110,15 @@ class GadPlanBudgetController extends Controller
     }
 
     /**
-     * Finds the GadPlanBudget model based on its primary key value.
+     * Finds the GadStatus model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return GadPlanBudget the loaded model
+     * @return GadStatus the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = GadPlanBudget::findOne($id)) !== null) {
+        if (($model = GadStatus::findOne($id)) !== null) {
             return $model;
         }
 

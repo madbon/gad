@@ -119,21 +119,20 @@ div.navbar-header a img
         ]);
         $menuItems = [
             [
-                'label' => 'Home',
-                'items' => [
-                    ['label' => '<i class="glyphicon glyphicon-transfer"></i> &nbsp;Data Counter Check', 'url' => '@web/oms/counter-check/'],
-                    ['label' => '<i class="glyphicon glyphicon-transfer"></i> &nbsp;Data Counter Check', 'url' => '@web/oms/counter-check/'],
+                'label' => 'Home','url' => ['/site/index']],
+            ['label' => 'Report', 'items' => [
+                    ['label' => 'GAD Plan and Budget (Annex A)', 'url' => '@web/report/gad-plan-budget/'],
+                    ['label' => 'List of Annex A', 'url' => '@web/report/gad-record/'],
                 ],
-                'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+                'url' => ['/site/about']],
+            // ['label' => 'Contact', 'url' => ['/site/contact']],
         ];
         if (Yii::$app->user->isGuest) {
-            $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-            $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+            $menuItems[] = ['label' => 'Signup', 'url' => ['/user/register']];
+            $menuItems[] = ['label' => 'Login', 'url' => ['/user/login']];
         } else {
             $menuItems[] = '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
+                . Html::beginForm(['/user/logout'], 'post')
                 . Html::submitButton(
                     'Logout (' . Yii::$app->user->identity->username . ')',
                     ['class' => 'btn btn-link logout']
@@ -163,7 +162,6 @@ div.navbar-header a img
                         <?= Html::encode($this->title) ?>
                     </p>
                 </div>
-                
                 <?= $content; ?>
             </div>
         </div>
