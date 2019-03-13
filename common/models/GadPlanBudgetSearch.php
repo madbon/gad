@@ -17,7 +17,7 @@ class GadPlanBudgetSearch extends GadPlanBudget
     public function rules()
     {
         return [
-            [['id', 'user_id', 'lead_responsible_office_id'], 'integer'],
+            [['id', 'user_id', 'lead_responsible_office'], 'integer'],
             [['region_c', 'province_c', 'citymun_c', 'issue_mandate', 'objective', 'relevant_lgu_program_project', 'activity', 'performance_indicator_target', 'date_created', 'time_created', 'date_updated', 'time_updated', 'tuc_parent'], 'safe'],
             [['budget_mooe', 'budget_ps', 'budget_co', 'sort'], 'number'],
         ];

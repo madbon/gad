@@ -12,15 +12,15 @@ use Yii;
  * @property string $region_c
  * @property string $province_c
  * @property string $citymun_c
- * @property string $issue_mandate
+ * @property string $cause_gender_issue
  * @property string $objective
  * @property string $relevant_lgu_program_project
  * @property string $activity
- * @property string $performance_indicator_target
+ * @property string $performance_target
  * @property string $budget_mooe
  * @property string $budget_ps
  * @property string $budget_co
- * @property int $lead_responsible_office_id
+ * @property int $lead_responsible_office
  * @property string $date_created
  * @property string $time_created
  * @property string $date_updated
@@ -44,14 +44,15 @@ class GadPlanBudget extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['lead_responsible_office_id','focused_id','issue_or_mandate','user_id'], 'integer'],
-            [['issue_mandate', 'objective', 'relevant_lgu_program_project', 'activity', 'performance_indicator_target'], 'string'],
+            [['focused_id','issue_or_mandate','user_id','ppa_focused_id'], 'integer'],
+            [['cause_gender_issue', 'objective', 'relevant_lgu_program_project', 'activity', 'performance_target','performance_indicator'], 'string'],
             [['budget_mooe', 'budget_ps', 'budget_co', 'sort'], 'number'],
-            // [['issue_mandate','ppa_value','objective','relevant_lgu_program_project','activity','performance_indicator_target'], 'required'],
-            [['issue_mandate','ppa_value'], 'required'],
+            // [['cause_gender_issue','ppa_value','objective','relevant_lgu_program_project','activity','performance_target'], 'required'],
+            [['cause_gender_issue'], 'required'],
             [['date_created', 'date_updated'], 'safe'],
             [['time_created', 'time_updated'], 'string', 'max' => 10],
             [['record_tuc','tuc'], 'string', 'max' => 150],
+            [['ppa_value'], 'required', 'when' => function ($model) { return $model->ppa_focused_id == 0; }, 'whenClient' => "function (attribute, value) { return $('#ppa_focused_id-4').val() == '0'; }"],
         ];
     }
 
@@ -62,15 +63,18 @@ class GadPlanBudget extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'issue_mandate' => 'Issue Mandate',
-            'objective' => 'Objective',
-            'relevant_lgu_program_project' => 'Relevant Lgu Program Project',
-            'activity' => 'Activity',
-            'performance_indicator_target' => 'Performance Indicator Target',
-            'budget_mooe' => 'Budget Mooe',
-            'budget_ps' => 'Budget Ps',
-            'budget_co' => 'Budget Co',
-            'lead_responsible_office_id' => 'Lead Responsible Office ID',
+            'performance_indicator' => 'Performance  Indicator',
+            'ppa_value' => 'PPA Other Description',
+            'focused_id' => 'Category of PPAs',
+            'cause_gender_issue' => 'Gender Issue or GAD Mandate',
+            'objective' => 'GAD  Objective',
+            'relevant_lgu_program_project' => 'Relevant LGU Program or Project',
+            'activity' => 'GAD Activity',
+            'performance_target' => 'Performance Target',
+            'budget_mooe' => 'MOOE',
+            'budget_ps' => 'PS',
+            'budget_co' => 'CO',
+            'lead_responsible_office' => 'Lead Responsible Office',
             'date_created' => 'Date Created',
             'time_created' => 'Time Created',
             'date_updated' => 'Date Updated',
