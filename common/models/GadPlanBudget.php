@@ -48,11 +48,12 @@ class GadPlanBudget extends \yii\db\ActiveRecord
             [['cause_gender_issue', 'objective', 'relevant_lgu_program_project', 'activity', 'performance_target','performance_indicator'], 'string'],
             [['budget_mooe', 'budget_ps', 'budget_co', 'sort'], 'number'],
             // [['cause_gender_issue','ppa_value','objective','relevant_lgu_program_project','activity','performance_target'], 'required'],
-            [['cause_gender_issue'], 'required'],
+            [['cause_gender_issue','ppa_focused_id'], 'required'],
             [['date_created', 'date_updated'], 'safe'],
             [['time_created', 'time_updated'], 'string', 'max' => 10],
             [['record_tuc','tuc'], 'string', 'max' => 150],
-            [['ppa_value'], 'required', 'when' => function ($model) { return $model->ppa_focused_id == 0; }, 'whenClient' => "function (attribute, value) { return $('#ppa_focused_id-4').val() == '0'; }"],
+            // [['ppa_value'], 'safe'],
+            [['ppa_value'], 'required', 'when' => function ($model) { return $model->ppa_focused_id == 0; }],
         ];
     }
 
@@ -65,7 +66,8 @@ class GadPlanBudget extends \yii\db\ActiveRecord
             'id' => 'ID',
             'performance_indicator' => 'Performance  Indicator',
             'ppa_value' => 'PPA Other Description',
-            'focused_id' => 'Category of PPAs',
+            'ppa_focused_id' => 'Category of PPA',
+            // 'focused_id' => 'Category of PPAs',
             'cause_gender_issue' => 'Gender Issue or GAD Mandate',
             'objective' => 'GAD  Objective',
             'relevant_lgu_program_project' => 'Relevant LGU Program or Project',

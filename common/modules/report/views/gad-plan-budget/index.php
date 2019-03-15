@@ -139,7 +139,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr>
                     <td colspan='12'><b>CLIENT-FOCUSED</b></td>
                 </tr>
-                <?php echo $this->render('client_focused_form_test',[
+                <?php echo $this->render('client_focused_form',[
                     'opt_cli_focused' => $opt_cli_focused,
                     'val' => $val,
                     'ruc' => $ruc,

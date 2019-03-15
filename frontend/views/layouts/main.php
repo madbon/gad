@@ -111,7 +111,7 @@ div.navbar-header a img
    <?php
         $logo =  Html::img('@web/images/dilg-logo.png',['class']);
         NavBar::begin([
-            'brandLabel' => $logo.'GAD IS | Gender and Development Information System',
+            'brandLabel' => $logo.'GAD-PBMS | Gender and Development Plan and Budget Monitoring System',
             'brandUrl' => Yii::$app->homeUrl,
             'options' => [
                 'class' => 'navbar-inverse navbar-fixed-top',

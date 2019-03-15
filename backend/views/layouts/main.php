@@ -110,7 +110,7 @@ div.navbar-header a img
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => "GAD IS | Admin Panel",
+        'brandLabel' => "GAD-PBMS | Admin Panel",
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
