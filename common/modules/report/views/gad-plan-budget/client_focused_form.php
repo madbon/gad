@@ -63,6 +63,7 @@ use kartik\select2\Select2;
                             var expression = new RegExp(searchField, 'i');
                             var value_length = $(this).val();
                             var attrib = 'ppa_value';
+                            $('#message-'+attrib+'-".$val['id']."').hide();
                             if(value_length.length>= 3){
                                 $.getJSON('".$urlPpaValue."', function(data){
                                     $('#result-'+attrib+'-".$val['id']."').html('');
@@ -110,6 +111,7 @@ use kartik\select2\Select2;
                             var expression = new RegExp(searchField, 'i');
                             var value_length = $(this).val();
                             var attrib = 'cause_gender_issue';
+                            $('#message-'+attrib+'-".$val['id']."').hide();
                             if(value_length.length>= 3){
                                 $.getJSON('".$urlCauseGenderIssue."', function(data){
                                     $('#result-'+attrib+'-".$val['id']."').html('');
@@ -335,7 +337,7 @@ use kartik\select2\Select2;
                 ?>
             </div>
             <div class="col-sm-4">
-                <input placeholder="MOOE" type="text" rows="2" id="budget_mooe-<?= $val['id']?>" class="form-control">
+                <input placeholder="MOOE" type="text" rows="2" id="budget_mooe-<?= $val['id']?>" class="form-control priceformat">
                 <ul id="result-budget_mooe-<?= $val['id'] ?>" class="result"></ul>
                 <?php
                     $urlMooe = \yii\helpers\Url::to(['/report/default/load-budget-mooe']);
@@ -491,7 +493,7 @@ use kartik\select2\Select2;
                     ");
                 ?>
                 <br/>
-                <button type="button" class="btn btn-primary pull-right" title="Save" id="save-gender-issue-<?= $val['id']?>">
+                <button type="button" class="btn btn-primary btn-sm" title="Save" id="save-gender-issue-<?= $val['id']?>">
                     <span class="glyphicon glyphicon-floppy-disk"></span> Save
                 </button>
                 <?php
@@ -562,6 +564,16 @@ use kartik\select2\Select2;
                                     });
                             });
                       }); ');
+                ?>
+                <button type="button" class="btn btn-danger btn-sm" title="Exit" id="exit-gender-issue">
+                    <span class="glyphicon glyphicon-remove"></span> Exit
+                </button>
+                <?php
+                    $this->registerJs('
+                        $("#exit-gender-issue").click(function(){
+                            $("#genderIssueInputForm").slideUp(300);
+                        });
+                    ');
                 ?>
             </div>
         </div>

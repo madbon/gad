@@ -214,18 +214,18 @@ class DefaultController extends Controller
 
     }
 
-    public function actionUpdateObjective($id,$obj_val)
+    public function actionUpdateObjective($uid,$upd8_value)
     {
-       	$qry = \common\models\GadPlanBudget::find()->where(['id' => $id])->one();
-        $qry->objective = $obj_val;
-        
+       	$qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
+        $qry->objective = $upd8_value;
 
         if($qry->save())
         {
-        	$is_save = $obj_val;
+        	$is_save = $upd8_value;
         }else
         {
         	$is_save = "error_in_saving";
+
             $qry->errors;
         }
         

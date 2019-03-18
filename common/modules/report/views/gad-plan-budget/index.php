@@ -17,6 +17,138 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <style type="text/css">
+     /*Speech buble*/
+    p.confirm-message
+    {
+        position: absolute;
+        padding:5px;
+        display: none;
+        border-radius: 15px;
+        font-size:12px;
+        box-shadow: 2px 2px 2px 2px rgba(150,150,150,0.5);
+    }
+    p.confirm-sccss
+    {
+        background-color: rgb(92,184,92);
+        color:white;
+    }
+    p.confirm-prmry
+    {
+        background-color: #286090;
+        color:white;
+    }
+    .actn-btn-bubble {
+        position: absolute;
+        /*background: #5cb85c;*/
+        color: #FFFFFF;
+        font-family: Arial;
+        text-align: center;
+        width: 50px;
+        border-radius: 5px;
+        margin-top: 20px;
+        z-index: 1;
+        padding-bottom: 5px;
+        /*box-shadow: 1px 1px 1px 1px rgba(150,150,150,0.5);*/
+    }
+    .actn-btn-bubble:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border: 18px solid transparent;
+        border-bottom-color: #5bc0de;
+        border-top: 0;
+        border-right: 0;
+        margin-left: -9px;
+        margin-top: -18px;
+    }
+     .div-tooltip-form
+     {
+        display: none;
+     }
+     .upd8-button
+     {
+        margin-top: 5px;
+        margin-left: 5px;
+        border-radius: 50px;
+     }
+     .exit-button
+     {
+        margin-top: 5px;
+        margin-right: 5px;
+        border-radius: 50px;
+     }
+     .comnt-textarea
+     {
+        margin-top: 5px;
+        margin-right: 5px;
+        border-radius: 50px;
+     }
+     .tooltip-form
+    {
+        margin-top: 5px;
+        width: 96%;
+        margin-left: 2%;
+        margin-right: auto;
+    }
+
+    .bubble {
+        position: absolute;
+        background: #286090;
+        color: #FFFFFF;
+        font-family: Arial;
+        text-align: center;
+        width: 250px;
+        border-radius: 5px;
+        margin-top: 20px;
+        z-index: 1;
+        padding-bottom: 5px;
+        box-shadow: 1px 1px 1px 1px rgba(150,150,150,0.5);
+    }
+    .bubble:after {
+        content: '';
+        position: absolute;
+        display: block;
+        width: 0;
+        z-index: 1;
+        border-style: solid;
+        border-width: 20px 0 0 20px;
+        border-color: transparent transparent transparent #286090;
+        top: -20px;
+        left: 11%;
+        margin-left: -15px;
+    }
+
+    .bubble-comment {
+        position: absolute;
+        background: #f0ad4e;
+        color: #FFFFFF;
+        font-family: Arial;
+        text-align: center;
+        width: 250px;
+        border-radius: 5px;
+        margin-top: 20px;
+        z-index: 1;
+        padding-bottom: 5px;
+        box-shadow: 1px 1px 1px 1px rgba(150,150,150,0.5);
+    }
+    .bubble-comment:after {
+        content: '';
+        position: absolute;
+        display: block;
+        width: 0;
+        z-index: 1;
+        border-style: solid;
+        border-width: 20px 0 0 20px;
+        border-color: transparent transparent transparent #f0ad4e;
+        top: -20px;
+        left: 11%;
+        margin-left: 10px;
+    }
+
+
     .tt-menu .tt-suggestion
     {
         white-space: pre-wrap;
@@ -70,6 +202,7 @@ $this->params['breadcrumbs'][] = $this->title;
     {
         border-bottom: 1px solid #ddd;
     }
+
 </style>
 <div class="gad-plan-budget-index">
 
@@ -102,7 +235,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </tbody>
     </table>
 
-    <table class="table table-responsive table-hover table-bordered gad-plan-budget">
+    <table class="table table-responsive table-bordered gad-plan-budget">
         <thead>
             <tr>
                 <th>Gender Issue or GAD Mandate </th>
@@ -156,92 +289,63 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td>
                                 <?= !empty($plan["cause_gender_issue"]) ? $plan["cause_gender_issue"] : "" ?>
                             </td>
-                           <td>
-                                <p><?= $plan["objective"]?></p>
-                                <button type="button" class="btn btn-primary btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
-                                <button type="button" class="btn btn-default btn-xs" title="Clear"><span class="glyphicon glyphicon-erase"></span></button>
-                                <button type="button" class="btn btn-warning btn-xs" title="Comment"><span class="glyphicon glyphicon-comment"></span></button>
-                                <br/><br/>
-                                <textarea type="text" rows="2" class="form-control"></textarea>
-                            </td>
-                            <td>
-                                
-                                    <p><?= $plan["relevant_lgu_program_project"]?></p>
-                                    <button type="button" class="btn btn-primary btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
-                                    <button type="button" class="btn btn-default btn-xs" title="Clear"><span class="glyphicon glyphicon-erase"></span></button>
-                                    <button type="button" class="btn btn-warning btn-xs" title="Comment"><span class="glyphicon glyphicon-comment"></span></button>
-                                    <br/><br/>
-                                    <textarea type="text" rows="2" class="form-control"></textarea>
-                            </td>
-                            <td>
-                                    <p><?= $plan["activity"]?></p>
-                                    <button type="button" class="btn btn-primary btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
-                                    <button type="button" class="btn btn-default btn-xs" title="Clear"><span class="glyphicon glyphicon-erase"></span></button>
-                                    <button type="button" class="btn btn-warning btn-xs" title="Comment"><span class="glyphicon glyphicon-comment"></span></button>
-                                    <br/><br/>
-                                    <textarea type="text" rows="2" class="form-control"></textarea>
-                            </td>
-                            <td>
-                                    <p><?= $plan["performance_target"]?></p>
-                                    <button type="button" class="btn btn-primary btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
-                                    <button type="button" class="btn btn-default btn-xs" title="Clear"><span class="glyphicon glyphicon-erase"></span></button>
-                                    <button type="button" class="btn btn-warning btn-xs" title="Comment"><span class="glyphicon glyphicon-comment"></span></button>
-                                    <br/><br/>
-                                    <textarea type="text" rows="2" class="form-control"></textarea>
-                            </td>
-                            <td>
-                                    <p><?= $plan["performance_indicator"]?></p>
-                                    <button type="button" class="btn btn-primary btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
-                                    <button type="button" class="btn btn-default btn-xs" title="Clear"><span class="glyphicon glyphicon-erase"></span></button>
-                                    <button type="button" class="btn btn-warning btn-xs" title="Comment"><span class="glyphicon glyphicon-comment"></span></button>
-                                    <br/><br/>
-                                    <textarea type="text" rows="2" class="form-control"></textarea>
-                            </td>
-                            <td>
-                                    <p><?= !empty($plan["budget_mooe"]) ? number_format($plan["budget_mooe"],2) : "" ?></p>
-                                    <button type="button" class="btn btn-primary btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
-                                    <button type="button" class="btn btn-default btn-xs" title="Clear"><span class="glyphicon glyphicon-erase"></span></button>
-                                    <button type="button" class="btn btn-warning btn-xs" title="Comment"><span class="glyphicon glyphicon-comment"></span></button>
-                                    <br/><br/>
-                                    <textarea type="text" rows="2" class="form-control"></textarea>
-                            </td>
-                            <td>
-                                    <p><?= !empty($plan["budget_ps"]) ? number_format($plan["budget_ps"],2) : "" ?></p>
-                                    <button type="button" class="btn btn-primary btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
-                                    <button type="button" class="btn btn-default btn-xs" title="Clear"><span class="glyphicon glyphicon-erase"></span></button>
-                                    <button type="button" class="btn btn-warning btn-xs" title="Comment"><span class="glyphicon glyphicon-comment"></span></button>
-                                    <br/><br/>
-                                    <textarea type="text" rows="2" class="form-control"></textarea>
-                            </td>
-                            <td>
-                                    <p><?= !empty($plan["budget_co"]) ? number_format($plan["budget_co"],2) : "" ?></p>
-                                    <button type="button" class="btn btn-primary btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
-                                    <button type="button" class="btn btn-default btn-xs" title="Clear"><span class="glyphicon glyphicon-erase"></span></button>
-                                    <button type="button" class="btn btn-warning btn-xs" title="Comment"><span class="glyphicon glyphicon-comment"></span></button>
-                                    <br/><br/>
-                                    <textarea type="text" rows="2" class="form-control"></textarea>
-                            </td>
-                            <td>
-                                    <p><?= $plan["lead_responsible_office"]?></p>
-                                    <button type="button" class="btn btn-primary btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
-                                    <button type="button" class="btn btn-default btn-xs" title="Clear"><span class="glyphicon glyphicon-erase"></span></button>
-                                    <button type="button" class="btn btn-warning btn-xs" title="Comment"><span class="glyphicon glyphicon-comment"></span></button>
-                                    <br/><br/>
-                                    <textarea type="text" rows="2" class="form-control"></textarea>
-                            </td>
+                            
+                            <?php
+                                echo $this->render('client_focused/gender_issue/objective',[
+                                    'plan' => $plan,
+                                ])
+                            ?>
+                            <?php
+                                echo $this->render('client_focused/gender_issue/relevant_lgu_program_project',[
+                                    'plan' => $plan,
+                                ])
+                            ?>
+                            <?php
+                                echo $this->render('client_focused/gender_issue/activity',[
+                                    'plan' => $plan,
+                                ])
+                            ?>
+                            <?php
+                                echo $this->render('client_focused/gender_issue/performance_target',[
+                                    'plan' => $plan,
+                                ])
+                            ?>
+                            <?php
+                                echo $this->render('client_focused/gender_issue/performance_indicator',[
+                                    'plan' => $plan,
+                                ])
+                            ?>
+                            <?php
+                                echo $this->render('client_focused/gender_issue/budget_mooe',[
+                                    'plan' => $plan,
+                                ])
+                            ?>
+                            <?php
+                                echo $this->render('client_focused/gender_issue/budget_ps',[
+                                    'plan' => $plan,
+                                ])
+                            ?>
+                            <?php
+                                echo $this->render('client_focused/gender_issue/budget_co',[
+                                    'plan' => $plan,
+                                ])
+                            ?>
+                            <?php
+                                echo $this->render('client_focused/gender_issue/lead_responsible_office',[
+                                    'plan' => $plan,
+                                ])
+                            ?>
                             <td></td>
                         </tr>
                     
 
                     <?php } ?>
-                <?php echo $this->render('client_focused_bottom_form',[
+                <?php echo $this->render('client_focused_gad_mandate',[
                         'opt_cli_focused' => $opt_cli_focused,
                         'val' => $val,
                         'ruc' => $ruc,
                     ]);?>
-                <tr>
-                    <td colspan='12'><button type='button' class='btn btn-success btn-sm'><span class='glyphicon glyphicon-pencil'></span> GAD Mandate</button></td>
-                </tr>
+                    
                 <tr>
                     <td></td>
                     <td></td>
