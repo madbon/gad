@@ -74,10 +74,14 @@ class GadPlanBudgetController extends Controller
             'PB.budget_mooe',
             'PB.budget_ps',
             'PB.budget_co',
-            'PB.lead_responsible_office'
+            'PB.lead_responsible_office',
+            'COUNT(GC.plan_budget_id) as count_comment',
+            'GC.attribute_name as attr_name',
+            'PB.record_tuc as record_uc'
         ])
         ->from('gad_plan_budget PB')
         ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = PB.ppa_focused_id')
+        ->leftJoin(['GC' => 'gad_comment'], 'GC.plan_budget_id = PB.id')
         ->groupBy(['PB.ppa_focused_id','PB.cause_gender_issue','PB.objective','PB.relevant_lgu_program_project','PB.activity','PB.performance_target'])
         ->where(['PB.record_tuc' => $ruc])
         ->orderBy(['PB.ppa_focused_id' => SORT_ASC,'PB.cause_gender_issue' => SORT_ASC])->all();

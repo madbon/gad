@@ -17,7 +17,153 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <style type="text/css">
+    ul.view-comment-list li p.comment_action_button textarea
+    {
+        display: none;
+    }
+    ul.view-comment-list li p.comment_action_button button
+    {
+        margin-top: 5px;
+        display: none;
+    }
+    ul.view-comment-list li p.comment_action_button i.btn-delete-comment
+    {
+        margin-left:5px;
+    }
+    ul.view-comment-list li p.psgc_value span.glyphicon-map-marker
+    {
+        color: #ef3131;
+    }
+    ul.view-comment-list li p.psgc_value i.office
+    {
+        font-weight: normal;
+        font-style: normal;
+        color: #337ab7;
+    }
+    ul.view-comment-list li p.psgc_value i.citymun
+    {
+        font-weight: normal;
+        font-style: normal;
+        font-size: 11px;
+        color: #337ab7;
+    }
+    ul.view-comment-list li p.psgc_value i.province
+    {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 11px;
+        color: #337ab7;
+    }
+    ul.view-comment-list li p.psgc_value i.region
+    {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 11px;
+        color: #337ab7;
+    }
+    ul.view-comment-list li p.comment_value
+    {
+        font-weight: normal;
+        padding-bottom: 0;
+        margin-bottom: 10px;
+        margin-top: -8px;
+        /*font-style: italic;*/
+        text-align: left;
+    }
+    ul.view-comment-list li p.who_date_value
+    {
+        margin-top: -10px;
+    }
+    ul.view-comment-list li i.who_comment
+    {
+        font-size: 13px;
+        font-style: normal;
+        padding-right: 10px;
+        color:gray;
+    }
+    ul.view-comment-list li i.date_value
+    {
+        font-size: 10px;
+        color:gray;
+        padding-right: 5px;
+        /*font-style: normal;*/
+    }
+    ul.view-comment-list li i.time_value
+    {
+        font-size: 10px;
+        color:gray;
+        /*font-style: normal;*/
+    }
+    .btn-delete-comment
+    {
+        color:#337ab7;
+        cursor: pointer;
+        font-size: 12px;
+    }
+    .btn-edit-comment
+    {
+        color:#337ab7;
+        cursor: pointer;
+        font-size: 12px;
+    }
+    ul.view-comment-list li p.psgc_value
+    {
+        font-weight: bold;
+    }
+
+    ul.view-comment-list li
+    {
+        padding-top: 10px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid rgb(220,220,220);
+    }
+    ul.view-comment-list
+    {
+        list-style-type: none;
+        text-align: left;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    div.comment-inner-content
+    {
+        overflow-y: scroll;
+        max-height: 220px;
+    }
+    table tbody tr td.has-comment
+    {
+       border:2px solid rgb(237,63,57); 
+       border-left: 2px solid rgb(237,63,57); 
+       border-top: 2px solid rgb(237,63,57); 
+    }
+    .bubble-view-comment {
+        position: absolute;
+        background: white;
+        color: black;
+        font-family: Arial;
+        text-align: center;
+        width: 350px;
+        border-radius: 5px;
+        margin-top: 20px;
+        z-index: 1;
+        padding-bottom: 5px;
+        box-shadow: 1px 1px 1px 1px rgba(150,150,150,0.5);
+        max-height: 250px;
+    }
+    .bubble-view-comment:after {
+        content: '';
+        position: absolute;
+        display: block;
+        width: 0;
+        z-index: 1;
+        border-style: solid;
+        border-width: 20px 0 0 20px;
+        border-color: transparent transparent transparent white;
+        top: -20px;
+        left: 11%;
+        margin-left: 30px;
+    }
      /*Speech buble*/
+    
     p.confirm-message
     {
         position: absolute;
@@ -26,6 +172,12 @@ $this->params['breadcrumbs'][] = $this->title;
         border-radius: 15px;
         font-size:12px;
         box-shadow: 2px 2px 2px 2px rgba(150,150,150,0.5);
+        z-index: 1;
+    }
+    p.confirm-wrnng
+    {
+        background-color: #f0ad4e;
+        color:white;
     }
     p.confirm-sccss
     {
@@ -35,6 +187,11 @@ $this->params['breadcrumbs'][] = $this->title;
     p.confirm-prmry
     {
         background-color: #286090;
+        color:white;
+    }
+    p.confirm-dngr
+    {
+        background-color: #d9534f;
         color:white;
     }
     .actn-btn-bubble {
@@ -57,12 +214,11 @@ $this->params['breadcrumbs'][] = $this->title;
         left: 50%;
         width: 0;
         height: 0;
-        border: 18px solid transparent;
+        border: 10px solid transparent;
         border-bottom-color: #5bc0de;
         border-top: 0;
-        border-right: 0;
-        margin-left: -9px;
-        margin-top: -18px;
+        margin-left: -20px;
+        margin-top: -10px;
     }
      .div-tooltip-form
      {
