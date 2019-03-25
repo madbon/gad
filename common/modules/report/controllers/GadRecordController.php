@@ -79,7 +79,8 @@ class GadRecordController extends Controller
             $hash =  md5(date('Y-m-d')."-".date("h-i-sa")."-".$miliseconds);
             $model->tuc = $hash;
             $model->save();
-            return $this->redirect(['index']);
+             \Yii::$app->getSession()->setFlash('success', 'ANNEX A has been created');
+            return $this->redirect(['/report/gad-plan-budget/index', 'ruc' => $hash]);
         }
 
         return $this->render('create', [

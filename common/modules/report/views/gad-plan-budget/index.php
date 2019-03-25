@@ -12,11 +12,57 @@ use kartik\select2\Select2;
 /* @var $searchModel common\models\GadPlanBudgetSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Gad Plan Budgets (Annex A)';
+$this->title = 'ANNUAL GENDER AND DEVELOPMENT (GAD PLAN BUDGET) FY '.date("Y");
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <style type="text/css">
+    table.basic-information tbody tr td:nth-child(2)
+    {
+        font-weight: bold;
+    }
+    table.basic-information tbody tr td:nth-child(4)
+    {
+        font-weight: bold;
+    }
+    table.basic-information tbody tr td
+    {
+        border:none;
+    }
+    /*table.basic-information tbody tr td:nth-child(3)
+    {
+        background-color: rgb(245,245,245);
+    }
+    table.basic-information tbody tr:nth-child(3) td:nth-child(3)
+    {
+        background-color: white;
+    }
+    table.basic-information tbody tr td:first-child
+    {
+        background-color: rgb(245,245,245);
+    }
+    table.basic-information tbody tr td
+    {
+        border:1px solid black;
+    }*/
+    div.input_form_container
+    {
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+    }
+    div.input_form_body
+    {
+        width: 96%;
+        margin-left: 2%;
+        margin-right: auto;
+        padding-top: 10px;
+        padding-bottom: 20px;
+    }
+    div.input_form_header
+    {
+        height: 30px;
+        background-color: #ddd;
+    }
     ul.view-comment-list li p.comment_action_button textarea
     {
         display: none;
@@ -131,9 +177,10 @@ $this->params['breadcrumbs'][] = $this->title;
     }
     table tbody tr td.has-comment
     {
-       border:2px solid rgb(237,63,57); 
-       border-left: 2px solid rgb(237,63,57); 
-       border-top: 2px solid rgb(237,63,57); 
+      /* border:2px solid rgb(237,63,57) !important; 
+       border-left: 2px solid rgb(237,63,57) !important; 
+       border-top: 2px solid rgb(237,63,57) !important; */
+       background-color: #9e42a969 !important;
     }
     .bubble-view-comment {
         position: absolute;
@@ -202,7 +249,7 @@ $this->params['breadcrumbs'][] = $this->title;
         text-align: center;
         width: 50px;
         border-radius: 5px;
-        margin-top: 20px;
+        /*margin-top: 20px;*/
         z-index: 1;
         padding-bottom: 5px;
         /*box-shadow: 1px 1px 1px 1px rgba(150,150,150,0.5);*/
@@ -342,9 +389,14 @@ $this->params['breadcrumbs'][] = $this->title;
         width: 200px;
     }
 
+    .table > caption + thead > tr:first-child > th, .table > colgroup + thead > tr:first-child > th, .table > thead:first-child > tr:first-child > th, .table > caption + thead > tr:first-child > td, .table > colgroup + thead > tr:first-child > td, .table > thead:first-child > tr:first-child > td
+    {
+        border-top: 1px solid black;
+    }
     table.gad-plan-budget thead tr th
     {
         text-align: center;
+        border:1px solid black;
     }
     table.gad-plan-budget thead tr:first-child th
     {
@@ -356,188 +408,278 @@ $this->params['breadcrumbs'][] = $this->title;
     }
     table.gad-plan-budget thead tr:first-child th:nth-child(8)
     {
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid black;
+    }
+
+    table.gad-plan-budget tbody tr td
+    {
+        border:1px solid black;
     }
 
 </style>
 <div class="gad-plan-budget-index">
+    <!-- <p>
+        <?php // Html::a('Create Annex A', ['gad-record/create'], ['class' => 'btn btn-success']) ?>
+    </p> -->
 
-    <!-- <h1><?= Html::encode($this->title) ?></h1> -->
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+   
+    <div class="cust-panel basic-information">
+        <div class="cust-panel-header success">
+        </div>
+        <div class="cust-panel-body">
+            <div class="cust-panel-title">
+                <p class="sub-title">Primary Information</p>
+            </div>
+            <div class="cust-panel-inner-body">
+                <table class="table table-responsive table-hover table-bordered basic-information">
+                    <tbody>
+                        <tr>
+                            <td style="width:1px;">REGION :</td>
+                            <td> : <?= $recRegion ?></td>
+                            <td style="width: 180px;">TOTAL LGU BUDGET</td>
+                            <td> : Php <?= number_format($recTotalLguBudget,2) ?></td>
+                        </tr>
+                        <tr>
+                            <td>PROVINCE :</td>
+                            <td> : <?= $recProvince ?></td>
+                            <td>TOTAL GAD BUDGET</td>
+                            <td> : Php <?= number_format($recTotalGadBudget,2) ?></td>
+                        </tr>
+                        <tr>
+                            <td>CITY/MUNICIPALITY </td>
+                            <td> : <?= $recCitymun ?></td>
+                            <td colspan="2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br/>
 
-    <p>
-        <?= Html::a('Create Annex A', ['gad-record/create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <table class="table table-responsive table-hover table-bordered">
-        <tbody>
-            <tr>
-                <td>Region</td>
-                <td></td>
-                <td>Total LGU Budget</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Province</td>
-                <td></td>
-                <td>Total GAD Budget</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>City/Municipality</td>
-                <td></td>
-                <td colspan="2"></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <table class="table table-responsive table-bordered gad-plan-budget">
-        <thead>
-            <tr>
-                <th>Gender Issue or GAD Mandate </th>
-                <th>Cause of the Gender Issue</th>
-                <th>GAD Objective</th>
-                <th>Relevant LGU Program or Project</th>
-                <th>GAD Activity</th>
-                <th>Performance Target </th>
-                <th>Performance Indicator</th>
-                <th colspan="3">GAD Budget (6)</th>
-                <th>Lead or Responsible Office </th>
-                <th></th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>MOOE</th>
-                <th>PS</th>
-                <th>CO</th>
-                <th></th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-               foreach ($dataRecord as $key => $val) {
-            ?>
-                 
-                <tr>
-                    <td colspan='12'><b>CLIENT-FOCUSED</b></td>
-                </tr>
+    <button type="button" class="btn btn-success" id="btn-encode" style="margin-bottom: 5px;">
+        <span class="glyphicon glyphicon-pencil"></span> Encode
+    </button>
+    
+    <?php
+        $this->registerJs('
+            $("#btn-encode").click(function(){
+                $(".input-form").slideDown(300);
+            });
+        ');
+    ?>
+    <div class="cust-panel input-form" style="display: none;">
+        <div class="cust-panel-header success">
+        </div>
+        <div class="cust-panel-body">
+            <div class="cust-panel-title">
+                <p class="sub-title">INPUT FORM</p>
+            </div>
+            <div class="cust-panel-inner-body">
                 <?php echo $this->render('client_focused_form',[
                     'opt_cli_focused' => $opt_cli_focused,
-                    'val' => $val,
                     'ruc' => $ruc,
                 ]);
                 ?>
-                    <?php
-                        $not_ppa_value = null;
-                        foreach ($dataPlanBudget as $key2 => $plan) {
-                    ?>
-                        <tr>
-                            <td>
-                                <?= $not_ppa_value != $plan["ppa_value"] ? $plan["ppa_value"] : "" ?>
-                            </td>   
-                            <td>
-                                <?= !empty($plan["cause_gender_issue"]) ? $plan["cause_gender_issue"] : "" ?>
-                            </td>
-                            
-                            <?php
-                                echo $this->render('client_focused/gender_issue/objective',[
-                                    'plan' => $plan,
-                                ])
-                            ?>
-                            <?php
-                                echo $this->render('client_focused/gender_issue/relevant_lgu_program_project',[
-                                    'plan' => $plan,
-                                ])
-                            ?>
-                            <?php
-                                echo $this->render('client_focused/gender_issue/activity',[
-                                    'plan' => $plan,
-                                ])
-                            ?>
-                            <?php
-                                echo $this->render('client_focused/gender_issue/performance_target',[
-                                    'plan' => $plan,
-                                ])
-                            ?>
-                            <?php
-                                echo $this->render('client_focused/gender_issue/performance_indicator',[
-                                    'plan' => $plan,
-                                ])
-                            ?>
-                            <?php
-                                echo $this->render('client_focused/gender_issue/budget_mooe',[
-                                    'plan' => $plan,
-                                ])
-                            ?>
-                            <?php
-                                echo $this->render('client_focused/gender_issue/budget_ps',[
-                                    'plan' => $plan,
-                                ])
-                            ?>
-                            <?php
-                                echo $this->render('client_focused/gender_issue/budget_co',[
-                                    'plan' => $plan,
-                                ])
-                            ?>
-                            <?php
-                                echo $this->render('client_focused/gender_issue/lead_responsible_office',[
-                                    'plan' => $plan,
-                                ])
-                            ?>
-                            <td></td>
-                        </tr>
-                    
+            </div>
+        </div>
+    </div>
+    <br/>
 
-                    <?php } ?>
-                <?php echo $this->render('client_focused_gad_mandate',[
-                        'opt_cli_focused' => $opt_cli_focused,
-                        'val' => $val,
-                        'ruc' => $ruc,
-                    ]);?>
-                    
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan='12'><b>Sub-total</b></td>
-                </tr>
-                <tr>
-                    <td colspan='12'><b>Total A (MOEE+PS+CO)</b></td>
-                </tr>
-                <tr>
-                    <td colspan='12'><b>ORGANIZATION-FOCUSED</b></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                    
-            <?php   
-                }
-            ?>
-        </tbody>
-    </table>
+    <div class="cust-panel tabular-report">
+        <div class="cust-panel-header success">
+        </div>
+        <div class="cust-panel-body">
+            <div class="cust-panel-title">
+                <p class="sub-title">Tabular Report</p>
+            </div>
+            <div class="cust-panel-inner-body">
+                <table class="table table-responsive table-bordered gad-plan-budget">
+                    <thead>
+                        <tr>
+                            <th>Gender Issue or GAD Mandate </th>
+                            <th>Cause of the Gender Issue</th>
+                            <th>GAD Objective</th>
+                            <th>Relevant LGU Program or Project</th>
+                            <th>GAD Activity</th>
+                            <th>Performance Target </th>
+                            <th>Performance Indicator</th>
+                            <th colspan="3">GAD Budget (6)</th>
+                            <th>Lead or Responsible Office </th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th>MOOE</th>
+                            <th>PS</th>
+                            <th>CO</th>
+                            <th></th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                           foreach ($dataRecord as $key => $val) {
+                        ?>
+                             
+                            <tr>
+                                <td colspan='12'><b>CLIENT-FOCUSED</b></td>
+                            </tr>
+                            <tr>
+                                <td colspan='12'><b>Gender Issue</b></td>
+                            </tr>
+                            
+                                <?php
+                                    $not_ppa_value = null;
+                                    foreach ($dataPlanBudget as $key2 => $plan) {
+                                ?>
+                                    <tr>
+                                        <td>
+                                            <?= $not_ppa_value != $plan["ppa_value"] ? $plan["ppa_value"] : "" ?>
+                                        </td>   
+                                        <td>
+                                            <?= !empty($plan["cause_gender_issue"]) ? $plan["cause_gender_issue"] : "" ?>
+                                        </td>
+                                        
+                                        <?php
+                                            echo $this->render('client_focused/gender_issue/attributes_unified_form',[
+                                                'plan' => $plan,
+                                                'attribute' => 'objective',
+                                                'column_title' => 'GAD Objective',
+                                                'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-objective']),
+                                                'data_type' => 'string',
+                                            ])
+                                        ?>
+                                        <?php
+                                            echo $this->render('client_focused/gender_issue/attributes_unified_form',[
+                                                'plan' => $plan,
+                                                'attribute' => 'relevant_lgu_program_project',
+                                                'column_title' => 'Relevant LGU Program and Project',
+                                                'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-relevant-lgu-program-project']),
+                                                'data_type' => 'string',
+                                            ])
+                                        ?>
+                                        <?php
+                                            echo $this->render('client_focused/gender_issue/attributes_unified_form',[
+                                                'plan' => $plan,
+                                                'attribute' => 'activity',
+                                                'column_title' => 'GAD Activity',
+                                                'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-activity']),
+                                                'data_type' => 'string',
+                                            ])
+                                        ?>
+                                        <?php
+                                            echo $this->render('client_focused/gender_issue/attributes_unified_form',[
+                                                'plan' => $plan,
+                                                'attribute' => 'performance_target',
+                                                'column_title' => 'Performance Target',
+                                                'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-performance-target']),
+                                                'data_type' => 'string',
+                                            ])
+                                        ?>
+                                        <?php
+                                            echo $this->render('client_focused/gender_issue/attributes_unified_form',[
+                                                'plan' => $plan,
+                                                'attribute' => 'performance_indicator',
+                                                'column_title' => 'Performance Indicator',
+                                                'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-performance-indicator']),
+                                                'data_type' => 'string',
+                                            ])
+                                        ?>
+                                        <?php
+                                            echo $this->render('client_focused/gender_issue/attributes_unified_form',[
+                                                'plan' => $plan,
+                                                'attribute' => 'budget_mooe',
+                                                'column_title' => 'MOOE',
+                                                'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-budget-mooe']),
+                                                'data_type' => 'number',
+                                            ])
+                                        ?>
+                                        <?php
+                                            echo $this->render('client_focused/gender_issue/attributes_unified_form',[
+                                                'plan' => $plan,
+                                                'attribute' => 'budget_ps',
+                                                'column_title' => 'PS',
+                                                'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-budget-ps']),
+                                                'data_type' => 'number',
+                                            ])
+                                        ?>
+                                        <?php
+                                            echo $this->render('client_focused/gender_issue/attributes_unified_form',[
+                                                'plan' => $plan,
+                                                'attribute' => 'budget_co',
+                                                'column_title' => 'CO',
+                                                'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-budget-co']),
+                                                'data_type' => 'number',
+                                            ])
+                                        ?>
+                                        <?php
+                                            echo $this->render('client_focused/gender_issue/attributes_unified_form',[
+                                                'plan' => $plan,
+                                                'attribute' => 'lead_responsible_office',
+                                                'column_title' => 'Lead or Responsible Office',
+                                                'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-lead-responsible-office']),
+                                                'data_type' => 'string',
+                                            ])
+                                        ?>
+                                        <td></td>
+                                    </tr>
+                                
+
+                                <?php } ?>
+                            <?php echo $this->render('client_focused_gad_mandate',[
+                                    'opt_cli_focused' => $opt_cli_focused,
+                                    'val' => $val,
+                                    'ruc' => $ruc,
+                                ]);?>
+                                
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan='12'><b>Sub-total</b></td>
+                            </tr>
+                            <tr>
+                                <td colspan='12'><b>Total A (MOEE+PS+CO)</b></td>
+                            </tr>
+                            <tr>
+                                <td colspan='12'><b>ORGANIZATION-FOCUSED</b></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                                
+                        <?php   
+                            }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    
 </div>

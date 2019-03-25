@@ -24,6 +24,11 @@ AppAsset::register($this);
     <?php $this->head() ?>
 </head>
 <style>
+p.sub-title
+{
+    font-size: 20px !important; 
+    text-transform: uppercase;
+}
 nav.navbar
 {
     background-color: #29102E !important;
@@ -78,10 +83,19 @@ div.navbar-header a img
     width: 100%;
     box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(155,155,155,0.5);
 }
-.cust-panel .cust-panel-header
+.success
+{
+    background-color: #174369 !important;
+    height: 2px;
+}
+.gad-color
 {
     background-color: #8b588e !important;
     height: 5px;
+}
+.cust-panel .cust-panel-header
+{
+    
 
 }
 .cust-panel .cust-panel-body
@@ -120,11 +134,18 @@ div.navbar-header a img
         $menuItems = [
             [
                 'label' => 'Home','url' => ['/site/index']],
-            ['label' => 'Report', 'items' => [
-                    ['label' => 'GAD Plan and Budget (Annex A)', 'url' => '@web/report/gad-plan-budget/'],
+
+            [
+                'label' => 'Create', 'items' => [
+                    ['label' => 'GAD Plan and Budget (Annex A)', 'url' => '@web/report/gad-record/create'],
+                ],
+            ],
+            [
+                'label' => 'Report', 'items' => [
                     ['label' => 'List of Annex A', 'url' => '@web/report/gad-record/'],
                 ],
-                'url' => ['/site/about']],
+                // 'url' => ['/site/about']
+            ],
             // ['label' => 'Contact', 'url' => ['/site/contact']],
         ];
         if (Yii::$app->user->isGuest) {
@@ -154,7 +175,7 @@ div.navbar-header a img
         ]) ?>
         <?= Alert::widget() ?>
         <div class="cust-panel">
-            <div class="cust-panel-header">
+            <div class="cust-panel-header gad-color">
             </div>
             <div class="cust-panel-body">
                 <div class="cust-panel-title">

@@ -41,25 +41,26 @@ class GadPlanBudgetController extends Controller
     public function actionIndex($ruc)
     {
         $dataRecord = \common\models\GadRecord::find()->where(['tuc' => $ruc])->all();
-        // $dataFocusedId = (new \yii\db\Query())
-        // ->select([
-        //     'PB.id',
-        //     'IF(PB.ppa_focused_id = 0, PB.ppa_value,CF.title) as ppa_value',
-        //     'PB.cause_gender_issue',
-        //     'PB.objective',
-        //     'PB.relevant_lgu_program_project',
-        //     'PB.activity',
-        //     'PB.performance_target'
-        // ])
-        // ->from('gad_plan_budget PB')
-        // ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = PB.ppa_focused_id')
-        // ->groupBy(['PB.ppa_focused_id','PB.cause_gender_issue','PB.objective','PB.relevant_lgu_program_project','PB.activity','PB.performance_target'])
-        // ->where(['PB.record_tuc' => $ruc])
-        // ->orderBy(['PB.ppa_focused_id' => SORT_ASC,'PB.cause_gender_issue' => SORT_ASC])->all();
-        // $dataPlanBudget = GadPlanBudget::find()
-        // ->groupBy(['ppa_value','cause_gender_issue','objective','relevant_lgu_program_project','activity','performance_target'])
-        // ->where(['record_tuc' => $ruc])
-        // ->orderBy(['ppa_value' => SORT_ASC,'cause_gender_issue' => SORT_ASC])->all();
+
+        $qryRecord = (new \yii\db\Query())
+        ->select([
+            'REG.region_m as region_name',
+            'PRV.province_m as province_name',
+            'CTC.citymun_m as citymun_name',
+            'GR.total_lgu_budget',
+            'GR.total_gad_budget'
+        ])
+        ->from('gad_record GR')
+        ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = GR.region_c')
+        ->leftJoin(['PRV' => 'tblprovince'], 'PRV.province_c = GR.province_c')
+        ->leftJoin(['CTC' => 'tblcitymun'], 'CTC.citymun_c = GR.citymun_c AND CTC.province_c = GR.province_c')
+        ->where(['GR.tuc' => $ruc])
+        ->groupBy(['GR.id'])->one();
+        $recRegion = !empty($qryRecord['region_name']) ? $qryRecord['region_name'] : "";
+        $recProvince = !empty($qryRecord['province_name']) ? $qryRecord['province_name'] : "";
+        $recCitymun = !empty($qryRecord['citymun_name']) ? $qryRecord['citymun_name'] : "";
+        $recTotalLguBudget = !empty($qryRecord['total_lgu_budget']) ? $qryRecord['total_lgu_budget'] : "";
+        $recTotalGadBudget = !empty($qryRecord['total_gad_budget']) ? $qryRecord['total_gad_budget'] : "";
 
         $dataPlanBudget = (new \yii\db\Query())
         ->select([
@@ -84,9 +85,11 @@ class GadPlanBudgetController extends Controller
         ->leftJoin(['GC' => 'gad_comment'], 'GC.plan_budget_id = PB.id')
         ->groupBy(['PB.ppa_focused_id','PB.cause_gender_issue','PB.objective','PB.relevant_lgu_program_project','PB.activity','PB.performance_target'])
         ->where(['PB.record_tuc' => $ruc])
-        ->orderBy(['PB.ppa_focused_id' => SORT_ASC,'PB.cause_gender_issue' => SORT_ASC])->all();
+        ->orderBy(['PB.id' => SORT_ASC])->all();
         // echo "<pre>";
         // print_r($dataPlanBudget); exit;
+
+
 
         $objective_type = ArrayHelper::getColumn(GadPlanBudget::find()->select(['objective'])->distinct()->all(), 'objective');
         $relevant_type       = ArrayHelper::getColumn(GadPlanBudget::find()
@@ -103,6 +106,11 @@ class GadPlanBudgetController extends Controller
             'opt_org_focused' => $opt_org_focused,
             'opt_cli_focused' => $opt_cli_focused,
             'relevant_type' => $relevant_type,
+            'recRegion' => $recRegion,
+            'recProvince' => $recProvince,
+            'recCitymun' => $recCitymun,
+            'recTotalGadBudget' => $recTotalGadBudget,
+            'recTotalLguBudget' => $recTotalLguBudget,
         ]);
     }
 

@@ -9,18 +9,21 @@ use common\modules\report\controllers\DefaultController;
 <?php } else{ ?>
 <td id="cell-<?= $attribute ?>-<?= $plan['id'] ?>" class="common-cell-container"> <!-- remove border if no comment  -->
 <?php } ?>
-    <p id="confirm-<?= $attribute ?>-<?= $plan['id'] ?>" class="confirm-message confirm-prmry"> <!-- confirmation message update click update  -->
-        <span class="glyphicon glyphicon-ok"></span> This <?= $column_title ?> has been changed
+
+    <p id="confirm-<?= $attribute ?>-<?= $plan['id'] ?>" class="confirm-message"> <!-- confirmation message update click update  -->
+       <i></i> <span></span>
     </p>
     <p id="confirm-<?= $attribute ?>-comment-<?= $plan['id'] ?>" class="confirm-message confirm-wrnng"> <!-- confirmation message after comment  -->
         <span class="glyphicon glyphicon-ok"></span> Comment has been saved
     </p>
-    <p id="content-<?= $attribute ?>-<?= $plan['id'] ?>"><?= $plan[$attribute]?></p>
-    <div id="actn-btns-<?= $attribute ?>-<?= $plan['id']?>" class="actn-btn-bubble actn-buble-common-class" style="display: none;">
-        <button id="btn-select-<?= $attribute ?>-<?= $plan['id']?>" type="button" class="btn btn-info btn-xs btn-select-cell" title="Select" >
-            Select
-        </button>
-    </div>
+    <p id="content-<?= $attribute ?>-<?= $plan['id'] ?>"><?= $data_type == "number" ? number_format($plan[$attribute],2) : $plan[$attribute] ?>  <!-- Display the content of attribute or cell value -->
+        <div id="actn-btns-<?= $attribute ?>-<?= $plan['id']?>" class="actn-btn-bubble actn-buble-common-class" style="display: none;">
+            <button id="btn-select-<?= $attribute ?>-<?= $plan['id']?>" type="button" class="btn btn-info btn-xs btn-select-cell" title="Select" >
+                Select
+            </button>
+        </div>
+    </p>
+    
     
     <?php
         $this->registerJs('
@@ -79,7 +82,7 @@ use common\modules\report\controllers\DefaultController;
                     var attr_name = "'.$attribute.'";
                     var cell_value =  $("#content-"+attr_name+"-'.$plan["id"].'").text();
                     $(".div-tooltip-form").hide();
-                    $("#txt-edit-'.$attribute.'-'.$plan["id"].'").val(cell_value);
+                    $("#txt-edit-'.$attribute.'-'.$plan["id"].'").val("'.$plan[$attribute].'");
                     $("#div-edit-"+attr_name+"-'.$plan["id"].'").slideDown(300);
                 });
             ');
@@ -108,11 +111,24 @@ use common\modules\report\controllers\DefaultController;
                                     }
                             
                             }).done(function(result) {
-                                $("#content-"+attr_name+"-'.$plan["id"].'").text(result);
-                                $("#div-edit-"+attr_name+"-'.$plan["id"].'").slideUp(300);
-                                $("#confirm-'.$attribute.'-'.$plan["id"].'").slideDown(300);
-                                setTimeout(function(){ $("#confirm-'.$attribute.'-'.$plan["id"].'").slideUp(300); }, 3000);
-                                
+                                if(result != upd8_value)
+                                {
+                                    $("#confirm-'.$attribute.'-'.$plan["id"].' i").removeClass("glyphicon-ok").addClass("glyphicon glyphicon-remove");
+                                    $("#confirm-'.$attribute.'-'.$plan["id"].'").removeClass("confirm-prmry").addClass("confirm-dngr");
+                                    $("#confirm-'.$attribute.'-'.$plan["id"].' span").text(result);
+                                    $("#confirm-'.$attribute.'-'.$plan["id"].'").slideDown(300);
+                                    setTimeout(function(){ $("#confirm-'.$attribute.'-'.$plan["id"].'").slideUp(300); }, 3000);
+                                }
+                                else
+                                {
+                                    $("#content-"+attr_name+"-'.$plan["id"].'").text(result);
+                                    $("#div-edit-"+attr_name+"-'.$plan["id"].'").slideUp(300);
+                                    $("#confirm-'.$attribute.'-'.$plan["id"].' i").removeClass("glyphicon-remove").addClass("glyphicon glyphicon-ok");
+                                    $("#confirm-'.$attribute.'-'.$plan["id"].'").removeClass("confirm-dngr").addClass("confirm-prmry");
+                                    $("#confirm-'.$attribute.'-'.$plan["id"].' span").text("'.$column_title.' has been updated");
+                                    $("#confirm-'.$attribute.'-'.$plan["id"].'").slideDown(300);
+                                    setTimeout(function(){ $("#confirm-'.$attribute.'-'.$plan["id"].'").slideUp(300); }, 3000);
+                                }
                         });
                     }); 
 
@@ -168,7 +184,7 @@ use common\modules\report\controllers\DefaultController;
                                 $("#div-comment-"+attr_name+"-'.$plan["id"].'").slideUp(300);
                                 $("#confirm-'.$attribute.'-comment-'.$plan["id"].'").slideDown(300);
                                 setTimeout(function(){ $("#confirm-'.$attribute.'-comment-'.$plan["id"].'").slideUp(300); }, 3000);
-                                $("#cell-'.$attribute.'-'.$plan["id"].'").css({"border":"2px solid red","border-left":"2px solid red","border-top":"2px solid red"});
+                                $("#cell-'.$attribute.'-'.$plan["id"].'").addClass("has-comment");
                                 $("#btn-view-comment-"+attr_name+"-'.$plan["id"].'").show();
                         });
                     }); 

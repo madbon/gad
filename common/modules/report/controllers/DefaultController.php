@@ -334,6 +334,135 @@ class DefaultController extends Controller
 
     }
 
+    public function actionLeadResponsibleOffice($uid,$upd8_value)
+    {
+        $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
+        $qry->lead_responsible_office = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpdateBudgetCo($uid,$upd8_value)
+    {
+        $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
+        $qry->budget_co = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpdateBudgetPs($uid,$upd8_value)
+    {
+        $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
+        $qry->budget_ps = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpdateBudgetMooe($uid,$upd8_value)
+    {
+        $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
+        $qry->budget_mooe = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpdatePerformanceIndicator($uid,$upd8_value)
+    {
+        $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
+        $qry->performance_indicator = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+
+    public function actionUpdatePerformanceTarget($uid,$upd8_value)
+    {
+        $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
+        $qry->performance_target = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+
+    public function actionUpdateActivity($uid,$upd8_value)
+    {
+        $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
+        $qry->activity = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+
     public function actionUpdateObjective($uid,$upd8_value)
     {
        	$qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
@@ -341,10 +470,29 @@ class DefaultController extends Controller
 
         if($qry->save())
         {
-        	$is_save = $upd8_value;
+            $is_save = $upd8_value;
         }else
         {
-        	$is_save = "error_in_saving";
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+
+    public function actionUpdateRelevantLguProgramProject($uid,$upd8_value)
+    {
+        $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
+        $qry->relevant_lgu_program_project = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "error_in_saving";
 
             $qry->errors;
         }
