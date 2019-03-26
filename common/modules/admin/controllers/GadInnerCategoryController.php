@@ -1,18 +1,18 @@
 <?php
 
-namespace common\modules\report\controllers;
+namespace common\modules\admin\controllers;
 
 use Yii;
-use common\models\GadRecord;
-use common\modules\report\models\GadRecordSearch;
+use common\models\GadInnerCategory;
+use common\modules\admin\models\GadInnerCategorySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * GadRecordController implements the CRUD actions for GadRecord model.
+ * GadInnerCategoryController implements the CRUD actions for GadInnerCategory model.
  */
-class GadRecordController extends Controller
+class GadInnerCategoryController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -30,12 +30,12 @@ class GadRecordController extends Controller
     }
 
     /**
-     * Lists all GadRecord models.
+     * Lists all GadInnerCategory models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new GadRecordSearch();
+        $searchModel = new GadInnerCategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class GadRecordController extends Controller
     }
 
     /**
-     * Displays a single GadRecord model.
+     * Displays a single GadInnerCategory model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,53 +58,25 @@ class GadRecordController extends Controller
     }
 
     /**
-     * Creates a new GadRecord model.
+     * Creates a new GadInnerCategory model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($ruc,$onstep)
+    public function actionCreate()
     {
-        $model = new GadRecord();
-        $model->region_c = Yii::$app->user->identity->userinfo->region->region_c;
-        $model->province_c = Yii::$app->user->identity->userinfo->province->province_c;
-        $model->citymun_c = Yii::$app->user->identity->userinfo->citymun->citymun_c;
-        $model->user_id = Yii::$app->user->identity->userinfo->user_id;
-        $model->status = 0;
-        date_default_timezone_set("Asia/Manila");
-        $model->date_created = date('Y-m-d');
-        $model->time_created = date("h:i:sa");
+        $model = new GadInnerCategory();
 
-        $modelUpdate = GadRecord::find()->where(['tuc' => $ruc])->one();
-
-        if ($model->load(Yii::$app->request->post())) {
-
-            if($onstep == "to_create_gpb")
-            {
-                $modelUpdate->total_lgu_budget = $model->total_lgu_budget;
-                $modelUpdate->total_gad_budget = $model->total_gad_budget;
-                $modelUpdate->year = $model->year;
-                $modelUpdate->save();
-            }
-            else
-            {
-                $miliseconds = round(microtime(true) * 1000);
-                $hash =  md5(date('Y-m-d')."-".date("h-i-sa")."-".$miliseconds);
-                $model->tuc = $hash;
-                $model->save();
-            }
-            
-            return $this->redirect(['/report/gad-plan-budget/index', 'ruc' => $onstep == "to_create_gpb" ? $ruc : $hash,'onstep' => 'to_create_gpb']);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
-            'model' => $onstep == "to_create_gpb" ? $modelUpdate : $model,
-            'ruc' =>  $ruc,
-            'onstep' => $onstep,
+            'model' => $model,
         ]);
     }
 
     /**
-     * Updates an existing GadRecord model.
+     * Updates an existing GadInnerCategory model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -124,7 +96,7 @@ class GadRecordController extends Controller
     }
 
     /**
-     * Deletes an existing GadRecord model.
+     * Deletes an existing GadInnerCategory model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -138,15 +110,15 @@ class GadRecordController extends Controller
     }
 
     /**
-     * Finds the GadRecord model based on its primary key value.
+     * Finds the GadInnerCategory model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return GadRecord the loaded model
+     * @return GadInnerCategory the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = GadRecord::findOne($id)) !== null) {
+        if (($model = GadInnerCategory::findOne($id)) !== null) {
             return $model;
         }
 

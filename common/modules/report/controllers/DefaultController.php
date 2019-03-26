@@ -9,12 +9,37 @@ use niksko12\user\models\Province;
 use niksko12\user\models\Citymun;
 use common\models\GadPlanBudget;
 use common\models\GadComment;
+use common\models\GadPpaOrganizationalFocused;
+use common\models\GadPpaClientFocused;
+use common\models\GadInnerCategory;
 use Yii;
 /**
  * Default controller for the `report` module
  */
 class DefaultController extends Controller
 {
+    public function actionLoadPpaCategory($focused_id)
+    {
+        if($focused_id == 1)
+        {
+            $qry = GadPpaClientFocused::find()->all();
+        }
+        else
+        {
+            $qry = GadPpaOrganizationalFocused::find()->all();
+        }
+        
+        $arr = [];
+        $arr[] = ['id'=>'','text'=>''];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'text' => $item->title
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+    }
     public function actionDeleteComment($comment_id)
     {
         $model = GadComment::find()->where(['id' => $comment_id])->one();
@@ -301,7 +326,7 @@ class DefaultController extends Controller
 
     }
 
-    public function actionCreateGadPlanBudget($ppa_focused_id,$ppa_value,$issue,$obj,$relevant,$act,$performance_target,$performance_indicator,$ruc,$budget_mooe,$budget_ps,$budget_co,$lead_responsible_office)
+    public function actionCreateGadPlanBudget($ppa_focused_id,$ppa_value,$issue,$obj,$relevant,$act,$performance_target,$performance_indicator,$ruc,$budget_mooe,$budget_ps,$budget_co,$lead_responsible_office,$focused_id,$inner_category_id)
     {
         $model = new \common\models\GadPlanBudget();
         $model->cause_gender_issue = $issue;
@@ -317,6 +342,8 @@ class DefaultController extends Controller
         $model->budget_ps = $budget_ps;
         $model->budget_co = $budget_co;
         $model->lead_responsible_office = $lead_responsible_office;
+        $model->focused_id = $focused_id;
+        $model->inner_category_id = $inner_category_id;
 
         $qryRecord = \common\models\GadRecord::find()->where(['tuc' => $ruc])->one();
         $qryRecordId = !empty($qryRecord->id) ? $qryRecord->id : null;

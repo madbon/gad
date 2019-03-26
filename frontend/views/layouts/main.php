@@ -24,6 +24,23 @@ AppAsset::register($this);
     <?php $this->head() ?>
 </head>
 <style>
+ul.nav li a:hover
+{
+    color:gray;
+}
+ul.nav li.disabled a
+{
+    color:white;
+}
+ul.nav li.disabled a:hover
+{
+    color:white;
+}
+ul.nav li.disabled:hover
+{
+    background-color: #7cbc7c;
+    color:white;
+}
 p.sub-title
 {
     font-size: 20px !important; 
@@ -137,12 +154,12 @@ div.navbar-header a img
 
             [
                 'label' => 'Create', 'items' => [
-                    ['label' => 'GAD Plan and Budget (Annex A)', 'url' => '@web/report/gad-record/create'],
+                    ['label' => 'GAD Plan and Budget (Annex A)', 'url' =>  ['/report/gad-record/create','ruc'=>'empty','onstep'=>'create_new']],
                 ],
             ],
             [
                 'label' => 'Report', 'items' => [
-                    ['label' => 'List of Annex A', 'url' => '@web/report/gad-record/'],
+                    ['label' => 'List of GAD Plan and Budget', 'url' => ['/report/gad-record/']],
                 ],
                 // 'url' => ['/site/about']
             ],

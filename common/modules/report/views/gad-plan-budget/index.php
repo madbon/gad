@@ -12,7 +12,7 @@ use kartik\select2\Select2;
 /* @var $searchModel common\models\GadPlanBudgetSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'ANNUAL GENDER AND DEVELOPMENT (GAD PLAN BUDGET) FY '.date("Y");
+$this->title = $onstep == 'to_create_gpb' ? 'Step 2. Encode Annual GAD Plan and Budget ' : 'ANNUAL GENDER AND DEVELOPMENT (GAD PLAN BUDGET) FY '.date("Y");
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -460,6 +460,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <button type="button" class="btn btn-success" id="btn-encode" style="margin-bottom: 5px;">
         <span class="glyphicon glyphicon-pencil"></span> Encode
     </button>
+
+    <button type="button" class="btn btn-primary pull-right" id="btn-submit-report" style="margin-bottom: 5px;">
+        <span class="glyphicon glyphicon-send"></span> Submit Report to Provincial Office
+    </button>
     
     <?php
         $this->registerJs('
@@ -479,11 +483,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php echo $this->render('client_focused_form',[
                     'opt_cli_focused' => $opt_cli_focused,
                     'ruc' => $ruc,
-                ]);
+                    'select_GadFocused' => $select_GadFocused,
+                    'select_GadInnerCategory' => $select_GadInnerCategory,
+                    ]);
                 ?>
             </div>
         </div>
     </div>
+
+    
     <br/>
 
     <div class="cust-panel tabular-report">
@@ -525,20 +533,28 @@ $this->params['breadcrumbs'][] = $this->title;
                     </thead>
                     <tbody>
                         <?php
-                           foreach ($dataRecord as $key => $val) {
+                            
+                            foreach ($dataRecord as $key => $val) {
                         ?>
-                             
-                            <tr>
-                                <td colspan='12'><b>CLIENT-FOCUSED</b></td>
-                            </tr>
-                            <tr>
-                                <td colspan='12'><b>Gender Issue</b></td>
-                            </tr>
                             
                                 <?php
                                     $not_ppa_value = null;
+                                    $not_FocusedId = null;
+                                    $not_InnerCategoryId = null;
                                     foreach ($dataPlanBudget as $key2 => $plan) {
                                 ?>
+
+                                    <?php if($not_FocusedId != $plan["gad_focused_title"]) { ?>
+                                        <tr>
+                                            <td colspan='12'><b><?= $plan["gad_focused_title"] ?></b></td>
+                                        </tr>
+                                    <?php } ?>
+
+                                    <?php if($not_InnerCategoryId != $plan["inner_category_title"]) { ?>
+                                        <tr>
+                                            <td colspan='12'><b><?= $plan["inner_category_title"] ?></b></td>
+                                        </tr>
+                                    <?php } ?>
                                     <tr>
                                         <td>
                                             <?= $not_ppa_value != $plan["ppa_value"] ? $plan["ppa_value"] : "" ?>
@@ -632,13 +648,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                     </tr>
                                 
 
-                                <?php } ?>
-                            <?php echo $this->render('client_focused_gad_mandate',[
-                                    'opt_cli_focused' => $opt_cli_focused,
-                                    'val' => $val,
-                                    'ruc' => $ruc,
-                                ]);?>
-                                
+                                <?php 
+                                        $not_FocusedId = $plan["gad_focused_title"];
+                                        $not_InnerCategoryId = $plan["inner_category_title"];
+                                    } //End of DataPlanBudget Query 
+                                ?>
+                            
+
+                              
                             <tr>
                                 <td></td>
                                 <td></td>
@@ -673,7 +690,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             </tr>
                                 
                         <?php   
-                            }
+                            } // End of GAD Record
                         ?>
                     </tbody>
                 </table>

@@ -44,11 +44,11 @@ class GadPlanBudget extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['focused_id','issue_or_mandate','user_id','ppa_focused_id'], 'integer'],
+            [['focused_id','inner_category_id','user_id','ppa_focused_id'], 'integer'],
             [['cause_gender_issue', 'objective', 'relevant_lgu_program_project', 'activity', 'performance_target','performance_indicator'], 'string'],
             [['budget_mooe', 'budget_ps', 'budget_co', 'sort'], 'number'],
             // [['cause_gender_issue','ppa_value','objective','relevant_lgu_program_project','activity','performance_target'], 'required'],
-            [['cause_gender_issue','ppa_focused_id'], 'required'],
+            [['cause_gender_issue','ppa_focused_id','inner_category_id','focused_id'], 'required'],
             [['date_created', 'date_updated'], 'safe'],
             [['time_created', 'time_updated'], 'string', 'max' => 10],
             [['record_tuc','tuc'], 'string', 'max' => 150],
@@ -83,6 +83,8 @@ class GadPlanBudget extends \yii\db\ActiveRecord
             'time_updated' => 'Time Updated',
             'sort' => 'Sort',
             'tuc_parent' => 'Tuc Parent',
+            'focused_id' => 'Focused',
+            'inner_category_id' => 'Gender Issue or GAD Mandate'
         ];
     }
 }

@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\modules\report\models\GadRecordSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'List of Created Annex A (GAD Plan and Budget)';
+$this->title = 'List of GAD Plan and Budget';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="gad-record-index">
@@ -15,9 +15,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?php // Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Annex A', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <!-- <p>
+        <?php // Html::a('Create Annex A', ['create'], ['class' => 'btn btn-success']) ?>
+    </p> -->
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -78,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons' => [
                     'view' => function($url, $model){
                         return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View Report', ['gad-plan-budget/index',
-                                'ruc' => $model['record_tuc']], ['class'=>'btn btn-primary btn-xs btn-block']);
+                                'ruc' => $model['record_tuc'], 'onstep' => 'view_report'], ['class'=>'btn btn-primary btn-xs btn-block']);
                     },
                 ],
             ],

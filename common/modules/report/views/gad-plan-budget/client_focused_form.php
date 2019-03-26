@@ -13,10 +13,70 @@ use kartik\select2\Select2;
     <td colspan='12'>
         <div class="row">
             <div class="col-sm-4">
-                 <?php
+                <?php
+                    echo Select2::widget([
+                        'name' => 'inner_category_id',
+                        'data' => $select_GadInnerCategory,
+                        'options' => [
+                            'placeholder' => 'Gender Issue or GAD Mandate',
+                            'id' => "inner_category_id",
+                        ],
+                        'pluginEvents'=>[
+                            'select2:select'=>'
+                                function(){
+                                    $("#message-inner_category_id").text("");
+                                    $("#select2-inner_category_id-container").parent(".select2-selection").css({"border":"1px solid #ccc"});
+                                }',
+                        ]     
+                    ]);
+                ?>
+                <br/>
+                <?php
+                    $urlLoadPpaCategory = \yii\helpers\Url::to(['/report/default/load-ppa-category']);
+                    echo Select2::widget([
+                        'name' => 'focused_id',
+                        'data' => $select_GadFocused,
+                        'options' => [
+                            'placeholder' => 'Select Focused',
+                            'id' => "focused_id",
+                        ],
+                        'pluginEvents'=>[
+                            'select2:select'=>'
+                                function(){
+                                    $("#message-focused_id").text("");
+                                    $("#select2-focused_id-container").parent(".select2-selection").css({"border":"1px solid #ccc"});
+
+                                    var focused_id = this.value;
+
+                                    $.ajax({
+                                        url: "'.$urlLoadPpaCategory.'",
+                                        data: { 
+                                                focused_id:focused_id
+                                              }
+                                    }).done(function(result){
+                                        var newOption = $("<option>");
+                                        $("#ppa_focused_id").html("").select2(
+                                        {
+                                            data:result, 
+                                            theme:"krajee", 
+                                            allowClear:true, 
+                                            width:"100%", 
+                                            placeholder:"Select PPA Category",
+                                        });
+                                        
+                                        newOption.attr("value","0").text("Others");
+                                        $("#ppa_focused_id").append(newOption);
+
+                                    });
+                                }',
+                        ]     
+                    ]);
+                ?>
+                <br/>
+                <?php
                     echo Select2::widget([
                         'name' => 'ppa_focused_id',
-                        'data' => $opt_cli_focused,
+                        'data' => [],
                         'options' => [
                             'placeholder' => 'Category of PPA',
                             'id' => "ppa_focused_id",
@@ -41,7 +101,8 @@ use kartik\select2\Select2;
                         ]     
                     ]);
                 ?>
-                <textarea placeholder="PPA Other Description" type="text" name="other-ppa_value" id="ppa_value" class="form-control" rows="2" style="display: none; margin-top: 10px;"></textarea>
+                
+                <textarea placeholder="Please specify here (PPA Other Description)" type="text" name="other-ppa_value" id="ppa_value" class="form-control" rows="2" style="display: none; margin-top: 10px;"></textarea>
                 <ul id="result-ppa_value" class="result"></ul>
                 <?php
                     $urlPpaValue = \yii\helpers\Url::to(['/report/default/load-ppa-value']);
@@ -81,13 +142,7 @@ use kartik\select2\Select2;
                         });
                     ");
                 ?>
-                <?php
-                    $this->registerJs("
-                        var newOption = $('<option>');
-                        newOption.attr('value','0').text('Others');
-                        $('#ppa_focused_id').append(newOption);
-                    ");
-                ?>
+
                 <br/>
                 <textarea placeholder="Cause of the Gender Issue" type="text" class="form-control" rows="2" id="cause_gender_issue"></textarea>
                 <ul id="result-cause_gender_issue" class="result"></ul>
@@ -517,7 +572,9 @@ use kartik\select2\Select2;
                                         budget_mooe:budget_mooe,
                                         budget_ps:budget_ps,
                                         budget_co:budget_co,
-                                        lead_responsible_office:lead_responsible_office
+                                        lead_responsible_office:lead_responsible_office,
+                                        focused_id:focused_id,
+                                        inner_category_id:inner_category_id
                                     }
                                 
                                 }).done(function(result) {

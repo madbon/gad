@@ -3,6 +3,8 @@
 namespace common\modules\report\controllers;
 
 use Yii;
+use common\models\GadFocused;
+use common\models\GadInnerCategory;
 use common\models\GadPlanBudget;
 use common\models\GadPlanBudgetSearch;
 use yii\web\Controller;
@@ -38,7 +40,7 @@ class GadPlanBudgetController extends Controller
      * Lists all GadPlanBudget models.
      * @return mixed
      */
-    public function actionIndex($ruc)
+    public function actionIndex($ruc,$onstep)
     {
         $dataRecord = \common\models\GadRecord::find()->where(['tuc' => $ruc])->all();
 
@@ -78,14 +80,18 @@ class GadPlanBudgetController extends Controller
             'PB.lead_responsible_office',
             'COUNT(GC.plan_budget_id) as count_comment',
             'GC.attribute_name as attr_name',
-            'PB.record_tuc as record_uc'
+            'PB.record_tuc as record_uc',
+            'GF.title as gad_focused_title',
+            'IC.title as inner_category_title'
         ])
         ->from('gad_plan_budget PB')
         ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = PB.ppa_focused_id')
         ->leftJoin(['GC' => 'gad_comment'], 'GC.plan_budget_id = PB.id')
-        ->groupBy(['PB.ppa_focused_id','PB.cause_gender_issue','PB.objective','PB.relevant_lgu_program_project','PB.activity','PB.performance_target'])
+        ->leftJoin(['GF' => 'gad_focused'], 'GF.id = PB.focused_id')
+        ->leftJoin(['IC' => 'gad_inner_category'], 'IC.id = PB.inner_category_id')
+        ->groupBy(['PB.focused_id','PB.inner_category_id','PB.ppa_focused_id','PB.cause_gender_issue','PB.objective','PB.relevant_lgu_program_project','PB.activity','PB.performance_target'])
         ->where(['PB.record_tuc' => $ruc])
-        ->orderBy(['PB.id' => SORT_ASC])->all();
+        ->orderBy(['PB.focused_id' => SORT_ASC,'PB.inner_category_id' => SORT_ASC,'PB.id' => SORT_ASC])->all();
         // echo "<pre>";
         // print_r($dataPlanBudget); exit;
 
@@ -98,7 +104,20 @@ class GadPlanBudgetController extends Controller
                             ->all(), 'relevant_lgu_program_project');
         $opt_org_focused = ArrayHelper::map(\common\models\GadPpaOrganizationalFocused::find()->all(), 'id', 'title');
         $opt_cli_focused = ArrayHelper::map(\common\models\GadPpaClientFocused::find()->all(), 'id', 'title');
-        return $this->render('index', [
+
+        $select_GadFocused = ArrayHelper::map(GadFocused::find()->all(), 'id', 'title');
+        $select_GadInnerCategory = ArrayHelper::map(GadInnerCategory::find()->all(), 'id', 'title');
+
+        if($onstep == "to_create_gpb")
+        {
+            $renderValue = 'step_create_gpb';
+        }
+        else
+        {
+            $renderValue = 'index';
+        }
+
+        return $this->render($renderValue, [
             'dataRecord' => $dataRecord,
             'dataPlanBudget' => $dataPlanBudget,
             'ruc' => $ruc,
@@ -111,6 +130,9 @@ class GadPlanBudgetController extends Controller
             'recCitymun' => $recCitymun,
             'recTotalGadBudget' => $recTotalGadBudget,
             'recTotalLguBudget' => $recTotalLguBudget,
+            'onstep' => $onstep,
+            'select_GadFocused' => $select_GadFocused,
+            'select_GadInnerCategory' => $select_GadInnerCategory,
         ]);
     }
 
