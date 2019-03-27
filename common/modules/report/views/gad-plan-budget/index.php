@@ -485,7 +485,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'ruc' => $ruc,
                     'select_GadFocused' => $select_GadFocused,
                     'select_GadInnerCategory' => $select_GadInnerCategory,
-                    'onstep' => $onstep,
+                    'onstep' => $onstep
                     ]);
                 ?>
             </div>
@@ -655,8 +655,36 @@ $this->params['breadcrumbs'][] = $this->title;
                             $not_InnerCategoryId = $plan["inner_category_title"];
                         } //End of dataClient ?>
                         
+
                     </tbody>
                 </table>
+
+                <div class="attributed_program">
+                    <div class="row">
+                        <div class="col-sm-4" style="height: 300px;">
+                            <?php
+                                echo $this->render('common_tools/textarea_suggest',[
+                                    'placeholder_title' => "Title of LGU Program or Project",
+                                    'attribute_name' => "lgu_program_project",
+                                    'urlLoadResult' => '/report/default/load-cause-gender-issue',
+                                    'rowsValue' => 3,
+                                    'classValue' => 'form-control legit',
+                                    'customStyle' => '',
+                                ]);
+                            ?>
+
+                            <?php
+                                echo $this->render('common_tools/textinput_suggest',[
+                                    'placeholder_title' => "HGDG",
+                                    'attribute_name' => "ghdg",
+                                    'urlLoadResult' => '/report/default/load-cause-gender-issue',
+                                    'classValue' => 'form-control legit',
+                                    'customStyle' => '',
+                                ]);
+                            ?>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
