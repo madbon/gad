@@ -326,7 +326,7 @@ class DefaultController extends Controller
 
     }
 
-    public function actionCreateGadPlanBudget($ppa_focused_id,$ppa_value,$issue,$obj,$relevant,$act,$performance_target,$performance_indicator,$ruc,$budget_mooe,$budget_ps,$budget_co,$lead_responsible_office,$focused_id,$inner_category_id)
+    public function actionCreateGadPlanBudget($ppa_focused_id,$ppa_value,$issue,$obj,$relevant,$act,$performance_target,$performance_indicator,$ruc,$budget_mooe,$budget_ps,$budget_co,$lead_responsible_office,$focused_id,$inner_category_id,$onstep)
     {
         $model = new \common\models\GadPlanBudget();
         $model->cause_gender_issue = $issue;
@@ -351,7 +351,7 @@ class DefaultController extends Controller
 
         if($model->save())
         {
-            return $this->redirect(['gad-plan-budget/index','ruc' => $ruc]);
+            return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep]);
         }
         else
         {

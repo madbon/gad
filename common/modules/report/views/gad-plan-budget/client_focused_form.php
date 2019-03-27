@@ -14,24 +14,6 @@ use kartik\select2\Select2;
         <div class="row">
             <div class="col-sm-4">
                 <?php
-                    echo Select2::widget([
-                        'name' => 'inner_category_id',
-                        'data' => $select_GadInnerCategory,
-                        'options' => [
-                            'placeholder' => 'Gender Issue or GAD Mandate',
-                            'id' => "inner_category_id",
-                        ],
-                        'pluginEvents'=>[
-                            'select2:select'=>'
-                                function(){
-                                    $("#message-inner_category_id").text("");
-                                    $("#select2-inner_category_id-container").parent(".select2-selection").css({"border":"1px solid #ccc"});
-                                }',
-                        ]     
-                    ]);
-                ?>
-                <br/>
-                <?php
                     $urlLoadPpaCategory = \yii\helpers\Url::to(['/report/default/load-ppa-category']);
                     echo Select2::widget([
                         'name' => 'focused_id',
@@ -142,7 +124,24 @@ use kartik\select2\Select2;
                         });
                     ");
                 ?>
-
+                <br/>
+                <?php
+                    echo Select2::widget([
+                        'name' => 'inner_category_id',
+                        'data' => $select_GadInnerCategory,
+                        'options' => [
+                            'placeholder' => 'Gender Issue or GAD Mandate',
+                            'id' => "inner_category_id",
+                        ],
+                        'pluginEvents'=>[
+                            'select2:select'=>'
+                                function(){
+                                    $("#message-inner_category_id").text("");
+                                    $("#select2-inner_category_id-container").parent(".select2-selection").css({"border":"1px solid #ccc"});
+                                }',
+                        ]     
+                    ]);
+                ?>
                 <br/>
                 <textarea placeholder="Cause of the Gender Issue" type="text" class="form-control" rows="2" id="cause_gender_issue"></textarea>
                 <ul id="result-cause_gender_issue" class="result"></ul>
@@ -556,7 +555,9 @@ use kartik\select2\Select2;
                             var budget_co   = $("#budget_co").val();
                             var lead_responsible_office   = $("#lead_responsible_office").val();
                             var ruc         = "'.$ruc.'";
-
+                            var focused_id = $("#focused_id").val();
+                            var inner_category_id = $("#inner_category_id").val();
+                            var onstep = "'.$onstep.'";
                             $.ajax({
                                 url: "'.$url.'",
                                 data: { 
@@ -574,7 +575,8 @@ use kartik\select2\Select2;
                                         budget_co:budget_co,
                                         lead_responsible_office:lead_responsible_office,
                                         focused_id:focused_id,
-                                        inner_category_id:inner_category_id
+                                        inner_category_id:inner_category_id,
+                                        onstep:onstep,
                                     }
                                 
                                 }).done(function(result) {

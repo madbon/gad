@@ -42,7 +42,6 @@ class GadPlanBudgetController extends Controller
      */
     public function actionIndex($ruc,$onstep)
     {
-        $dataRecord = \common\models\GadRecord::find()->where(['tuc' => $ruc])->all();
 
         $qryRecord = (new \yii\db\Query())
         ->select([
@@ -64,6 +63,7 @@ class GadPlanBudgetController extends Controller
         $recTotalLguBudget = !empty($qryRecord['total_lgu_budget']) ? $qryRecord['total_lgu_budget'] : "";
         $recTotalGadBudget = !empty($qryRecord['total_gad_budget']) ? $qryRecord['total_gad_budget'] : "";
 
+
         $dataPlanBudget = (new \yii\db\Query())
         ->select([
             'PB.id',
@@ -82,20 +82,20 @@ class GadPlanBudgetController extends Controller
             'GC.attribute_name as attr_name',
             'PB.record_tuc as record_uc',
             'GF.title as gad_focused_title',
-            'IC.title as inner_category_title'
+            'IC.title as inner_category_title',
+            'PB.focused_id'
         ])
         ->from('gad_plan_budget PB')
         ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = PB.ppa_focused_id')
         ->leftJoin(['GC' => 'gad_comment'], 'GC.plan_budget_id = PB.id')
         ->leftJoin(['GF' => 'gad_focused'], 'GF.id = PB.focused_id')
         ->leftJoin(['IC' => 'gad_inner_category'], 'IC.id = PB.inner_category_id')
-        ->groupBy(['PB.focused_id','PB.inner_category_id','PB.ppa_focused_id','PB.cause_gender_issue','PB.objective','PB.relevant_lgu_program_project','PB.activity','PB.performance_target'])
         ->where(['PB.record_tuc' => $ruc])
-        ->orderBy(['PB.focused_id' => SORT_ASC,'PB.inner_category_id' => SORT_ASC,'PB.id' => SORT_ASC])->all();
+        ->orderBy(['PB.focused_id' => SORT_ASC,'PB.inner_category_id' => SORT_ASC,'PB.id' => SORT_ASC])
+        ->groupBy(['PB.focused_id','PB.inner_category_id','PB.ppa_focused_id','PB.cause_gender_issue','PB.objective','PB.relevant_lgu_program_project','PB.activity','PB.performance_target'])
+        ->all();
         // echo "<pre>";
         // print_r($dataPlanBudget); exit;
-
-
 
         $objective_type = ArrayHelper::getColumn(GadPlanBudget::find()->select(['objective'])->distinct()->all(), 'objective');
         $relevant_type       = ArrayHelper::getColumn(GadPlanBudget::find()
@@ -118,7 +118,6 @@ class GadPlanBudgetController extends Controller
         }
 
         return $this->render($renderValue, [
-            'dataRecord' => $dataRecord,
             'dataPlanBudget' => $dataPlanBudget,
             'ruc' => $ruc,
             'objective_type' => $objective_type,

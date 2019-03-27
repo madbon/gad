@@ -485,6 +485,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'ruc' => $ruc,
                     'select_GadFocused' => $select_GadFocused,
                     'select_GadInnerCategory' => $select_GadInnerCategory,
+                    'onstep' => $onstep,
                     ]);
                 ?>
             </div>
@@ -532,166 +533,128 @@ $this->params['breadcrumbs'][] = $this->title;
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- CLIENT-FOCUSED -->
                         <?php
-                            
-                            foreach ($dataRecord as $key => $val) {
+                        $totalClient = 0;
+                        $totalOrganization = 0;
+                        
+                        foreach ($dataPlanBudget as $key => $subt) {
+                            if($subt["focused_id"] == 1)
+                            {
+                                $totalClient ++;
+                            }
+
+                            if($subt["focused_id"] == 2)
+                            {
+                                $totalOrganization ++;
+                            }
+                        }
+
+                        $not_ppa_value = null;
+                        $not_FocusedId = null;
+                        $not_InnerCategoryId = null;
+                        $countClient = 0;
+                        $countOrganization = 0;
+                        $sum_mooe = 0;
+                        $sum_ps = 0;
+                        $sum_co = 0;
+                        foreach ($dataPlanBudget as $key2 => $plan) {
+                            if($plan["focused_id"] == 1)
+                            {
+                                $countClient ++;
+                            }
+
+                            if($plan["focused_id"] == 2)
+                            {
+                                $countOrganization ++;
+                            }
                         ?>
-                            
+                            <!-- Client or Organization Focused -->
+                            <?php if($not_FocusedId != $plan["gad_focused_title"]) { ?>
+                                
+                                <tr>
+                                    <td colspan='12'><b><?= $plan["gad_focused_title"] ?></b></td>
+                                </tr>
+                            <?php } ?>
+
+                            <!-- Gender Issue or GAD Mandate -->
+                            <?php if($not_InnerCategoryId != $plan["inner_category_title"]) { ?>
+                                <tr>
+                                    <td colspan='12'><b><?= $plan["inner_category_title"] ?></b></td>
+                                </tr>
+                            <?php } ?>
+
+                            <tr>
+                                <td>
+                                    <?= $not_ppa_value != $plan["ppa_value"] ? $plan["ppa_value"] : "" ?>
+                                </td>   
+                                <td>
+                                    <?= !empty($plan["cause_gender_issue"]) ? $plan["cause_gender_issue"] : "" ?>
+                                </td>
+                                
+
                                 <?php
-                                    $not_ppa_value = null;
-                                    $not_FocusedId = null;
-                                    $not_InnerCategoryId = null;
-                                    foreach ($dataPlanBudget as $key2 => $plan) {
+                                    echo $this->render('tabular_form',[
+                                        'plan' => $plan
+                                    ]);
                                 ?>
-
-                                    <?php if($not_FocusedId != $plan["gad_focused_title"]) { ?>
-                                        <tr>
-                                            <td colspan='12'><b><?= $plan["gad_focused_title"] ?></b></td>
-                                        </tr>
-                                    <?php } ?>
-
-                                    <?php if($not_InnerCategoryId != $plan["inner_category_title"]) { ?>
-                                        <tr>
-                                            <td colspan='12'><b><?= $plan["inner_category_title"] ?></b></td>
-                                        </tr>
-                                    <?php } ?>
+                                <td></td>
+                            </tr>
+                        <!-- Display Sub-Total -->
+                        <?php 
+                            if($plan["focused_id"] == 1) // client-focused
+                            {
+                                $sum_mooe   += $plan["budget_mooe"];
+                                $sum_ps     += $plan["budget_ps"];
+                                $sum_co     += $plan["budget_co"];
+                                if($countClient == $totalClient)
+                                {
+                                    echo "
                                     <tr>
-                                        <td>
-                                            <?= $not_ppa_value != $plan["ppa_value"] ? $plan["ppa_value"] : "" ?>
-                                        </td>   
-                                        <td>
-                                            <?= !empty($plan["cause_gender_issue"]) ? $plan["cause_gender_issue"] : "" ?>
-                                        </td>
-                                        
-                                        <?php
-                                            echo $this->render('client_focused/gender_issue/attributes_unified_form',[
-                                                'plan' => $plan,
-                                                'attribute' => 'objective',
-                                                'column_title' => 'GAD Objective',
-                                                'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-objective']),
-                                                'data_type' => 'string',
-                                            ])
-                                        ?>
-                                        <?php
-                                            echo $this->render('client_focused/gender_issue/attributes_unified_form',[
-                                                'plan' => $plan,
-                                                'attribute' => 'relevant_lgu_program_project',
-                                                'column_title' => 'Relevant LGU Program and Project',
-                                                'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-relevant-lgu-program-project']),
-                                                'data_type' => 'string',
-                                            ])
-                                        ?>
-                                        <?php
-                                            echo $this->render('client_focused/gender_issue/attributes_unified_form',[
-                                                'plan' => $plan,
-                                                'attribute' => 'activity',
-                                                'column_title' => 'GAD Activity',
-                                                'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-activity']),
-                                                'data_type' => 'string',
-                                            ])
-                                        ?>
-                                        <?php
-                                            echo $this->render('client_focused/gender_issue/attributes_unified_form',[
-                                                'plan' => $plan,
-                                                'attribute' => 'performance_target',
-                                                'column_title' => 'Performance Target',
-                                                'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-performance-target']),
-                                                'data_type' => 'string',
-                                            ])
-                                        ?>
-                                        <?php
-                                            echo $this->render('client_focused/gender_issue/attributes_unified_form',[
-                                                'plan' => $plan,
-                                                'attribute' => 'performance_indicator',
-                                                'column_title' => 'Performance Indicator',
-                                                'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-performance-indicator']),
-                                                'data_type' => 'string',
-                                            ])
-                                        ?>
-                                        <?php
-                                            echo $this->render('client_focused/gender_issue/attributes_unified_form',[
-                                                'plan' => $plan,
-                                                'attribute' => 'budget_mooe',
-                                                'column_title' => 'MOOE',
-                                                'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-budget-mooe']),
-                                                'data_type' => 'number',
-                                            ])
-                                        ?>
-                                        <?php
-                                            echo $this->render('client_focused/gender_issue/attributes_unified_form',[
-                                                'plan' => $plan,
-                                                'attribute' => 'budget_ps',
-                                                'column_title' => 'PS',
-                                                'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-budget-ps']),
-                                                'data_type' => 'number',
-                                            ])
-                                        ?>
-                                        <?php
-                                            echo $this->render('client_focused/gender_issue/attributes_unified_form',[
-                                                'plan' => $plan,
-                                                'attribute' => 'budget_co',
-                                                'column_title' => 'CO',
-                                                'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-budget-co']),
-                                                'data_type' => 'number',
-                                            ])
-                                        ?>
-                                        <?php
-                                            echo $this->render('client_focused/gender_issue/attributes_unified_form',[
-                                                'plan' => $plan,
-                                                'attribute' => 'lead_responsible_office',
-                                                'column_title' => 'Lead or Responsible Office',
-                                                'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-lead-responsible-office']),
-                                                'data_type' => 'string',
-                                            ])
-                                        ?>
+                                        <td colspan='7'><b>Sub-total</b></td>
+                                        <td style='text-align:right;'><b>".(number_format($sum_mooe,2))."</b></td>
+                                        <td style='text-align:right;'><b>".(number_format($sum_ps,2))."</b></td>
+                                        <td style='text-align:right;'><b>".(number_format($sum_co,2))."</b></td>
+                                        <td></td>
                                         <td></td>
                                     </tr>
-                                
+                                    <tr>
+                                        <td colspan='12'><b>Total A (MOEE+PS+CO)</b></td>
+                                    </tr>
+                                    ";
+                                    $sum_mooe = 0;
+                                    $sum_ps = 0;
+                                    $sum_co = 0;
+                                }
+                            }
 
-                                <?php 
-                                        $not_FocusedId = $plan["gad_focused_title"];
-                                        $not_InnerCategoryId = $plan["inner_category_title"];
-                                    } //End of DataPlanBudget Query 
-                                ?>
+                            if($plan["focused_id"] == 2) // organization-focused
+                            {
+                                $sum_mooe   += $plan["budget_mooe"];
+                                $sum_ps     += $plan["budget_ps"];
+                                $sum_co     += $plan["budget_co"];
+                                if($countOrganization == $totalOrganization)
+                                {
+                                    echo "
+                                    <tr>
+                                        <td colspan='7'><b>Sub-total</b></td>
+                                        <td style='text-align:right;'><b>".(number_format($sum_mooe,2))."</b></td>
+                                        <td style='text-align:right;'><b>".(number_format($sum_ps,2))."</b></td>
+                                        <td style='text-align:right;'><b>".(number_format($sum_co,2))."</b></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan='12'><b>Total B (MOEE+PS+CO)</b></td>
+                                    </tr>
+                                    ";
+                                }
+                            }
                             
-
-                              
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td colspan='12'><b>Sub-total</b></td>
-                            </tr>
-                            <tr>
-                                <td colspan='12'><b>Total A (MOEE+PS+CO)</b></td>
-                            </tr>
-                            <tr>
-                                <td colspan='12'><b>ORGANIZATION-FOCUSED</b></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                                
-                        <?php   
-                            } // End of GAD Record
-                        ?>
+                            $not_FocusedId = $plan["gad_focused_title"];
+                            $not_InnerCategoryId = $plan["inner_category_title"];
+                        } //End of dataClient ?>
+                        
                     </tbody>
                 </table>
             </div>

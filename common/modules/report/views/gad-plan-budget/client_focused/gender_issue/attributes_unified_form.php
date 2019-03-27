@@ -16,7 +16,7 @@ use common\modules\report\controllers\DefaultController;
     <p id="confirm-<?= $attribute ?>-comment-<?= $plan['id'] ?>" class="confirm-message confirm-wrnng"> <!-- confirmation message after comment  -->
         <span class="glyphicon glyphicon-ok"></span> Comment has been saved
     </p>
-    <p id="content-<?= $attribute ?>-<?= $plan['id'] ?>"><?= $data_type == "number" ? number_format($plan[$attribute],2) : $plan[$attribute] ?>  <!-- Display the content of attribute or cell value -->
+    <p style="<?= $data_type == "number" ? "text-align: right" : "text-align: left"; ?>" id="content-<?= $attribute ?>-<?= $plan['id'] ?>"><?= $data_type == "number" ? number_format($plan[$attribute],2) : $plan[$attribute] ?>  <!-- Display the content of attribute or cell value -->
         <div id="actn-btns-<?= $attribute ?>-<?= $plan['id']?>" class="actn-btn-bubble actn-buble-common-class" style="display: none;">
             <button id="btn-select-<?= $attribute ?>-<?= $plan['id']?>" type="button" class="btn btn-info btn-xs btn-select-cell" title="Select" >
                 Select
