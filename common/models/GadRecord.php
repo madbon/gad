@@ -44,6 +44,7 @@ class GadRecord extends \yii\db\ActiveRecord
             [['time_created'], 'string', 'max' => 10],
             [['region_c', 'province_c', 'citymun_c'], 'string', 'max' => 2],
             [['tuc'], 'string', 'max' => 150],
+            [['year','total_gad_budget','total_lgu_budget'], 'required'],
         ];
     }
 

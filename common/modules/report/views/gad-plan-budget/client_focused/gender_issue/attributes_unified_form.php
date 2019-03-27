@@ -13,7 +13,7 @@ use common\modules\report\controllers\DefaultController;
     <p id="confirm-<?= $attribute ?>-<?= $plan['id'] ?>" class="confirm-message"> <!-- confirmation message update click update  -->
        <i></i> <span></span>
     </p>
-    <p id="confirm-<?= $attribute ?>-comment-<?= $plan['id'] ?>" class="confirm-message confirm-wrnng"> <!-- confirmation message after comment  -->
+    <p id="confirm-<?= $attribute ?>-comment-<?= $plan['id'] ?>" class="confirm-message confirm-gad"> <!-- confirmation message after comment  -->
         <span class="glyphicon glyphicon-ok"></span> Comment has been saved
     </p>
     <p style="<?= $data_type == "number" ? "text-align: right" : "text-align: left"; ?>" id="content-<?= $attribute ?>-<?= $plan['id'] ?>"><?= $data_type == "number" ? number_format($plan[$attribute],2) : $plan[$attribute] ?>  <!-- Display the content of attribute or cell value -->
@@ -199,7 +199,7 @@ use common\modules\report\controllers\DefaultController;
 
     <!-- button view comment and display comment -->
         <!-- button view comment -->
-        <button id="btn-view-comment-<?= $attribute ?>-<?= $plan['id'] ?>" type="button" class="btn btn-default btn-xs btn-comment-cell" title="View Comment" style="display: none;">
+        <button id="btn-view-comment-<?= $attribute ?>-<?= $plan['id'] ?>" type="button" class="btn btn-default btn-xs" title="View Comment" style="display: none;">
             <span class="glyphicon glyphicon-eye-open"></span>
         </button>
         

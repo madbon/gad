@@ -17,6 +17,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <style type="text/css">
+
+    .btn-comment-cell
+    {
+        background-color: #3a193ea8 !important;
+        border-color:#3a193ea8 !important;
+    }
     table.basic-information tbody tr td:nth-child(2)
     {
         font-weight: bold;
@@ -29,22 +35,6 @@ $this->params['breadcrumbs'][] = $this->title;
     {
         border:none;
     }
-    /*table.basic-information tbody tr td:nth-child(3)
-    {
-        background-color: rgb(245,245,245);
-    }
-    table.basic-information tbody tr:nth-child(3) td:nth-child(3)
-    {
-        background-color: white;
-    }
-    table.basic-information tbody tr td:first-child
-    {
-        background-color: rgb(245,245,245);
-    }
-    table.basic-information tbody tr td
-    {
-        border:1px solid black;
-    }*/
     div.input_form_container
     {
         border: 1px solid #ddd;
@@ -226,6 +216,11 @@ $this->params['breadcrumbs'][] = $this->title;
         background-color: #f0ad4e;
         color:white;
     }
+    p.confirm-gad
+    {
+        background-color: #7c4a82;
+        color:white;
+    }
     p.confirm-sccss
     {
         background-color: rgb(92,184,92);
@@ -326,7 +321,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     .bubble-comment {
         position: absolute;
-        background: #f0ad4e;
+        background: #7c4a82;
         color: #FFFFFF;
         font-family: Arial;
         text-align: center;
@@ -345,7 +340,7 @@ $this->params['breadcrumbs'][] = $this->title;
         z-index: 1;
         border-style: solid;
         border-width: 20px 0 0 20px;
-        border-color: transparent transparent transparent #f0ad4e;
+        border-color: transparent transparent transparent #7c4a82;
         top: -20px;
         left: 11%;
         margin-left: 10px;
