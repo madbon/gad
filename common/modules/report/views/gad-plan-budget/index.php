@@ -16,402 +16,6 @@ $this->title = $onstep == 'to_create_gpb' ? 'Step 2. Encode Annual GAD Plan and 
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<style type="text/css">
-
-    .btn-comment-cell
-    {
-        background-color: #3a193ea8 !important;
-        border-color:#3a193ea8 !important;
-    }
-    table.basic-information tbody tr td:nth-child(2)
-    {
-        font-weight: bold;
-    }
-    table.basic-information tbody tr td:nth-child(4)
-    {
-        font-weight: bold;
-    }
-    table.basic-information tbody tr td
-    {
-        border:none;
-    }
-    div.input_form_container
-    {
-        border: 1px solid #ddd;
-        margin-bottom: 20px;
-    }
-    div.input_form_body
-    {
-        width: 96%;
-        margin-left: 2%;
-        margin-right: auto;
-        padding-top: 10px;
-        padding-bottom: 20px;
-    }
-    div.input_form_header
-    {
-        height: 30px;
-        background-color: #ddd;
-    }
-    ul.view-comment-list li p.comment_action_button textarea
-    {
-        display: none;
-    }
-    ul.view-comment-list li p.comment_action_button button
-    {
-        margin-top: 5px;
-        display: none;
-    }
-    ul.view-comment-list li p.comment_action_button i.btn-delete-comment
-    {
-        margin-left:5px;
-    }
-    ul.view-comment-list li p.psgc_value span.glyphicon-map-marker
-    {
-        color: #ef3131;
-    }
-    ul.view-comment-list li p.psgc_value i.office
-    {
-        font-weight: normal;
-        font-style: normal;
-        color: #337ab7;
-    }
-    ul.view-comment-list li p.psgc_value i.citymun
-    {
-        font-weight: normal;
-        font-style: normal;
-        font-size: 11px;
-        color: #337ab7;
-    }
-    ul.view-comment-list li p.psgc_value i.province
-    {
-        font-style: normal;
-        font-weight: normal;
-        font-size: 11px;
-        color: #337ab7;
-    }
-    ul.view-comment-list li p.psgc_value i.region
-    {
-        font-style: normal;
-        font-weight: normal;
-        font-size: 11px;
-        color: #337ab7;
-    }
-    ul.view-comment-list li p.comment_value
-    {
-        font-weight: normal;
-        padding-bottom: 0;
-        margin-bottom: 10px;
-        margin-top: -8px;
-        /*font-style: italic;*/
-        text-align: left;
-    }
-    ul.view-comment-list li p.who_date_value
-    {
-        margin-top: -10px;
-    }
-    ul.view-comment-list li i.who_comment
-    {
-        font-size: 13px;
-        font-style: normal;
-        padding-right: 10px;
-        color:gray;
-    }
-    ul.view-comment-list li i.date_value
-    {
-        font-size: 10px;
-        color:gray;
-        padding-right: 5px;
-        /*font-style: normal;*/
-    }
-    ul.view-comment-list li i.time_value
-    {
-        font-size: 10px;
-        color:gray;
-        /*font-style: normal;*/
-    }
-    .btn-delete-comment
-    {
-        color:#337ab7;
-        cursor: pointer;
-        font-size: 12px;
-    }
-    .btn-edit-comment
-    {
-        color:#337ab7;
-        cursor: pointer;
-        font-size: 12px;
-    }
-    ul.view-comment-list li p.psgc_value
-    {
-        font-weight: bold;
-    }
-
-    ul.view-comment-list li
-    {
-        padding-top: 10px;
-        padding-bottom: 5px;
-        border-bottom: 1px solid rgb(220,220,220);
-    }
-    ul.view-comment-list
-    {
-        list-style-type: none;
-        text-align: left;
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-    div.comment-inner-content
-    {
-        overflow-y: scroll;
-        max-height: 220px;
-    }
-    table tbody tr td.has-comment
-    {
-      /* border:2px solid rgb(237,63,57) !important; 
-       border-left: 2px solid rgb(237,63,57) !important; 
-       border-top: 2px solid rgb(237,63,57) !important; */
-       background-color: #9e42a969 !important;
-    }
-    .bubble-view-comment {
-        position: absolute;
-        background: white;
-        color: black;
-        font-family: Arial;
-        text-align: center;
-        width: 350px;
-        border-radius: 5px;
-        margin-top: 20px;
-        z-index: 1;
-        padding-bottom: 5px;
-        box-shadow: 1px 1px 1px 1px rgba(150,150,150,0.5);
-        max-height: 250px;
-    }
-    .bubble-view-comment:after {
-        content: '';
-        position: absolute;
-        display: block;
-        width: 0;
-        z-index: 1;
-        border-style: solid;
-        border-width: 20px 0 0 20px;
-        border-color: transparent transparent transparent white;
-        top: -20px;
-        left: 11%;
-        margin-left: 30px;
-    }
-     /*Speech buble*/
-    
-    p.confirm-message
-    {
-        position: absolute;
-        padding:5px;
-        display: none;
-        border-radius: 15px;
-        font-size:12px;
-        box-shadow: 2px 2px 2px 2px rgba(150,150,150,0.5);
-        z-index: 1;
-    }
-    p.confirm-wrnng
-    {
-        background-color: #f0ad4e;
-        color:white;
-    }
-    p.confirm-gad
-    {
-        background-color: #7c4a82;
-        color:white;
-    }
-    p.confirm-sccss
-    {
-        background-color: rgb(92,184,92);
-        color:white;
-    }
-    p.confirm-prmry
-    {
-        background-color: #286090;
-        color:white;
-    }
-    p.confirm-dngr
-    {
-        background-color: #d9534f;
-        color:white;
-    }
-    .actn-btn-bubble {
-        position: absolute;
-        /*background: #5cb85c;*/
-        color: #FFFFFF;
-        font-family: Arial;
-        text-align: center;
-        width: 50px;
-        border-radius: 5px;
-        /*margin-top: 20px;*/
-        z-index: 1;
-        padding-bottom: 5px;
-        /*box-shadow: 1px 1px 1px 1px rgba(150,150,150,0.5);*/
-    }
-    .actn-btn-bubble:after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border: 10px solid transparent;
-        border-bottom-color: #5bc0de;
-        border-top: 0;
-        margin-left: -20px;
-        margin-top: -10px;
-    }
-     .div-tooltip-form
-     {
-        display: none;
-     }
-     .upd8-button
-     {
-        margin-top: 5px;
-        margin-left: 5px;
-        border-radius: 50px;
-     }
-     .exit-button
-     {
-        margin-top: 5px;
-        margin-right: 5px;
-        border-radius: 50px;
-     }
-     .comnt-textarea
-     {
-        margin-top: 5px;
-        margin-right: 5px;
-        border-radius: 50px;
-     }
-     .tooltip-form
-    {
-        margin-top: 5px;
-        width: 96%;
-        margin-left: 2%;
-        margin-right: auto;
-    }
-
-    .bubble {
-        position: absolute;
-        background: #286090;
-        color: #FFFFFF;
-        font-family: Arial;
-        text-align: center;
-        width: 250px;
-        border-radius: 5px;
-        margin-top: 20px;
-        z-index: 1;
-        padding-bottom: 5px;
-        box-shadow: 1px 1px 1px 1px rgba(150,150,150,0.5);
-    }
-    .bubble:after {
-        content: '';
-        position: absolute;
-        display: block;
-        width: 0;
-        z-index: 1;
-        border-style: solid;
-        border-width: 20px 0 0 20px;
-        border-color: transparent transparent transparent #286090;
-        top: -20px;
-        left: 11%;
-        margin-left: -15px;
-    }
-
-    .bubble-comment {
-        position: absolute;
-        background: #7c4a82;
-        color: #FFFFFF;
-        font-family: Arial;
-        text-align: center;
-        width: 250px;
-        border-radius: 5px;
-        margin-top: 20px;
-        z-index: 1;
-        padding-bottom: 5px;
-        box-shadow: 1px 1px 1px 1px rgba(150,150,150,0.5);
-    }
-    .bubble-comment:after {
-        content: '';
-        position: absolute;
-        display: block;
-        width: 0;
-        z-index: 1;
-        border-style: solid;
-        border-width: 20px 0 0 20px;
-        border-color: transparent transparent transparent #7c4a82;
-        top: -20px;
-        left: 11%;
-        margin-left: 10px;
-    }
-
-
-    .tt-menu .tt-suggestion
-    {
-        white-space: pre-wrap;
-    }
-    ul.result
-    {
-        max-height: 200px;
-        overflow-y: auto;
-        position: absolute;
-        padding-left:0;
-        padding-right: 0;
-        z-index: 1001;
-        cursor: pointer;
-        /*max-width:247px;*/
-        background-color: white;
-        
-        border-radius: 0px 0px 2px 2px;
-        border-left: 1px solid rgb(102,175,233);
-
-
-    }
-    ul.result li:hover
-    {
-        background-color: rgb(51,122,183);
-        color:white;
-    }
-    ul.result li
-    {
-        padding-top: 5px;
-        padding-bottom: 5px;
-        padding-left:5px;
-    }
-    .select2-container--krajee .select2-selection--single .select2-selection__rendered
-    {
-        width: 200px;
-    }
-
-    .table > caption + thead > tr:first-child > th, .table > colgroup + thead > tr:first-child > th, .table > thead:first-child > tr:first-child > th, .table > caption + thead > tr:first-child > td, .table > colgroup + thead > tr:first-child > td, .table > thead:first-child > tr:first-child > td
-    {
-        border-top: 1px solid black;
-    }
-    table.gad-plan-budget thead tr th
-    {
-        text-align: center;
-        border:1px solid black;
-    }
-    table.gad-plan-budget thead tr:first-child th
-    {
-        border-bottom: none;
-    }
-    table.gad-plan-budget thead tr:nth-child(2) th
-    {
-        border-top: none;
-    }
-    table.gad-plan-budget thead tr:first-child th:nth-child(8)
-    {
-        border-bottom: 1px solid black;
-    }
-
-    table.gad-plan-budget tbody tr td
-    {
-        border:1px solid black;
-    }
-
-</style>
 <div class="gad-plan-budget-index">
     <!-- <p>
         <?php // Html::a('Create Annex A', ['gad-record/create'], ['class' => 'btn btn-success']) ?>
@@ -567,15 +171,21 @@ $this->params['breadcrumbs'][] = $this->title;
                             <!-- Client or Organization Focused -->
                             <?php if($not_FocusedId != $plan["gad_focused_title"]) { ?>
                                 
-                                <tr>
-                                    <td colspan='12'><b><?= $plan["gad_focused_title"] ?></b></td>
+                                <tr class="focused_title">
+                                    <td colspan='7'><b><?= $plan["gad_focused_title"] ?></b></td>
+                                    <td colspan='3'></td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                             <?php } ?>
 
                             <!-- Gender Issue or GAD Mandate -->
                             <?php if($not_InnerCategoryId != $plan["inner_category_title"]) { ?>
-                                <tr>
-                                    <td colspan='12'><b><?= $plan["inner_category_title"] ?></b></td>
+                                <tr class="inner_category_title">
+                                    <td colspan='7'><b><?= $plan["inner_category_title"] ?></b></td>
+                                    <td colspan='3'></td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                             <?php } ?>
 
@@ -589,7 +199,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 
 
                                 <?php
-                                    echo $this->render('tabular_form',[
+                                    echo $this->render('cliorg_tabular_form',[
                                         'plan' => $plan
                                     ]);
                                 ?>
@@ -614,7 +224,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <td></td>
                                     </tr>
                                     <tr>
-                                        <td colspan='12'><b>Total A (MOEE+PS+CO)</b></td>
+                                        <td colspan='7'><b>Total A (MOEE+PS+CO)</b></td>
+                                        <td colspan='3'></td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                     ";
                                     $sum_mooe = 0;
@@ -640,7 +253,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <td></td>
                                     </tr>
                                     <tr>
-                                        <td colspan='12'><b>Total B (MOEE+PS+CO)</b></td>
+                                        <td colspan='7'><b>Total B (MOEE+PS+CO)</b></td>
+                                        <td colspan='3'></td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                     ";
                                 }
@@ -651,35 +267,126 @@ $this->params['breadcrumbs'][] = $this->title;
                         } //End of dataClient ?>
                         
 
+                        <tr class="attributed_program_title">
+                            <td colspan="7">
+                                <b>ATTRIBUTED PROGRAMS</b> 
+                                <button type="button" class="btn btn-success btn-sm">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    Encode
+                                </button>
+                            </td>
+                            <td colspan="3"></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="attributed_program_form">
+                            <td colspan="12">
+                                <?php
+                                    echo $this->render('attributed_program_form', [
+                                        'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
+                                        'ruc' => $ruc,
+                                        'onstep' => $onstep,
+                                    ]);
+                                ?>
+                            </td>
+                        </tr>
+                        <tr class="attributed_program_thead">
+                            <td colspan="3"><b>Title of LGU Program or Project</b></td>
+                            <td colspan="2"><b>HGDG Design/ Funding Facility/ Generic Checklist Score</b></td>
+                            <td colspan="2"><b>Total Annual Program/ Project Budget</b></td>
+                            <td colspan="3"><b>GAD Attributed Program/Project Budget</b></td>
+                            <td><b>Lead or Responsible Office</b></td>
+                            <td></td>
+                        </tr>
+                        <?php 
+                        $notnull_apPpaValue = null;
+                        foreach ($dataAttributedProgram as $key => $dap) { ?>
+                            <?php if($notnull_apPpaValue != $dap["ap_ppa_value"]){ ?>
+                                <tr class="attributed_program_ppa_value">
+                                    <td colspan="12"><b><?= $dap["ap_ppa_value"] ?></b></td>
+                                </tr>
+                            <?php } ?>
+                            
+                            <tr class="attributed_program_td">
+                                <?php
+                                    echo $this->render('cell_reusable_form',[
+                                        'cell_value' => $dap["lgu_program_project"],
+                                        'row_id' => $dap["id"],
+                                        'record_unique_code' => $dap["record_tuc"],
+                                        'attribute_name' => "lgu_program_project",
+                                        'data_type' => 'string',
+                                        'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-ap-lgu-program-project']),
+                                        'column_title' => 'Title of LGU Program or Project',
+                                        'colspanValue' => '3',
+                                        'controller_id' => $dap['controller_id'],
+                                        'form_id' => 'attributed-program'
+                                    ])
+                                ?>
+                                <?php
+                                    echo $this->render('cell_reusable_form',[
+                                        'cell_value' => $dap["hgdg"],
+                                        'row_id' => $dap["id"],
+                                        'record_unique_code' => $dap["record_tuc"],
+                                        'attribute_name' => "hgdg",
+                                        'data_type' => 'string',
+                                        'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-hgdg']),
+                                        'column_title' => 'HGDG Design/ Funding Facility/ Generic Checklist Score',
+                                        'colspanValue' => '2',
+                                        'controller_id' => $dap['controller_id'],
+                                        'form_id' => 'attributed-program'
+                                    ])
+                                ?>
+                                <?php
+                                    echo $this->render('cell_reusable_form',[
+                                        'cell_value' => $dap["total_annual_pro_budget"],
+                                        'row_id' => $dap["id"],
+                                        'record_unique_code' => $dap["record_tuc"],
+                                        'attribute_name' => "total_annual_pro_budget",
+                                        'data_type' => 'string',
+                                        'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-total-annual-pro-budget']),
+                                        'column_title' => 'Total Annual Program/ Project Budget',
+                                        'colspanValue' => '2',
+                                        'controller_id' => $dap['controller_id'],
+                                        'form_id' => 'attributed-program'
+                                    ])
+                                ?>
+                                <?php
+                                    echo $this->render('cell_reusable_form',[
+                                        'cell_value' => $dap["attributed_pro_budget"],
+                                        'row_id' => $dap["id"],
+                                        'record_unique_code' => $dap["record_tuc"],
+                                        'attribute_name' => "attributed_pro_budget",
+                                        'data_type' => 'string',
+                                        'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-attributed-pro-budget']),
+                                        'column_title' => 'GAD Attributed Program/Project Budget',
+                                        'colspanValue' => '3',
+                                        'controller_id' => $dap['controller_id'],
+                                        'form_id' => 'attributed-program'
+                                    ])
+                                ?>
+                                <?php
+                                    echo $this->render('cell_reusable_form',[
+                                        'cell_value' => $dap["lead_responsible_office"],
+                                        'row_id' => $dap["id"],
+                                        'record_unique_code' => $dap["record_tuc"],
+                                        'attribute_name' => "lead_responsible_office",
+                                        'data_type' => 'string',
+                                        'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-ap-lead-responsible-office']),
+                                        'column_title' => 'Lead or Responsible Office',
+                                        'colspanValue' => '',
+                                        'controller_id' => $dap['controller_id'],
+                                        'form_id' => 'attributed-program'
+                                    ])
+                                ?>
+                                <td></td>
+                            </tr>
+                        <?php 
+                        $notnull_apPpaValue = $dap["ap_ppa_value"];
+                        } ?>
                     </tbody>
                 </table>
 
-                <div class="attributed_program">
-                    <div class="row">
-                        <div class="col-sm-4" style="height: 300px;">
-                            <?php
-                                echo $this->render('common_tools/textarea_suggest',[
-                                    'placeholder_title' => "Title of LGU Program or Project",
-                                    'attribute_name' => "lgu_program_project",
-                                    'urlLoadResult' => '/report/default/load-cause-gender-issue',
-                                    'rowsValue' => 3,
-                                    'classValue' => 'form-control legit',
-                                    'customStyle' => '',
-                                ]);
-                            ?>
-
-                            <?php
-                                echo $this->render('common_tools/textinput_suggest',[
-                                    'placeholder_title' => "HGDG",
-                                    'attribute_name' => "ghdg",
-                                    'urlLoadResult' => '/report/default/load-cause-gender-issue',
-                                    'classValue' => 'form-control legit',
-                                    'customStyle' => '',
-                                ]);
-                            ?>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>

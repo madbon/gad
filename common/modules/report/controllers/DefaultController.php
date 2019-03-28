@@ -12,12 +12,245 @@ use common\models\GadComment;
 use common\models\GadPpaOrganizationalFocused;
 use common\models\GadPpaClientFocused;
 use common\models\GadInnerCategory;
+use common\models\GadAttributedProgram;
 use Yii;
 /**
  * Default controller for the `report` module
  */
 class DefaultController extends Controller
 {
+    public function actionUpdateApLeadResponsibleOffice($uid,$upd8_value)
+    {
+        $qry = GadAttributedProgram::find()->where(['id' => $uid])->one();
+        $qry->lead_responsible_office = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpdateAttributedProBudget($uid,$upd8_value)
+    {
+        $qry = GadAttributedProgram::find()->where(['id' => $uid])->one();
+        $qry->attributed_pro_budget = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpdateTotalAnnualProBudget($uid,$upd8_value)
+    {
+        $qry = GadAttributedProgram::find()->where(['id' => $uid])->one();
+        $qry->total_annual_pro_budget = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpdateHgdg($uid,$upd8_value)
+    {
+        $qry = GadAttributedProgram::find()->where(['id' => $uid])->one();
+        $qry->hgdg = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpdateApLguProgramProject($uid,$upd8_value)
+    {
+        $qry = GadAttributedProgram::find()->where(['id' => $uid])->one();
+        $qry->lgu_program_project = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public  function actionCreatePbAttributedProgram($ruc,$onstep,$ppa_attributed_program_id,$ppa_attributed_program_others,$lgu_program_project,$hgdg,$total_annual_pro_budget,$attributed_pro_budget,$lead_responsible_office,$controller_id)
+    {
+        // print_r($ppa_attributed_program_id); exit;
+        $model = new GadAttributedProgram();
+        $model->record_tuc = $ruc;
+        $model->ppa_attributed_program_id = $ppa_attributed_program_id;
+        $model->ppa_attributed_program_others = $ppa_attributed_program_others;
+        $model->lgu_program_project = $lgu_program_project;
+        $model->hgdg = $hgdg;
+        $model->total_annual_pro_budget = $total_annual_pro_budget;
+        $model->attributed_pro_budget = $attributed_pro_budget;
+        $model->lead_responsible_office = $lead_responsible_office;
+
+        date_default_timezone_set("Asia/Manila");
+        $model->date_created = date('Y-m-d');
+        $model->time_created = date("h:i:sa");
+        $model->controller_id = $controller_id;
+        if($model->save())
+        {
+            return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep]);
+        }
+        else
+        {
+            \Yii::$app->response->format = 'json';
+            return $model->errors;
+        }
+    }
+    public function actionLoadApLeadResponsibleOffice()
+    {
+        $qry = GadAttributedProgram::find()
+        ->select(["lead_responsible_office","id"])
+        ->where(['not', ['lead_responsible_office' => null]])
+        ->groupBy('lead_responsible_office')
+        ->all();
+        $arr = [];
+        $arr[] = ['id'=>'', 'title' => ''];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->lead_responsible_office
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function actionLoadAttributedProBudget()
+    {
+        $qry = GadAttributedProgram::find()
+        ->select(["attributed_pro_budget","id"])
+        ->where(['not', ['attributed_pro_budget' => null]])
+        ->groupBy('attributed_pro_budget')
+        ->all();
+        $arr = [];
+        $arr[] = ['id'=>'', 'title' => ''];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->attributed_pro_budget
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function actionLoadTotalAnnualProBudget()
+    {
+        $qry = GadAttributedProgram::find()
+        ->select(["total_annual_pro_budget","id"])
+        ->where(['not', ['total_annual_pro_budget' => null]])
+        ->groupBy('total_annual_pro_budget')
+        ->all();
+        $arr = [];
+        $arr[] = ['id'=>'', 'title' => ''];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->total_annual_pro_budget
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function actionLoadHgdg()
+    {
+        $qry = GadAttributedProgram::find()
+        ->select(["hgdg","id"])
+        ->where(['not', ['hgdg' => null]])
+        ->groupBy('hgdg')
+        ->all();
+        $arr = [];
+        $arr[] = ['id'=>'', 'title' => ''];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->hgdg
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function actionLoadLguProgramProject()
+    {
+        $qry = GadAttributedProgram::find()
+        ->select(["lgu_program_project","id"])
+        ->where(['not', ['lgu_program_project' => null]])
+        ->groupBy('lgu_program_project')
+        ->all();
+        $arr = [];
+        $arr[] = ['id'=>'', 'title' => ''];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->lgu_program_project
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function actionLoadPpaAttributedProgramOthers()
+    {
+        $qry = GadAttributedProgram::find()
+        ->select(["ppa_attributed_program_others","id"])
+        ->where(['not', ['ppa_attributed_program_others' => null]])
+        ->groupBy('ppa_attributed_program_others')
+        ->all();
+        $arr = [];
+        $arr[] = ['id'=>'', 'title' => ''];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->ppa_attributed_program_others
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+
     public function actionLoadPpaCategory($focused_id)
     {
         if($focused_id == 1)
@@ -66,7 +299,7 @@ class DefaultController extends Controller
         }
     }
 
-    public function actionLoadComment($id,$attribute)
+    public function actionLoadComment($id,$attribute,$controller_id,$form_id)
     {
         $qry = (new \yii\db\Query())
         ->select([
@@ -88,7 +321,7 @@ class DefaultController extends Controller
         ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = GC.region_c')
         ->leftJoin(['PRV' => 'tblprovince'], 'PRV.province_c = GC.province_c')
         ->leftJoin(['CTC' => 'tblcitymun'], 'CTC.citymun_c = GC.citymun_c AND CTC.province_c = GC.province_c')
-        ->where(['GC.plan_budget_id' => $id, 'GC.attribute_name' => $attribute])
+        ->where(['GC.plan_budget_id' => $id, 'GC.attribute_name' => $attribute,'GC.controller_id' => $controller_id,'form_id' => $form_id])
         ->groupBy(['GC.id'])
         ->orderBy(['GC.id' => SORT_DESC])
         ->all();
@@ -122,7 +355,21 @@ class DefaultController extends Controller
         return $qry;
     }
 
-    public function actionSaveComment($plan_budget_id,$comment,$attribute_name,$record_uc)
+    public function countComment2($controller_id,$form_id,$id,$attribute)
+    {
+        $qry = \common\models\GadComment::find()
+        ->where([
+            'plan_budget_id' => $id, 
+            'attribute_name' => $attribute,
+            'controller_id' => $controller_id, 
+            'form_id' => $form_id
+        ])->count();
+        // print_r($qry->createCommand()->rawSql); exit;
+        // print_r("hello".$qry); exit;
+        return $qry;
+    }
+
+    public function actionSaveComment($plan_budget_id,$comment,$attribute_name,$record_uc,$controller_id,$form_id)
     {
         $model = new \common\models\GadComment();
         $model->plan_budget_id = $plan_budget_id;
@@ -141,7 +388,8 @@ class DefaultController extends Controller
         $qryRecord = \common\models\GadRecord::find()->where(['tuc' => $record_uc])->one();
         $qryRecordId = !empty($qryRecord->id) ? $qryRecord->id : null;
         $model->record_id = $qryRecordId;
-
+        $model->controller_id = $controller_id;
+        $model->form_id = $form_id;
 
         if($model->save())
         {
@@ -162,7 +410,6 @@ class DefaultController extends Controller
     {
         $qry = GadPlanBudget::find()->select(["ppa_value","id"])->where(['not', ['ppa_value' => null]])->groupBy('ppa_value')->all();
         $arr = [];
-        $arr[] = ['id'=>'', 'title' => ''];
         foreach ($qry as  $item) {
             $arr[] = [
                         'id' => $item->id,
@@ -349,6 +596,9 @@ class DefaultController extends Controller
         $qryRecordId = !empty($qryRecord->id) ? $qryRecord->id : null;
         $model->record_id = $qryRecordId;
 
+        date_default_timezone_set("Asia/Manila");
+        $model->date_created = date('Y-m-d');
+        $model->time_created = date("h:i:sa");
         if($model->save())
         {
             return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep]);
@@ -361,7 +611,7 @@ class DefaultController extends Controller
 
     }
 
-    public function actionLeadResponsibleOffice($uid,$upd8_value)
+    public function actionUpdatePbLeadResponsibleOffice($uid,$upd8_value)
     {
         $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
         $qry->lead_responsible_office = $upd8_value;

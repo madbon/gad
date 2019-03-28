@@ -36,12 +36,17 @@ class GadAttributedProgram extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['record_id'], 'integer'],
+            
+            [['record_id','ppa_attributed_program_id'], 'integer'],
             [['lgu_program_project', 'hgdg'], 'string'],
             [['total_annual_pro_budget', 'attributed_pro_budget'], 'number'],
             [['date_created', 'date_updated'], 'safe'],
             [['record_tuc', 'lead_responsible_office'], 'string', 'max' => 150],
             [['time_created', 'time_updated'], 'string', 'max' => 10],
+            [['lgu_program_project','ppa_attributed_program_id'], 'required'],
+            // [['ppa_attributed_program_id'],'required', 'when' => function ($model) { return $model->ppa_attributed_program_id == null; }],
+            [['ppa_attributed_program_others'],'required', 'when' => function ($model) { return $model->ppa_attributed_program_id == 0; }]
+
         ];
     }
 
@@ -54,11 +59,13 @@ class GadAttributedProgram extends \yii\db\ActiveRecord
             'id' => 'ID',
             'record_id' => 'Record ID',
             'record_tuc' => 'Record Tuc',
-            'lgu_program_project' => 'Lgu Program Project',
-            'hgdg' => 'Hgdg',
-            'total_annual_pro_budget' => 'Total Annual Pro Budget',
-            'attributed_pro_budget' => 'Attributed Pro Budget',
-            'lead_responsible_office' => 'Lead Responsible Office',
+            'ppa_attributed_program_others' => 'Other PPA Attributed Programs',
+            'ppa_attributed_program_id' => 'Category of PPA Attributed Programs',
+            'lgu_program_project' => 'Title of LGU Program or Project',
+            'hgdg' => 'HGDG Design / Funding Facility Generic Checklist Score',
+            'total_annual_pro_budget' => 'Total Annual Program / Project Budget',
+            'attributed_pro_budget' => 'GAD Attributed Program / Project Budget',
+            'lead_responsible_office' => 'Lead or Responsible Office',
             'date_created' => 'Date Created',
             'time_created' => 'Time Created',
             'date_updated' => 'Date Updated',

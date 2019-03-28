@@ -3,6 +3,7 @@
 namespace common\modules\report\controllers;
 
 use Yii;
+use common\models\GadPpaAttributedProgram;
 use common\models\GadFocused;
 use common\models\GadInnerCategory;
 use common\models\GadPlanBudget;
@@ -42,6 +43,24 @@ class GadPlanBudgetController extends Controller
      */
     public function actionIndex($ruc,$onstep)
     {
+        $dataAttributedProgram = (new \yii\db\Query())
+        ->select([
+            'AP.id',
+            'IF(AP.ppa_attributed_program_id = 0, AP.ppa_attributed_program_others, PAP.title) as ap_ppa_value',
+            'AP.lgu_program_project',
+            'AP.hgdg',
+            'AP.total_annual_pro_budget',
+            'AP.attributed_pro_budget',
+            'AP.lead_responsible_office',
+            'AP.record_tuc',
+            'AP.controller_id'
+        ])
+        ->from('gad_attributed_program AP')
+        ->leftJoin(['PAP' => 'gad_ppa_attributed_program'], 'PAP.id = AP.ppa_attributed_program_id')
+        ->where(['AP.record_tuc' => $ruc])
+        ->groupBy(['AP.ppa_attributed_program_id','AP.ppa_attributed_program_others','AP.lgu_program_project'])
+        ->orderBy(['AP.ppa_attributed_program_id' => SORT_ASC, 'AP.ppa_attributed_program_id' => SORT_ASC,'AP.ppa_attributed_program_others' => SORT_ASC,'AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
+        ->all();
 
         $qryRecord = (new \yii\db\Query())
         ->select([
@@ -91,8 +110,8 @@ class GadPlanBudgetController extends Controller
         ->leftJoin(['GF' => 'gad_focused'], 'GF.id = PB.focused_id')
         ->leftJoin(['IC' => 'gad_inner_category'], 'IC.id = PB.inner_category_id')
         ->where(['PB.record_tuc' => $ruc])
-        ->orderBy(['PB.focused_id' => SORT_ASC,'PB.inner_category_id' => SORT_ASC,'PB.id' => SORT_ASC])
-        ->groupBy(['PB.focused_id','PB.inner_category_id','PB.ppa_focused_id','PB.cause_gender_issue','PB.objective','PB.relevant_lgu_program_project','PB.activity','PB.performance_target'])
+        ->orderBy(['PB.focused_id' => SORT_ASC,'PB.inner_category_id' => SORT_ASC,'PB.ppa_focused_id' => SORT_ASC,'PB.ppa_value' => SORT_ASC,'PB.id' => SORT_ASC])
+        ->groupBy(['PB.focused_id','PB.inner_category_id','PB.ppa_focused_id','PB.ppa_value','PB.cause_gender_issue','PB.objective','PB.relevant_lgu_program_project','PB.activity','PB.performance_target'])
         ->all();
         // echo "<pre>";
         // print_r($dataPlanBudget); exit;
@@ -107,6 +126,8 @@ class GadPlanBudgetController extends Controller
 
         $select_GadFocused = ArrayHelper::map(GadFocused::find()->all(), 'id', 'title');
         $select_GadInnerCategory = ArrayHelper::map(GadInnerCategory::find()->all(), 'id', 'title');
+        $select_PpaAttributedProgram = ArrayHelper::map(GadPpaAttributedProgram::find()->all(), 'id', 'title');
+
 
         if($onstep == "to_create_gpb")
         {
@@ -118,6 +139,8 @@ class GadPlanBudgetController extends Controller
         }
 
         return $this->render($renderValue, [
+            'dataAttributedProgram' => $dataAttributedProgram,
+            'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
             'dataPlanBudget' => $dataPlanBudget,
             'ruc' => $ruc,
             'objective_type' => $objective_type,
