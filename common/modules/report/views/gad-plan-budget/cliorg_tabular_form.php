@@ -10,7 +10,8 @@
         'column_title' => 'GAD Objective',
         'colspanValue' => '',
         'controller_id' => Yii::$app->controller->id,
-        'form_id' => 'cli-org-focused-form'
+        'form_id' => 'cli-org-focused-form',
+        'customStyle' => '',
     ])
 ?>
 
@@ -25,7 +26,8 @@
         'column_title' => 'Relevant LGU Program and Project',
         'colspanValue' => '',
         'controller_id' => Yii::$app->controller->id,
-        'form_id' => 'cli-org-focused-form'
+        'form_id' => 'cli-org-focused-form',
+        'customStyle' => '',
     ])
 ?>
 
@@ -40,7 +42,8 @@
         'column_title' => 'GAD Activity',
         'colspanValue' => '',
         'controller_id' => Yii::$app->controller->id,
-        'form_id' => 'cli-org-focused-form'
+        'form_id' => 'cli-org-focused-form',
+        'customStyle' => '',
     ])
 ?>
 
@@ -55,7 +58,8 @@
         'column_title' => 'Performance Target',
         'colspanValue' => '',
         'controller_id' => Yii::$app->controller->id,
-        'form_id' => 'cli-org-focused-form'
+        'form_id' => 'cli-org-focused-form',
+        'customStyle' => '',
     ])
 ?>
 
@@ -70,7 +74,8 @@
         'column_title' => 'Performance Indicator',
         'colspanValue' => '',
         'controller_id' => Yii::$app->controller->id,
-        'form_id' => 'cli-org-focused-form'
+        'form_id' => 'cli-org-focused-form',
+        'customStyle' => '',
     ])
 ?>
 
@@ -85,7 +90,8 @@
         'column_title' => 'MOOE',
         'colspanValue' => '',
         'controller_id' => Yii::$app->controller->id,
-        'form_id' => 'cli-org-focused-form'
+        'form_id' => 'cli-org-focused-form',
+        'customStyle' => 'text-align:right;',
     ])
 ?>
 
@@ -100,7 +106,8 @@
         'column_title' => 'PS',
         'colspanValue' => '',
         'controller_id' => Yii::$app->controller->id,
-        'form_id' => 'cli-org-focused-form'
+        'form_id' => 'cli-org-focused-form',
+        'customStyle' => 'text-align:right;',
     ])
 ?>
 
@@ -115,7 +122,8 @@
         'column_title' => 'CO',
         'colspanValue' => '',
         'controller_id' => Yii::$app->controller->id,
-        'form_id' => 'cli-org-focused-form'
+        'form_id' => 'cli-org-focused-form',
+        'customStyle' => 'text-align:right;',
     ])
 ?>
 
@@ -130,6 +138,7 @@
         'column_title' => 'Lead or Responsible Office',
         'colspanValue' => '',
         'controller_id' => Yii::$app->controller->id,
-        'form_id' => 'cli-org-focused-form'
+        'form_id' => 'cli-org-focused-form',
+        'customStyle' => '',
     ])
 ?>

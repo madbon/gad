@@ -1,6 +1,56 @@
 
+table.gad-plan-budget
+{
+    border:2px solid black;
+}
+table.gad-plan-budget tbody tr.grand_total td
+{
+    background-color: #0080006b;
+    color: black;
+}
+table.gad-plan-budget tbody tr.grand_total td:nth-child(3)
+{
+    text-align: center;
+    font-weight: bold;
+}
 
+table.gad-plan-budget tbody tr.total_a td,tr.total_b td, tr.total_c td
+{
+    background-color: #ffff009e;
+}
 
+table.gad-plan-budget tbody tr.subtotal td
+{
+    background-color: #8080803b;
+}
+table.gad-plan-budget tbody tr.total_a td:nth-child(2), tr.total_b td:nth-child(2)
+{
+    text-align: center;
+    font-weight: bold;
+}
+table.gad-plan-budget tbody tr.total_c td:nth-child(3)
+{
+    text-align: right;
+    font-weight: bold;
+}
+table.gad-plan-budget tbody tr.signatory_label td
+{
+    border-bottom: 1px solid white;
+}
+table.gad-plan-budget tbody tr.signatory td input
+{
+    text-align: center;
+}
+table.gad-plan-budget tbody tr.signatory td
+{
+    border-bottom: 1px solid white;
+}
+table.gad-plan-budget tbody tr.signatory_title td
+{
+    text-align: center;
+    font-weight: bold;
+    border-top: none;
+}
 
 table.gad-plan-budget tbody tr.attributed_program_title td
 {
@@ -406,4 +456,5 @@ table.gad-plan-budget thead tr:first-child th:nth-child(8)
 table.gad-plan-budget tbody tr td
 {
     border:1px solid black;
+    color: black;
 }

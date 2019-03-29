@@ -32,6 +32,9 @@ $this->params['breadcrumbs'][] = ['label' => 'Step 1. Input Primary Information'
     
 	<br/>
     <?= $this->render('index', [
+        'dataRecord' => $dataRecord,
+        'dataAttributedProgram' => $dataAttributedProgram,
+        'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
         'dataPlanBudget' => $dataPlanBudget,
         'ruc' => $ruc,
         'objective_type' => $objective_type,

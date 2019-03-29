@@ -8,6 +8,7 @@ use common\models\GadFocused;
 use common\models\GadInnerCategory;
 use common\models\GadPlanBudget;
 use common\models\GadPlanBudgetSearch;
+use common\models\GadRecord;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -43,6 +44,7 @@ class GadPlanBudgetController extends Controller
      */
     public function actionIndex($ruc,$onstep)
     {
+        $dataRecord = GadRecord::find()->where(['tuc' => $ruc])->all();
         $dataAttributedProgram = (new \yii\db\Query())
         ->select([
             'AP.id',
@@ -139,6 +141,7 @@ class GadPlanBudgetController extends Controller
         }
 
         return $this->render($renderValue, [
+            'dataRecord' => $dataRecord,
             'dataAttributedProgram' => $dataAttributedProgram,
             'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
             'dataPlanBudget' => $dataPlanBudget,

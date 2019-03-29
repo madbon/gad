@@ -212,10 +212,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                 $sum_mooe   += $plan["budget_mooe"];
                                 $sum_ps     += $plan["budget_ps"];
                                 $sum_co     += $plan["budget_co"];
+                                $total_a = 0;
+                                $total_a = ($sum_mooe + $sum_ps + $sum_co);
                                 if($countClient == $totalClient)
                                 {
                                     echo "
-                                    <tr>
+                                    <tr class='subtotal'>
                                         <td colspan='7'><b>Sub-total</b></td>
                                         <td style='text-align:right;'><b>".(number_format($sum_mooe,2))."</b></td>
                                         <td style='text-align:right;'><b>".(number_format($sum_ps,2))."</b></td>
@@ -223,9 +225,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <td></td>
                                         <td></td>
                                     </tr>
-                                    <tr>
+                                    <tr class='total_a'>
                                         <td colspan='7'><b>Total A (MOEE+PS+CO)</b></td>
-                                        <td colspan='3'></td>
+                                        <td colspan='3'>".(number_format($total_a,2))."</td>
                                         <td></td>
                                         <td></td>
                                     </tr>
@@ -233,6 +235,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     $sum_mooe = 0;
                                     $sum_ps = 0;
                                     $sum_co = 0;
+
                                 }
                             }
 
@@ -241,10 +244,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 $sum_mooe   += $plan["budget_mooe"];
                                 $sum_ps     += $plan["budget_ps"];
                                 $sum_co     += $plan["budget_co"];
+                                $total_b    = ($sum_mooe + $sum_ps + $sum_co);
                                 if($countOrganization == $totalOrganization)
                                 {
                                     echo "
-                                    <tr>
+                                    <tr class='subtotal'>
                                         <td colspan='7'><b>Sub-total</b></td>
                                         <td style='text-align:right;'><b>".(number_format($sum_mooe,2))."</b></td>
                                         <td style='text-align:right;'><b>".(number_format($sum_ps,2))."</b></td>
@@ -252,9 +256,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <td></td>
                                         <td></td>
                                     </tr>
-                                    <tr>
+                                    <tr class='total_b'>
                                         <td colspan='7'><b>Total B (MOEE+PS+CO)</b></td>
-                                        <td colspan='3'></td>
+                                        <td colspan='3'>".(number_format($total_b,2))."</td>
                                         <td></td>
                                         <td></td>
                                     </tr>
@@ -300,6 +304,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </tr>
                         <?php 
                         $notnull_apPpaValue = null;
+                        $total_c = 0;
                         foreach ($dataAttributedProgram as $key => $dap) { ?>
                             <?php if($notnull_apPpaValue != $dap["ap_ppa_value"]){ ?>
                                 <tr class="attributed_program_ppa_value">
@@ -319,7 +324,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'column_title' => 'Title of LGU Program or Project',
                                         'colspanValue' => '3',
                                         'controller_id' => $dap['controller_id'],
-                                        'form_id' => 'attributed-program'
+                                        'form_id' => 'attributed-program',
+                                        'customStyle' => '',
                                     ])
                                 ?>
                                 <?php
@@ -333,7 +339,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'column_title' => 'HGDG Design/ Funding Facility/ Generic Checklist Score',
                                         'colspanValue' => '2',
                                         'controller_id' => $dap['controller_id'],
-                                        'form_id' => 'attributed-program'
+                                        'form_id' => 'attributed-program',
+                                        'customStyle' => 'text-align:center;',
                                     ])
                                 ?>
                                 <?php
@@ -342,12 +349,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'row_id' => $dap["id"],
                                         'record_unique_code' => $dap["record_tuc"],
                                         'attribute_name' => "total_annual_pro_budget",
-                                        'data_type' => 'string',
+                                        'data_type' => 'number',
                                         'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-total-annual-pro-budget']),
                                         'column_title' => 'Total Annual Program/ Project Budget',
                                         'colspanValue' => '2',
                                         'controller_id' => $dap['controller_id'],
-                                        'form_id' => 'attributed-program'
+                                        'form_id' => 'attributed-program',
+                                        'customStyle' => '',
                                     ])
                                 ?>
                                 <?php
@@ -356,12 +364,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'row_id' => $dap["id"],
                                         'record_unique_code' => $dap["record_tuc"],
                                         'attribute_name' => "attributed_pro_budget",
-                                        'data_type' => 'string',
+                                        'data_type' => 'number',
                                         'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-attributed-pro-budget']),
                                         'column_title' => 'GAD Attributed Program/Project Budget',
                                         'colspanValue' => '3',
                                         'controller_id' => $dap['controller_id'],
-                                        'form_id' => 'attributed-program'
+                                        'form_id' => 'attributed-program',
+                                        'customStyle' => '',
                                     ])
                                 ?>
                                 <?php
@@ -375,18 +384,103 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'column_title' => 'Lead or Responsible Office',
                                         'colspanValue' => '',
                                         'controller_id' => $dap['controller_id'],
-                                        'form_id' => 'attributed-program'
+                                        'form_id' => 'attributed-program',
+                                        'customStyle' => '',
                                     ])
                                 ?>
                                 <td></td>
                             </tr>
                         <?php 
+                        $total_c += $dap["attributed_pro_budget"];
                         $notnull_apPpaValue = $dap["ap_ppa_value"];
                         } ?>
+                        <tr class="total_c">
+                            <td><b>Total C</b></td>
+                            <td colspan="6"></td>
+                            <td colspan="3"><?= number_format($total_c,2) ?></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="grand_total">
+                            <td colspan="2"><b>GRAND TOTAL (A+B+C</b></td>
+                            <td colspan="5"></td>
+                            <td colspan="3">
+                                <?php
+                                    $grand_total = ($total_a + $total_b + $total_c);
+                                    echo number_format($grand_total,2);
+                                ?>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="signatory_label">
+                            <td colspan="3"><b>Prepared by:</b></td>
+
+                            <td colspan="4"><b>Approved by:</b></td>
+                            <td colspan="3"><b>Date:</b></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="signatory">
+                            <?php foreach ($dataRecord as $key => $rec) { ?>
+                                <?php
+                                    echo $this->render('reusable_edit_cell_form',[
+                                        'cell_value' => $rec["prepared_by"],
+                                        'row_id' => $rec["id"],
+                                        'record_unique_code' => $rec["tuc"],
+                                        'attribute_name' => "prepared_by",
+                                        'data_type' => 'string',
+                                        'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-pb-prepared-by']),
+                                        'column_title' => 'Chairperson, GFPS TWG',
+                                        'colspanValue' => '3',
+                                        'controller_id' => "gad-plan-budget",
+                                        'form_id' => 'attributed-program',
+                                        'customStyle' => 'text-align:center; font-size:20px;',
+                                    ]);
+                                ?>
+                                <?php
+                                    echo $this->render('reusable_edit_cell_form',[
+                                        'cell_value' => $rec["approved_by"],
+                                        'row_id' => $rec["id"],
+                                        'record_unique_code' => $rec["tuc"],
+                                        'attribute_name' => "approved_by",
+                                        'data_type' => 'string',
+                                        'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-pb-approved-by']),
+                                        'column_title' => 'Local Chief Executive',
+                                        'colspanValue' => '4',
+                                        'controller_id' => "gad-plan-budget",
+                                        'form_id' => 'attributed-program',
+                                        'customStyle' => 'text-align:center; font-size:20px;',
+                                    ]);
+                                ?>
+                                <?php
+                                    echo $this->render('reusable_edit_cell_form_date',[
+                                        'cell_value' => $rec["footer_date"],
+                                        'row_id' => $rec["id"],
+                                        'record_unique_code' => $rec["tuc"],
+                                        'attribute_name' => "footer_date",
+                                        'data_type' => 'string',
+                                        'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-pb-footer-date']),
+                                        'column_title' => 'Date',
+                                        'colspanValue' => '3',
+                                        'controller_id' => "gad-plan-budget",
+                                        'form_id' => 'attributed-program',
+                                        'customStyle' => 'text-align:center; font-size:20px;',
+                                    ]);
+                                ?>
+                            <?php } ?>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="signatory_title">
+                            <td colspan="3">Chairperson, GFPS TWG</td>
+                            <td colspan="4">Local Chief Executive</td>
+                            <td colspan="3">DD/MM/YEAR</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
-
-                
             </div>
         </div>
     </div>

@@ -38,8 +38,8 @@ class GadAttributedProgram extends \yii\db\ActiveRecord
         return [
             
             [['record_id','ppa_attributed_program_id'], 'integer'],
-            [['lgu_program_project', 'hgdg'], 'string'],
-            [['total_annual_pro_budget', 'attributed_pro_budget'], 'number'],
+            [['lgu_program_project'], 'string'],
+            [['total_annual_pro_budget', 'attributed_pro_budget','hgdg'], 'number'],
             [['date_created', 'date_updated'], 'safe'],
             [['record_tuc', 'lead_responsible_office'], 'string', 'max' => 150],
             [['time_created', 'time_updated'], 'string', 'max' => 10],

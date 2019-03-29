@@ -40,10 +40,10 @@ class GadRecord extends \yii\db\ActiveRecord
         return [
             [['user_id', 'year', 'form_type', 'status', 'is_archive'], 'integer'],
             [['total_lgu_budget', 'total_gad_budget'], 'number'],
-            [['date_created'], 'safe'],
+            [['date_created','footer_date'], 'safe'],
             [['time_created'], 'string', 'max' => 10],
             [['region_c', 'province_c', 'citymun_c'], 'string', 'max' => 2],
-            [['tuc'], 'string', 'max' => 150],
+            [['tuc','prepared_by','approved_by'], 'string', 'max' => 150],
             [['year','total_gad_budget','total_lgu_budget'], 'required'],
         ];
     }

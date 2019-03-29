@@ -13,12 +13,67 @@ use common\models\GadPpaOrganizationalFocused;
 use common\models\GadPpaClientFocused;
 use common\models\GadInnerCategory;
 use common\models\GadAttributedProgram;
+use common\models\GadRecord;
 use Yii;
 /**
  * Default controller for the `report` module
  */
 class DefaultController extends Controller
 {
+    public function actionUpdatePbFooterDate($uid,$upd8_value)
+    {
+        $qry = GadRecord::find()->where(['id' => $uid])->one();
+        $qry->footer_date = date('Y-m-d',strtotime($upd8_value));
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpdatePbApprovedBy($uid,$upd8_value)
+    {
+        $qry = GadRecord::find()->where(['id' => $uid])->one();
+        $qry->approved_by = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpdatePbPreparedBy($uid,$upd8_value)
+    {
+        $qry = GadRecord::find()->where(['id' => $uid])->one();
+        $qry->prepared_by = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
     public function actionUpdateApLeadResponsibleOffice($uid,$upd8_value)
     {
         $qry = GadAttributedProgram::find()->where(['id' => $uid])->one();

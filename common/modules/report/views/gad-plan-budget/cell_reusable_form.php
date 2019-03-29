@@ -5,9 +5,9 @@ use common\modules\report\controllers\DefaultController;
 ?>
 
 <?php if(DefaultController::countComment2($controller_id,$form_id,$row_id,$attribute_name) > 0) { ?>
-<td colspan="<?= $colspanValue ?>" id="cell-<?= $attribute_name ?>-<?= $row_id ?>" class="common-cell-container has-comment"> <!-- put border if has comment  -->
+<td style="<?= $customStyle ?>" title="<?= $column_title ?>" colspan="<?= $colspanValue ?>" id="cell-<?= $attribute_name ?>-<?= $row_id ?>" class="common-cell-container has-comment"> <!-- put border if has comment  -->
 <?php } else{ ?>
-<td colspan="<?= $colspanValue ?>" id="cell-<?= $attribute_name ?>-<?= $row_id ?>" class="common-cell-container"> <!-- remove border if no comment  -->
+<td style="<?= $customStyle ?>" title="<?= $column_title ?>" colspan="<?= $colspanValue ?>" id="cell-<?= $attribute_name ?>-<?= $row_id ?>" class="common-cell-container"> <!-- remove border if no comment  -->
 <?php } ?>
 
     <p id="confirm-<?= $attribute_name ?>-<?= $row_id ?>" class="confirm-message"> <!-- confirmation message update click update  -->
@@ -16,9 +16,9 @@ use common\modules\report\controllers\DefaultController;
     <p id="confirm-<?= $attribute_name ?>-comment-<?= $row_id ?>" class="confirm-message confirm-gad"> <!-- confirmation message after comment  -->
         <span class="glyphicon glyphicon-ok"></span> Comment has been saved
     </p>
-    <p style="<?= $data_type == "number" ? "text-align: right" : "text-align: left"; ?>" id="content-<?= $attribute_name ?>-<?= $row_id ?>"><?= $data_type == "number" ? number_format($cell_value,2) : $cell_value ?>  <!-- Display the content of attribute or cell value -->
+    <p style="<?= $customStyle ?>" id="content-<?= $attribute_name ?>-<?= $row_id ?>"><?= $data_type == "number" ? number_format($cell_value,2) : $cell_value ?>  <!-- Display the content of attribute or cell value -->
         <div id="actn-btns-<?= $attribute_name ?>-<?= $row_id?>" class="actn-btn-bubble actn-buble-common-class" style="display: none;">
-            <button id="btn-select-<?= $attribute_name ?>-<?= $row_id?>" type="button" class="btn btn-info btn-xs btn-select-cell" title="Select" >
+            <button id="btn-select-<?= $attribute_name ?>-<?= $row_id?>" type="button" class="btn btn-info btn-xs btn-select-cell" >
                 Select
             </button>
         </div>
@@ -101,7 +101,7 @@ use common\modules\report\controllers\DefaultController;
                 <span class="glyphicon glyphicon-floppy-disk"></span> Update
             </button>
             <button id="btn-ext-<?= $attribute_name ?>-<?= $row_id ?>" type="button" class="btn btn-xs btn-danger pull-right exit-button">
-                <span class="glyphicon glyphicon-remove"></span> Exit
+                <span class="glyphicon glyphicon-remove"></span> Close
             </button>
             
             <?php
@@ -169,7 +169,7 @@ use common\modules\report\controllers\DefaultController;
                 <span class="glyphicon glyphicon-floppy-disk"></span> Save
             </button>
             <button id="ext-comment-<?= $attribute_name ?>-<?= $row_id ?>" type="button" class="btn btn-xs btn-danger comnt-textarea pull-right exit-button">
-                <span class="glyphicon glyphicon-remove"></span> Exit
+                <span class="glyphicon glyphicon-remove"></span> Close
             </button>
             <?php
                 $urlSaveComment = \yii\helpers\Url::to(['/report/default/save-comment']);
@@ -388,7 +388,7 @@ use common\modules\report\controllers\DefaultController;
                 </ul>
             </div>
             <button id="ext-view-comment-<?= $attribute_name ?>-<?= $row_id ?>" type="button" class="btn btn-xs btn-danger comnt-textarea pull-right exit-button">
-                <span class="glyphicon glyphicon-remove"></span> Exit
+                <span class="glyphicon glyphicon-remove"></span> Close
             </button>
             <?php
                 
