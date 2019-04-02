@@ -299,8 +299,8 @@ use kartik\select2\Select2;
                             });
                       }); ');
                 ?>
-                <button type="button" class="btn btn-danger btn-sm" title="Exit" id="exit-gender-issue">
-                    <span class="glyphicon glyphicon-remove"></span> Exit
+                <button type="button" class="btn btn-danger btn-sm" title="Close" id="exit-gender-issue">
+                    <span class="glyphicon glyphicon-remove"></span> Close
                 </button>
                 <?php
                     $this->registerJs('

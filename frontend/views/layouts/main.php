@@ -24,6 +24,13 @@ AppAsset::register($this);
     <?php $this->head() ?>
 </head>
 <style>
+p.main-title
+{
+    color:#330b3af0;
+    font-weight: bold;
+    /*text-align: center;*/
+    font-size: 25px;
+}
 ul.nav li a:hover
 {
     color:gray;
@@ -108,17 +115,16 @@ div.navbar-header a img
 .gad-color
 {
     background-color: #8b588e !important;
-    height: 5px;
+    height: 3px;
 }
 .cust-panel .cust-panel-header
 {
-    
 
 }
 .cust-panel .cust-panel-body
 {
-    background-color: white;
-    min-height: 200px;
+    background-color: white !important;
+    min-height: 15px;
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 15px;
@@ -133,12 +139,13 @@ div.navbar-header a img
     padding-top: 10px;
     margin-bottom: 10px;
 }
+/*#f1e5e8;*/
 /*Panel*/
 </style>
 <body>
 <?php $this->beginBody() ?>
 
-<div class="wrap" style="background-color: #f1e5e8;">
+<div class="wrap" style="background-color: #8080802e;">
    <?php
         $logo =  Html::img('@web/images/dilg-logo.png',['class']);
         NavBar::begin([
@@ -154,12 +161,13 @@ div.navbar-header a img
 
             [
                 'label' => 'Create', 'items' => [
-                    ['label' => 'GAD Plan and Budget (Annex A)', 'url' =>  ['/report/gad-record/create','ruc'=>'empty','onstep'=>'create_new']],
+                    ['label' => 'GAD Plan and Budget (Annex A)', 'url' =>  ['/report/gad-record/create','ruc'=>'empty','onstep'=>'create_new','tocreate'=>'gad_plan_budget']],
                 ],
             ],
             [
                 'label' => 'Report', 'items' => [
-                    ['label' => 'List of GAD Plan and Budget', 'url' => ['/report/gad-record/']],
+                    ['label' => 'List of GAD Plan and Budget', 'url' => ['/report/gad-record/','report_type' => 'plan_budget']],
+                    ['label' => 'List of Accomplishment Report', 'url' => ['/report/gad-record/','report_type' => 'accomplishment' ]],
                 ],
                 // 'url' => ['/site/about']
             ],
@@ -191,18 +199,14 @@ div.navbar-header a img
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= Alert::widget() ?>
-        <div class="cust-panel">
-            <div class="cust-panel-header gad-color">
-            </div>
-            <div class="cust-panel-body">
-                <div class="cust-panel-title">
-                    <p>
-                        <?= Html::encode($this->title) ?>
-                    </p>
-                </div>
-                <?= $content; ?>
-            </div>
-        </div>
+        <p class="main-title"> 
+
+            <?= Html::encode($this->title) ?>
+                
+        </p>
+        <?= $content; ?>
+
+        
     </div>
 </div>
 

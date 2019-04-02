@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Step 1. Input Primary Information'
     <h1><?php // Html::encode($this->title) ?></h1>
     <ul class="nav nav-tabs">
 	  	<li>
-	  		<?= Html::a('Step 1. Input Primary Information', ['gad-record/create', 'ruc' => $ruc,'onstep' => $onstep], ['class' => 'btn btn-success']) ?>
+	  		<?= Html::a('Step 1. Input Primary Information', ['gad-record/create', 'ruc' => $ruc,'onstep' => $onstep,'tocreate'=>$tocreate], ['class' => 'btn btn-success']) ?>
 	  	</li>
 	  	<li class="active">
 	  		<?= Html::a('Step 2. Encode Annual GAD Plan and Budget', ['index','ruc' => $ruc, 'onstep' => $onstep], ['class' => 'btn btn-success']) ?>
@@ -49,6 +49,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Step 1. Input Primary Information'
         'onstep' => $onstep,
         'select_GadFocused' => $select_GadFocused,
         'select_GadInnerCategory' => $select_GadInnerCategory,
+        'tocreate' => $tocreate,
     ]) ?>
 
 </div>

@@ -169,7 +169,14 @@ use kartik\select2\Select2;
           }); ');
         ?>
 		<button id="exitAttributedProgram" type="button" class="btn btn-danger btn-sm">
-			<span class="glyphicon glyphicon-remove"></span> Exit
+			<span class="glyphicon glyphicon-remove"></span> Close
 		</button>
+		<?php
+            $this->registerJs("
+                $('#exitAttributedProgram').click(function(){
+                    $('.attributed_program_form').slideUp(300);
+                });
+            ");
+        ?>
 	</div>
 </div>

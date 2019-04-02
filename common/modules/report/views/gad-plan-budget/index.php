@@ -22,8 +22,8 @@ $this->params['breadcrumbs'][] = $this->title;
     </p> -->
 
    
-    <div class="cust-panel basic-information">
-        <div class="cust-panel-header success">
+    <div class="cust-panel">
+        <div class="cust-panel-header gad-color">
         </div>
         <div class="cust-panel-body">
             <div class="cust-panel-title">
@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ');
     ?>
     <div class="cust-panel input-form" style="display: none;">
-        <div class="cust-panel-header success">
+        <div class="cust-panel-header gad-color">
         </div>
         <div class="cust-panel-body">
             <div class="cust-panel-title">
@@ -95,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <br/>
 
     <div class="cust-panel tabular-report">
-        <div class="cust-panel-header success">
+        <div class="cust-panel-header gad-color">
         </div>
         <div class="cust-panel-body">
             <div class="cust-panel-title">
@@ -157,6 +157,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         $sum_mooe = 0;
                         $sum_ps = 0;
                         $sum_co = 0;
+                        $total_c = 0;
+                        $total_b = 0;
+                        $total_a = 0;
+                        $grand_total = 0;
                         foreach ($dataPlanBudget as $key2 => $plan) {
                             if($plan["focused_id"] == 1)
                             {
@@ -170,7 +174,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                             <!-- Client or Organization Focused -->
                             <?php if($not_FocusedId != $plan["gad_focused_title"]) { ?>
-                                
                                 <tr class="focused_title">
                                     <td colspan='7'><b><?= $plan["gad_focused_title"] ?></b></td>
                                     <td colspan='3'></td>
@@ -274,16 +277,23 @@ $this->params['breadcrumbs'][] = $this->title;
                         <tr class="attributed_program_title">
                             <td colspan="7">
                                 <b>ATTRIBUTED PROGRAMS</b> 
-                                <button type="button" class="btn btn-success btn-sm">
+                                <button id="btn_encode_attributed_program" type="button" class="btn btn-success btn-sm">
                                     <span class="glyphicon glyphicon-pencil"></span>
                                     Encode
                                 </button>
+                                <?php
+                                    $this->registerJs("
+                                        $('#btn_encode_attributed_program').click(function(){
+                                            $('.attributed_program_form').slideDown(300);
+                                        });
+                                    ");
+                                ?>
                             </td>
                             <td colspan="3"></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr class="attributed_program_form">
+                        <tr class="attributed_program_form" style="display: none;">
                             <td colspan="12">
                                 <?php
                                     echo $this->render('attributed_program_form', [
@@ -355,7 +365,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'colspanValue' => '2',
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
-                                        'customStyle' => '',
+                                        'customStyle' => 'text-align:right;',
                                     ])
                                 ?>
                                 <?php
@@ -370,7 +380,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'colspanValue' => '3',
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
-                                        'customStyle' => '',
+                                        'customStyle' => 'text-align:right;',
                                     ])
                                 ?>
                                 <?php

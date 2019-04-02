@@ -1,4 +1,39 @@
 
+/*-----------------------Accomplishment Report Start*/
+table.ar tbody tr.ar_attributed_program td
+{
+    font-size: 20px;
+    font-weight: bold;
+}
+table.ar tbody tr.ar_attributed_program_head td
+{
+    text-align: center;
+    font-weight: bold;
+}
+.basic-information
+{
+    background-color: white !important;
+}
+
+table.ar tbody tr td
+{
+    border:1px solid black;
+}
+table.ar tbody tr.inner_category_title td
+{
+    font-weight: bold;
+}
+table.ar tbody tr.focused_title td
+{
+    font-size:20px;
+    font-weight: bold;
+}
+table.ar thead tr th
+{
+    border:1px solid black;
+    text-align: center;
+}
+/*-----------------------Accomplishment Report End*/
 table.gad-plan-budget
 {
     border:2px solid black;

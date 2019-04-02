@@ -20,6 +20,229 @@ use Yii;
  */
 class DefaultController extends Controller
 {
+    public function actionUpd8ArVarianceRemark($uid,$upd8_value)
+    {
+        $qry = \common\models\GadAccomplishmentReport::find()->where(['id' => $uid])->one();
+        $qry->variance_remarks = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpd8ArActualCostExpenditure($uid,$upd8_value)
+    {
+        $qry = \common\models\GadAccomplishmentReport::find()->where(['id' => $uid])->one();
+        $qry->actual_cost_expenditure = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpd8ArTotalApprovedGadBudget($uid,$upd8_value)
+    {
+        $qry = \common\models\GadAccomplishmentReport::find()->where(['id' => $uid])->one();
+        $qry->total_approved_gad_budget = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpd8ArActualResult($uid,$upd8_value)
+    {
+        $qry = \common\models\GadAccomplishmentReport::find()->where(['id' => $uid])->one();
+        $qry->actual_results = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpd8ArTarget($uid,$upd8_value)
+    {
+        $qry = \common\models\GadAccomplishmentReport::find()->where(['id' => $uid])->one();
+        $qry->target = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpd8ArPerformanceIndicator($uid,$upd8_value)
+    {
+        $qry = \common\models\GadAccomplishmentReport::find()->where(['id' => $uid])->one();
+        $qry->performance_indicator = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpd8ArGadActivity($uid,$upd8_value)
+    {
+        $qry = \common\models\GadAccomplishmentReport::find()->where(['id' => $uid])->one();
+        $qry->activity = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpd8ArRelevantLguPpa($uid,$upd8_value)
+    {
+        $qry = \common\models\GadAccomplishmentReport::find()->where(['id' => $uid])->one();
+        $qry->relevant_lgu_ppa = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpd8ArGadObjective($uid,$upd8_value)
+    {
+        $qry = \common\models\GadAccomplishmentReport::find()->where(['id' => $uid])->one();
+        $qry->objective = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpd8ArCauseGenderIssue($uid,$upd8_value)
+    {
+        $qry = \common\models\GadAccomplishmentReport::find()->where(['id' => $uid])->one();
+        $qry->cause_gender_issue = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+
+    public function actionCreateAccomplishmentReport($focused_id,$ppa_focused_id,$cause_gender_issue,$objective,$relevant_lgu_ppa,$activity,$performance_indicator,$target,$actual_results,$total_approved_gad_budget,$actual_cost_expenditure,$variance_remarks,$ppa_value,$inner_category_id,$ruc,$onstep)
+    {
+        $model = new \common\models\GadAccomplishmentReport();
+        $model->focused_id = $focused_id;
+        $model->ppa_focused_id = $ppa_focused_id;
+        $model->cause_gender_issue = $cause_gender_issue;
+        $model->objective = $objective;
+        $model->relevant_lgu_ppa = $relevant_lgu_ppa;
+        $model->activity = $activity;
+        $model->performance_indicator = $performance_indicator;
+        $model->target = $target;
+        $model->actual_results = $actual_results;
+        $model->total_approved_gad_budget = $total_approved_gad_budget;
+        $model->actual_cost_expenditure = $actual_cost_expenditure;
+        $model->variance_remarks = $variance_remarks;
+        $model->ppa_value = $ppa_value;
+        $model->inner_category_id = $inner_category_id;
+        $model->record_tuc = $ruc;
+
+        date_default_timezone_set("Asia/Manila");
+        $model->date_created = date('Y-m-d');
+        $model->time_created = date("h:i:sa");
+
+        $miliseconds = round(microtime(true) * 1000);
+        $hash =  md5(date('Y-m-d')."-".date("h-i-sa")."-".$miliseconds);
+        $model->this_tuc = $hash;
+
+        $qryRecord = \common\models\GadRecord::find()->where(['tuc' => $ruc])->one();
+        $qryRecordId = !empty($qryRecord->id) ? $qryRecord->id : null;
+        $model->record_id = $qryRecordId;
+
+        if($model->save())
+        {
+            return $this->redirect(['gad-accomplishment-report/index', 'ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>'success']);
+        }
+        else
+        {
+            \Yii::$app->response->format = 'json';
+            return $model->errors;
+        }
+    }
+
     public function actionUpdatePbFooterDate($uid,$upd8_value)
     {
         $qry = GadRecord::find()->where(['id' => $uid])->one();
@@ -656,7 +879,7 @@ class DefaultController extends Controller
         $model->time_created = date("h:i:sa");
         if($model->save())
         {
-            return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep]);
+            return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>'success']);
         }
         else
         {

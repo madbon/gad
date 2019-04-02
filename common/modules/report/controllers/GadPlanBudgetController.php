@@ -42,9 +42,9 @@ class GadPlanBudgetController extends Controller
      * Lists all GadPlanBudget models.
      * @return mixed
      */
-    public function actionIndex($ruc,$onstep)
+    public function actionIndex($ruc,$onstep,$tocreate)
     {
-        $dataRecord = GadRecord::find()->where(['tuc' => $ruc])->all();
+        $dataRecord = GadRecord::find()->where(['tuc' => $ruc, 'report_type_id' => 1])->all();
         $dataAttributedProgram = (new \yii\db\Query())
         ->select([
             'AP.id',
@@ -104,6 +104,8 @@ class GadPlanBudgetController extends Controller
             'PB.record_tuc as record_uc',
             'GF.title as gad_focused_title',
             'IC.title as inner_category_title',
+            'GC.id as gad_focused_id',
+            'IC.id as inner_category_id',
             'PB.focused_id'
         ])
         ->from('gad_plan_budget PB')
@@ -126,9 +128,9 @@ class GadPlanBudgetController extends Controller
         $opt_org_focused = ArrayHelper::map(\common\models\GadPpaOrganizationalFocused::find()->all(), 'id', 'title');
         $opt_cli_focused = ArrayHelper::map(\common\models\GadPpaClientFocused::find()->all(), 'id', 'title');
 
-        $select_GadFocused = ArrayHelper::map(GadFocused::find()->all(), 'id', 'title');
-        $select_GadInnerCategory = ArrayHelper::map(GadInnerCategory::find()->all(), 'id', 'title');
-        $select_PpaAttributedProgram = ArrayHelper::map(GadPpaAttributedProgram::find()->all(), 'id', 'title');
+        $select_GadFocused = ArrayHelper::map(\common\models\GadFocused::find()->all(), 'id', 'title');
+        $select_GadInnerCategory = ArrayHelper::map(\common\models\GadInnerCategory::find()->all(), 'id', 'title');
+        $select_PpaAttributedProgram = ArrayHelper::map(\common\models\GadPpaAttributedProgram::find()->all(), 'id', 'title');
 
 
         if($onstep == "to_create_gpb")
@@ -158,6 +160,7 @@ class GadPlanBudgetController extends Controller
             'onstep' => $onstep,
             'select_GadFocused' => $select_GadFocused,
             'select_GadInnerCategory' => $select_GadInnerCategory,
+            'tocreate' => $tocreate,
         ]);
     }
 
