@@ -1,5 +1,34 @@
 
 /*-----------------------Accomplishment Report Start*/
+table.ar tbody tr.grand_total td
+{
+    background-color: #0080006b;
+    color: black;
+}
+table.ar tbody tr.grand_total td:nth-child(3)
+{
+    text-align: center;
+    font-weight: bold;
+}
+
+table.ar tbody tr.total_a td,tr.total_b td, tr.total_c td
+{
+    background-color: #ffff009e;
+}
+
+table.ar tbody tr.subtotal td
+{
+    background-color: #8080803b;
+}
+table.ar tbody tr.total_a td:nth-child(2), tr.total_b td:nth-child(2)
+{
+    text-align: center;
+    font-weight: bold;
+}
+span.bullet
+{
+    font-size: 20px;
+}
 table.ar tbody tr.ar_attributed_program td
 {
     font-size: 20px;
@@ -380,7 +409,7 @@ p.confirm-dngr
     color: #FFFFFF;
     font-family: Arial;
     text-align: center;
-    width: 250px;
+    min-width: 300px;
     border-radius: 5px;
     margin-top: 20px;
     z-index: 1;
@@ -407,7 +436,7 @@ p.confirm-dngr
     color: #FFFFFF;
     font-family: Arial;
     text-align: center;
-    width: 250px;
+    min-width: 300px;
     border-radius: 5px;
     margin-top: 20px;
     z-index: 1;

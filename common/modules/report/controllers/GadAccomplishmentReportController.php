@@ -38,6 +38,24 @@ class GadAccomplishmentReportController extends Controller
     public function actionIndex($ruc,$onstep,$tocreate)
     {
         // $dataRecord = GadRecord::find()->where(['tuc' => $ruc, 'report_type_id' => 2])->all();
+        $dataAttributedProgram = (new \yii\db\Query())
+        ->select([
+            'AP.id',
+            'IF(AP.ppa_attributed_program_id = 0, AP.ppa_attributed_program_others, PAP.title) as ap_ppa_value',
+            'AP.lgu_program_project',
+            'AP.hgdg_pimme',
+            'AP.total_annual_pro_cost',
+            'AP.gad_attributed_pro_cost',
+            'AP.variance_remarks',
+            'AP.record_tuc',
+            'AP.controller_id'
+        ])
+        ->from('gad_ar_attributed_program AP')
+        ->leftJoin(['PAP' => 'gad_ppa_attributed_program'], 'PAP.id = AP.ppa_attributed_program_id')
+        ->where(['AP.record_tuc' => $ruc])
+        ->groupBy(['AP.ppa_attributed_program_id','AP.ppa_attributed_program_others','AP.lgu_program_project'])
+        ->orderBy(['AP.ppa_attributed_program_id' => SORT_ASC, 'AP.ppa_attributed_program_id' => SORT_ASC,'AP.ppa_attributed_program_others' => SORT_ASC,'AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
+        ->all();
 
         $qryRecord = (new \yii\db\Query())
         ->select([
@@ -77,7 +95,8 @@ class GadAccomplishmentReportController extends Controller
             'GF.title as gad_focused_title',
             'IC.title as inner_category_title',
             'GC.id as gad_focused_id',
-            'IC.id as inner_category_id'
+            'IC.id as inner_category_id',
+            'AR.focused_id'
         ])
         ->from('gad_accomplishment_report AR')
         ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = AR.ppa_focused_id')
@@ -105,7 +124,9 @@ class GadAccomplishmentReportController extends Controller
             'recTotalGadBudget' => $recTotalGadBudget,
             'recTotalLguBudget' => $recTotalLguBudget,
             'ruc' => $ruc,
-            'onstep' => $onstep
+            'onstep' => $onstep,
+            'tocreate' => $tocreate,
+            'dataAttributedProgram' => $dataAttributedProgram
         ]);
     }
 

@@ -80,9 +80,9 @@ use kartik\select2\Select2;
             echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
                 'placeholder_title' => "Please specify here (PPA Other Description)",
                 'attribute_name' => "ppa_value",
-                'urlLoadResult' => '/report/default/load-ppa-value',
+                'urlLoadResult' => '/report/default/load-ar-ppa-value',
                 'rowsValue' => 3,
-                'classValue' => 'form-control legit',
+                'classValue' => 'form-control',
                 'customStyle' => 'display:none; margin-top:10px;',
             ]);
         ?>
@@ -110,7 +110,7 @@ use kartik\select2\Select2;
             echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
                 'placeholder_title' => "Cause of Gender Issue",
                 'attribute_name' => "cause_gender_issue",
-                'urlLoadResult' => '/report/default/load-ppa-value',
+                'urlLoadResult' => '/report/default/load-ar-cause-gender-issue',
                 'rowsValue' => 3,
                 'classValue' => 'form-control',
                 'customStyle' => 'margin-top:20px;',
@@ -121,7 +121,7 @@ use kartik\select2\Select2;
             echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
                 'placeholder_title' => "GAD Objective",
                 'attribute_name' => "objective",
-                'urlLoadResult' => '/report/default/load-ppa-value',
+                'urlLoadResult' => '/report/default/load-ar-objective',
                 'rowsValue' => 3,
                 'classValue' => 'form-control',
                 'customStyle' => 'margin-top:20px;',
@@ -133,7 +133,7 @@ use kartik\select2\Select2;
             echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
                 'placeholder_title' => "Relevant LGU PPA",
                 'attribute_name' => "relevant_lgu_ppa",
-                'urlLoadResult' => '/report/default/load-ppa-value',
+                'urlLoadResult' => '/report/default/load-ar-relevant-lgu-ppa',
                 'rowsValue' => 2,
                 'classValue' => 'form-control',
                 'customStyle' => '',
@@ -143,7 +143,7 @@ use kartik\select2\Select2;
             echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
                 'placeholder_title' => "GAD Activity",
                 'attribute_name' => "activity",
-                'urlLoadResult' => '/report/default/load-ppa-value',
+                'urlLoadResult' => '/report/default/load-ar-activity',
                 'rowsValue' => 2,
                 'classValue' => 'form-control',
                 'customStyle' => 'margin-top:20px;',

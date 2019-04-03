@@ -13,13 +13,297 @@ use common\models\GadPpaOrganizationalFocused;
 use common\models\GadPpaClientFocused;
 use common\models\GadInnerCategory;
 use common\models\GadAttributedProgram;
+use common\models\GadArAttributedProgram;
 use common\models\GadRecord;
+use common\models\GadAccomplishmentReport;
 use Yii;
 /**
  * Default controller for the `report` module
  */
 class DefaultController extends Controller
 {
+    public function actionLoadArActivity()
+    {
+        $qry = GadAccomplishmentReport::find()->select(["activity","id"])->where(['not', ['activity' => null]])->groupBy('activity')->all();
+        $arr = [];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->activity
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function actionLoadArRelevantLguPpa()
+    {
+        $qry = GadAccomplishmentReport::find()->select(["relevant_lgu_ppa","id"])->where(['not', ['relevant_lgu_ppa' => null]])->groupBy('relevant_lgu_ppa')->all();
+        $arr = [];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->relevant_lgu_ppa
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function actionLoadArObjective()
+    {
+        $qry = GadAccomplishmentReport::find()->select(["objective","id"])->where(['not', ['objective' => null]])->groupBy('objective')->all();
+        $arr = [];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->objective
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function actionLoadArCauseGenderIssue()
+    {
+        $qry = GadAccomplishmentReport::find()->select(["cause_gender_issue","id"])->where(['not', ['cause_gender_issue' => null]])->groupBy('cause_gender_issue')->all();
+        $arr = [];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->cause_gender_issue
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function actionLoadArPpaValue()
+    {
+        $qry = GadAccomplishmentReport::find()->select(["ppa_value","id"])->where(['not', ['ppa_value' => null]])->groupBy('ppa_value')->all();
+        $arr = [];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->ppa_value
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function actionUpdateArVarianceRemarks($uid,$upd8_value)
+    {
+        $qry = GadArAttributedProgram::find()->where(['id' => $uid])->one();
+        $qry->variance_remarks = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpdateArGadAttributedProCost($uid,$upd8_value)
+    {
+        $qry = GadArAttributedProgram::find()->where(['id' => $uid])->one();
+        $qry->gad_attributed_pro_cost = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpdateArTotalAnnualProCost($uid,$upd8_value)
+    {
+        $qry = GadArAttributedProgram::find()->where(['id' => $uid])->one();
+        $qry->total_annual_pro_cost = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpdateArHgdgPimme($uid,$upd8_value)
+    {
+        $qry = GadArAttributedProgram::find()->where(['id' => $uid])->one();
+        $qry->hgdg_pimme = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public function actionUpdateArApLguProgramProject($uid,$upd8_value)
+    {
+        $qry = GadArAttributedProgram::find()->where(['id' => $uid])->one();
+        $qry->lgu_program_project = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+    public  function actionCreateArAttributedProgram($ruc,$onstep,$ppa_attributed_program_id,$ppa_attributed_program_others,$lgu_program_project,$hgdg_pimme,$total_annual_pro_cost,$gad_attributed_pro_cost,$variance_remarks,$controller_id)
+    {
+        // print_r($ppa_attributed_program_id); exit;
+        $model = new GadArAttributedProgram();
+        $model->record_tuc = $ruc;
+        $model->ppa_attributed_program_id = $ppa_attributed_program_id;
+        $model->ppa_attributed_program_others = $ppa_attributed_program_others;
+        $model->lgu_program_project = $lgu_program_project;
+        $model->hgdg_pimme = $hgdg_pimme;
+        $model->total_annual_pro_cost = $total_annual_pro_cost;
+        $model->gad_attributed_pro_cost = $gad_attributed_pro_cost;
+        $model->variance_remarks = $variance_remarks;
+
+        date_default_timezone_set("Asia/Manila");
+        $model->date_created = date('Y-m-d');
+        $model->time_created = date("h:i:sa");
+        $model->controller_id = $controller_id;
+        if($model->save())
+        {
+            return $this->redirect(['gad-accomplishment-report/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>'attributed_program_anchor']);
+        }
+        else
+        {
+            \Yii::$app->response->format = 'json';
+            return $model->errors;
+        }
+    }
+    public function actionLoadArAttributedProCost()
+    {
+        $qry = GadArAttributedProgram::find()
+        ->select(["gad_attributed_pro_cost","id"])
+        ->where(['not', ['gad_attributed_pro_cost' => null]])
+        ->groupBy('gad_attributed_pro_cost')
+        ->all();
+        $arr = [];
+        $arr[] = ['id'=>'', 'title' => ''];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->gad_attributed_pro_cost
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function actionLoadArTotalAnnualProCost()
+    {
+        $qry = GadArAttributedProgram::find()
+        ->select(["total_annual_pro_cost","id"])
+        ->where(['not', ['total_annual_pro_cost' => null]])
+        ->groupBy('total_annual_pro_cost')
+        ->all();
+        $arr = [];
+        $arr[] = ['id'=>'', 'title' => ''];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->total_annual_pro_cost
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function actionLoadArHgdgPimme()
+    {
+        $qry = GadArAttributedProgram::find()
+        ->select(["hgdg_pimme","id"])
+        ->where(['not', ['hgdg_pimme' => null]])
+        ->groupBy('hgdg_pimme')
+        ->all();
+        $arr = [];
+        $arr[] = ['id'=>'', 'title' => ''];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->hgdg_pimme
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function actionLoadArLguProgramProject()
+    {
+        $qry = GadArAttributedProgram::find()
+        ->select(["lgu_program_project","id"])
+        ->where(['not', ['lgu_program_project' => null]])
+        ->groupBy('lgu_program_project')
+        ->all();
+        $arr = [];
+        $arr[] = ['id'=>'', 'title' => ''];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->lgu_program_project
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function actionLoadArPpaAttributedProgramOthers()
+    {
+        $qry = GadArAttributedProgram::find()
+        ->select(["ppa_attributed_program_others","id"])
+        ->where(['not', ['ppa_attributed_program_others' => null]])
+        ->groupBy('ppa_attributed_program_others')
+        ->all();
+        $arr = [];
+        $arr[] = ['id'=>'', 'title' => ''];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->ppa_attributed_program_others
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
     public function actionUpd8ArVarianceRemark($uid,$upd8_value)
     {
         $qry = \common\models\GadAccomplishmentReport::find()->where(['id' => $uid])->one();

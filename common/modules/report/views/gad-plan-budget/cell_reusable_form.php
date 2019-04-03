@@ -16,21 +16,36 @@ use common\modules\report\controllers\DefaultController;
     <p id="confirm-<?= $attribute_name ?>-comment-<?= $row_id ?>" class="confirm-message confirm-gad"> <!-- confirmation message after comment  -->
         <span class="glyphicon glyphicon-ok"></span> Comment has been saved
     </p>
-    <p style="<?= $customStyle ?>" id="content-<?= $attribute_name ?>-<?= $row_id ?>"><?= $data_type == "number" ? number_format($cell_value,2) : $cell_value ?>  <!-- Display the content of attribute or cell value -->
-        <div id="actn-btns-<?= $attribute_name ?>-<?= $row_id?>" class="actn-btn-bubble actn-buble-common-class" style="display: none;">
-            <button id="btn-select-<?= $attribute_name ?>-<?= $row_id?>" type="button" class="btn btn-info btn-xs btn-select-cell" >
-                Select
-            </button>
-        </div>
-    </p>
-    
-    <?php
-        $this->registerJs("
-            $('.confirm-message').click(function(){
-                $(this).hide();
-            });
-        ");
-    ?>
+
+    <?php if($data_type == "number") { ?>
+        <p style="<?= $customStyle ?> white-space: pre-line;" id="content-<?= $attribute_name ?>-<?= $row_id ?>">
+            <?= number_format($cell_value,2) ?>  <!-- Display the content of attribute or cell value -->
+            <div id="actn-btns-<?= $attribute_name ?>-<?= $row_id?>" class="actn-btn-bubble actn-buble-common-class" style="display: none;">
+                <button id="btn-select-<?= $attribute_name ?>-<?= $row_id?>" type="button" class="btn btn-info btn-xs btn-select-cell" >
+                    Select
+                </button>
+            </div>
+        </p>
+    <?php } else{ ?>
+        <p style="<?= $customStyle ?> white-space: pre-line;" id="content-<?= $attribute_name ?>-<?= $row_id ?>">
+            <?= $cell_value ?>  <!-- Display the content of attribute or cell value -->
+            <div id="actn-btns-<?= $attribute_name ?>-<?= $row_id?>" class="actn-btn-bubble actn-buble-common-class" style="display: none;">
+                <button id="btn-select-<?= $attribute_name ?>-<?= $row_id?>" type="button" class="btn btn-info btn-xs btn-select-cell" >
+                    Select
+                </button>
+            </div>
+        </p>
+        
+        <?php
+            $this->registerJs("
+                var res = `".$cell_value."`.replace(/--/g, '<span class=bullet>&#8226</span>');
+                $('p#content-".$attribute_name."-".$row_id."').html(res);
+                $('.confirm-message').click(function(){
+                    $(this).hide();
+                });
+            ");
+        ?>
+    <?php } ?>
 
     <?php
         $this->registerJs('
@@ -90,7 +105,8 @@ use common\modules\report\controllers\DefaultController;
                     var attr_name = "'.$attribute_name.'";
                     var cell_value =  $("#content-"+attr_name+"-'.$row_id.'").text();
                     $(".div-tooltip-form").hide();
-                    $("#txt-edit-'.$attribute_name.'-'.$row_id.'").val("'.$cell_value.'");
+                    
+                    $("#txt-edit-'.$attribute_name.'-'.$row_id.'").val(`'.$cell_value.'`);
                     $("#div-edit-"+attr_name+"-'.$row_id.'").slideDown(300);
                 });
             ');
@@ -129,7 +145,8 @@ use common\modules\report\controllers\DefaultController;
                                 }
                                 else
                                 {
-                                    $("#content-"+attr_name+"-'.$row_id.'").text(result);
+                                    var res = result.replace(/--/g, "<span class=bullet>&#8226</span>");
+                                    $("#content-"+attr_name+"-'.$row_id.'").html(res);
                                     $("#div-edit-"+attr_name+"-'.$row_id.'").slideUp(300);
                                     $("#confirm-'.$attribute_name.'-'.$row_id.' i").removeClass("glyphicon-remove").addClass("glyphicon glyphicon-ok");
                                     $("#confirm-'.$attribute_name.'-'.$row_id.'").removeClass("confirm-dngr").addClass("confirm-prmry");
@@ -158,6 +175,7 @@ use common\modules\report\controllers\DefaultController;
                 $("#btn-comment-'.$attribute_name.'-'.$row_id.'").click(function(){
                     var attr_name = "'.$attribute_name.'";
                     $(".div-tooltip-form").hide();
+                    $("#txt-comment-'.$attribute_name.'-'.$row_id.'").val("");
                     $("#div-comment-"+attr_name+"-'.$row_id.'").slideDown(300);
                 });
             ');
