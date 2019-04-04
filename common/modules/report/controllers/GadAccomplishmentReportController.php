@@ -37,7 +37,7 @@ class GadAccomplishmentReportController extends Controller
      */
     public function actionIndex($ruc,$onstep,$tocreate)
     {
-        // $dataRecord = GadRecord::find()->where(['tuc' => $ruc, 'report_type_id' => 2])->all();
+        $dataRecord = GadRecord::find()->where(['tuc' => $ruc, 'report_type_id' => 2])->all();
         $dataAttributedProgram = (new \yii\db\Query())
         ->select([
             'AP.id',
@@ -112,11 +112,21 @@ class GadAccomplishmentReportController extends Controller
         $select_GadInnerCategory = ArrayHelper::map(\common\models\GadInnerCategory::find()->all(), 'id', 'title');
         $select_PpaAttributedProgram = ArrayHelper::map(\common\models\GadPpaAttributedProgram::find()->all(), 'id', 'title');
 
-        return $this->render('index', [
+        $render_index = "";
+        if($onstep == "to_create_ar")
+        {
+            $render_index = "step_form";
+        }
+        else
+        {
+            $render_index = "index";
+        }
+
+        return $this->render($render_index, [
             'select_GadFocused' => $select_GadFocused,
             'select_GadInnerCategory' => $select_GadInnerCategory,
             'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
-            // 'dataRecord' => $dataRecord,
+            'dataRecord' => $dataRecord,
             'dataAR' => $dataAR,
             'recRegion' => $recRegion,
             'recProvince' => $recProvince,

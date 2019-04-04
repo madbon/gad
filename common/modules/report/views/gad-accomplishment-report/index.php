@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\modules\report\models\GadAccomplishmentReportSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Annual GAD Accomplishment Reports';
+$this->title = 'Annual GAD Accomplishment Reports FY '.date("Y");
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="gad-accomplishment-report-index">
@@ -72,7 +72,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             'select_GadInnerCategory' => $select_GadInnerCategory,
                             'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
                             'ruc' => $ruc,
-                            'onstep' => $onstep
+                            'onstep' => $onstep,
+                            'tocreate' => $tocreate,
                         ]);
                     ?>
                 </div>
@@ -317,8 +318,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             if($ar["focused_id"] == 1) // client-focused
                             {
                                 $sum_total_approved_gad_budget   += $ar["total_approved_gad_budget"];
-                                $sum_actual_cost_expenditure   += $ar["actual_cost_expenditure"];
-                                $total_a = ($sum_total_approved_gad_budget+$sum_actual_cost_expenditure);
+                                $total_a   += $ar["actual_cost_expenditure"];
+                                // $total_a = ($sum_total_approved_gad_budget+$sum_actual_cost_expenditure);
                                 if($countClient == $totalClient)
                                 {
                                     echo "
@@ -329,13 +330,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <b>".(number_format($sum_total_approved_gad_budget,2))."</b>
                                         </td>
                                         <td style='text-align:right;'>
-                                            <b>".(number_format($sum_actual_cost_expenditure,2))."</b>
+                                            <b>".(number_format($total_a,2))."</b>
                                         </td>
                                         <td></td>
                                     </tr>
                                     <tr class='total_a'>
-                                        <td colspan='7'><b>Total A (MOEE+PS+CO)</b></td>
-                                        <td colspan='3'>".(number_format($total_a,2))."</td>
+                                        <td colspan='9'><b>Total A (MOEE+PS+CO)</b></td>
+                                        <td  style='text-align:right;'>".(number_format($total_a,2))."</td>
                                         <td></td>
                                     </tr>
                                     ";
@@ -348,8 +349,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             if($ar["focused_id"] == 2) // organization-focused
                             {
                                 $sum_total_approved_gad_budget   += $ar["total_approved_gad_budget"];
-                                $sum_actual_cost_expenditure   += $ar["actual_cost_expenditure"];
-                                $total_b = ($sum_total_approved_gad_budget+$sum_actual_cost_expenditure);
+                                $total_b   += $ar["actual_cost_expenditure"];
+                                // $total_b = ($sum_total_approved_gad_budget+$sum_actual_cost_expenditure);
                                 if($countOrganization == $totalOrganization)
                                 {
                                     echo "
@@ -360,13 +361,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <b>".(number_format($sum_total_approved_gad_budget,2))."</b>
                                         </td>
                                         <td style='text-align:right;'>
-                                            <b>".(number_format($sum_actual_cost_expenditure,2))."</b>
+                                            <b>".(number_format($total_b,2))."</b>
                                         </td>
                                         <td></td>
                                     </tr>
                                     <tr class='total_b'>
-                                        <td colspan='7'><b>Total B (MOEE+PS+CO)</b></td>
-                                        <td colspan='3'>".(number_format($total_b,2))."</td>
+                                        <td colspan='9'><b>Total B (MOEE+PS+CO)</b></td>
+                                        <td style='text-align:right;'>".(number_format($total_b,2))."</td>
                                         <td></td>
                                     </tr>
                                     ";
@@ -393,17 +394,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
                                         'ruc' => $ruc,
                                         'onstep' => $onstep,
+                                        'tocreate' => $tocreate,
                                     ]);
                                 ?>
                             </td>
                         </tr>
-                        <?php
-                            $this->registerJs("
-                                $('html, body').animate({
-                                    scrollTop: $('#".$tocreate."').offset().top
-                                }, 'slow');
-                            ");
-                        ?>
+                        
                         <tr class="ar_attributed_program_head">
                             <td colspan="7">Title of LGU Program or Project</td>
                             <td>HGDG PIMME/FIMME Score</td>
@@ -502,6 +498,83 @@ $this->params['breadcrumbs'][] = $this->title;
                         $total_c += $dap["gad_attributed_pro_cost"];
                         $notnull_apPpaValue = $dap["ap_ppa_value"];
                         } ?>
+                        <tr class="total_c">
+                            <td colspan="9">Total C</td>
+                            <td style="text-align: right;"><?= number_format($total_c,2) ?></td>
+                            <td></td>
+                        </tr>
+                        <tr class="grand_total">
+                            <td colspan="9">GRAND TOTAL (A+B+C)</td>
+                            <td style="text-align: right;">
+                                <?php
+                                    $grand_total = 0;
+                                    $grand_total = ($total_a + $total_b + $total_c);
+                                    echo number_format($grand_total,2);
+                                ?>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="signatory_label">
+                            <td colspan="3"><b>Prepared by:</b></td>
+
+                            <td colspan="4"><b>Approved by:</b></td>
+                            <td colspan="4"><b>Date:</b></td>
+                        </tr>
+                        <tr class="signatory">
+                            <?php foreach ($dataRecord as $key => $rec) { ?>
+                                <?php
+                                    echo $this->render('/gad-plan-budget/reusable_edit_cell_form',[
+                                        'cell_value' => $rec["prepared_by"],
+                                        'row_id' => $rec["id"],
+                                        'record_unique_code' => $rec["tuc"],
+                                        'attribute_name' => "prepared_by",
+                                        'data_type' => 'string',
+                                        'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-pb-prepared-by']),
+                                        'column_title' => 'Chairperson, GFPS TWG',
+                                        'colspanValue' => '3',
+                                        'controller_id' => "gad-plan-budget",
+                                        'form_id' => 'attributed-program',
+                                        'customStyle' => 'text-align:center; font-size:20px;',
+                                    ]);
+                                ?>
+                                <?php
+                                    echo $this->render('/gad-plan-budget/reusable_edit_cell_form',[
+                                        'cell_value' => $rec["approved_by"],
+                                        'row_id' => $rec["id"],
+                                        'record_unique_code' => $rec["tuc"],
+                                        'attribute_name' => "approved_by",
+                                        'data_type' => 'string',
+                                        'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-pb-approved-by']),
+                                        'column_title' => 'Local Chief Executive',
+                                        'colspanValue' => '4',
+                                        'controller_id' => "gad-plan-budget",
+                                        'form_id' => 'attributed-program',
+                                        'customStyle' => 'text-align:center; font-size:20px;',
+                                    ]);
+                                ?>
+                                <?php
+                                    echo $this->render('/gad-plan-budget/reusable_edit_cell_form_date',[
+                                        'cell_value' => $rec["footer_date"],
+                                        'row_id' => $rec["id"],
+                                        'record_unique_code' => $rec["tuc"],
+                                        'attribute_name' => "footer_date",
+                                        'data_type' => 'string',
+                                        'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-pb-footer-date']),
+                                        'column_title' => 'Date',
+                                        'colspanValue' => '4',
+                                        'controller_id' => "gad-plan-budget",
+                                        'form_id' => 'attributed-program',
+                                        'customStyle' => 'text-align:center; font-size:20px;',
+                                    ]);
+                                ?>
+                            <?php } ?>
+                        </tr>
+                        <tr class="signatory_title">
+                            <td colspan="3">Chairperson, GFPS TWG</td>
+                            <td colspan="4">Local Chief Executive</td>
+                            <td colspan="4">DD/MM/YEAR</td>
+                            <!-- <td></td> -->
+                        </tr>
                     </tbody>
                 </table>
             </div>

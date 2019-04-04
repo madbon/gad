@@ -121,6 +121,7 @@ use kartik\select2\Select2;
                 var gad_attributed_pro_cost 			= $("#gad_attributed_pro_cost").val();
                 var variance_remarks 		        = $("#variance_remarks").val();
                 var controller_id					= "'.(Yii::$app->controller->id).'";
+                var tocreate                        = "'.$tocreate.'";
                 $.ajax({
                     url: "'.$url.'",
                     data: { 
@@ -133,7 +134,8 @@ use kartik\select2\Select2;
                             total_annual_pro_cost:total_annual_pro_cost,
                             gad_attributed_pro_cost:gad_attributed_pro_cost,
                             variance_remarks:variance_remarks,
-                            controller_id:controller_id
+                            controller_id:controller_id,
+                            tocreate:tocreate
                         }
                     
                     }).done(function(result) {

@@ -161,13 +161,14 @@ div.navbar-header a img
 
             [
                 'label' => 'Create', 'items' => [
-                    ['label' => 'GAD Plan and Budget (Annex A)', 'url' =>  ['/report/gad-record/create','ruc'=>'empty','onstep'=>'create_new','tocreate'=>'gad_plan_budget']],
+                    ['label' => 'Plan and Budget', 'url' =>  ['/report/gad-record/create','ruc'=>'empty','onstep'=>'create_new','tocreate'=>'gad_plan_budget']],
+                    ['label' => 'Accomplishment Report', 'url' =>  ['/report/gad-record/create','ruc'=>'empty','onstep'=>'create_new','tocreate'=>'accomp_report']],
                 ],
             ],
             [
                 'label' => 'Report', 'items' => [
-                    ['label' => 'List of GAD Plan and Budget', 'url' => ['/report/gad-record/','report_type' => 'plan_budget']],
-                    ['label' => 'List of Accomplishment Report', 'url' => ['/report/gad-record/','report_type' => 'accomplishment' ]],
+                    ['label' => 'GAD Plan and Budget', 'url' => ['/report/gad-record/','report_type' => 'plan_budget']],
+                    ['label' => 'Accomplishment Report', 'url' => ['/report/gad-record/','report_type' => 'accomplishment' ]],
                 ],
                 // 'url' => ['/site/about']
             ],

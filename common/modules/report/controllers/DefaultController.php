@@ -22,6 +22,76 @@ use Yii;
  */
 class DefaultController extends Controller
 {
+    public function actionLoadArActualCostExpenditure()
+    {
+        $qry = GadAccomplishmentReport::find()->select(["actual_cost_expenditure","id"])->where(['not', ['actual_cost_expenditure' => null]])->groupBy('actual_cost_expenditure')->all();
+        $arr = [];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->actual_cost_expenditure
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function actionLoadArTotalApprovedGadBudget()
+    {
+        $qry = GadAccomplishmentReport::find()->select(["total_approved_gad_budget","id"])->where(['not', ['total_approved_gad_budget' => null]])->groupBy('total_approved_gad_budget')->all();
+        $arr = [];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->total_approved_gad_budget
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function actionLoadArActualResults()
+    {
+        $qry = GadAccomplishmentReport::find()->select(["actual_results","id"])->where(['not', ['actual_results' => null]])->groupBy('actual_results')->all();
+        $arr = [];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->actual_results
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function actionLoadArTarget()
+    {
+        $qry = GadAccomplishmentReport::find()->select(["target","id"])->where(['not', ['target' => null]])->groupBy('target')->all();
+        $arr = [];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->target
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function actionLoadArPerformanceIndicator()
+    {
+        $qry = GadAccomplishmentReport::find()->select(["performance_indicator","id"])->where(['not', ['performance_indicator' => null]])->groupBy('performance_indicator')->all();
+        $arr = [];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'id' => $item->id,
+                        'title' => $item->performance_indicator
+                     ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
     public function actionLoadArActivity()
     {
         $qry = GadAccomplishmentReport::find()->select(["activity","id"])->where(['not', ['activity' => null]])->groupBy('activity')->all();
@@ -182,7 +252,7 @@ class DefaultController extends Controller
         
         return $is_save;
     }
-    public  function actionCreateArAttributedProgram($ruc,$onstep,$ppa_attributed_program_id,$ppa_attributed_program_others,$lgu_program_project,$hgdg_pimme,$total_annual_pro_cost,$gad_attributed_pro_cost,$variance_remarks,$controller_id)
+    public  function actionCreateArAttributedProgram($ruc,$onstep,$ppa_attributed_program_id,$ppa_attributed_program_others,$lgu_program_project,$hgdg_pimme,$total_annual_pro_cost,$gad_attributed_pro_cost,$variance_remarks,$controller_id,$tocreate)
     {
         // print_r($ppa_attributed_program_id); exit;
         $model = new GadArAttributedProgram();
@@ -201,7 +271,7 @@ class DefaultController extends Controller
         $model->controller_id = $controller_id;
         if($model->save())
         {
-            return $this->redirect(['gad-accomplishment-report/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>'attributed_program_anchor']);
+            return $this->redirect(['gad-accomplishment-report/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
         }
         else
         {
@@ -485,7 +555,7 @@ class DefaultController extends Controller
         return $is_save;
     }
 
-    public function actionCreateAccomplishmentReport($focused_id,$ppa_focused_id,$cause_gender_issue,$objective,$relevant_lgu_ppa,$activity,$performance_indicator,$target,$actual_results,$total_approved_gad_budget,$actual_cost_expenditure,$variance_remarks,$ppa_value,$inner_category_id,$ruc,$onstep)
+    public function actionCreateAccomplishmentReport($focused_id,$ppa_focused_id,$cause_gender_issue,$objective,$relevant_lgu_ppa,$activity,$performance_indicator,$target,$actual_results,$total_approved_gad_budget,$actual_cost_expenditure,$variance_remarks,$ppa_value,$inner_category_id,$ruc,$onstep,$tocreate)
     {
         $model = new \common\models\GadAccomplishmentReport();
         $model->focused_id = $focused_id;
@@ -518,7 +588,7 @@ class DefaultController extends Controller
 
         if($model->save())
         {
-            return $this->redirect(['gad-accomplishment-report/index', 'ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>'success']);
+            return $this->redirect(['gad-accomplishment-report/index', 'ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
         }
         else
         {
@@ -671,7 +741,7 @@ class DefaultController extends Controller
         
         return $is_save;
     }
-    public  function actionCreatePbAttributedProgram($ruc,$onstep,$ppa_attributed_program_id,$ppa_attributed_program_others,$lgu_program_project,$hgdg,$total_annual_pro_budget,$attributed_pro_budget,$lead_responsible_office,$controller_id)
+    public  function actionCreatePbAttributedProgram($ruc,$onstep,$ppa_attributed_program_id,$ppa_attributed_program_others,$lgu_program_project,$hgdg,$total_annual_pro_budget,$attributed_pro_budget,$lead_responsible_office,$controller_id,$tocreate)
     {
         // print_r($ppa_attributed_program_id); exit;
         $model = new GadAttributedProgram();
@@ -690,7 +760,7 @@ class DefaultController extends Controller
         $model->controller_id = $controller_id;
         if($model->save())
         {
-            return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep]);
+            return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate' => $tocreate]);
         }
         else
         {
@@ -1135,7 +1205,7 @@ class DefaultController extends Controller
 
     }
 
-    public function actionCreateGadPlanBudget($ppa_focused_id,$ppa_value,$issue,$obj,$relevant,$act,$performance_target,$performance_indicator,$ruc,$budget_mooe,$budget_ps,$budget_co,$lead_responsible_office,$focused_id,$inner_category_id,$onstep)
+    public function actionCreateGadPlanBudget($ppa_focused_id,$ppa_value,$issue,$obj,$relevant,$act,$performance_target,$performance_indicator,$ruc,$budget_mooe,$budget_ps,$budget_co,$lead_responsible_office,$focused_id,$inner_category_id,$onstep,$tocreate)
     {
         $model = new \common\models\GadPlanBudget();
         $model->cause_gender_issue = $issue;
@@ -1163,7 +1233,7 @@ class DefaultController extends Controller
         $model->time_created = date("h:i:sa");
         if($model->save())
         {
-            return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>'success']);
+            return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
         }
         else
         {

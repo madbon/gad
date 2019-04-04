@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Step 1. Input Primary Information'
             ]);
         ?>
         <?= $this->render('/common_tools/tabs/tab_encode',[
-                'tabTitle' => 'Step 2. Encode Annual GAD Plan and Budget',
+                'tabTitle' => 'Step 2. Encode Accomplishment Report',
                 'liClass' => 'active',
                 'ruc' => $ruc,
                 'onstep' => $onstep,
@@ -60,24 +60,20 @@ $this->params['breadcrumbs'][] = ['label' => 'Step 1. Input Primary Information'
     
 	<br/>
     <?= $this->render('index', [
-        'dataRecord' => $dataRecord,
-        'dataAttributedProgram' => $dataAttributedProgram,
+        'select_GadFocused' => $select_GadFocused,
+        'select_GadInnerCategory' => $select_GadInnerCategory,
         'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
-        'dataPlanBudget' => $dataPlanBudget,
-        'ruc' => $ruc,
-        'objective_type' => $objective_type,
-        'opt_org_focused' => $opt_org_focused,
-        'opt_cli_focused' => $opt_cli_focused,
-        'relevant_type' => $relevant_type,
+        'dataRecord' => $dataRecord,
+        'dataAR' => $dataAR,
         'recRegion' => $recRegion,
         'recProvince' => $recProvince,
         'recCitymun' => $recCitymun,
         'recTotalGadBudget' => $recTotalGadBudget,
         'recTotalLguBudget' => $recTotalLguBudget,
+        'ruc' => $ruc,
         'onstep' => $onstep,
-        'select_GadFocused' => $select_GadFocused,
-        'select_GadInnerCategory' => $select_GadInnerCategory,
         'tocreate' => $tocreate,
+        'dataAttributedProgram' => $dataAttributedProgram
     ]) ?>
 
 </div>

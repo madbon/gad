@@ -245,6 +245,7 @@ use kartik\select2\Select2;
                             var focused_id = $("#focused_id").val();
                             var inner_category_id = $("#inner_category_id").val();
                             var onstep = "'.$onstep.'";
+                            var tocreate = "'.$tocreate.'";
                             $.ajax({
                                 url: "'.$url.'",
                                 data: { 
@@ -264,6 +265,7 @@ use kartik\select2\Select2;
                                         focused_id:focused_id,
                                         inner_category_id:inner_category_id,
                                         onstep:onstep,
+                                        tocreate:tocreate
                                     }
                                 
                                 }).done(function(result) {

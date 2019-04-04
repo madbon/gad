@@ -55,11 +55,7 @@ class GadRecordController extends Controller
             break;
             
             default:
-                case 'plan_budget':
-                    $dataProvider->query->andWhere(['GR.report_type_id' => 2]);
-                    $index_title = "List of Accomplishment Report";
-                    $urlReport = "gad-accomplishment-report/index";
-                break;
+                throw new \yii\web\HttpException(404, 'The requested Page could not be found.');
             break;
         }
 
@@ -124,12 +120,32 @@ class GadRecordController extends Controller
                 $model->tuc = $hash;
                 $model->save();
             }
+
+            $urlReportIndex = "";
+            $onstepValue = "";
+            if($tocreate == "accomp_report")
+            {
+                $urlReportIndex = '/report/gad-accomplishment-report/index';
+                $onstepValue = "to_create_ar";
+            }
+            else
+            {
+                $urlReportIndex = '/report/gad-plan-budget/index';
+                $onstepValue = "to_create_gpb";
+
+            }
             
-            return $this->redirect(['/report/gad-plan-budget/index', 'ruc' => $onstep == "to_create_gpb" ? $ruc : $hash,'onstep' => 'to_create_gpb','tocreate' => $tocreate]);
+            // $ruc if back to step 1 use $ruc to update the record
+            // $hash after saving record or the 1st step, this hash will be used to fill up report
+            return $this->redirect([$urlReportIndex, 
+                'ruc'       => $onstep == "to_create_gpb" ? $ruc : $hash,
+                'onstep'    => $onstepValue,
+                'tocreate'  => $tocreate]);
         }
 
         return $this->render('create', [
-            'model' => $onstep == "to_create_gpb" ? $modelUpdate : $model,
+            // if onstep has this values just update record
+            'model' => $onstep == "to_create_gpb" || $onstep == "to_create_ar" ? $modelUpdate : $model, 
             'ruc' =>  $ruc,
             'onstep' => $onstep,
             'tocreate' => $tocreate

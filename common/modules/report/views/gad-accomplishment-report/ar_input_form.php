@@ -153,7 +153,7 @@ use kartik\select2\Select2;
             echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
                 'placeholder_title' => "Performance Indicator",
                 'attribute_name' => "performance_indicator",
-                'urlLoadResult' => '/report/default/load-ppa-value',
+                'urlLoadResult' => '/report/default/load-ar-performance-indicator',
                 'rowsValue' => 2,
                 'classValue' => 'form-control',
                 'customStyle' => 'margin-top:20px;',
@@ -163,7 +163,7 @@ use kartik\select2\Select2;
             echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
                 'placeholder_title' => "Target",
                 'attribute_name' => "target",
-                'urlLoadResult' => '/report/default/load-ppa-value',
+                'urlLoadResult' => '/report/default/load-ar-target',
                 'rowsValue' => 2,
                 'classValue' => 'form-control',
                 'customStyle' => 'margin-top:20px;',
@@ -175,7 +175,7 @@ use kartik\select2\Select2;
             echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
                 'placeholder_title' => "Actual Results",
                 'attribute_name' => "actual_results",
-                'urlLoadResult' => '/report/default/load-ppa-value',
+                'urlLoadResult' => '/report/default/load-ar-actual-results',
                 'rowsValue' => 2,
                 'classValue' => 'form-control',
                 'customStyle' => '',
@@ -185,7 +185,7 @@ use kartik\select2\Select2;
             echo $this->render('/gad-plan-budget/common_tools/textinput_suggest',[
                 'placeholder_title' => "Total Approved GAD Budget",
                 'attribute_name' => "total_approved_gad_budget",
-                'urlLoadResult' => '/report/default/load-budget-co',
+                'urlLoadResult' => '/report/default/load-ar-total-approved-gad-budget',
                 'classValue' => 'form-control',
                 'customStyle' => 'margin-top:20px;',
             ]);
@@ -194,21 +194,22 @@ use kartik\select2\Select2;
             echo $this->render('/gad-plan-budget/common_tools/textinput_suggest',[
                 'placeholder_title' => "Actual Cost or Expenditure",
                 'attribute_name' => "actual_cost_expenditure",
-                'urlLoadResult' => '/report/default/load-budget-co',
+                'urlLoadResult' => '/report/default/load-ar-actual-cost-expenditure',
                 'classValue' => 'form-control',
                 'customStyle' => 'margin-top:20px;',
             ]);
         ?>
         <?php
-            echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
-                'placeholder_title' => "Variance Remarks",
-                'attribute_name' => "variance_remarks",
-                'urlLoadResult' => '/report/default/load-ppa-value',
-                'rowsValue' => 2,
-                'classValue' => 'form-control',
-                'customStyle' => 'margin-top:20px;',
-            ]);
+            // echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
+            //     'placeholder_title' => "Variance Remarks",
+            //     'attribute_name' => "variance_remarks",
+            //     'urlLoadResult' => '/report/default/load-ppa-value',
+            //     'rowsValue' => 2,
+            //     'classValue' => 'form-control',
+            //     'customStyle' => 'margin-top:20px;',
+            // ]);
         ?>
+        <textarea style="margin-top: 20px;" placeholder="Variance or Remarks" id="variance_remarks" rows="2" class="form-control"></textarea>
 
         <button id="saveClientOrg" type="button" class="btn btn-primary btn-sm" style="margin-top: 8px;">
             <span class="glyphicon glyphicon-floppy-disk"></span> Save
@@ -233,6 +234,7 @@ use kartik\select2\Select2;
                     var inner_category_id           = $.trim($("#inner_category_id").val());
                     var ruc                         = "'.$ruc.'";
                     var onstep                      = "'.$onstep.'";
+                    var tocreate                    = "'.$tocreate.'";
 
                     $.ajax({
                         url: "'.$url.'",
@@ -253,6 +255,7 @@ use kartik\select2\Select2;
                                 inner_category_id:inner_category_id,
                                 ruc:ruc,
                                 onstep:onstep,
+                                tocreate:tocreate
                             }
                         
                         }).done(function(result) {

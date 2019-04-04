@@ -1,9 +1,28 @@
 
 /*-----------------------Accomplishment Report Start*/
+table.ar tbody tr.signatory_label td
+{
+    border-bottom: 1px solid white;
+}
+table.ar tbody tr.signatory td input
+{
+    text-align: center;
+}
+table.ar tbody tr.signatory td
+{
+    border-bottom: 1px solid white;
+}
+table.ar tbody tr.signatory_title td
+{
+    text-align: center;
+    font-weight: bold;
+    border-top: none;
+}
 table.ar tbody tr.grand_total td
 {
     background-color: #0080006b;
     color: black;
+    font-weight: bold;
 }
 table.ar tbody tr.grand_total td:nth-child(3)
 {
@@ -14,6 +33,7 @@ table.ar tbody tr.grand_total td:nth-child(3)
 table.ar tbody tr.total_a td,tr.total_b td, tr.total_c td
 {
     background-color: #ffff009e;
+    font-weight: bold;
 }
 
 table.ar tbody tr.subtotal td
@@ -307,7 +327,7 @@ table tbody tr td.has-comment
     border-color: transparent transparent transparent white;
     top: -20px;
     left: 11%;
-    margin-left: 30px;
+    margin-left: 20px;
 }
  /*Speech buble*/
 

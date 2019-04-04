@@ -120,6 +120,7 @@ use kartik\select2\Select2;
                 var attributed_pro_budget 			= $("#attributed_pro_budget").val();
                 var lead_responsible_office 		= $("#ap_lead_responsible_office").val();
                 var controller_id					= "'.(Yii::$app->controller->id).'";
+                var tocreate                        = "'.$tocreate.'";
                 $.ajax({
                     url: "'.$url.'",
                     data: { 
@@ -132,7 +133,8 @@ use kartik\select2\Select2;
                             total_annual_pro_budget:total_annual_pro_budget,
                             attributed_pro_budget:attributed_pro_budget,
                             lead_responsible_office:lead_responsible_office,
-                            controller_id:controller_id
+                            controller_id:controller_id,
+                            tocreate:tocreate
                         }
                     
                     }).done(function(result) {

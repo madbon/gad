@@ -12,7 +12,7 @@ use kartik\select2\Select2;
 /* @var $searchModel common\models\GadPlanBudgetSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $onstep == 'to_create_gpb' ? 'Step 2. Encode Annual GAD Plan and Budget ' : 'ANNUAL GENDER AND DEVELOPMENT (GAD PLAN BUDGET) FY '.date("Y");
+$this->title = $onstep == 'to_create_gpb' ? 'Step 2. Encode Annual GAD Plan and Budget ' : 'Annual GAD Plan and Budget FY '.date("Y");
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -84,7 +84,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'ruc' => $ruc,
                     'select_GadFocused' => $select_GadFocused,
                     'select_GadInnerCategory' => $select_GadInnerCategory,
-                    'onstep' => $onstep
+                    'onstep' => $onstep,
+                    'tocreate' => $tocreate,
                     ]);
                 ?>
             </div>
@@ -300,6 +301,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
                                         'ruc' => $ruc,
                                         'onstep' => $onstep,
+                                        'tocreate' => $tocreate,
                                     ]);
                                 ?>
                             </td>
@@ -427,9 +429,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td colspan="3"><b>Prepared by:</b></td>
 
                             <td colspan="4"><b>Approved by:</b></td>
-                            <td colspan="3"><b>Date:</b></td>
-                            <td></td>
-                            <td></td>
+                            <td colspan="5"><b>Date:</b></td>
                         </tr>
                         <tr class="signatory">
                             <?php foreach ($dataRecord as $key => $rec) { ?>
@@ -472,22 +472,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'data_type' => 'string',
                                         'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-pb-footer-date']),
                                         'column_title' => 'Date',
-                                        'colspanValue' => '3',
+                                        'colspanValue' => '5',
                                         'controller_id' => "gad-plan-budget",
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; font-size:20px;',
                                     ]);
                                 ?>
                             <?php } ?>
-                            <td></td>
-                            <td></td>
                         </tr>
                         <tr class="signatory_title">
                             <td colspan="3">Chairperson, GFPS TWG</td>
                             <td colspan="4">Local Chief Executive</td>
-                            <td colspan="3">DD/MM/YEAR</td>
-                            <td></td>
-                            <td></td>
+                            <td colspan="5">DD/MM/YEAR</td>
                         </tr>
                     </tbody>
                 </table>
