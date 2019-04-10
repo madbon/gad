@@ -170,11 +170,9 @@ $this->params['breadcrumbs'][] = $this->title;
 	  		<?php } ?>
 	  	
 	</ul>
-    
-	<br/>
 	<div class="cust-panel">
-	    <div class="cust-panel-header gad-color">
-	    </div>
+	    <!-- <div class="cust-panel-header gad-color">
+	    </div> -->
 	    <div class="cust-panel-body">
 	    	<br/>
 	        <?= $this->render('_form', [

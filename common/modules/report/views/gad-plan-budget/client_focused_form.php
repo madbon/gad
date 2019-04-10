@@ -305,11 +305,26 @@ use kartik\select2\Select2;
                     <span class="glyphicon glyphicon-remove"></span> Close
                 </button>
                 <?php
-                    $this->registerJs('
-                        $("#exit-gender-issue").click(function(){
-                            $(".input-form").slideUp(300);
+                    $urlSetSession = \yii\helpers\Url::to(['default/session-encode']);
+                    $this->registerJs("
+                        $('#exit-gender-issue').click(function(){
+                            var trigger = 'closed';
+                            var form_type = 'gender_issue';
+                            var report_type = 'pb';
+                            $.ajax({
+                                url: '".$urlSetSession."',
+                                data: { 
+                                        trigger:trigger,
+                                        form_type:form_type,
+                                        report_type:report_type
+                                        }
+                                
+                                }).done(function(result) {
+                                    
+                            });
+                            $('#inputFormPlan').slideUp(300);
                         });
-                    ');
+                    ");
                 ?>
             </div>
         </div>

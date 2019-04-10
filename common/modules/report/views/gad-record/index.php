@@ -88,14 +88,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             return !empty($model["record_total_lgu_budget"]) ? "Php ".number_format($model["record_total_lgu_budget"],2) : "";
                         }
                     ],
-                    [
-                        'label' => 'Total GAD Budget',
-                        'attribute' => 'record_total_gad_budget',
-                        'value' => function($model)
-                        {   
-                            return !empty($model["record_total_gad_budget"]) ? "Php ".number_format($model["record_total_gad_budget"],2) : "";
-                        }
-                    ],
+                    // [
+                    //     'label' => 'Total GAD Budget',
+                    //     'attribute' => 'record_total_gad_budget',
+                    //     'value' => function($model)
+                    //     {   
+                    //         return !empty($model["record_total_gad_budget"]) ? "Php ".number_format($model["record_total_gad_budget"],2) : "";
+                    //     }
+                    // ],
                     [
                         'label' => 'Year',
                         'attribute' => 'record_year',

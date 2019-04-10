@@ -38,13 +38,14 @@ class GadRecord extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'year', 'form_type', 'status', 'is_archive','report_type_id'], 'integer'],
-            [['total_lgu_budget', 'total_gad_budget'], 'number'],
+            [['user_id', 'form_type', 'status', 'is_archive','report_type_id'], 'integer'],
+            [['year'],'integer'],
+            [['total_lgu_budget'], 'number'],
             [['date_created','footer_date'], 'safe'],
             [['time_created'], 'string', 'max' => 10],
             [['region_c', 'province_c', 'citymun_c'], 'string', 'max' => 2],
             [['tuc','prepared_by','approved_by'], 'string', 'max' => 150],
-            [['year','total_gad_budget','total_lgu_budget'], 'required'],
+            [['year','total_lgu_budget'], 'required'],
         ];
     }
 
@@ -60,7 +61,6 @@ class GadRecord extends \yii\db\ActiveRecord
             'province_c' => 'Province',
             'citymun_c' => 'Citymun',
             'total_lgu_budget' => 'Total LGU Budget',
-            'total_gad_budget' => 'Total GAD Budget',
             'year' => 'Year',
             'form_type' => 'Form Type',
             'status' => 'Status',

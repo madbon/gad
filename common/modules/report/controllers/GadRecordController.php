@@ -47,11 +47,16 @@ class GadRecordController extends Controller
                 $dataProvider->query->andWhere(['GR.report_type_id' => 1]);
                 $index_title = "List of GAD Plan and Budget";
                 $urlReport = "gad-plan-budget/index";
+                Yii::$app->session["encode_gender_pb"] = "open";
+                Yii::$app->session["encode_attribute_pb"] = "open";
+
             break;
             case 'accomplishment':
                 $dataProvider->query->andWhere(['GR.report_type_id' => 2]);
                 $index_title = "List of Accomplishment Report";
                 $urlReport = "gad-accomplishment-report/index";
+                Yii::$app->session["encode_gender_ar"] = "open";
+                Yii::$app->session["encode_attribute_ar"] = "open";
             break;
             
             default:
@@ -59,13 +64,12 @@ class GadRecordController extends Controller
             break;
         }
 
-        
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'index_title' => $index_title,
             'urlReport' => $urlReport,
+            'report_type' =>  $report_type
         ]);
     }
 

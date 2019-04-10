@@ -24,13 +24,7 @@ AppAsset::register($this);
     <?php $this->head() ?>
 </head>
 <style>
-p.main-title
-{
-    color:#330b3af0;
-    font-weight: bold;
-    /*text-align: center;*/
-    font-size: 25px;
-}
+
 ul.nav li a:hover
 {
     color:gray;
@@ -48,11 +42,7 @@ ul.nav li.disabled:hover
     background-color: #7cbc7c;
     color:white;
 }
-p.sub-title
-{
-    font-size: 20px !important; 
-    text-transform: uppercase;
-}
+
 nav.navbar
 {
     background-color: #29102E !important;
@@ -114,7 +104,7 @@ div.navbar-header a img
 }
 .gad-color
 {
-    background-color: #8b588e !important;
+    background-color: #29012cc4 !important;
     height: 3px;
 }
 .cust-panel .cust-panel-header
@@ -144,7 +134,6 @@ div.navbar-header a img
 </style>
 <body>
 <?php $this->beginBody() ?>
-
 <div class="wrap" style="background-color: #8080802e;">
    <?php
         $logo =  Html::img('@web/images/dilg-logo.png',['class']);

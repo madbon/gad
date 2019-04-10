@@ -37,6 +37,7 @@ class GadAccomplishmentReportController extends Controller
      */
     public function actionIndex($ruc,$onstep,$tocreate)
     {
+        $grand_total_ar = 0;
         $dataRecord = GadRecord::find()->where(['tuc' => $ruc, 'report_type_id' => 2])->all();
         $dataAttributedProgram = (new \yii\db\Query())
         ->select([
@@ -56,6 +57,13 @@ class GadAccomplishmentReportController extends Controller
         ->groupBy(['AP.ppa_attributed_program_id','AP.ppa_attributed_program_others','AP.lgu_program_project'])
         ->orderBy(['AP.ppa_attributed_program_id' => SORT_ASC, 'AP.ppa_attributed_program_id' => SORT_ASC,'AP.ppa_attributed_program_others' => SORT_ASC,'AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
         ->all();
+
+        $sum_ap_apc = 0;
+        foreach ($dataAttributedProgram as $key => $dap) {
+            $sum_ap_apc += $dap['gad_attributed_pro_cost'];
+        }
+        // print_r($grand_total_ar); exit;
+
 
         $qryRecord = (new \yii\db\Query())
         ->select([
@@ -107,6 +115,16 @@ class GadAccomplishmentReportController extends Controller
         ->orderBy(['AR.focused_id' => SORT_ASC,'AR.inner_category_id' => SORT_ASC,'AR.ppa_focused_id' => SORT_ASC,'AR.ppa_value' => SORT_ASC,'AR.id' => SORT_ASC])
         ->groupBy(['AR.focused_id','AR.inner_category_id','AR.ppa_focused_id','AR.ppa_value','AR.cause_gender_issue','AR.objective','AR.relevant_lgu_ppa','AR.activity','AR.performance_indicator','AR.target','AR.actual_results'])
         ->all();
+        // ->createCommand()->rawSql;
+        // echo "<pre>";
+        // print_r($dataAR); exit;
+
+        $sum_ar_ace = 0;
+        foreach ($dataAR as $key => $dr) {
+            $sum_ar_ace += $dr["actual_cost_expenditure"];
+        }
+
+        $grand_total_ar = $sum_ar_ace + $sum_ap_apc;
 
         $select_GadFocused = ArrayHelper::map(\common\models\GadFocused::find()->all(), 'id', 'title');
         $select_GadInnerCategory = ArrayHelper::map(\common\models\GadInnerCategory::find()->all(), 'id', 'title');
@@ -136,7 +154,8 @@ class GadAccomplishmentReportController extends Controller
             'ruc' => $ruc,
             'onstep' => $onstep,
             'tocreate' => $tocreate,
-            'dataAttributedProgram' => $dataAttributedProgram
+            'dataAttributedProgram' => $dataAttributedProgram,
+            'grand_total_ar' => $grand_total_ar,
         ]);
     }
 

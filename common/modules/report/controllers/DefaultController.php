@@ -22,6 +22,61 @@ use Yii;
  */
 class DefaultController extends Controller
 {
+    public function actionSessionEncode($trigger,$form_type,$report_type)
+    {
+        Yii::$app->session["encode_gender_ar"] = "closed";
+
+        if($report_type == "ar") // if accomplishment report
+        {
+            if($form_type == "gender_issue") // if gender issue or gad mandate input form
+            {
+                if($trigger == "open")
+                {
+                    Yii::$app->session["encode_gender_ar"] = "open";
+                }
+                else
+                {
+                    Yii::$app->session["encode_gender_ar"] = "closed";
+                }
+            }
+            else // if attributed program form
+            {
+                if($trigger == "open")
+                {
+                    Yii::$app->session["encode_attribute_ar"] = "open";
+                }
+                else
+                {
+                    Yii::$app->session["encode_attribute_ar"] = "closed";
+                }
+            }
+        }
+        else // if plan and budget report
+        {
+            if($form_type == "gender_issue") // if gender issue or gad mandate input form
+            {
+                if($trigger == "open")
+                {
+                    Yii::$app->session["encode_gender_pb"] = "open";
+                }
+                else
+                {
+                    Yii::$app->session["encode_gender_pb"] = "closed";
+                }
+            }
+            else // if attributed program input form
+            {
+                if($trigger == "open")
+                {
+                    Yii::$app->session["encode_attribute_pb"] = "open";
+                }
+                else
+                {
+                    Yii::$app->session["encode_attribute_pb"] = "closed";
+                }
+            }
+        }
+    }
     public function actionLoadArActualCostExpenditure()
     {
         $qry = GadAccomplishmentReport::find()->select(["actual_cost_expenditure","id"])->where(['not', ['actual_cost_expenditure' => null]])->groupBy('actual_cost_expenditure')->all();
@@ -1025,13 +1080,16 @@ class DefaultController extends Controller
 
         if($model->save())
         {
-            
-        }
-        else
+            $is_save = $comment;
+        }else
         {
-            \Yii::$app->response->format = 'json';
-            return $model->errors;
+            $is_save = "";
+            foreach ($model->errors as $key => $value) {
+                $is_save = $value[0];
+            }
         }
+        
+        return $is_save;
 
     }   
     /**

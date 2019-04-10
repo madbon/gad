@@ -291,9 +291,30 @@ use kartik\select2\Select2;
                     });
               }); ');
         ?>
-        <button type="button" class="btn btn-danger btn-sm" style="margin-top: 8px;">
+        <button id="btnClose" type="button" class="btn btn-danger btn-sm" style="margin-top: 8px;">
             <span class="glyphicon glyphicon-remove"></span> Close
         </button>
+        <?php
+            $urlSetSession = \yii\helpers\Url::to(['default/session-encode']);
+            $this->registerJs("
+                $('#btnClose').click(function(){
+                    var trigger = 'close';
+                    var form_type = 'gender_issue';
+                    var report_type = 'ar';
+                    $.ajax({
+                        url: '".$urlSetSession."',
+                        data: { 
+                                trigger:trigger,
+                                form_type:form_type,
+                                report_type:report_type
+                                }
+                        
+                        }).done(function(result) {
+                            $('#input-form-gender').slideUp(300);
+                    });
+                });
+            ");
+        ?>
     </div>
 </div>
 

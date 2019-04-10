@@ -58,7 +58,6 @@ $this->params['breadcrumbs'][] = ['label' => 'Step 1. Input Primary Information'
         ?>
 	</ul>
     
-	<br/>
     <?= $this->render('index', [
         'select_GadFocused' => $select_GadFocused,
         'select_GadInnerCategory' => $select_GadInnerCategory,
@@ -73,7 +72,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Step 1. Input Primary Information'
         'ruc' => $ruc,
         'onstep' => $onstep,
         'tocreate' => $tocreate,
-        'dataAttributedProgram' => $dataAttributedProgram
+        'dataAttributedProgram' => $dataAttributedProgram,
+        'grand_total_ar' => $grand_total_ar,
     ]) ?>
 
 </div>

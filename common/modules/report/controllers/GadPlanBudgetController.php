@@ -44,6 +44,7 @@ class GadPlanBudgetController extends Controller
      */
     public function actionIndex($ruc,$onstep,$tocreate)
     {
+        $grand_total_pb = 0;
         $dataRecord = GadRecord::find()->where(['tuc' => $ruc, 'report_type_id' => 1])->all();
         $dataAttributedProgram = (new \yii\db\Query())
         ->select([
@@ -63,6 +64,12 @@ class GadPlanBudgetController extends Controller
         ->groupBy(['AP.ppa_attributed_program_id','AP.ppa_attributed_program_others','AP.lgu_program_project'])
         ->orderBy(['AP.ppa_attributed_program_id' => SORT_ASC, 'AP.ppa_attributed_program_id' => SORT_ASC,'AP.ppa_attributed_program_others' => SORT_ASC,'AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
         ->all();
+
+        $sum_ap_apb = 0;
+        foreach ($dataAttributedProgram as $key => $dap) {
+            $sum_ap_apb += $dap["attributed_pro_budget"];
+        }
+
 
         $qryRecord = (new \yii\db\Query())
         ->select([
@@ -120,6 +127,19 @@ class GadPlanBudgetController extends Controller
         // echo "<pre>";
         // print_r($dataPlanBudget); exit;
 
+        $sum_dbp_mooe = 0;
+        $sum_dbp_ps = 0;
+        $sum_dbp_co = 0;
+        $sum_db_budget = 0;
+        foreach ($dataPlanBudget as $key => $dpb) {
+            $sum_dbp_mooe += $dpb["budget_mooe"];
+            $sum_dbp_ps += $dpb["budget_ps"];
+            $sum_dbp_co += $dpb["budget_co"];
+        }
+        $sum_db_budget = ($sum_dbp_co + $sum_dbp_mooe + $sum_dbp_ps);
+        $grand_total_pb = ($sum_db_budget + $sum_ap_apb);
+
+
         $objective_type = ArrayHelper::getColumn(GadPlanBudget::find()->select(['objective'])->distinct()->all(), 'objective');
         $relevant_type       = ArrayHelper::getColumn(GadPlanBudget::find()
                             ->select(['relevant_lgu_program_project'])
@@ -161,6 +181,7 @@ class GadPlanBudgetController extends Controller
             'select_GadFocused' => $select_GadFocused,
             'select_GadInnerCategory' => $select_GadInnerCategory,
             'tocreate' => $tocreate,
+            'grand_total_pb' => $grand_total_pb,
         ]);
     }
 

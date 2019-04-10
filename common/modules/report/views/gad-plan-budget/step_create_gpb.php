@@ -57,8 +57,6 @@ $this->params['breadcrumbs'][] = ['label' => 'Step 1. Input Primary Information'
             ]);
         ?>
 	</ul>
-    
-	<br/>
     <?= $this->render('index', [
         'dataRecord' => $dataRecord,
         'dataAttributedProgram' => $dataAttributedProgram,
@@ -78,6 +76,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Step 1. Input Primary Information'
         'select_GadFocused' => $select_GadFocused,
         'select_GadInnerCategory' => $select_GadInnerCategory,
         'tocreate' => $tocreate,
+        'grand_total_pb' => $grand_total_pb
     ]) ?>
 
 </div>

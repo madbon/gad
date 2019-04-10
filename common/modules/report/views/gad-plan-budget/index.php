@@ -22,27 +22,27 @@ $this->params['breadcrumbs'][] = $this->title;
     </p> -->
 
    
-    <div class="cust-panel">
-        <div class="cust-panel-header gad-color">
-        </div>
+    <div class="cust-panel basic-information inner-panel">
+        <!-- <div class="cust-panel-header gad-color">
+        </div> -->
         <div class="cust-panel-body">
             <div class="cust-panel-title">
-                <p class="sub-title">Primary Information</p>
+                <p class="sub-title"><span class="glyphicon glyphicon-info-sign"></span> Primary Information</p>
             </div>
             <div class="cust-panel-inner-body">
                 <table class="table table-responsive table-hover table-bordered basic-information">
                     <tbody>
                         <tr>
-                            <td style="width:1px;">REGION :</td>
+                            <td style="width:1px;">REGION </td>
                             <td> : <?= $recRegion ?></td>
                             <td style="width: 180px;">TOTAL LGU BUDGET</td>
                             <td> : Php <?= number_format($recTotalLguBudget,2) ?></td>
                         </tr>
                         <tr>
-                            <td>PROVINCE :</td>
+                            <td>PROVINCE </td>
                             <td> : <?= $recProvince ?></td>
                             <td>TOTAL GAD BUDGET</td>
-                            <td> : Php <?= number_format($recTotalGadBudget,2) ?></td>
+                            <td> : Php <?= number_format($grand_total_pb,2) ?></td>
                         </tr>
                         <tr>
                             <td>CITY/MUNICIPALITY </td>
@@ -57,26 +57,46 @@ $this->params['breadcrumbs'][] = $this->title;
     <br/>
 
     <button type="button" class="btn btn-success" id="btn-encode" style="margin-bottom: 5px;">
-        <span class="glyphicon glyphicon-pencil"></span> Encode
+        <span class="glyphicon glyphicon-pencil"></span> Encode Gender Issue or GAD Mandate
     </button>
+
+    <?php
+        $urlSetSession = \yii\helpers\Url::to(['default/session-encode']);
+        $this->registerJs("
+            $('#btn-encode').click(function(){
+                var trigger = 'open';
+                var form_type = 'gender_issue';
+                var report_type = 'pb';
+                $.ajax({
+                    url: '".$urlSetSession."',
+                    data: { 
+                            trigger:trigger,
+                            form_type:form_type,
+                            report_type:report_type
+                            }
+                    
+                    }).done(function(result) {
+                        
+                });
+                $('#inputFormPlan').slideDown(300);
+            });
+        ");
+    ?>
 
     <button type="button" class="btn btn-primary pull-right" id="btn-submit-report" style="margin-bottom: 5px;">
         <span class="glyphicon glyphicon-send"></span> Submit Report to Provincial Office
     </button>
-    
-    <?php
-        $this->registerJs('
-            $("#btn-encode").click(function(){
-                $(".input-form").slideDown(300);
-            });
-        ');
-    ?>
-    <div class="cust-panel input-form" style="display: none;">
+
+    <?php if(Yii::$app->session["encode_gender_pb"] == "open"){ ?>
+    <div class="cust-panel input-form" id="inputFormPlan">
+    <?php }else{ ?>
+    <div class="cust-panel input-form" id="inputFormPlan" style="display: none;">
+    <?php } ?>
         <div class="cust-panel-header gad-color">
         </div>
         <div class="cust-panel-body">
             <div class="cust-panel-title">
-                <p class="sub-title">INPUT FORM</p>
+                <p class="sub-title"><span class="glyphicon glyphicon-pencil"></span> INPUT FORM</p>
             </div>
             <div class="cust-panel-inner-body">
                 <?php echo $this->render('client_focused_form',[
@@ -100,7 +120,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="cust-panel-body">
             <div class="cust-panel-title">
-                <p class="sub-title">Tabular Report</p>
+                <p class="sub-title"><span class="glyphicon glyphicon-th"></span> Tabular Report</p>
             </div>
             <div class="cust-panel-inner-body">
                 <table class="table table-responsive table-bordered gad-plan-budget">
@@ -285,6 +305,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?php
                                     $this->registerJs("
                                         $('#btn_encode_attributed_program').click(function(){
+                                            var trigger = 'open';
+                                            var form_type = 'attribute';
+                                            var report_type = 'pb';
+                                            $.ajax({
+                                                url: '".$urlSetSession."',
+                                                data: { 
+                                                        trigger:trigger,
+                                                        form_type:form_type,
+                                                        report_type:report_type
+                                                        }
+                                                
+                                                }).done(function(result) {
+                                                    
+                                            });
                                             $('.attributed_program_form').slideDown(300);
                                         });
                                     ");
@@ -294,7 +328,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr class="attributed_program_form" style="display: none;">
+                        <?php if(Yii::$app->session["encode_attribute_pb"] == "open"){ ?>
+                            <tr class="attributed_program_form">
+                        <?php }else{ ?>
+                            <tr class="attributed_program_form" style="display: none;">
+                        <?php } ?>
                             <td colspan="12">
                                 <?php
                                     echo $this->render('attributed_program_form', [

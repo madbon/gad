@@ -13,8 +13,8 @@ use common\modules\report\controllers\DefaultController;
     <p id="confirm-<?= $attribute_name ?>-<?= $row_id ?>" class="confirm-message"> <!-- confirmation message update click update  -->
        <i></i> <span></span>
     </p>
-    <p id="confirm-<?= $attribute_name ?>-comment-<?= $row_id ?>" class="confirm-message confirm-gad"> <!-- confirmation message after comment  -->
-        <span class="glyphicon glyphicon-ok"></span> Comment has been saved
+    <p id="confirm-<?= $attribute_name ?>-comment-<?= $row_id ?>" class="confirm-message"> <!-- confirmation message after comment  -->
+        <i></i> <span id="comment_return_value-<?= $attribute_name ?>-<?= $row_id ?>"></span>
     </p>
 
     <?php if($data_type == "number") { ?>
@@ -108,6 +108,8 @@ use common\modules\report\controllers\DefaultController;
                     
                     $("#txt-edit-'.$attribute_name.'-'.$row_id.'").val(`'.$cell_value.'`);
                     $("#div-edit-"+attr_name+"-'.$row_id.'").slideDown(300);
+
+                    
                 });
             ');
         ?>
@@ -156,6 +158,7 @@ use common\modules\report\controllers\DefaultController;
                                 }
                         });
                     }); 
+                    
 
                     $("#btn-ext-'.$attribute_name.'-'.$row_id.'").click(function(){
                         $("#div-edit-'.$attribute_name.'-'.$row_id.'").slideUp(300);
@@ -211,11 +214,25 @@ use common\modules\report\controllers\DefaultController;
                                     }
                             
                             }).done(function(result) {
-                                $("#div-comment-"+attr_name+"-'.$row_id.'").slideUp(300);
-                                $("#confirm-'.$attribute_name.'-comment-'.$row_id.'").slideDown(300);
-                                setTimeout(function(){ $("#confirm-'.$attribute_name.'-comment-'.$row_id.'").slideUp(300); }, 3000);
-                                $("#cell-'.$attribute_name.'-'.$row_id.'").addClass("has-comment");
-                                $("#btn-view-comment-"+attr_name+"-'.$row_id.'").show();
+                                if(result != comment_value)
+                                {
+                                    $("#confirm-'.$attribute_name.'-comment-'.$row_id.' i").removeClass("glyphicon glyphicon-ok").addClass("glyphicon glyphicon-remove");
+                                    $("#comment_return_value-'.$attribute_name.'-'.$row_id.'").text(result);
+                                    $("#confirm-'.$attribute_name.'-comment-'.$row_id.'").removeClass("confirm-gad").addClass("confirm-dngr");
+                                    $("#confirm-'.$attribute_name.'-comment-'.$row_id.'").slideDown(300);
+                                    setTimeout(function(){ $("#confirm-'.$attribute_name.'-comment-'.$row_id.'").slideUp(300); }, 3000);
+                                }
+                                else
+                                {
+                                    $("#div-comment-"+attr_name+"-'.$row_id.'").slideUp(300);
+                                    $("#confirm-'.$attribute_name.'-comment-'.$row_id.' i").removeClass("glyphicon glyphicon-remove").addClass("glyphicon glyphicon-ok");
+                                    $("#comment_return_value-'.$attribute_name.'-'.$row_id.'").text("Comment has been saved");
+                                    $("#confirm-'.$attribute_name.'-comment-'.$row_id.'").removeClass("confirm-dngr").addClass("confirm-gad");
+                                    $("#confirm-'.$attribute_name.'-comment-'.$row_id.'").slideDown(300);
+                                    setTimeout(function(){ $("#confirm-'.$attribute_name.'-comment-'.$row_id.'").slideUp(300); }, 3000);
+                                    $("#cell-'.$attribute_name.'-'.$row_id.'").addClass("has-comment");
+                                    $("#btn-view-comment-"+attr_name+"-'.$row_id.'").show();
+                                }
                         });
                     }); 
 
@@ -345,9 +362,11 @@ use common\modules\report\controllers\DefaultController;
                                                         $("#txt_edit_comment-"+value.comment_id+"").slideUp(300);
                                                         $("#btn_upd8_comment-"+value.comment_id+"").hide();
                                                     }, 3000);
-                                                    
-                                                    
                                                 }
+                                                
+                                                $("#comment_confirm_message-"+value.comment_id+"").click(function(){
+                                                    $(this).hide();
+                                                });
                                         });
                                     });
 
@@ -384,6 +403,10 @@ use common\modules\report\controllers\DefaultController;
                                                             $("#list_comment-"+value.comment_id+"").slideUp(300);
                                                         }, 3000);
                                                     }
+
+                                                    $("#comment_confirm_message-"+value.comment_id+"").click(function(){
+                                                        $(this).hide();
+                                                    });
                                             });
                                         }
                                         else

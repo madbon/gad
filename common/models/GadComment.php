@@ -47,6 +47,7 @@ class GadComment extends \yii\db\ActiveRecord
             [['region_c', 'province_c', 'citymun_c'], 'string', 'max' => 2],
             [['attribute_name'], 'string', 'max' => 150],
             [['time_created', 'time_updated'], 'string', 'max' => 10],
+            [['comment'],'required'],
         ];
     }
 

@@ -1,5 +1,52 @@
 
 /*-----------------------Accomplishment Report Start*/
+table.table tbody tr td.active-cell
+{
+   background-color: skyblue !important;
+}
+div.actn-btn-bubble button.btn-info
+{
+    background-color: black !important;
+    border-color: black !important;
+}
+
+p.main-title
+{
+    color:black;
+    font-weight: bold;
+    /*text-align: center;*/
+    font-size: 25px;
+}
+p.sub-title
+{
+    font-size: 20px !important; 
+    text-transform: uppercase;
+    color: #29012cc4 !important;
+    font-weight: bold;
+}
+button.btn-success
+{
+    background-color: #29012cc4 !important;
+    border-color: #29012cc4 !important;
+}
+button.btn-success:hover
+{
+    background-color: #6b1872c4 !important;
+    border-color: #6b1872c4 !important;
+}
+ul.nav li a.btn-success
+{
+    background-color: #29012cc4 !important;
+}
+ul.nav li a.btn-success:hover
+{
+    color:yellow;
+}
+ul.nav li.active a.btn-success
+{
+    background-color: white !important;
+    color: #29012cc4 !important;
+}
 table.ar tbody tr.signatory_label td
 {
     border-bottom: 1px solid white;
@@ -32,7 +79,8 @@ table.ar tbody tr.grand_total td:nth-child(3)
 
 table.ar tbody tr.total_a td,tr.total_b td, tr.total_c td
 {
-    background-color: #ffff009e;
+    background-color: #29012cc4 !important;
+    color:white;
     font-weight: bold;
 }
 
@@ -100,7 +148,8 @@ table.gad-plan-budget tbody tr.grand_total td:nth-child(3)
 
 table.gad-plan-budget tbody tr.total_a td,tr.total_b td, tr.total_c td
 {
-    background-color: #ffff009e;
+    background-color: #29012cc4 !important;
+    color: white !important;
 }
 
 table.gad-plan-budget tbody tr.subtotal td
@@ -153,6 +202,11 @@ table.gad-plan-budget tbody tr.attributed_program_thead td
     background-color: #3a193ea8 !important;
     border-color:#3a193ea8 !important;
 }
+table.basic-information 
+{
+    border:none;
+}
+
 table.basic-information tbody tr td:nth-child(2)
 {
     font-weight: bold;
@@ -388,7 +442,7 @@ p.confirm-dngr
     width: 0;
     height: 0;
     border: 10px solid transparent;
-    border-bottom-color: #5bc0de;
+    border-bottom-color: black;
     border-top: 0;
     margin-left: -20px;
     margin-top: -10px;
