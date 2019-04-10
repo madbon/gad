@@ -24,8 +24,6 @@ class DefaultController extends Controller
 {
     public function actionSessionEncode($trigger,$form_type,$report_type)
     {
-        Yii::$app->session["encode_gender_ar"] = "closed";
-
         if($report_type == "ar") // if accomplishment report
         {
             if($form_type == "gender_issue") // if gender issue or gad mandate input form

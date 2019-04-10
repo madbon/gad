@@ -159,6 +159,8 @@ class GadPlanBudgetController extends Controller
         }
         else
         {
+            // Yii::$app->session["encode_gender_pb"] = "closed";
+            // Yii::$app->session["encode_attribute_pb"] = "closed";
             $renderValue = 'index';
         }
 

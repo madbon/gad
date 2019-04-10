@@ -137,6 +137,8 @@ class GadAccomplishmentReportController extends Controller
         }
         else
         {
+            // Yii::$app->session["encode_gender_ar"] = "closed";
+            // Yii::$app->session["encode_attribute_ar"] = "closed";
             $render_index = "index";
         }
 
