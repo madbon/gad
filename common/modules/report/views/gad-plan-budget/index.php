@@ -83,9 +83,34 @@ $this->params['breadcrumbs'][] = $this->title;
         ");
     ?>
 
-    <button type="button" class="btn btn-primary pull-right" id="btn-submit-report" style="margin-bottom: 5px;">
-        <span class="glyphicon glyphicon-send"></span> Submit Report to Provincial Office
-    </button>
+    <?php
+        $sendTo = "";
+        if(Yii::$app->user->can("gad_lgu"))
+        {
+            $sendTo = "Sumit to Field Officer";
+        }
+        elseif(Yii::$app->user->can("gad_field"))
+        {
+            $sendTo = "Endorse to Provincial Office";
+        }
+        else if(Yii::$app->user->can("gad_province"))
+        {
+            $sendTo = "Submit to Regional Office";
+        }
+        else if(Yii::$app->user->can("gad_region"))
+        {
+            $sendTo = "Submit to Central Office";
+        }
+        else
+        {
+            $sendTo = null;
+        }
+    ?>
+    <?php if(!empty($sendTo)){ ?>
+        <button type="button" class="btn btn-primary pull-right" id="btn-submit-report" style="margin-bottom: 5px;">
+            <?= $sendTo ?> &nbsp;<span class="glyphicon glyphicon-send" ></span> 
+        </button>
+    <?php } ?>
 
     <?php if(Yii::$app->session["encode_gender_pb"] == "open"){ ?>
     <div class="cust-panel input-form" id="inputFormPlan">

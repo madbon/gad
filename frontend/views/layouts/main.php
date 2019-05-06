@@ -24,7 +24,33 @@ AppAsset::register($this);
     <?php $this->head() ?>
 </head>
 <style>
-
+i.location_name
+{
+    background-color: yellow;
+    color: black;
+    padding: 5px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: bold;
+    /*color: ;*/
+}
+i.permission_denied
+{
+    font-size: 15px;
+    color:orange;
+}
+i.role_name
+{
+    /*font-weight: bold;*/
+    color: yellow;
+    font-style: normal;
+    font-size: 15px;
+    text-transform: uppercase;
+    font-size: 13px;
+    /*padding:8px;*/
+    /*background-color: #4D2A4F;*/
+    /*border-radius: 15px;*/
+}
 ul.nav li a:hover
 {
     color:gray;
@@ -71,6 +97,7 @@ div.navbar-header a img
 .navbar-inverse .navbar-brand
 {
     color:white;
+    font-size: 15px;
 }
 .navbar-inverse .navbar-brand:hover
 {
@@ -86,6 +113,7 @@ div.navbar-header a img
 .navbar-inverse .navbar-nav > li > a
 {
     color: whitesmoke;
+    /*font-size: 15px;*/
 }
 .navbar-inverse .navbar-nav > li > a:hover
 {
@@ -137,36 +165,92 @@ div.navbar-header a img
 <div class="wrap" style="background-color: #8080802e;">
    <?php
         $logo =  Html::img('@web/images/dilg-logo.png',['class']);
-        NavBar::begin([
-            'brandLabel' => $logo.'GAD-PBMS | Gender and Development Plan and Budget Monitoring System',
-            'brandUrl' => Yii::$app->homeUrl,
-            'options' => [
-                'class' => 'navbar-inverse navbar-fixed-top',
-            ],
-        ]);
-        $menuItems = [
-            [
-                'label' => 'Home','url' => ['/site/index']],
 
-            [
-                'label' => 'Create', 'items' => [
-                    ['label' => 'Plan and Budget', 'url' =>  ['/report/gad-record/create','ruc'=>'empty','onstep'=>'create_new','tocreate'=>'gad_plan_budget']],
-                    ['label' => 'Accomplishment Report', 'url' =>  ['/report/gad-record/create','ruc'=>'empty','onstep'=>'create_new','tocreate'=>'accomp_report']],
-                ],
-            ],
-            [
-                'label' => 'Report', 'items' => [
-                    ['label' => 'GAD Plan and Budget', 'url' => ['/report/gad-record/','report_type' => 'plan_budget']],
-                    ['label' => 'Accomplishment Report', 'url' => ['/report/gad-record/','report_type' => 'accomplishment' ]],
-                ],
-                // 'url' => ['/site/about']
-            ],
-            // ['label' => 'Contact', 'url' => ['/site/contact']],
-        ];
         if (Yii::$app->user->isGuest) {
+            NavBar::begin([
+                'brandLabel' => $logo.'GAD-PBMS | Gender and Development Plan and Budget Monitoring System',
+                'brandUrl' => Yii::$app->homeUrl,
+                'options' => [
+                    'class' => 'navbar-inverse navbar-fixed-top',
+                ],
+            ]);
             $menuItems[] = ['label' => 'Signup', 'url' => ['/user/register']];
             $menuItems[] = ['label' => 'Login', 'url' => ['/user/login']];
         } else {
+            $officer_role = "";
+            $location_name = "";
+            if(Yii::$app->user->can("gad_lgu"))
+            {
+                $officer_role = "lgu";
+                $location_name = !empty(Yii::$app->user->identity->userinfo->citymun->citymun_m) ? " <i class='location_name'>".Yii::$app->user->identity->userinfo->citymun->citymun_m."</i>" : "";
+            }
+            elseif(Yii::$app->user->can("gad_field"))
+            {
+                $officer_role = "field officer";
+                $location_name = !empty(Yii::$app->user->identity->userinfo->citymun->citymun_m) ? " <i class='location_name'>".Yii::$app->user->identity->userinfo->citymun->citymun_m."</i>" : "";
+            }
+            else if(Yii::$app->user->can("gad_province"))
+            {
+                $officer_role = "provincial officer";
+                $location_name = !empty(Yii::$app->user->identity->userinfo->province->province_m) ? " <i class='location_name'>".Yii::$app->user->identity->userinfo->province->province_m."</i>" : "";
+            }
+            else if(Yii::$app->user->can("gad_region"))
+            {
+                $officer_role = "regional officer";
+                $location_name = !empty(Yii::$app->user->identity->userinfo->region->region_m) ? " <i class='location_name'>".Yii::$app->user->identity->userinfo->region->region_m."</i>" : "";
+            }
+            else if(Yii::$app->user->can("gad_central"))
+            {
+                $officer_role = "central";
+            }
+            else if(Yii::$app->user->can("gad_admin"))
+            {
+                $officer_role = "administrator";
+            }
+            else
+            {
+                $officer_role = null;
+            }
+
+            if(!empty($officer_role))
+            {
+                NavBar::begin([
+                    'brandLabel' => $logo.'GAD-PBMS | Gender and Development Plan and Budget Monitoring System | <i class="role_name">'.$officer_role.$location_name.'</i>',
+                    'brandUrl' => Yii::$app->homeUrl,
+                    'options' => [
+                        'class' => 'navbar-inverse navbar-fixed-top',
+                    ],
+                ]);
+                $menuItems = [
+                    [
+                        'label' => 'Home','url' => ['/site/index']],
+
+                    [
+                        'label' => 'Create', 'items' => [
+                            ['label' => 'Plan and Budget', 'url' =>  ['/report/gad-record/create','ruc'=>'empty','onstep'=>'create_new','tocreate'=>'gad_plan_budget']],
+                            ['label' => 'Accomplishment Report', 'url' =>  ['/report/gad-record/create','ruc'=>'empty','onstep'=>'create_new','tocreate'=>'accomp_report']],
+                        ],
+                    ],
+                    [
+                        'label' => 'Report', 'items' => [
+                            ['label' => 'GAD Plan and Budget', 'url' => ['/report/gad-record/','report_type' => 'plan_budget']],
+                            ['label' => 'Accomplishment Report', 'url' => ['/report/gad-record/','report_type' => 'accomplishment' ]],
+                        ],
+                        // 'url' => ['/site/about']
+                    ],
+                    // ['label' => 'Contact', 'url' => ['/site/contact']],
+                ];
+            }
+            else // if empty officer role
+            {
+                NavBar::begin([
+                    'brandLabel' => $logo.'GAD-PBMS | Gender and Development Plan and Budget Monitoring System | <i class="permission_denied">Permission Denied</i>',
+                    'brandUrl' => Yii::$app->homeUrl,
+                    'options' => [
+                        'class' => 'navbar-inverse navbar-fixed-top',
+                    ],
+                ]);
+            } // end- if empty officer role
             $menuItems[] = '<li>'
                 . Html::beginForm(['/user/logout'], 'post')
                 . Html::submitButton(
