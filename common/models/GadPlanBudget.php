@@ -45,15 +45,34 @@ class GadPlanBudget extends \yii\db\ActiveRecord
     {
         return [
             [['focused_id','inner_category_id','user_id','ppa_focused_id'], 'integer'],
-            [['cause_gender_issue', 'objective', 'relevant_lgu_program_project', 'activity', 'performance_target','performance_indicator'], 'string'],
+            [['cause_gender_issue', 'objective', 'relevant_lgu_program_project', 'activity', 'performance_target','performance_indicator','cliorg_ppa_attributed_program_id','gi_sup_data'], 'string'],
             [['budget_mooe', 'budget_ps', 'budget_co', 'sort'], 'number'],
             // [['cause_gender_issue','ppa_value','objective','relevant_lgu_program_project','activity','performance_target'], 'required'],
-            [['cause_gender_issue','ppa_focused_id','inner_category_id','focused_id'], 'required'],
+            [['ppa_value','relevant_lgu_program_project','objective','activity','performance_target','performance_indicator','lead_responsible_office'],'required'],
+            [['ppa_value'], Yii::$app->controller->action->id == "update-ppa-value" ? "required" : "safe"],
+            [['relevant_lgu_program_project'], Yii::$app->controller->action->id == "update-relevant-lgu-program-project"  ? "required" : "safe"],
+            [['objective'], Yii::$app->controller->action->id == "update-objective" ? "required" : "safe"],
+            [['activity'], Yii::$app->controller->action->id == "update-activity" ? "required" : "safe"],
+            [['performance_target'], Yii::$app->controller->action->id == "update-performance-target" ? "required" : "safe"],
+            [['performance_indicator'], Yii::$app->controller->action->id == "update-performance-indicator" ? "required" : "safe"],
+            [['lead_responsible_office'], Yii::$app->controller->action->id == "update-lead-responsible-office" ? "required" : "safe"],
+            
+            [['budget_mooe'], Yii::$app->controller->action->id == "update-budget-mooe" ? "required" : "safe"],
+            [['budget_ps'], Yii::$app->controller->action->id == "update-budget-ps" ? "required" : "safe"],
+            [['budget_co'], Yii::$app->controller->action->id == "update-budget-co" ? "required" : "safe"],
+
+            [['ppa_focused_id','inner_category_id','focused_id','cliorg_ppa_attributed_program_id'], Yii::$app->controller->action->id == "create-gad-plan-budget" ? 'required' : 'safe'],
+
             [['date_created', 'date_updated'], 'safe'],
             [['time_created', 'time_updated'], 'string', 'max' => 10],
             [['record_tuc','tuc'], 'string', 'max' => 150],
             // [['ppa_value'], 'safe'],
-            [['ppa_value'], 'required', 'when' => function ($model) { return $model->ppa_focused_id == 0; }],
+            [['cause_gender_issue'], 'required', 'when' => function ($model) { return $model->ppa_focused_id == 0; }],
+            [['budget_mooe','budget_ps','budget_co'],Yii::$app->controller->action->id == "create-gad-plan-budget" ? 'required' : 'safe',  'when' => function ($model) { return $model->budget_mooe == null && $model->budget_ps == null && $model->budget_co == null; }, 'message' => 'Please fill up atleast 1 from MOOE, PS, & CO '],
+            [['gi_sup_data'],  
+            Yii::$app->controller->action->id == "create-gad-plan-budget" || 
+            Yii::$app->controller->action->id == "update-gender-issue-sup-data" ? 'required' : "safe", 'when' => function ($model) { return $model->inner_category_id == 1; }],
+            // [['ppa_value'], 'required'],
         ];
     }
 
@@ -65,10 +84,10 @@ class GadPlanBudget extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'performance_indicator' => 'Performance  Indicator',
-            'ppa_value' => 'PPA Other Description',
-            'ppa_focused_id' => 'Category of PPA',
+            'ppa_value' => 'Title/Description of Gender Issue or GAD Mandate',
+            'ppa_focused_id' => 'Activity Category',
             // 'focused_id' => 'Category of PPAs',
-            'cause_gender_issue' => 'Gender Issue or GAD Mandate',
+            'cause_gender_issue' => 'Other Activity Category',
             'objective' => 'GAD  Objective',
             'relevant_lgu_program_project' => 'Relevant LGU Program or Project',
             'activity' => 'GAD Activity',
@@ -84,7 +103,9 @@ class GadPlanBudget extends \yii\db\ActiveRecord
             'sort' => 'Sort',
             'tuc_parent' => 'Tuc Parent',
             'focused_id' => 'Focused',
-            'inner_category_id' => 'Gender Issue or GAD Mandate'
+            'inner_category_id' => 'Gender Issue or GAD Mandate',
+            'cliorg_ppa_attributed_program_id' => 'PPA Sectors',
+            'gi_sup_data' => 'Gender Issue Supporting Statistics Data'
         ];
     }
 }

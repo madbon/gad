@@ -37,16 +37,23 @@ class GadAttributedProgram extends \yii\db\ActiveRecord
     {
         return [
             
-            [['record_id','ppa_attributed_program_id'], 'integer'],
-            [['lgu_program_project'], 'string'],
+            [['record_id'], 'integer'],
+            [['lgu_program_project','ppa_attributed_program_id'], 'string'],
             [['total_annual_pro_budget', 'attributed_pro_budget','hgdg'], 'number'],
             [['date_created', 'date_updated'], 'safe'],
-            [['record_tuc', 'lead_responsible_office'], 'string', 'max' => 150],
+            [['record_tuc', 'ap_lead_responsible_office'], 'string', 'max' => 150],
             [['time_created', 'time_updated'], 'string', 'max' => 10],
-            [['lgu_program_project','ppa_attributed_program_id'], 'required'],
-            // [['ppa_attributed_program_id'],'required', 'when' => function ($model) { return $model->ppa_attributed_program_id == null; }],
-            [['ppa_attributed_program_others'],'required', 'when' => function ($model) { return $model->ppa_attributed_program_id == 0; }]
+            [['lgu_program_project','ppa_attributed_program_id','hgdg','total_annual_pro_budget','attributed_pro_budget','ap_lead_responsible_office'],Yii::$app->controller->action->id == "create-pb-attributed-program" ? 'required' : 'safe'],
 
+            [['lgu_program_project'], Yii::$app->controller->action->id == "update-ap-lgu-program-project" ? "required" : "safe"],
+
+            [['hgdg'], Yii::$app->controller->action->id == "update-hgdg" ? "required" : "safe"],
+
+            [['total_annual_pro_budget'], Yii::$app->controller->action->id == "update-total-annual-pro-budget" ? "required" : "safe"],
+
+            [['attributed_pro_budget'], Yii::$app->controller->action->id == "update-attributed-pro-budget" ? "required" : "safe"],
+
+            [['ap_lead_responsible_office'], Yii::$app->controller->action->id == "update-ap-lead-responsible-office" ? "required" : "safe"]
         ];
     }
 
@@ -60,12 +67,12 @@ class GadAttributedProgram extends \yii\db\ActiveRecord
             'record_id' => 'Record ID',
             'record_tuc' => 'Record Tuc',
             'ppa_attributed_program_others' => 'Other PPA Attributed Programs',
-            'ppa_attributed_program_id' => 'Category of PPA Attributed Programs',
+            'ppa_attributed_program_id' => 'PPA Sectors',
             'lgu_program_project' => 'Title of LGU Program or Project',
             'hgdg' => 'HGDG Design / Funding Facility Generic Checklist Score',
             'total_annual_pro_budget' => 'Total Annual Program / Project Budget',
             'attributed_pro_budget' => 'GAD Attributed Program / Project Budget',
-            'lead_responsible_office' => 'Lead or Responsible Office',
+            'ap_lead_responsible_office' => 'Lead or Responsible Office',
             'date_created' => 'Date Created',
             'time_created' => 'Time Created',
             'date_updated' => 'Date Updated',

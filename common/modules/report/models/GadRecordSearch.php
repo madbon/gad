@@ -6,6 +6,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\GadRecord;
 use yii\db\Query;
+use Yii;
 /**
  * GadRecordSearch represents the model behind the search form of `common\models\GadRecord`.
  */
@@ -43,7 +44,29 @@ class GadRecordSearch extends GadRecord
     public function search($params)
     {
         $this->load($params);
-        
+
+        $filteredByRole = [];
+        if(Yii::$app->user->can("gad_lgu"))
+        {
+            $filteredByRole = ['GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C];
+        }
+        elseif(Yii::$app->user->can("gad_field"))
+        {
+            $filteredByRole = ['GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C];
+        }
+        else if(Yii::$app->user->can("gad_province"))
+        {
+            $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,'GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C];
+        }
+        else if(Yii::$app->user->can("gad_region"))
+        {
+            $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C];
+        }
+        else
+        {
+            $filteredByRole = [];
+        }
+
         $query = (new Query())
         ->select([
             'REG.region_m as region_name',
@@ -64,7 +87,10 @@ class GadRecordSearch extends GadRecord
         ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = GR.region_c')
         ->leftJoin(['PROV' => 'tblprovince'], 'PROV.province_c = GR.province_c')
         ->leftJoin(['CTY' => 'tblcitymun'], 'CTY.citymun_c = GR.citymun_c and CTY.province_c = GR.province_c')
-        ->andFilterWhere(['LIKE','GR.tuc',$this->record_tuc]);
+        ->andFilterWhere(['LIKE','GR.tuc',$this->record_tuc])
+        ->andFilterWhere($filteredByRole)
+        ->groupBy(['GR.id'])
+        ->orderBy(['GR.id' => SORT_DESC]);
 
         // print_r($query->createCommand()->rawSql); exit;
         $dataProvider = new ActiveDataProvider([

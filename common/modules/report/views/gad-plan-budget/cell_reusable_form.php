@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use common\modules\report\controllers\DefaultController;
 ?>
-
 <?php if(DefaultController::countComment2($controller_id,$form_id,$row_id,$attribute_name) > 0) { ?>
 <td style="<?= $customStyle ?>" title="<?= $column_title ?>" colspan="<?= $colspanValue ?>" id="cell-<?= $attribute_name ?>-<?= $row_id ?>" class="common-cell-container has-comment"> <!-- put border if has comment  -->
 <?php } else{ ?>
@@ -65,23 +64,43 @@ use common\modules\report\controllers\DefaultController;
 
             $("#btn-select-'.$attribute_name.'-'.$row_id.'").click(function(){
                 var attr_name = "'.$attribute_name.'";
+                var enableComment = "'.$enableComment.'";
+                var enableEdit = "'.$enableEdit.'";
+
                 $(".common-cell-container").removeClass("active-cell"); // remove other .active-cell if not active
                 $("#cell-"+attr_name+"-'.$row_id.'").addClass("active-cell"); // add class .active-cell if active
 
                 $(".common-cell-container").css({"background-color":"white"});
                 $("#cell-"+attr_name+"-'.$row_id.'").css({"background-color":"skyblue"}); // active-color
 
-                $(".btn-edit-cell").hide(); // hide btn edit if not active cell
-                $(".btn-comment-cell").hide(); // hide btn comment if not active cell
-                $(".btn-view-comment-common").hide();
-                $("#btn-edit-"+attr_name+"-'.$row_id.'").show(); // if active show btn edit
-                $("#btn-comment-"+attr_name+"-'.$row_id.'").show(); // if active show btn common
-
-                var countComment = '.(DefaultController::countComment2($controller_id,$form_id,$row_id,$attribute_name)).';
-                if(countComment > 0)
+                if(enableEdit == "true")
                 {
-                    $("#btn-view-comment-"+attr_name+"-'.$row_id.'").show(); // if active show btn common
+
+                    $(".btn-edit-cell").hide(); // hide btn edit if not active cell
+                    $("#btn-edit-"+attr_name+"-'.$row_id.'").show(); // if active show btn edit
                 }
+                else 
+                {
+                    $(".btn-edit-cell").hide();
+                }
+                
+                if(enableComment == "true")
+                {
+                    $(".btn-comment-cell").hide(); // hide btn comment if not active cell
+                    $(".btn-view-comment-common").hide();
+                    $("#btn-comment-"+attr_name+"-'.$row_id.'").show(); // if active show btn common
+                    var countComment = '.(DefaultController::countComment2($controller_id,$form_id,$row_id,$attribute_name)).';
+                    if(countComment > 0)
+                    {
+                        $("#btn-view-comment-"+attr_name+"-'.$row_id.'").show(); // if active show btn common
+                    }
+                }
+                else
+                {
+                    $(".btn-comment-cell").hide(); // hide btn comment if not active cell
+                    $(".btn-view-comment-common").hide();
+                }
+                
 
                 if($("#cell-"+attr_name+"-'.$row_id.'").hasClass("active-cell")) // if td.active cell has class  .active-cell hide button select
                 {
@@ -438,6 +457,99 @@ use common\modules\report\controllers\DefaultController;
                         $("#div-view-comment-'.$attribute_name.'-'.$row_id.'").slideUp(300);
                     });
                 ');
+            ?>
+        </div>
+
+        <?php 
+            $findOneQry =  \common\models\GadPlanBudget::find()->where(['id' => $row_id, 'inner_category_id' => 1])->andWhere(['not', ['gi_sup_data' => null]]);
+        ?>
+        <?php if($findOneQry->exists() && $attribute_name == "ppa_value"){ ?>
+            <button id="btn_view_gi_sup_data-<?= $row_id ?>" type="button" class="btn btn-warning btn-xs" title="Gender Issue Supporting Statistics Data">
+                <span class="glyphicon glyphicon-list"></span>
+            </button>
+            <?php
+                $urlLoadSupData = \yii\helpers\Url::to(['/report/default/load-gender-issue-sup-data']);
+                $this->registerJs("
+                    $('#btn_view_gi_sup_data-".$row_id."').click(function(){
+                        $('.div-tooltip-form').hide(); // hide all showing div
+                        $('#div_view_sup_data-".$row_id."').slideDown(300); // show current active div
+                        var record_id = ".$row_id.";
+                        $.ajax({
+                            url: '".$urlLoadSupData."',
+                            data: { 
+                                    record_id:record_id
+                                    }
+                            
+                            }).done(function(data) {
+                                $('#content_sup_data-".$row_id."').text(data);
+                        });
+                    });
+                ");
+            ?>
+        <?php } ?>
+
+        <div id="div_view_sup_data-<?= $row_id ?>" class="bubble-view-supdata div-tooltip-form unik-div-tooltip-form-<?= $row_id ?>">
+            <p class="confirm-message confirm-prmry" id="confirm_gi_sup_data-<?= $row_id ?>"></p>
+            <p style="background-color: white; font-weight: bold; color: black; text-align: left; border-bottom: 1px solid white; margin-top: 5px; padding-left: 10px;">GENDER ISSUE SUPPORTING STATISTICS DATA</p>
+            <div style="background-color: white; width: 90%; margin-right: 5%; margin-left: auto; margin-top: 10px; overflow-y: scroll; max-height: 100px;">
+
+                <p id="content_sup_data-<?= $row_id ?>" style="color:black; text-align: justify; width: 90%; margin-right: 5%; margin-left: auto; font-style: italic;">
+                </p>
+            </div>
+            <textarea id="ta_edit_supdata-<?= $row_id ?>" rows="3" class="form-control" style="display: none; width: 90%; margin-left: 5%; margin-right: auto; margin-top: 10px; background-color: skyblue; color:black; border-radius: 15px;">
+            </textarea>
+            <button id="ext_view_supdata-<?= $row_id ?>" type="button" class="btn btn-xs btn-danger comnt-textarea pull-right exit-button">
+                    <span class="glyphicon glyphicon-remove"></span> Close
+            </button>
+            <button id="edit_supdata-<?= $row_id ?>" type="button" class="btn btn-xs btn-default comnt-textarea pull-right exit-button" title="Edit Supporting Statistics Data">
+                <span class="glyphicon glyphicon-edit"></span> Edit
+            </button>
+            <button id="update_supdata-<?= $row_id ?>" type="button" class="btn btn-xs btn-primary comnt-textarea pull-right exit-button" title="Save Changes on Supporting Statistics Data" style="display: none;">
+                <span class="glyphicon glyphicon-floppy-disk"></span> Save
+            </button>
+            
+            <?php
+                $urlUpdateSupData = \yii\helpers\Url::to(['/report/default/update-gender-issue-sup-data']);
+                $this->registerJs("
+                    $('#edit_supdata-".$row_id."').click(function(){
+                        var value = $.trim($('#content_sup_data-".$row_id."').text());
+                        $('#ta_edit_supdata-".$row_id."').text(value);
+                        $('#ta_edit_supdata-".$row_id."').slideDown(300);
+                        $('#update_supdata-".$row_id."').show();
+                    });
+
+                    $('#ext_view_supdata-".$row_id."').click(function(){
+                        $('#div_view_sup_data-".$row_id."').slideUp(300);
+                    });
+
+                    $('#update_supdata-".$row_id."').click(function(){
+                        var ta_supdata_value = $('#ta_edit_supdata-".$row_id."').val();
+                        var record_id = ".$row_id.";
+                        $.ajax({
+                            url: '".$urlUpdateSupData."',
+                            data: { 
+                                    upd8_value:ta_supdata_value,
+                                    uid:record_id
+                                    }
+                            
+                            }).done(function(data) {
+                                if(data != ta_supdata_value)
+                                {
+                                    $('#confirm_gi_sup_data-".$row_id."').removeClass('confirm-prmry').addClass('confirm-dngr');
+                                    $('#confirm_gi_sup_data-".$row_id."').text(data);
+                                    $('#confirm_gi_sup_data-".$row_id."').slideDown(300);
+                                    setTimeout(function(){ $('#confirm_gi_sup_data-".$row_id."').slideUp(300); }, 3000);
+                                }
+                                else
+                                {
+                                    $('#confirm_gi_sup_data-".$row_id."').text('Supporting Statistics Data has been updated.');
+                                    $('#content_sup_data-".$row_id."').text(ta_supdata_value);
+                                    $('#confirm_gi_sup_data-".$row_id."').slideDown(300);
+                                    setTimeout(function(){ $('#confirm_gi_sup_data-".$row_id."').slideUp(300); }, 3000);
+                                }
+                        });
+                    });
+                ");
             ?>
         </div>
     <!-- button comment and textarea end -->

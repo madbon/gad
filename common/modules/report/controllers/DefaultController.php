@@ -652,21 +652,21 @@ class DefaultController extends Controller
 
     public function actionUpdatePbFooterDate($uid,$upd8_value)
     {
+
         $qry = GadRecord::find()->where(['id' => $uid])->one();
         $qry->footer_date = date('Y-m-d',strtotime($upd8_value));
-
         if($qry->save())
         {
             $is_save = $upd8_value;
         }else
         {
             $is_save = "";
+
             foreach ($qry->errors as $key => $value) {
                 $is_save = $value[0];
             }
         }
-        
-        return $is_save;
+        return $upd8_value;
     }
     public function actionUpdatePbApprovedBy($uid,$upd8_value)
     {
@@ -707,7 +707,7 @@ class DefaultController extends Controller
     public function actionUpdateApLeadResponsibleOffice($uid,$upd8_value)
     {
         $qry = GadAttributedProgram::find()->where(['id' => $uid])->one();
-        $qry->lead_responsible_office = $upd8_value;
+        $qry->ap_lead_responsible_office = $upd8_value;
 
         if($qry->save())
         {
@@ -794,18 +794,17 @@ class DefaultController extends Controller
         
         return $is_save;
     }
-    public  function actionCreatePbAttributedProgram($ruc,$onstep,$ppa_attributed_program_id,$ppa_attributed_program_others,$lgu_program_project,$hgdg,$total_annual_pro_budget,$attributed_pro_budget,$lead_responsible_office,$controller_id,$tocreate)
+    public  function actionCreatePbAttributedProgram($ruc,$onstep,$ppa_attributed_program_id,$lgu_program_project,$hgdg,$total_annual_pro_budget,$attributed_pro_budget,$lead_responsible_office,$controller_id,$tocreate)
     {
         // print_r($ppa_attributed_program_id); exit;
         $model = new GadAttributedProgram();
         $model->record_tuc = $ruc;
         $model->ppa_attributed_program_id = $ppa_attributed_program_id;
-        $model->ppa_attributed_program_others = $ppa_attributed_program_others;
         $model->lgu_program_project = $lgu_program_project;
         $model->hgdg = $hgdg;
         $model->total_annual_pro_budget = $total_annual_pro_budget;
         $model->attributed_pro_budget = $attributed_pro_budget;
-        $model->lead_responsible_office = $lead_responsible_office;
+        $model->ap_lead_responsible_office = $lead_responsible_office;
 
         date_default_timezone_set("Asia/Manila");
         $model->date_created = date('Y-m-d');
@@ -1032,6 +1031,15 @@ class DefaultController extends Controller
         
         \Yii::$app->response->format = 'json';
         return $arr;
+    }
+
+    public function actionLoadGenderIssueSupData($record_id)
+    {
+        $qry = \common\models\GadPlanBudget::find()->where(['id' => $record_id, 'inner_category_id' => 1])->one();
+        $value = !empty($qry->gi_sup_data) ? $qry->gi_sup_data : "";
+
+        \Yii::$app->response->format = 'json';
+        return $value;
     }
 
     public function countComment($id,$attribute)
@@ -1261,7 +1269,7 @@ class DefaultController extends Controller
 
     }
 
-    public function actionCreateGadPlanBudget($ppa_focused_id,$ppa_value,$issue,$obj,$relevant,$act,$performance_target,$performance_indicator,$ruc,$budget_mooe,$budget_ps,$budget_co,$lead_responsible_office,$focused_id,$inner_category_id,$onstep,$tocreate)
+    public function actionCreateGadPlanBudget($ppa_focused_id,$ppa_value,$issue,$obj,$relevant,$act,$performance_target,$performance_indicator,$ruc,$budget_mooe,$budget_ps,$budget_co,$lead_responsible_office,$focused_id,$inner_category_id,$onstep,$tocreate,$cliorg_ppa_attributed_program_id,$gi_sup_data)
     {
         $model = new \common\models\GadPlanBudget();
         $model->cause_gender_issue = $issue;
@@ -1279,6 +1287,8 @@ class DefaultController extends Controller
         $model->lead_responsible_office = $lead_responsible_office;
         $model->focused_id = $focused_id;
         $model->inner_category_id = $inner_category_id;
+        $model->cliorg_ppa_attributed_program_id = $cliorg_ppa_attributed_program_id;
+        $model->gi_sup_data = $gi_sup_data;
 
         $qryRecord = \common\models\GadRecord::find()->where(['tuc' => $ruc])->one();
         $qryRecordId = !empty($qryRecord->id) ? $qryRecord->id : null;
@@ -1358,6 +1368,7 @@ class DefaultController extends Controller
         $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
         $qry->budget_mooe = $upd8_value;
 
+        // print_r(Yii::$app->controller->action->id); exit;
         if($qry->save())
         {
             $is_save = $upd8_value;
@@ -1428,10 +1439,49 @@ class DefaultController extends Controller
         return $is_save;
     }
 
+    public function actionUpdatePpaValue($uid,$upd8_value)
+    {
+        $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
+        $qry->ppa_value = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+
+        
+        return $is_save;
+    }
+
     public function actionUpdateObjective($uid,$upd8_value)
     {
        	$qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
         $qry->objective = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+
+    public function actionUpdateGenderIssueSupData($uid,$upd8_value)
+    {
+        $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
+        $qry->gi_sup_data = $upd8_value;
 
         if($qry->save())
         {
@@ -1457,9 +1507,10 @@ class DefaultController extends Controller
             $is_save = $upd8_value;
         }else
         {
-            $is_save = "error_in_saving";
-
-            $qry->errors;
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
         }
         
         return $is_save;

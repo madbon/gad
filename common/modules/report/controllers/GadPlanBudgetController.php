@@ -49,27 +49,62 @@ class GadPlanBudgetController extends Controller
         $dataAttributedProgram = (new \yii\db\Query())
         ->select([
             'AP.id',
-            'IF(AP.ppa_attributed_program_id = 0, AP.ppa_attributed_program_others, PAP.title) as ap_ppa_value',
+            // 'IF(AP.ppa_attributed_program_id = 0, AP.ppa_attributed_program_others, PAP.title) as ap_ppa_value',
             'AP.lgu_program_project',
             'AP.hgdg',
             'AP.total_annual_pro_budget',
             'AP.attributed_pro_budget',
-            'AP.lead_responsible_office',
+            'AP.ap_lead_responsible_office',
             'AP.record_tuc',
             'AP.controller_id'
         ])
         ->from('gad_attributed_program AP')
         ->leftJoin(['PAP' => 'gad_ppa_attributed_program'], 'PAP.id = AP.ppa_attributed_program_id')
         ->where(['AP.record_tuc' => $ruc])
-        ->groupBy(['AP.ppa_attributed_program_id','AP.ppa_attributed_program_others','AP.lgu_program_project'])
-        ->orderBy(['AP.ppa_attributed_program_id' => SORT_ASC, 'AP.ppa_attributed_program_id' => SORT_ASC,'AP.ppa_attributed_program_others' => SORT_ASC,'AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
+        ->groupBy(['AP.lgu_program_project'])
+        ->orderBy(['AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
         ->all();
 
         $sum_ap_apb = 0;
+        $varTotalGadAttributedProBudget = 0;
         foreach ($dataAttributedProgram as $key => $dap) {
-            $sum_ap_apb += $dap["attributed_pro_budget"];
+            $varHgdg = $dap["hgdg"];
+            $varTotalAnnualProBudget = $dap["total_annual_pro_budget"];
+            $computeGadAttributedProBudget = 0;
+            $HgdgMessage = null;
+            $HgdgWrongSign = "";
+            
+            if($varHgdg < 4) // 0%
+            {
+                $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
+            }
+            else if($varHgdg >= 4 && $varHgdg <= 7.9) // 25%
+            {
+                $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.25);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
+            }
+            else if($varHgdg >= 8 && $varHgdg <= 14.9) // 50%
+            {
+                $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.50);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
+            }
+            else if($varHgdg >= 15 && $varHgdg <= 19.9) // 75%
+            {
+                $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.75);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
+            }
+            else if($varHgdg == 20) // 100%
+            {
+                $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 1);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
+            }
+            else
+            {
+                
+            }
         }
-
+        
 
         $qryRecord = (new \yii\db\Query())
         ->select([
@@ -88,15 +123,18 @@ class GadPlanBudgetController extends Controller
         $recRegion = !empty($qryRecord['region_name']) ? $qryRecord['region_name'] : "";
         $recProvince = !empty($qryRecord['province_name']) ? $qryRecord['province_name'] : "";
         $recCitymun = !empty($qryRecord['citymun_name']) ? $qryRecord['citymun_name'] : "";
-        $recTotalLguBudget = !empty($qryRecord['total_lgu_budget']) ? $qryRecord['total_lgu_budget'] : "";
-        $recTotalGadBudget = !empty($qryRecord['total_gad_budget']) ? $qryRecord['total_gad_budget'] : "";
+        $recTotalLguBudget = !empty($qryRecord['total_lgu_budget']) ? $qryRecord['total_lgu_budget'] : 0;
+        $recTotalGadBudget = !empty($qryRecord['total_gad_budget']) ? $qryRecord['total_gad_budget'] : 0;
+
+        $fivePercentTotalLguBudget = ($recTotalLguBudget * 0.05);
 
 
         $dataPlanBudget = (new \yii\db\Query())
         ->select([
             'PB.id',
-            'IF(PB.ppa_focused_id = 0, PB.ppa_value,CF.title) as ppa_value',
-            'PB.cause_gender_issue',
+            'PB.ppa_value',
+            'IF(PB.ppa_focused_id = 0, PB.cause_gender_issue,CF.title) as activity_category',
+            'PB.cause_gender_issue as other_activity_category',
             'PB.objective',
             'PB.relevant_lgu_program_project',
             'PB.activity',
@@ -121,8 +159,8 @@ class GadPlanBudgetController extends Controller
         ->leftJoin(['GF' => 'gad_focused'], 'GF.id = PB.focused_id')
         ->leftJoin(['IC' => 'gad_inner_category'], 'IC.id = PB.inner_category_id')
         ->where(['PB.record_tuc' => $ruc])
-        ->orderBy(['PB.focused_id' => SORT_ASC,'PB.inner_category_id' => SORT_ASC,'PB.ppa_focused_id' => SORT_ASC,'PB.ppa_value' => SORT_ASC,'PB.id' => SORT_ASC])
-        ->groupBy(['PB.focused_id','PB.inner_category_id','PB.ppa_focused_id','PB.ppa_value','PB.cause_gender_issue','PB.objective','PB.relevant_lgu_program_project','PB.activity','PB.performance_target'])
+        ->orderBy(['PB.focused_id' => SORT_ASC,'PB.inner_category_id' => SORT_ASC,'PB.ppa_value' => SORT_ASC,'PB.id' => SORT_ASC])
+        ->groupBy(['PB.focused_id','PB.inner_category_id','PB.ppa_value','PB.objective','PB.relevant_lgu_program_project','PB.activity','PB.performance_target'])
         ->all();
         // echo "<pre>";
         // print_r($dataPlanBudget); exit;
@@ -136,8 +174,11 @@ class GadPlanBudgetController extends Controller
             $sum_dbp_ps += $dpb["budget_ps"];
             $sum_dbp_co += $dpb["budget_co"];
         }
+
+        
         $sum_db_budget = ($sum_dbp_co + $sum_dbp_mooe + $sum_dbp_ps);
-        $grand_total_pb = ($sum_db_budget + $sum_ap_apb);
+        $grand_total_pb = ($sum_db_budget + $varTotalGadAttributedProBudget);
+
 
 
         $objective_type = ArrayHelper::getColumn(GadPlanBudget::find()->select(['objective'])->distinct()->all(), 'objective');
@@ -184,6 +225,7 @@ class GadPlanBudgetController extends Controller
             'select_GadInnerCategory' => $select_GadInnerCategory,
             'tocreate' => $tocreate,
             'grand_total_pb' => $grand_total_pb,
+            'fivePercentTotalLguBudget' => $fivePercentTotalLguBudget,
         ]);
     }
 

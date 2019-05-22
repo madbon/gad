@@ -1,5 +1,14 @@
 
 /*-----------------------Accomplishment Report Start*/
+p.sup_data
+{
+    color: white;
+    text-align: justify;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: auto;
+    margin-top: 10px;
+}
 table.table tbody tr td.active-cell
 {
    background-color: skyblue !important;
@@ -354,7 +363,9 @@ table tbody tr td.has-comment
   /* border:2px solid rgb(237,63,57) !important; 
    border-left: 2px solid rgb(237,63,57) !important; 
    border-top: 2px solid rgb(237,63,57) !important; */
-   background-color: #9e42a969 !important;
+   /*background-color: #9e42a969 !important;*/
+   background-color: #e97370 !important;
+   /*color:white !important;*/
 }
 .bubble-view-comment {
     position: absolute;
@@ -382,6 +393,34 @@ table tbody tr td.has-comment
     top: -20px;
     left: 11%;
     margin-left: 20px;
+}
+
+.bubble-view-supdata {
+    position: absolute;
+    background: #eea236;
+    color: black;
+    font-family: Arial;
+    text-align: center;
+    width: 350px;
+    border-radius: 5px;
+    margin-top: 20px;
+    z-index: 1;
+    padding-bottom: 5px;
+    box-shadow: 1px 1px 1px 1px rgba(150,150,150,0.5);
+    max-height: 250px;
+}
+.bubble-view-supdata:after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 0;
+    z-index: 1;
+    border-style: solid;
+    border-width: 20px 0 0 20px;
+    border-color: transparent transparent transparent #eea236;
+    top: -20px;
+    left: 11%;
+    margin-left: 60px;
 }
  /*Speech buble*/
 
@@ -577,18 +616,6 @@ table.gad-plan-budget thead tr th
 {
     text-align: center;
     border:1px solid black;
-}
-table.gad-plan-budget thead tr:first-child th
-{
-    border-bottom: none;
-}
-table.gad-plan-budget thead tr:nth-child(2) th
-{
-    border-top: none;
-}
-table.gad-plan-budget thead tr:first-child th:nth-child(8)
-{
-    border-bottom: 1px solid black;
 }
 
 table.gad-plan-budget tbody tr td

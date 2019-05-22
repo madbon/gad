@@ -1,6 +1,23 @@
 
 <?php
     echo $this->render('cell_reusable_form',[
+        'cell_value' => $plan["ppa_value"],
+        'row_id' => $plan["id"],
+        'record_unique_code' => $plan["record_uc"],
+        'attribute_name' => "ppa_value",
+        'data_type' => 'string',
+        'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-ppa-value']),
+        'column_title' => 'Title / Description of Gender Issue or GAD Mandate',
+        'colspanValue' => '',
+        'controller_id' => Yii::$app->controller->id,
+        'form_id' => 'cli-org-focused-form',
+        'customStyle' => '',
+        'enableComment' => 'true',
+        'enableEdit' => 'true',
+    ])
+?>
+<?php
+    echo $this->render('cell_reusable_form',[
         'cell_value' => $plan["objective"],
         'row_id' => $plan["id"],
         'record_unique_code' => $plan["record_uc"],
@@ -12,6 +29,8 @@
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
+        'enableComment' => 'true',
+        'enableEdit' => 'true',
     ])
 ?>
 
@@ -28,6 +47,8 @@
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
+        'enableComment' => 'true',
+        'enableEdit' => 'true',
     ])
 ?>
 
@@ -44,6 +65,8 @@
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
+        'enableComment' => 'true',
+        'enableEdit' => 'true',
     ])
 ?>
 
@@ -60,6 +83,8 @@
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
+        'enableComment' => 'true',
+        'enableEdit' => 'true',
     ])
 ?>
 
@@ -76,6 +101,8 @@
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
+        'enableComment' => 'true',
+        'enableEdit' => 'true',
     ])
 ?>
 
@@ -92,6 +119,8 @@
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
         'customStyle' => 'text-align:right;',
+        'enableComment' => 'true',
+        'enableEdit' => 'true',
     ])
 ?>
 
@@ -108,6 +137,8 @@
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
         'customStyle' => 'text-align:right;',
+        'enableComment' => 'true',
+        'enableEdit' => 'true',
     ])
 ?>
 
@@ -124,6 +155,8 @@
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
         'customStyle' => 'text-align:right;',
+        'enableComment' => 'true',
+        'enableEdit' => 'true',
     ])
 ?>
 
@@ -140,5 +173,7 @@
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
+        'enableComment' => 'true',
+        'enableEdit' => 'true',
     ])
 ?>

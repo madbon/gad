@@ -11,43 +11,35 @@ use kartik\select2\Select2;
                 'name' => 'ppa_attributed_program_id',
                 'data' => $select_PpaAttributedProgram,
                 'options' => [
-                    'placeholder' => 'Select PPA Category',
+                    'placeholder' => 'Tag PPA Sectors',
                     'id' => "ppa_attributed_program_id",
+                    'multiple' => true,
                 ],
                 'pluginEvents'=>[
                     'select2:select'=>'
                         function(){
                             $("#message-ppa_attributed_program_id").text("");
                             $("#select2-ppa_attributed_program_id-container").parent(".select2-selection").css({"border":"1px solid #ccc"});
-                            var this_val = this.value;
-                            if(this_val == "0")
-                            {
-                            	$("#div-ppa_attributed_program_others").slideDown(300);
-                            }
-                            else
-                            {
-                            	$("#div-ppa_attributed_program_others").slideUp(300);
-                            }
                         }',
                 ]     
             ]);
-            $this->registerJs('
-            	var newOption = $("<option>");
-            	newOption.attr("value","0").text("Others");
-                $("#ppa_attributed_program_id").append(newOption);
-            ');
+            // $this->registerJs('
+            // 	var newOption = $("<option>");
+            // 	newOption.attr("value","0").text("Others");
+            //     $("#ppa_attributed_program_id").append(newOption);
+            // ');
         ?>
-        <div id="div-ppa_attributed_program_others" style="display:none;">
+        <!-- <div id="div-ppa_attributed_program_others" style="display:none;"> -->
 	        <?php
-	            echo $this->render('common_tools/textinput_suggest',[
-	                'placeholder_title' => "Specify here (Other PPA Attributed Program)",
-	                'attribute_name' => "ppa_attributed_program_others",
-	                'urlLoadResult' => '/report/default/load-ppa-attributed-program-others',
-	                'classValue' => 'form-control',
-	                'customStyle' => 'margin-top:10px;',
-	            ]);
+	            // echo $this->render('common_tools/textinput_suggest',[
+	            //     'placeholder_title' => "Specify here (Other PPA Attributed Program)",
+	            //     'attribute_name' => "ppa_attributed_program_others",
+	            //     'urlLoadResult' => '/report/default/load-ppa-attributed-program-others',
+	            //     'classValue' => 'form-control',
+	            //     'customStyle' => 'margin-top:10px;',
+	            // ]);
 	        ?>
-        </div>
+        <!-- </div> -->
         <br/>
         <?php
 		    echo $this->render('common_tools/textarea_suggest',[
@@ -112,8 +104,8 @@ use kartik\select2\Select2;
             $("#saveAttributedProgram").click(function(){
                 var ruc         					= "'.$ruc.'";
                 var onstep 							= "'.$onstep.'";
-                var ppa_attributed_program_id 		= $("#ppa_attributed_program_id").val();
-                var ppa_attributed_program_others 	= $("#ppa_attributed_program_others").val();
+                var ppa_sectors 		            = $("#ppa_attributed_program_id").val();
+                var ppa_attributed_program_id       = ppa_sectors.toString();
                 var lgu_program_project 			= $("#lgu_program_project").val();
                 var hgdg 							= $("#hgdg").val();
                 var total_annual_pro_budget 		= $("#total_annual_pro_budget").val();
@@ -127,7 +119,6 @@ use kartik\select2\Select2;
                             ruc:ruc,
                             onstep:onstep,
                             ppa_attributed_program_id:ppa_attributed_program_id,
-                            ppa_attributed_program_others:ppa_attributed_program_others,
                             lgu_program_project:lgu_program_project,
                             hgdg:hgdg,
                             total_annual_pro_budget:total_annual_pro_budget,
@@ -140,32 +131,29 @@ use kartik\select2\Select2;
                     }).done(function(result) {
                         $.each(result, function( index, value ) {
                             
-                            $("p#message-"+index+"").text("");
+                            // error in select2
+                            $("p#messages2-"+index+"").text("");
+                            $("#"+index+"").next("span").css({"border":"1px solid red","border-radius":"5px"});
+                            $("#"+index+"").next("span").after("<p id=messages2-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
+                            // error in textarea
+                            $("p#messageta-"+index+"").text("");
                             $("textarea#"+index+"").css({"border":"1px solid red"});
-                            $("textarea#"+index+"").after("<p id=message-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
-
+                            $("textarea#"+index+"").after("<p id=messageta-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
+                            // error in textbox
+                            $("p#messagete-"+index+"").text("");
                             $("input#"+index+"").css({"border":"1px solid red"});
-                            $("input#"+index+"").after("<p id=message-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
+                            $("input#"+index+"").after("<p id=messagete-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
 
-                            $("#select2-"+index+"-container").parent(".select2-selection").css({"border":"1px solid red"});
-                            $("#select2-"+index+"-container").parent(".select2-selection").after("<p id=message-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
-
-                            // $("#select2-"+index+"-container").text
-                            
+                            // keypress remove error message
                             $("textarea#"+index+"").keyup(function(){
-                                $("#message-"+index+"").text("");
+                                $("#messageta-"+index+"").text("");
                                 $(this).css({"border":"1px solid #ccc"});
                             });
 
                             $("input#"+index+"").keyup(function(){
-                                $("#message-"+index+"").text("");
+                                $("#messagete-"+index+"").text("");
                                 $(this).css({"border":"1px solid #ccc"});
                             });
-
-                            // if($("#ppa_focused_id").val() == "")
-                            // {
-                            //     $("#message-ppa_value").hide();
-                            // }
                         });
                 });
           }); ');
