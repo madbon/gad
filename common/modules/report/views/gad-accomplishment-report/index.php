@@ -35,7 +35,16 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td>PROVINCE </td>
                             <td> : <?= $recProvince ?></td>
                             <td>TOTAL GAD BUDGET</td>
-                            <td> : Php <?= number_format($grand_total_ar,2) ?></td>
+                            <?php
+                                if($grand_total_ar < $fivePercentTotalLguBudget)
+                                {
+                                    echo "<td style='color:red;'> : Php ".number_format($grand_total_ar,2)."</td>";
+                                }
+                                else
+                                {
+                                    echo "<td style='color:blue;'> : Php ".number_format($grand_total_ar,2)."</td>";
+                                }
+                            ?>
                         </tr>
                         <tr>
                             <td>CITY/MUNICIPALITY </td>
@@ -119,17 +128,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 <table class="table ar table-responsive table-bordered">
                     <thead>
                         <tr>
-                            <th>Gender Issues/GAD Mandate</th>
-                            <th>Cause of the Gender Issue</th>
+                            <th>Gender Issues or GAD Mandate</th>
+                            <!-- <th>Cause of the Gender Issue</th> -->
                             <th>GAD Objective</th>
-                            <th>Relevant LGU PPA</th>
+                            <th>Relevant LGU Program or Project</th>
                             <th>GAD Activity</th>
-                            <th>Performance Indicator</th>
-                            <th>Target</th>
+                            <th>Performance Indicator and Target</th>
+                            <!-- <th>Target</th> -->
                             <th>Actual Results</th>
-                            <th>Total Approved GAD Budget</th>
+                            <th>Approved GAD Budget</th>
                             <th>Actual Cost or Expenditure</th>
-                            <th>Variance / Remarks</th>
+                            <th>Variance or Remarks</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -173,8 +182,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             <!-- Client or Organization Focused -->
                             <?php if($not_FocusedId != $ar["gad_focused_title"]) { ?>
                                 <tr class="focused_title">
-                                    <td colspan='7'><b><?= $ar["gad_focused_title"] ?></b></td>
-                                    <td colspan='3'></td>
+                                    <td colspan='5'><b><?= $ar["gad_focused_title"] ?></b></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td></td>
                                 </tr>
                             <?php } ?>
@@ -182,26 +193,29 @@ $this->params['breadcrumbs'][] = $this->title;
                             <!-- Gender Issue or GAD Mandate -->
                             <?php if($not_InnerCategoryId != $ar["inner_category_title"]) { ?>
                                 <tr class="inner_category_title">
-                                    <td colspan='7'><b><?= $ar["inner_category_title"] ?></b></td>
-                                    <td colspan='3'></td>
+                                    <td colspan='5'><b><?= $ar["inner_category_title"] ?></b></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td></td>
                                 </tr>
                             <?php } ?>
                             <tr>
-                                <td><?= $ar["ppa_value"] ?></td>
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
-                                        'cell_value' => $ar["cause_gender_issue"],
+                                        'cell_value' => $ar["ppa_value"],
                                         'row_id' => $ar["id"],
                                         'record_unique_code' => $ar["record_tuc"],
-                                        'attribute_name' => "cause_gender_issue",
+                                        'attribute_name' => "ppa_value",
                                         'data_type' => 'string',
-                                        'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/upd8-ar-cause-gender-issue']),
-                                        'column_title' => 'Cause of the Gender Issue',
+                                        'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-ar-ppa-value']),
+                                        'column_title' => 'Title / Description of Gender Issue or GAD Mandate',
                                         'colspanValue' => '',
-                                        'controller_id' => "gad-accomplishment-report",
+                                        'controller_id' => Yii::$app->controller->id,
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
+                                        'enableComment' => 'true',
+                                        'enableEdit' => 'true',
                                     ])
                                 ?>
                                 <?php
@@ -217,6 +231,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => "gad-accomplishment-report",
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
+                                        'enableComment' => 'true',
+                                        'enableEdit' => 'true',
                                     ])
                                 ?>
                                 <?php
@@ -232,6 +248,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => "gad-accomplishment-report",
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
+                                        'enableComment' => 'true',
+                                        'enableEdit' => 'true',
                                     ])
                                 ?>
                                 <?php
@@ -247,6 +265,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => "gad-accomplishment-report",
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
+                                        'enableComment' => 'true',
+                                        'enableEdit' => 'true',
                                     ])
                                 ?>
                                 <?php
@@ -262,22 +282,26 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => "gad-accomplishment-report",
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
+                                        'enableComment' => 'true',
+                                        'enableEdit' => 'true',
                                     ])
                                 ?>
                                 <?php
-                                    echo $this->render('/gad-plan-budget/cell_reusable_form',[
-                                        'cell_value' => $ar["target"],
-                                        'row_id' => $ar["id"],
-                                        'record_unique_code' => $ar["record_tuc"],
-                                        'attribute_name' => "target",
-                                        'data_type' => 'string',
-                                        'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/upd8-ar-target']),
-                                        'column_title' => 'Target',
-                                        'colspanValue' => '',
-                                        'controller_id' => "gad-accomplishment-report",
-                                        'form_id' => 'gad-ar-input-form',
-                                        'customStyle' => '',
-                                    ])
+                                    // echo $this->render('/gad-plan-budget/cell_reusable_form',[
+                                    //     'cell_value' => $ar["target"],
+                                    //     'row_id' => $ar["id"],
+                                    //     'record_unique_code' => $ar["record_tuc"],
+                                    //     'attribute_name' => "target",
+                                    //     'data_type' => 'string',
+                                    //     'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/upd8-ar-target']),
+                                    //     'column_title' => 'Target',
+                                    //     'colspanValue' => '',
+                                    //     'controller_id' => "gad-accomplishment-report",
+                                    //     'form_id' => 'gad-ar-input-form',
+                                    //     'customStyle' => '',
+                                    //     'enableComment' => 'true',
+                                    //     'enableEdit' => 'true',
+                                    // ])
                                 ?>
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
@@ -292,6 +316,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => "gad-accomplishment-report",
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
+                                        'enableComment' => 'true',
+                                        'enableEdit' => 'true',
                                     ])
                                 ?>
                                 <?php
@@ -307,6 +333,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => "gad-accomplishment-report",
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => 'text-align:right;',
+                                        'enableComment' => 'true',
+                                        'enableEdit' => 'true',
                                     ])
                                 ?>
                                 <?php
@@ -322,6 +350,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => "gad-accomplishment-report",
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => 'text-align:right;',
+                                        'enableComment' => 'true',
+                                        'enableEdit' => 'true',
                                     ])
                                 ?>
                                 <?php
@@ -337,6 +367,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => "gad-accomplishment-report",
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
+                                        'enableComment' => 'true',
+                                        'enableEdit' => 'true',
                                     ])
                                 ?>
                             </tr>
@@ -350,7 +382,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 {
                                     echo "
                                     <tr class='subtotal'>
-                                        <td colspan='7'><b>Sub-total</b></td>
+                                        <td colspan='5'><b>Sub-total</b></td>
                                         <td></td>
                                         <td style='text-align:right;'>
                                             <b>".(number_format($sum_total_approved_gad_budget,2))."</b>
@@ -361,7 +393,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <td></td>
                                     </tr>
                                     <tr class='total_a'>
-                                        <td colspan='9'><b>Total A (MOEE+PS+CO)</b></td>
+                                        <td colspan='7'><b>Total A (MOEE+PS+CO)</b></td>
                                         <td  style='text-align:right;'>".(number_format($total_a,2))."</td>
                                         <td></td>
                                     </tr>
@@ -381,7 +413,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 {
                                     echo "
                                     <tr class='subtotal'>
-                                        <td colspan='7'><b>Sub-total</b></td>
+                                        <td colspan='5'><b>Sub-total</b></td>
                                         <td></td>
                                         <td style='text-align:right;'>
                                             <b>".(number_format($sum_total_approved_gad_budget,2))."</b>
@@ -392,7 +424,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <td></td>
                                     </tr>
                                     <tr class='total_b'>
-                                        <td colspan='9'><b>Total B (MOEE+PS+CO)</b></td>
+                                        <td colspan='7'><b>Total B (MOEE+PS+CO)</b></td>
                                         <td style='text-align:right;'>".(number_format($total_b,2))."</td>
                                         <td></td>
                                     </tr>
@@ -407,7 +439,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php } ?>
                         
                         <tr class="ar_attributed_program">
-                            <td colspan="7">ATTRIBUTED PROGRAMS 
+                            <td colspan="5">ATTRIBUTED PROGRAMS 
                                 <button id="btnEncodeAP" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-pencil"></span> Encode
                                 </button>
                             </td>
@@ -443,7 +475,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php }else{ ?>
                             <tr class="attributed_program_form" id="attributed_program_anchor" style="display: none;">
                         <?php } ?>
-                            <td colspan="11">
+                            <td colspan="9">
                                 <?php
                                     echo $this->render('attributed_program_form', [
                                         'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
@@ -456,7 +488,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </tr>
                         
                         <tr class="ar_attributed_program_head">
-                            <td colspan="7">Title of LGU Program or Project</td>
+                            <td colspan="5">Title of LGU Program or Project</td>
                             <td>HGDG PIMME/FIMME Score</td>
                             <td>Total Annual Program/ Project Cost or Expenditure</td>
                             <td>GAD Attributed Program/Project Cost or Expenditure</td>
@@ -465,13 +497,8 @@ $this->params['breadcrumbs'][] = $this->title;
                          <?php 
                         $notnull_apPpaValue = null;
                         $total_c = 0;
+                        $varTotalGadAttributedProBudget = 0;
                         foreach ($dataAttributedProgram as $key => $dap) { ?>
-                            <?php if($notnull_apPpaValue != $dap["ap_ppa_value"]){ ?>
-                                <tr class="attributed_program_ppa_value">
-                                    <td colspan="11"><b><?= $dap["ap_ppa_value"] ?></b></td>
-                                </tr>
-                            <?php } ?>
-                            
                             <tr class="attributed_program_td">
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
@@ -482,15 +509,61 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'data_type' => 'string',
                                         'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-ar-ap-lgu-program-project']),
                                         'column_title' => 'Title of LGU Program or Project',
-                                        'colspanValue' => '7',
+                                        'colspanValue' => '5',
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
                                         'customStyle' => '',
+                                        'enableComment' => 'true',
+                                        'enableEdit' => 'true',
                                     ])
+                                ?>
+                                <!-- COMPUTATION OF GAD ATTRIBUTED PROGRAM/PROJECT BUDGET -->
+                                <?php
+                                    $varHgdg = $dap["hgdg_pimme"];
+                                    $varTotalAnnualProCost = $dap["total_annual_pro_cost"];
+                                    $computeGadAttributedProCost = 0;
+                                    $HgdgMessage = null;
+                                    $HgdgWrongSign = "";
+                                    
+                                    if($varHgdg < 4) // 0%
+                                    {
+                                        // echo "GAD is invisible";
+                                        $computeGadAttributedProCost = ($varTotalAnnualProCost * 0);
+                                        $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
+                                    }
+                                    else if($varHgdg >= 4 && $varHgdg <= 7.9) // 25%
+                                    {
+                                        // echo "Promising GAD prospects (conditional pass)";
+                                        $computeGadAttributedProCost = ($varTotalAnnualProCost * 0.25);
+                                        $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
+                                    }
+                                    else if($varHgdg >= 8 && $varHgdg <= 14.9) // 50%
+                                    {
+                                        // echo "Gender Sensetive";
+                                        $computeGadAttributedProCost = ($varTotalAnnualProCost * 0.50);
+                                        $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
+                                    }
+                                    else if($varHgdg >= 15 && $varHgdg <= 19.9) // 75%
+                                    {
+                                        // echo "Gender-responsive";
+                                        $computeGadAttributedProCost = ($varTotalAnnualProCost * 0.75);
+                                        $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
+                                    }
+                                    else if($varHgdg == 20) // 100%
+                                    {
+                                        // echo "Full gender-resposive";
+                                        $computeGadAttributedProCost = ($varTotalAnnualProCost * 1);
+                                        $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
+                                    }
+                                    else
+                                    {
+                                        $HgdgMessage = "Unable to compute (undefined HGDG Score).";
+                                        $HgdgWrongSign = "<span class='glyphicon glyphicon-alert' style='color:red;' title='Not HGDG Score Standard'></span>";
+                                    }
                                 ?>
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
-                                        'cell_value' => $dap["hgdg_pimme"],
+                                        'cell_value' => $HgdgWrongSign." ".$dap["hgdg_pimme"],
                                         'row_id' => $dap["id"],
                                         'record_unique_code' => $dap["record_tuc"],
                                         'attribute_name' => "hgdg_pimme",
@@ -501,6 +574,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center;',
+                                        'enableComment' => 'true',
+                                        'enableEdit' => 'true',
                                     ])
                                 ?>
                                 <?php
@@ -516,21 +591,25 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:right;',
+                                        'enableComment' => 'true',
+                                        'enableEdit' => 'true',
                                     ])
                                 ?>
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
-                                        'cell_value' => $dap["gad_attributed_pro_cost"],
+                                        'cell_value' => !empty($HgdgMessage) ? $HgdgMessage : number_format($computeGadAttributedProCost,2),
                                         'row_id' => $dap["id"],
                                         'record_unique_code' => $dap["record_tuc"],
                                         'attribute_name' => "gad_attributed_pro_cost",
-                                        'data_type' => 'number',
-                                        'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-ar-gad-attributed-pro-cost']),
+                                        'data_type' => 'string',
+                                        'urlUpdateAttribute' => "",
                                         'column_title' => 'GAD Attributed Program/Project Cost or Expenditure',
                                         'colspanValue' => '',
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:right;',
+                                        'enableComment' => 'true',
+                                        'enableEdit' => 'false',
                                     ])
                                 ?>
                                 <?php
@@ -546,20 +625,22 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
                                         'customStyle' => '',
+                                        'enableComment' => 'true',
+                                        'enableEdit' => 'true',
                                     ])
                                 ?>
                             </tr>
                         <?php 
-                        $total_c += $dap["gad_attributed_pro_cost"];
-                        $notnull_apPpaValue = $dap["ap_ppa_value"];
+                        $total_c = $varTotalGadAttributedProBudget;
+                        // $notnull_apPpaValue = $dap["ap_ppa_value"];
                         } ?>
                         <tr class="total_c">
-                            <td colspan="9">Total C</td>
+                            <td colspan="7">Total C</td>
                             <td style="text-align: right;"><?= number_format($total_c,2) ?></td>
                             <td></td>
                         </tr>
                         <tr class="grand_total">
-                            <td colspan="9">GRAND TOTAL (A+B+C)</td>
+                            <td colspan="7">GRAND TOTAL (A+B+C)</td>
                             <td style="text-align: right;">
                                 <?php
                                     $grand_total = 0;

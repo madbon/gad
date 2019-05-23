@@ -42,7 +42,7 @@ class GadAccomplishmentReportController extends Controller
         $dataAttributedProgram = (new \yii\db\Query())
         ->select([
             'AP.id',
-            'IF(AP.ppa_attributed_program_id = 0, AP.ppa_attributed_program_others, PAP.title) as ap_ppa_value',
+            // 'IF(AP.ppa_attributed_program_id = 0, AP.ppa_attributed_program_others, PAP.title) as ap_ppa_value',
             'AP.lgu_program_project',
             'AP.hgdg_pimme',
             'AP.total_annual_pro_cost',
@@ -54,13 +54,55 @@ class GadAccomplishmentReportController extends Controller
         ->from('gad_ar_attributed_program AP')
         ->leftJoin(['PAP' => 'gad_ppa_attributed_program'], 'PAP.id = AP.ppa_attributed_program_id')
         ->where(['AP.record_tuc' => $ruc])
-        ->groupBy(['AP.ppa_attributed_program_id','AP.ppa_attributed_program_others','AP.lgu_program_project'])
-        ->orderBy(['AP.ppa_attributed_program_id' => SORT_ASC, 'AP.ppa_attributed_program_id' => SORT_ASC,'AP.ppa_attributed_program_others' => SORT_ASC,'AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
+        ->groupBy(['AP.lgu_program_project'])
+        ->orderBy(['AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
         ->all();
 
         $sum_ap_apc = 0;
+        $varTotalGadAttributedProBudget = 0;
         foreach ($dataAttributedProgram as $key => $dap) {
             $sum_ap_apc += $dap['gad_attributed_pro_cost'];
+            $varHgdg = $dap["hgdg_pimme"];
+            $varTotalAnnualProCost = $dap["total_annual_pro_cost"];
+            $computeGadAttributedProCost = 0;
+            $HgdgMessage = null;
+            $HgdgWrongSign = "";
+            
+            if($varHgdg < 4) // 0%
+            {
+                // echo "GAD is invisible";
+                $computeGadAttributedProCost = ($varTotalAnnualProCost * 0);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
+            }
+            else if($varHgdg >= 4 && $varHgdg <= 7.9) // 25%
+            {
+                // echo "Promising GAD prospects (conditional pass)";
+                $computeGadAttributedProCost = ($varTotalAnnualProCost * 0.25);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
+            }
+            else if($varHgdg >= 8 && $varHgdg <= 14.9) // 50%
+            {
+                // echo "Gender Sensetive";
+                $computeGadAttributedProCost = ($varTotalAnnualProCost * 0.50);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
+            }
+            else if($varHgdg >= 15 && $varHgdg <= 19.9) // 75%
+            {
+                // echo "Gender-responsive";
+                $computeGadAttributedProCost = ($varTotalAnnualProCost * 0.75);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
+            }
+            else if($varHgdg == 20) // 100%
+            {
+                // echo "Full gender-resposive";
+                $computeGadAttributedProCost = ($varTotalAnnualProCost * 1);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
+            }
+            else
+            {
+                $HgdgMessage = "Unable to compute (undefined HGDG Score).";
+                $HgdgWrongSign = "<span class='glyphicon glyphicon-alert' style='color:red;' title='Not HGDG Score Standard'></span>";
+            }
         }
         // print_r($grand_total_ar); exit;
 
@@ -85,10 +127,13 @@ class GadAccomplishmentReportController extends Controller
         $recTotalLguBudget = !empty($qryRecord['total_lgu_budget']) ? $qryRecord['total_lgu_budget'] : "";
         $recTotalGadBudget = !empty($qryRecord['total_gad_budget']) ? $qryRecord['total_gad_budget'] : "";
 
+        $fivePercentTotalLguBudget = ($recTotalLguBudget * 0.05);
+
         $dataAR = (new \yii\db\Query())
         ->select([
             'AR.id',
-            'IF(AR.ppa_focused_id = 0, AR.ppa_value,CF.title) as ppa_value',
+            // 'IF(AR.ppa_focused_id = 0, AR.ppa_value,CF.title) as ppa_value',
+            'AR.ppa_value',
             'AR.cause_gender_issue',
             'AR.objective',
             'AR.relevant_lgu_ppa',
@@ -112,8 +157,8 @@ class GadAccomplishmentReportController extends Controller
         ->leftJoin(['GF' => 'gad_focused'], 'GF.id = AR.focused_id')
         ->leftJoin(['IC' => 'gad_inner_category'], 'IC.id = AR.inner_category_id')
         ->where(['AR.record_tuc' => $ruc])
-        ->orderBy(['AR.focused_id' => SORT_ASC,'AR.inner_category_id' => SORT_ASC,'AR.ppa_focused_id' => SORT_ASC,'AR.ppa_value' => SORT_ASC,'AR.id' => SORT_ASC])
-        ->groupBy(['AR.focused_id','AR.inner_category_id','AR.ppa_focused_id','AR.ppa_value','AR.cause_gender_issue','AR.objective','AR.relevant_lgu_ppa','AR.activity','AR.performance_indicator','AR.target','AR.actual_results'])
+        ->orderBy(['AR.focused_id' => SORT_ASC,'AR.inner_category_id' => SORT_ASC,'AR.ppa_value' => SORT_ASC,'AR.id' => SORT_ASC])
+        ->groupBy(['AR.focused_id','AR.inner_category_id','AR.ppa_value','AR.cause_gender_issue','AR.objective','AR.relevant_lgu_ppa','AR.activity','AR.performance_indicator','AR.target','AR.actual_results'])
         ->all();
         // ->createCommand()->rawSql;
         // echo "<pre>";
@@ -121,10 +166,10 @@ class GadAccomplishmentReportController extends Controller
 
         $sum_ar_ace = 0;
         foreach ($dataAR as $key => $dr) {
-            $sum_ar_ace += $dr["actual_cost_expenditure"];
+            $sum_ar_ace += $dr["actual_cost_expenditure"]; // cliorg table
         }
 
-        $grand_total_ar = $sum_ar_ace + $sum_ap_apc;
+        $grand_total_ar = ($sum_ar_ace + $varTotalGadAttributedProBudget);
 
         $select_GadFocused = ArrayHelper::map(\common\models\GadFocused::find()->all(), 'id', 'title');
         $select_GadInnerCategory = ArrayHelper::map(\common\models\GadInnerCategory::find()->all(), 'id', 'title');
@@ -158,6 +203,7 @@ class GadAccomplishmentReportController extends Controller
             'tocreate' => $tocreate,
             'dataAttributedProgram' => $dataAttributedProgram,
             'grand_total_ar' => $grand_total_ar,
+            'fivePercentTotalLguBudget' => $fivePercentTotalLguBudget,
         ]);
     }
 

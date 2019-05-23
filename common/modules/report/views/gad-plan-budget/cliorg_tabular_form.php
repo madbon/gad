@@ -89,21 +89,21 @@
 ?>
 
 <?php
-    echo $this->render('cell_reusable_form',[
-        'cell_value' => $plan["performance_indicator"],
-        'row_id' => $plan["id"],
-        'record_unique_code' => $plan["record_uc"],
-        'attribute_name' => "performance_indicator",
-        'data_type' => 'string',
-        'urlUpdateAttribute' =>  \yii\helpers\Url::to(['/report/default/update-performance-indicator']),
-        'column_title' => 'Performance Indicator',
-        'colspanValue' => '',
-        'controller_id' => Yii::$app->controller->id,
-        'form_id' => 'cli-org-focused-form',
-        'customStyle' => '',
-        'enableComment' => 'true',
-        'enableEdit' => 'true',
-    ])
+    // echo $this->render('cell_reusable_form',[
+    //     'cell_value' => $plan["performance_indicator"],
+    //     'row_id' => $plan["id"],
+    //     'record_unique_code' => $plan["record_uc"],
+    //     'attribute_name' => "performance_indicator",
+    //     'data_type' => 'string',
+    //     'urlUpdateAttribute' =>  \yii\helpers\Url::to(['/report/default/update-performance-indicator']),
+    //     'column_title' => 'Performance Indicator',
+    //     'colspanValue' => '',
+    //     'controller_id' => Yii::$app->controller->id,
+    //     'form_id' => 'cli-org-focused-form',
+    //     'customStyle' => '',
+    //     'enableComment' => 'true',
+    //     'enableEdit' => 'true',
+    // ])
 ?>
 
 <?php

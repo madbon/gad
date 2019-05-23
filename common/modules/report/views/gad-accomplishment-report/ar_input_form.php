@@ -17,8 +17,8 @@ use kartik\select2\Select2;
                 'pluginEvents'=>[
                     'select2:select'=>'
                         function(){
-                            $("#message-focused_id").text("");
-                            $("#select2-focused_id-container").parent(".select2-selection").css({"border":"1px solid #ccc"});
+                            $("#messages2-focused_id").text("");
+                            $("#focused_id").next("span").css({"border":"none"});
 
                             var focused_id = this.value;
 
@@ -49,47 +49,6 @@ use kartik\select2\Select2;
         <br/>
         <?php
             echo Select2::widget([
-                'name' => 'ppa_focused_id',
-                'data' => [],
-                'options' => [
-                    'placeholder' => 'Category of PPA',
-                    'id' => "ppa_focused_id",
-                ],
-                'pluginEvents'=>[
-                    'select2:select'=>'
-                        function(){
-                            $("#message-ppa_focused_id").text("");
-                            $("#select2-ppa_focused_id-container").parent(".select2-selection").css({"border":"1px solid #ccc"});
-                            if(this.value == "0")
-                            {
-                                $("#ppa_value").slideDown(300);
-                                $("#message-ppa_value").show();
-                            }
-                            else
-                            {
-                                $("#ppa_value").slideUp(300);
-                                $("#ppa_value").val("");
-                                $("#message-ppa_value").hide();
-                            }
-                        }',
-                ]     
-            ]);
-        ?>
-                
-        <?php
-            echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
-                'placeholder_title' => "Please specify here (PPA Other Description)",
-                'attribute_name' => "ppa_value",
-                'urlLoadResult' => '/report/default/load-ar-ppa-value',
-                'rowsValue' => 3,
-                'classValue' => 'form-control',
-                'customStyle' => 'display:none; margin-top:10px;',
-            ]);
-        ?>
-
-        <br/>
-        <?php
-            echo Select2::widget([
                 'name' => 'inner_category_id',
                 'data' => $select_GadInnerCategory,
                 'options' => [
@@ -99,8 +58,19 @@ use kartik\select2\Select2;
                 'pluginEvents'=>[
                     'select2:select'=>'
                         function(){
-                            $("#message-inner_category_id").text("");
-                            $("#select2-inner_category_id-container").parent(".select2-selection").css({"border":"1px solid #ccc"});
+                            $("#messages2-inner_category_id").text("");
+                            $("#inner_category_id").next("span").css({"border":"none"});
+
+                            if(this.value == "1")
+                            {
+                                $("#gi_sup_data").slideDown(300);
+                                $("#ppa_value").attr("placeholder","Title / Description of Gender Issue");
+                            }
+                            else
+                            {
+                                $("#gi_sup_data").slideUp(300);
+                                $("#ppa_value").attr("placeholder","Title / Description of GAD Mandate");
+                            }
                         }',
                 ]     
             ]);
@@ -108,12 +78,42 @@ use kartik\select2\Select2;
 
         <?php
             echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
-                'placeholder_title' => "Cause of Gender Issue",
-                'attribute_name' => "cause_gender_issue",
-                'urlLoadResult' => '/report/default/load-ar-cause-gender-issue',
+                'placeholder_title' => "Gender Issue Supporting Statistics Data",
+                'attribute_name' => "gi_sup_data",
+                'urlLoadResult' => '#',
                 'rowsValue' => 3,
                 'classValue' => 'form-control',
-                'customStyle' => 'margin-top:20px;',
+                'customStyle' => 'margin-top:5px; display:none;',
+            ]);
+        ?>
+
+        <?php
+            echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
+                'placeholder_title' => "Title / Description of Gender Issue or GAD Mandate",
+                'attribute_name' => "ppa_value",
+                'urlLoadResult' => '/report/default/load-ar-ppa-value',
+                'rowsValue' => 3,
+                'classValue' => 'form-control',
+                'customStyle' => 'margin-top:5px;',
+            ]);
+        ?>
+        <br/>
+        <?php
+            echo Select2::widget([
+                'name' => 'ppa_attributed_program_id',
+                'data' => $select_PpaAttributedProgram,
+                'options' => [
+                    'placeholder' => 'Tag PPA Sectors',
+                    'id' => "cliorg_ppa_attributed_program_id",
+                    'multiple' => true,
+                ],
+                'pluginEvents'=>[
+                    'select2:select'=>'
+                        function(){
+                            $("#message-cliorg_ppa_attributed_program_id").text("");
+                            $("#select2-cliorg_ppa_attributed_program_id-container").parent(".select2-selection").css({"border":"1px solid #ccc"});
+                        }',
+                ]     
             ]);
         ?>
 
@@ -139,6 +139,50 @@ use kartik\select2\Select2;
                 'customStyle' => '',
             ]);
         ?>
+        <!-- Activity Category -->
+        <br/>
+        <?php
+            // Activity Category
+            echo Select2::widget([
+                'name' => 'ppa_focused_id',
+                'data' => [],
+                'options' => [
+                    'placeholder' => 'Activity Category',
+                    'id' => "ppa_focused_id",
+                ],
+                'pluginEvents'=>[
+                    'select2:select'=>'
+                        function(){
+                            $("#messages2-ppa_focused_id").text("");
+                            $("#ppa_focused_id").next("span").css({"border":"none"});
+
+                            if(this.value == "0")
+                            {
+                                $("#cause_gender_issue").slideDown(300);
+                                $("#message-cause_gender_issue").show();
+                            }
+                            else
+                            {
+                                $("#cause_gender_issue").slideUp(300);
+                                $("#cause_gender_issue").val("");
+                                $("#message-cause_gender_issue").hide();
+                            }
+                        }',
+                ]     
+            ]);
+        ?>
+
+        <?php
+            // Other Activity Category
+            echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
+                'placeholder_title' => "Pls. Specify Other Activity Category",
+                'attribute_name' => "cause_gender_issue",
+                'urlLoadResult' => '/report/default/load-cause-gender-issue',
+                'rowsValue' => 2,
+                'classValue' => 'form-control',
+                'customStyle' => 'margin-top:5px; display:none;',
+            ]);
+        ?>
         <?php
             echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
                 'placeholder_title' => "GAD Activity",
@@ -146,12 +190,13 @@ use kartik\select2\Select2;
                 'urlLoadResult' => '/report/default/load-ar-activity',
                 'rowsValue' => 2,
                 'classValue' => 'form-control',
-                'customStyle' => 'margin-top:20px;',
+                'customStyle' => 'margin-top:5px;',
             ]);
         ?>
+        
         <?php
             echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
-                'placeholder_title' => "Performance Indicator",
+                'placeholder_title' => "Performance Indicator and Target",
                 'attribute_name' => "performance_indicator",
                 'urlLoadResult' => '/report/default/load-ar-performance-indicator',
                 'rowsValue' => 2,
@@ -160,14 +205,14 @@ use kartik\select2\Select2;
             ]);
         ?>
         <?php
-            echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
-                'placeholder_title' => "Target",
-                'attribute_name' => "target",
-                'urlLoadResult' => '/report/default/load-ar-target',
-                'rowsValue' => 2,
-                'classValue' => 'form-control',
-                'customStyle' => 'margin-top:20px;',
-            ]);
+            // echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
+            //     'placeholder_title' => "Target",
+            //     'attribute_name' => "target",
+            //     'urlLoadResult' => '/report/default/load-ar-target',
+            //     'rowsValue' => 2,
+            //     'classValue' => 'form-control',
+            //     'customStyle' => 'margin-top:20px;',
+            // ]);
         ?>
     </div>
     <div class="col-sm-4">
@@ -235,6 +280,9 @@ use kartik\select2\Select2;
                     var ruc                         = "'.$ruc.'";
                     var onstep                      = "'.$onstep.'";
                     var tocreate                    = "'.$tocreate.'";
+                    var ppa_sectors = $("#cliorg_ppa_attributed_program_id").val();
+                    var cliorg_ppa_attributed_program_id = ppa_sectors.toString();
+                    var gi_sup_data = $("#gi_sup_data").val();
 
                     $.ajax({
                         url: "'.$url.'",
@@ -255,37 +303,41 @@ use kartik\select2\Select2;
                                 inner_category_id:inner_category_id,
                                 ruc:ruc,
                                 onstep:onstep,
-                                tocreate:tocreate
+                                tocreate:tocreate,
+                                cliorg_ppa_attributed_program_id:cliorg_ppa_attributed_program_id,
+                                gi_sup_data:gi_sup_data
                             }
                         
                         }).done(function(result) {
                             $.each(result, function( index, value ) {
                                 
-                                $("p#message-"+index+"").text("");
+                                // error in select2
+                                $("p#messages2-"+index+"").text("");
+                                $("#"+index+"").next("span").css({"border":"1px solid red","border-radius":"5px"});
+                                $("#"+index+"").next("span").after("<p id=messages2-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
+                                // error in textarea
+                                $("p#messageta-"+index+"").text("");
                                 $("textarea#"+index+"").css({"border":"1px solid red"});
-                                $("textarea#"+index+"").after("<p id=message-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
-
+                                $("textarea#"+index+"").after("<p id=messageta-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
+                                // error in textbox
+                                $("p#messagete-"+index+"").text("");
                                 $("input#"+index+"").css({"border":"1px solid red"});
-                                $("input#"+index+"").after("<p id=message-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
+                                $("input#"+index+"").after("<p id=messagete-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
 
-                                $("#select2-"+index+"-container").parent(".select2-selection").css({"border":"1px solid red"});
-                                $("#select2-"+index+"-container").parent(".select2-selection").after("<p id=message-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
-
-                                // $("#select2-"+index+"-container").text
-                                
+                                // keypress remove error message
                                 $("textarea#"+index+"").keyup(function(){
-                                    $("#message-"+index+"").text("");
+                                    $("#messageta-"+index+"").text("");
                                     $(this).css({"border":"1px solid #ccc"});
                                 });
 
                                 $("input#"+index+"").keyup(function(){
-                                    $("#message-"+index+"").text("");
+                                    $("#messagete-"+index+"").text("");
                                     $(this).css({"border":"1px solid #ccc"});
                                 });
 
                                 if($("#ppa_focused_id").val() == "")
                                 {
-                                    $("#message-ppa_value").hide();
+                                    $("#messageta-cause_gender_issue").hide();
                                 }
                             });
                     });

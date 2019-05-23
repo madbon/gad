@@ -305,7 +305,7 @@ class DefaultController extends Controller
         
         return $is_save;
     }
-    public  function actionCreateArAttributedProgram($ruc,$onstep,$ppa_attributed_program_id,$ppa_attributed_program_others,$lgu_program_project,$hgdg_pimme,$total_annual_pro_cost,$gad_attributed_pro_cost,$variance_remarks,$controller_id,$tocreate)
+    public  function actionCreateArAttributedProgram($ruc,$onstep,$ppa_attributed_program_id,$ppa_attributed_program_others,$lgu_program_project,$hgdg_pimme,$total_annual_pro_cost,$variance_remarks,$controller_id,$tocreate)
     {
         // print_r($ppa_attributed_program_id); exit;
         $model = new GadArAttributedProgram();
@@ -315,7 +315,6 @@ class DefaultController extends Controller
         $model->lgu_program_project = $lgu_program_project;
         $model->hgdg_pimme = $hgdg_pimme;
         $model->total_annual_pro_cost = $total_annual_pro_cost;
-        $model->gad_attributed_pro_cost = $gad_attributed_pro_cost;
         $model->variance_remarks = $variance_remarks;
 
         date_default_timezone_set("Asia/Manila");
@@ -608,7 +607,7 @@ class DefaultController extends Controller
         return $is_save;
     }
 
-    public function actionCreateAccomplishmentReport($focused_id,$ppa_focused_id,$cause_gender_issue,$objective,$relevant_lgu_ppa,$activity,$performance_indicator,$target,$actual_results,$total_approved_gad_budget,$actual_cost_expenditure,$variance_remarks,$ppa_value,$inner_category_id,$ruc,$onstep,$tocreate)
+    public function actionCreateAccomplishmentReport($focused_id,$ppa_focused_id,$cause_gender_issue,$objective,$relevant_lgu_ppa,$activity,$performance_indicator,$target,$actual_results,$total_approved_gad_budget,$actual_cost_expenditure,$variance_remarks,$ppa_value,$inner_category_id,$ruc,$onstep,$tocreate,$cliorg_ppa_attributed_program_id,$gi_sup_data)
     {
         $model = new \common\models\GadAccomplishmentReport();
         $model->focused_id = $focused_id;
@@ -626,6 +625,9 @@ class DefaultController extends Controller
         $model->ppa_value = $ppa_value;
         $model->inner_category_id = $inner_category_id;
         $model->record_tuc = $ruc;
+        $model->cliorg_ppa_attributed_program_id = $cliorg_ppa_attributed_program_id;
+        $model->gi_sup_data = $gi_sup_data;
+
 
         date_default_timezone_set("Asia/Manila");
         $model->date_created = date('Y-m-d');
@@ -1033,6 +1035,15 @@ class DefaultController extends Controller
         return $arr;
     }
 
+    public function actionLoadArGenderIssueSupData($record_id)
+    {
+        $qry = \common\models\GadAccomplishmentReport::find()->where(['id' => $record_id, 'inner_category_id' => 1])->one();
+        $value = !empty($qry->gi_sup_data) ? $qry->gi_sup_data : "";
+
+        \Yii::$app->response->format = 'json';
+        return $value;
+    }
+
     public function actionLoadGenderIssueSupData($record_id)
     {
         $qry = \common\models\GadPlanBudget::find()->where(['id' => $record_id, 'inner_category_id' => 1])->one();
@@ -1269,7 +1280,7 @@ class DefaultController extends Controller
 
     }
 
-    public function actionCreateGadPlanBudget($ppa_focused_id,$ppa_value,$issue,$obj,$relevant,$act,$performance_target,$performance_indicator,$ruc,$budget_mooe,$budget_ps,$budget_co,$lead_responsible_office,$focused_id,$inner_category_id,$onstep,$tocreate,$cliorg_ppa_attributed_program_id,$gi_sup_data)
+    public function actionCreateGadPlanBudget($ppa_focused_id,$ppa_value,$issue,$obj,$relevant,$act,$performance_target,$ruc,$budget_mooe,$budget_ps,$budget_co,$lead_responsible_office,$focused_id,$inner_category_id,$onstep,$tocreate,$cliorg_ppa_attributed_program_id,$gi_sup_data)
     {
         $model = new \common\models\GadPlanBudget();
         $model->cause_gender_issue = $issue;
@@ -1277,7 +1288,7 @@ class DefaultController extends Controller
         $model->relevant_lgu_program_project = $relevant;
         $model->activity = $act;
         $model->performance_target = $performance_target;
-        $model->performance_indicator = $performance_indicator;
+        // $model->performance_indicator = $performance_indicator;
         $model->record_tuc = $ruc;
         $model->ppa_value = !empty($ppa_value) ? $ppa_value : null;
         $model->ppa_focused_id = $ppa_focused_id;
@@ -1442,6 +1453,26 @@ class DefaultController extends Controller
     public function actionUpdatePpaValue($uid,$upd8_value)
     {
         $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
+        $qry->ppa_value = $upd8_value;
+
+        if($qry->save())
+        {
+            $is_save = $upd8_value;
+        }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+
+        
+        return $is_save;
+    }
+
+    public function actionUpdateArPpaValue($uid,$upd8_value)
+    {
+        $qry = \common\models\GadAccomplishmentReport::find()->where(['id' => $uid])->one();
         $qry->ppa_value = $upd8_value;
 
         if($qry->save())

@@ -48,13 +48,25 @@ class GadAccomplishmentReport extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'record_id', 'focused_id', 'inner_category_id', 'ppa_focused_id'], 'integer'],
-            [['ppa_value', 'cause_gender_issue', 'objective', 'relevant_lgu_ppa', 'activity', 'performance_indicator', 'target', 'actual_results', 'variance_remarks'], 'string'],
+            [['ppa_value', 'objective', 'relevant_lgu_ppa', 'activity', 'performance_indicator', 'actual_results', 'variance_remarks','gi_sup_data','cliorg_ppa_attributed_program_id'], 'string'],
+
+            [['ppa_value','inner_category_id','focused_id', 'objective', 'relevant_lgu_ppa', 'activity', 'ppa_focused_id','performance_indicator', 'actual_results', 'variance_remarks','cliorg_ppa_attributed_program_id','total_approved_gad_budget','actual_cost_expenditure'], Yii::$app->controller->action->id == "create-accomplishment-report" ? 'required' : 'safe'],
             [['total_approved_gad_budget', 'actual_cost_expenditure'], 'number'],
             [['date_created', 'date_updated'], 'safe'],
-            [['focused_id', 'inner_category_id','ppa_focused_id'], 'required'],
             [['time_created', 'time_updated'], 'string', 'max' => 10],
             [['record_tuc', 'this_tuc'], 'string', 'max' => 150],
-            [['ppa_value'], 'required', 'when' => function ($model) { return $model->ppa_focused_id == 0; }],
+            [['ppa_value'],Yii::$app->controller->action->id == "update-ar-ppa-value" ? 'required' : 'safe'],
+            [['objective'],Yii::$app->controller->action->id == "upd8-ar-gad-objective" ? 'required' : 'safe'],
+            [['relevant_lgu_ppa'],Yii::$app->controller->action->id == "upd8-ar-relevant-lgu-ppa" ? 'required' : 'safe'],
+            [['activity'],Yii::$app->controller->action->id == "upd8-ar-gad-activity" ? 'required' : 'safe'],
+            [['performance_indicator'],Yii::$app->controller->action->id == "upd8-ar-performance-indicator" ? 'required' : 'safe'],
+            [['total_approved_gad_budget'],Yii::$app->controller->action->id == "upd8-ar-total-approved-gad-budget" ? 'required' : 'safe'],
+            [['actual_cost_expenditure'],Yii::$app->controller->action->id == "upd8-ar-actual-cost-expenditure" ? 'required' : 'safe'],
+            [['variance_remarks'],Yii::$app->controller->action->id == "upd8-ar-variance-remark" ? 'required' : 'safe'],
+            [['gi_sup_data'],  
+            Yii::$app->controller->action->id == "create-accomplishment-report" || 
+            Yii::$app->controller->action->id == "update-ar-gender-issue-sup-data" ? 'required' : "safe", 'when' => function ($model) { return $model->inner_category_id == 1; }],
+            [['cause_gender_issue'], 'required', 'when' => function ($model) { return $model->ppa_focused_id == 0; }],
         ];
     }
 
@@ -69,13 +81,13 @@ class GadAccomplishmentReport extends \yii\db\ActiveRecord
             'record_id' => 'Record ID',
             'focused_id' => 'Focused',
             'inner_category_id' => 'Gender Issue or GAD Mandate',
-            'ppa_focused_id' => 'PPA Category',
-            'ppa_value' => 'PPA Other Category',
-            'cause_gender_issue' => 'Cause of the Gender Issue',
+            'ppa_focused_id' => 'Activity Category',
+            'ppa_value' => 'Title / Description of Gender Issue or GAD Mandate',
+            'cause_gender_issue' => 'Activity Category Other Description',
             'objective' => 'GAD Objective',
             'relevant_lgu_ppa' => 'Relevant LGU PPA',
             'activity' => 'GAD Activity',
-            'performance_indicator' => 'Performance Indicator',
+            'performance_indicator' => 'Performance Indicator and Target',
             'target' => 'Target',
             'actual_results' => 'Actual Results',
             'total_approved_gad_budget' => 'Total Approved GAD Budget',
@@ -87,6 +99,8 @@ class GadAccomplishmentReport extends \yii\db\ActiveRecord
             'time_updated' => 'Time Updated',
             'record_tuc' => 'Record Tuc',
             'this_tuc' => 'This Tuc',
+            'cliorg_ppa_attributed_program_id' => 'PPA Sectors',
+            'gi_sup_data' => 'Gender Issue Supporting Statistics Data'
         ];
     }
 }

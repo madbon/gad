@@ -167,8 +167,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             <th style="border-bottom: none;">GAD Objective</th>
                             <th style="border-bottom: none;">Relevant LGU Program or Project</th>
                             <th style="border-bottom: none;">GAD Activity</th>
-                            <th style="border-bottom: none;">Performance Target </th>
-                            <th style="border-bottom: none;">Performance Indicator</th>
+                            <th style="border-bottom: none;">Performance Indicator and Target </th>
+                            <!-- <th style="border-bottom: none;">Performance Indicator</th> -->
                             <th style="border-bottom: none;" colspan="3">GAD Budget (6)</th>
                             <th style="border-bottom: none;">Lead or Responsible Office </th>
                             <th style="border-bottom: none;"></th>
@@ -180,7 +180,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <th style="border-top: none;"></th>
                             <th style="border-top: none;"></th>
                             <th style="border-top: none;"></th>
-                            <th style="border-top: none;"></th>
+                            <!-- <th style="border-top: none;"></th> -->
                             <th>MOOE</th>
                             <th>PS</th>
                             <th>CO</th>
@@ -232,18 +232,20 @@ $this->params['breadcrumbs'][] = $this->title;
                             <!-- Client or Organization Focused -->
                             <?php if($not_FocusedId != $plan["gad_focused_title"]) { ?>
                                 <tr class="focused_title">
-                                    <td style="border-bottom: none;" colspan='6'><b><?= $plan["gad_focused_title"] ?></b></td>
+                                    <td style="border-bottom: none;" colspan='5'><b><?= $plan["gad_focused_title"] ?></b></td>
                                     <td colspan="3" style="border-bottom: none;"></td>
-                                    <td colspan="2" style="border-bottom: none;"></td>
+                                    <td style="border-bottom: none;"></td>
+                                    <td style="border-bottom: none;"></td>
                                 </tr>
                             <?php } ?>
 
                             <!-- Gender Issue or GAD Mandate -->
                             <?php if($not_InnerCategoryId != $plan["inner_category_title"]) { ?>
                                 <tr class="inner_category_title">
-                                    <td style="border-top: none;" colspan='6'><b><?= $plan["inner_category_title"] ?></b></td>
+                                    <td style="border-top: none;" colspan='5'><b><?= $plan["inner_category_title"] ?></b></td>
                                     <td colspan="3" style="border-top: none;"></td>
-                                    <td colspan="2" style="border-top:none;"></td>
+                                    <td  style="border-top:none;"></td>
+                                    <td style="border-top: none;"></td>
                                 </tr>
                             <?php } ?>
 
@@ -268,7 +270,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 {
                                     echo "
                                     <tr class='subtotal'>
-                                        <td colspan='6'><b>Sub-total</b></td>
+                                        <td colspan='5'><b>Sub-total</b></td>
                                         <td style='text-align:right;'><b>".(number_format($sum_mooe,2))."</b></td>
                                         <td style='text-align:right;'><b>".(number_format($sum_ps,2))."</b></td>
                                         <td style='text-align:right;'><b>".(number_format($sum_co,2))."</b></td>
@@ -276,7 +278,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <td></td>
                                     </tr>
                                     <tr class='total_a'>
-                                        <td colspan='6'><b>Total A (MOEE+PS+CO)</b></td>
+                                        <td colspan='5'><b>Total A (MOEE+PS+CO)</b></td>
                                         <td colspan='3'>".(number_format($total_a,2))."</td>
                                         <td></td>
                                         <td></td>
@@ -299,7 +301,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 {
                                     echo "
                                     <tr class='subtotal'>
-                                        <td colspan='6'><b>Sub-total</b></td>
+                                        <td colspan='5'><b>Sub-total</b></td>
                                         <td style='text-align:right;'><b>".(number_format($sum_mooe,2))."</b></td>
                                         <td style='text-align:right;'><b>".(number_format($sum_ps,2))."</b></td>
                                         <td style='text-align:right;'><b>".(number_format($sum_co,2))."</b></td>
@@ -307,7 +309,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <td></td>
                                     </tr>
                                     <tr class='total_b'>
-                                        <td colspan='6'><b>Total B (MOEE+PS+CO)</b></td>
+                                        <td colspan='5'><b>Total B (MOEE+PS+CO)</b></td>
                                         <td colspan='3'>".(number_format($total_b,2))."</td>
                                         <td></td>
                                         <td></td>
@@ -322,7 +324,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         
 
                         <tr class="attributed_program_title">
-                            <td colspan="6">
+                            <td colspan="5">
                                 <b>ATTRIBUTED PROGRAMS</b> 
                                 <button id="btn_encode_attributed_program" type="button" class="btn btn-success btn-sm">
                                     <span class="glyphicon glyphicon-pencil"></span>
@@ -359,7 +361,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php }else{ ?>
                             <tr class="attributed_program_form" style="display: none;">
                         <?php } ?>
-                            <td colspan="11">
+                            <td colspan="10">
                                 <?php
                                     echo $this->render('attributed_program_form', [
                                         'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
@@ -371,7 +373,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             </td>
                         </tr>
                         <tr class="attributed_program_thead">
-                            <td colspan="3"><b>Title of LGU Program or Project</b></td>
+                            <td colspan="2"><b>Title of LGU Program or Project</b></td>
                             <td colspan="1"><b>HGDG Design/ Funding Facility/ Generic Checklist Score</b></td>
                             <td colspan="2"><b>Total Annual Program/ Project Budget</b></td>
                             <td colspan="3"><b>GAD Attributed Program/Project Budget</b></td>
@@ -394,7 +396,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'data_type' => 'string',
                                         'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-ap-lgu-program-project']),
                                         'column_title' => 'Title of LGU Program or Project',
-                                        'colspanValue' => '3',
+                                        'colspanValue' => '2',
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
                                         'customStyle' => '',
@@ -538,14 +540,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         } ?>
                         <tr class="total_c">
                             <td><b>Total C</b></td>
-                            <td colspan="5"></td>
+                            <td colspan="4"></td>
                             <td colspan="3"><?= number_format($total_c,2) ?></td>
                             <td></td>
                             <td></td>
                         </tr>
                         <tr class="grand_total">
                             <td colspan="2"><b>GRAND TOTAL (A+B+C</b></td>
-                            <td colspan="4"></td>
+                            <td colspan="3"></td>
                             <td colspan="3">
                                 <?php
                                     $grand_total = ($total_a + $total_b + $total_c);
@@ -556,7 +558,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td></td>
                         </tr>
                         <tr class="signatory_label">
-                            <td colspan="3"><b>Prepared by:</b></td>
+                            <td colspan="2"><b>Prepared by:</b></td>
 
                             <td colspan="3"><b>Approved by:</b></td>
                             <td colspan="3"><b>Date:</b></td>
@@ -573,7 +575,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'data_type' => 'string',
                                         'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-pb-prepared-by']),
                                         'column_title' => 'Chairperson, GFPS TWG',
-                                        'colspanValue' => '3',
+                                        'colspanValue' => '2',
                                         'controller_id' => "gad-plan-budget",
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; font-size:20px;',
@@ -613,7 +615,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?php } ?>
                         </tr>
                         <tr class="signatory_title">
-                            <td colspan="3">Chairperson, GFPS TWG</td>
+                            <td colspan="2">Chairperson, GFPS TWG</td>
                             <td colspan="3">Local Chief Executive</td>
                             <td colspan="3">DD/MM/YEAR</td>
                             <td colspan="2"></td>

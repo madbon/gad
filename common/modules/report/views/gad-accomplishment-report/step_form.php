@@ -74,6 +74,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Step 1. Input Primary Information'
         'tocreate' => $tocreate,
         'dataAttributedProgram' => $dataAttributedProgram,
         'grand_total_ar' => $grand_total_ar,
+        'fivePercentTotalLguBudget' => $fivePercentTotalLguBudget,
     ]) ?>
 
 </div>

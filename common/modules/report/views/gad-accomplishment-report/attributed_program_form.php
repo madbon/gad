@@ -11,23 +11,14 @@ use kartik\select2\Select2;
                 'name' => 'ppa_attributed_program_id',
                 'data' => $select_PpaAttributedProgram,
                 'options' => [
-                    'placeholder' => 'Select PPA Category',
+                    'placeholder' => 'Tag PPA Sectors',
                     'id' => "ppa_attributed_program_id",
+                    'multiple' => true,
                 ],
                 'pluginEvents'=>[
                     'select2:select'=>'
                         function(){
-                            $("#message-ppa_attributed_program_id").text("");
-                            $("#select2-ppa_attributed_program_id-container").parent(".select2-selection").css({"border":"1px solid #ccc"});
-                            var this_val = this.value;
-                            if(this_val == "0")
-                            {
-                            	$("#div-ppa_attributed_program_others").slideDown(300);
-                            }
-                            else
-                            {
-                            	$("#div-ppa_attributed_program_others").slideUp(300);
-                            }
+                            
                         }',
                 ]     
             ]);
@@ -82,13 +73,13 @@ use kartik\select2\Select2;
         ?>
         <br/>
         <?php
-            echo $this->render('/gad-plan-budget/common_tools/textinput_suggest',[
-                'placeholder_title' => "GAD Attributed Program/Project Cost or Expenditure",
-                'attribute_name' => "gad_attributed_pro_cost",
-                'urlLoadResult' => '/report/default/load-ar-attributed-pro-cost',
-                'classValue' => 'form-control',
-                'customStyle' => '',
-            ]);
+            // echo $this->render('/gad-plan-budget/common_tools/textinput_suggest',[
+            //     'placeholder_title' => "GAD Attributed Program/Project Cost or Expenditure",
+            //     'attribute_name' => "gad_attributed_pro_cost",
+            //     'urlLoadResult' => '/report/default/load-ar-attributed-pro-cost',
+            //     'classValue' => 'form-control',
+            //     'customStyle' => '',
+            // ]);
         ?>
 	</div>
 	<div class="col-sm-4">
@@ -113,12 +104,12 @@ use kartik\select2\Select2;
             $("#saveAttributedProgram").click(function(){
                 var ruc         					= "'.$ruc.'";
                 var onstep 							= "'.$onstep.'";
-                var ppa_attributed_program_id 		= $("#ppa_attributed_program_id").val();
+                var ppa_sectors                     = $("#ppa_attributed_program_id").val();
+                var ppa_attributed_program_id       = ppa_sectors.toString();
                 var ppa_attributed_program_others 	= $("#ppa_attributed_program_others").val();
                 var lgu_program_project 			= $("#lgu_program_project").val();
                 var hgdg_pimme 					    = $("#hgdg_pimme").val();
                 var total_annual_pro_cost 		    = $("#total_annual_pro_cost").val();
-                var gad_attributed_pro_cost 			= $("#gad_attributed_pro_cost").val();
                 var variance_remarks 		        = $("#variance_remarks").val();
                 var controller_id					= "'.(Yii::$app->controller->id).'";
                 var tocreate                        = "'.$tocreate.'";
@@ -132,7 +123,6 @@ use kartik\select2\Select2;
                             lgu_program_project:lgu_program_project,
                             hgdg_pimme:hgdg_pimme,
                             total_annual_pro_cost:total_annual_pro_cost,
-                            gad_attributed_pro_cost:gad_attributed_pro_cost,
                             variance_remarks:variance_remarks,
                             controller_id:controller_id,
                             tocreate:tocreate
@@ -141,32 +131,29 @@ use kartik\select2\Select2;
                     }).done(function(result) {
                         $.each(result, function( index, value ) {
                             
-                            $("p#message-"+index+"").text("");
+                            // error in select2
+                            $("p#messages2-"+index+"").text("");
+                            $("#"+index+"").next("span").css({"border":"1px solid red","border-radius":"5px"});
+                            $("#"+index+"").next("span").after("<p id=messages2-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
+                            // error in textarea
+                            $("p#messageta-"+index+"").text("");
                             $("textarea#"+index+"").css({"border":"1px solid red"});
-                            $("textarea#"+index+"").after("<p id=message-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
-
+                            $("textarea#"+index+"").after("<p id=messageta-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
+                            // error in textbox
+                            $("p#messagete-"+index+"").text("");
                             $("input#"+index+"").css({"border":"1px solid red"});
-                            $("input#"+index+"").after("<p id=message-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
+                            $("input#"+index+"").after("<p id=messagete-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
 
-                            $("#select2-"+index+"-container").parent(".select2-selection").css({"border":"1px solid red"});
-                            $("#select2-"+index+"-container").parent(".select2-selection").after("<p id=message-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
-
-                            // $("#select2-"+index+"-container").text
-                            
+                            // keypress remove error message
                             $("textarea#"+index+"").keyup(function(){
-                                $("#message-"+index+"").text("");
+                                $("#messageta-"+index+"").text("");
                                 $(this).css({"border":"1px solid #ccc"});
                             });
 
                             $("input#"+index+"").keyup(function(){
-                                $("#message-"+index+"").text("");
+                                $("#messagete-"+index+"").text("");
                                 $(this).css({"border":"1px solid #ccc"});
                             });
-
-                            // if($("#ppa_focused_id").val() == "")
-                            // {
-                            //     $("#message-ppa_value").hide();
-                            // }
                         });
                 });
           }); ');

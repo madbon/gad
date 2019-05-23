@@ -134,6 +134,9 @@ use kartik\select2\Select2;
                         'customStyle' => '',
                     ]);
                 ?>
+                
+            </div>
+            <div class="col-sm-4">
                 <?php
                     echo $this->render('common_tools/textarea_suggest',[
                         'placeholder_title' => "Relevant LGU Program or Project",
@@ -141,12 +144,10 @@ use kartik\select2\Select2;
                         'urlLoadResult' => '/report/default/load-relevant-lgu',
                         'rowsValue' => 2,
                         'classValue' => 'form-control',
-                        'customStyle' => 'margin-top:10px;',
+                        'customStyle' => '',
                     ]);
                 ?>
-            </div>
-            <div class="col-sm-4">
-                
+                <br/>
                 <?php
                     // Activity Category
                     echo Select2::widget([
@@ -211,14 +212,14 @@ use kartik\select2\Select2;
                 ?>
                 <br/>
                 <?php
-                    echo $this->render('common_tools/textarea_suggest',[
-                        'placeholder_title' => "Performance Indicator",
-                        'attribute_name' => "performance_indicator",
-                        'urlLoadResult' => '/report/default/load-performance-indicator',
-                        'rowsValue' => 2,
-                        'classValue' => 'form-control',
-                        'customStyle' => '',
-                    ]);
+                    // echo $this->render('common_tools/textarea_suggest',[
+                    //     'placeholder_title' => "Performance Indicator",
+                    //     'attribute_name' => "performance_indicator",
+                    //     'urlLoadResult' => '/report/default/load-performance-indicator',
+                    //     'rowsValue' => 2,
+                    //     'classValue' => 'form-control',
+                    //     'customStyle' => '',
+                    // ]);
                 ?>
             </div>
             <div class="col-sm-4">
@@ -277,7 +278,6 @@ use kartik\select2\Select2;
                             var relevant    = $("#relevant_lgu_program_project").val();
                             var act         = $("#activity").val();
                             var performance_target     = $("#performance_target").val();
-                            var performance_indicator     = $("#performance_indicator").val();
                             var budget_mooe = $("#budget_mooe").val();
                             var budget_ps   = $("#budget_ps").val();
                             var budget_co   = $("#budget_co").val();
@@ -298,7 +298,6 @@ use kartik\select2\Select2;
                                         obj:obj,
                                         relevant:relevant,
                                         act:act,
-                                        performance_indicator:performance_indicator,
                                         performance_target:performance_target,
                                         ruc:ruc,
                                         ppa_focused_id:ppa_focused_id,

@@ -39,14 +39,24 @@ class GadArAttributedProgram extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['record_id', 'ppa_attributed_program_id'], 'integer'],
-            [['lgu_program_project','ppa_attributed_program_id'],'required'],
+            [['record_id'], 'integer'],
+            // [['lgu_program_project','ppa_attributed_program_id'],'required'],
             [['ppa_attributed_program_others', 'lgu_program_project', 'variance_remarks'], 'string'],
             [['total_annual_pro_cost', 'gad_attributed_pro_cost','hgdg_pimme'], 'number'],
             [['date_created', 'date_updated'], 'safe'],
             [['record_tuc', 'controller_id'], 'string', 'max' => 150],
             [['hgdg_pimme', 'time_created', 'time_updated'], 'string', 'max' => 10],
-            [['ppa_attributed_program_others'],'required', 'when' => function ($model) { return $model->ppa_attributed_program_id == 0; }]
+
+            [['ppa_attributed_program_id','lgu_program_project','hgdg_pimme','total_annual_pro_cost'], Yii::$app->controller->action->id == "create-ar-attributed-program" ? 'required' : 'safe'],
+
+            [['lgu_program_project'],Yii::$app->controller->action->id == "update-ar-ap-lgu-program-project" ? 'required' : 'safe'],
+
+            [['hgdg_pimme'],Yii::$app->controller->action->id == "update-ar-hgdg-pimme" ? 'required' : 'safe'],
+
+            [['total_annual_pro_cost'],Yii::$app->controller->action->id == "update-ar-total-annual-pro-cost" ? 'required' : 'safe'],
+
+            [['variance_remarks'],Yii::$app->controller->action->id == "update-ar-variance-remarks" ? 'required' : 'safe'],
+            // [['ppa_attributed_program_others'],'required', 'when' => function ($model) { return $model->ppa_attributed_program_id == 0; }]
         ];
     }
 
@@ -60,7 +70,7 @@ class GadArAttributedProgram extends \yii\db\ActiveRecord
             'record_id' => 'Record ID',
             'record_tuc' => 'Record Tuc',
             'controller_id' => 'Controller ID',
-            'ppa_attributed_program_id' => 'PPA Category',
+            'ppa_attributed_program_id' => 'PPA Sectors',
             'ppa_attributed_program_others' => 'Other PPA Attributed Program',
             'lgu_program_project' => 'Title of LGU Program or Project',
             'hgdg_pimme' => 'HGDG PIMME / FIMME Score',

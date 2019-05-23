@@ -461,14 +461,30 @@ use common\modules\report\controllers\DefaultController;
         </div>
 
         <?php 
-            $findOneQry =  \common\models\GadPlanBudget::find()->where(['id' => $row_id, 'inner_category_id' => 1])->andWhere(['not', ['gi_sup_data' => null]]);
+            if(Yii::$app->controller->id == "gad-accomplishment-report")
+            {
+                $findOneQry =  \common\models\GadAccomplishmentReport::find()->where(['id' => $row_id, 'inner_category_id' => 1])->andWhere(['not', ['gi_sup_data' => null]]);
+            }
+            else if(Yii::$app->controller->id == "gad-plan-budget")
+            {
+                $findOneQry =  \common\models\GadPlanBudget::find()->where(['id' => $row_id, 'inner_category_id' => 1])->andWhere(['not', ['gi_sup_data' => null]]);
+            }
+            
         ?>
         <?php if($findOneQry->exists() && $attribute_name == "ppa_value"){ ?>
             <button id="btn_view_gi_sup_data-<?= $row_id ?>" type="button" class="btn btn-warning btn-xs" title="Gender Issue Supporting Statistics Data">
                 <span class="glyphicon glyphicon-list"></span>
             </button>
             <?php
-                $urlLoadSupData = \yii\helpers\Url::to(['/report/default/load-gender-issue-sup-data']);
+                if(Yii::$app->controller->id == "gad-accomplishment-report")
+                {
+                    $urlLoadSupData = \yii\helpers\Url::to(['/report/default/load-ar-gender-issue-sup-data']);
+                }
+                else if(Yii::$app->controller->id == "gad-plan-budget")
+                {
+                    $urlLoadSupData = \yii\helpers\Url::to(['/report/default/load-gender-issue-sup-data']);
+                }
+                
                 $this->registerJs("
                     $('#btn_view_gi_sup_data-".$row_id."').click(function(){
                         $('.div-tooltip-form').hide(); // hide all showing div

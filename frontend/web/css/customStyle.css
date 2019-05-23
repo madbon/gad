@@ -35,7 +35,8 @@ p.sub-title
 }
 button.btn-success
 {
-    background-color: #29012cc4 !important;
+    /*background-color: #29012cc4 !important;*/
+    background-color: #7e57b1 !important;
     border-color: #29012cc4 !important;
 }
 button.btn-success:hover
@@ -45,16 +46,16 @@ button.btn-success:hover
 }
 ul.nav li a.btn-success
 {
-    background-color: #29012cc4 !important;
+    background-color: #7e57b1 !important;
 }
 ul.nav li a.btn-success:hover
 {
-    color:yellow;
+    color:white;
 }
 ul.nav li.active a.btn-success
 {
     background-color: white !important;
-    color: #29012cc4 !important;
+    color: #7e57b1 !important;
 }
 table.ar tbody tr.signatory_label td
 {
@@ -88,7 +89,7 @@ table.ar tbody tr.grand_total td:nth-child(3)
 
 table.ar tbody tr.total_a td,tr.total_b td, tr.total_c td
 {
-    background-color: #29012cc4 !important;
+    background-color: #7e57b1 !important;
     color:white;
     font-weight: bold;
 }
@@ -157,7 +158,7 @@ table.gad-plan-budget tbody tr.grand_total td:nth-child(3)
 
 table.gad-plan-budget tbody tr.total_a td,tr.total_b td, tr.total_c td
 {
-    background-color: #29012cc4 !important;
+    background-color: #7e57b1 !important;
     color: white !important;
 }
 
