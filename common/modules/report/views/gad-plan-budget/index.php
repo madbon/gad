@@ -66,9 +66,11 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <br/>
 
-    <button type="button" class="btn btn-success" id="btn-encode" style="margin-bottom: 5px;">
-        <span class="glyphicon glyphicon-pencil"></span> Encode Gender Issue or GAD Mandate
-    </button>
+    <?php if($qryReportStatus != 2){ ?>
+        <button type="button" class="btn btn-success" id="btn-encode" style="margin-bottom: 5px;">
+            <span class="glyphicon glyphicon-pencil"></span> Encode Gender Issue or GAD Mandate
+        </button>
+    <?php } ?>
 
     <?php
         $urlSetSession = \yii\helpers\Url::to(['default/session-encode']);
@@ -95,11 +97,32 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php
         $sendTo = "";
+        $reportStatus = 0;
         if(Yii::$app->user->can("gad_lgu"))
         {
-            $sendTo = "Sumit to Field Officer";
+            if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
+            {
+                $reportStatus = 2;
+                $sendTo = "Endorse to DILG Regional Office";
+            }
+            else
+            {
+                $reportStatus = 1;
+                if($qryReportStatus == 0)
+                {
+                    $reportStatus = 1;
+                    $sendTo = 'Mark as "For Review by PPDO"';
+                }
+                else if($qryReportStatus == 1)
+                {
+                    $reportStatus = 2;
+                    $sendTo = 'Endorse to DILG Office (C/MLGOO)';
+                }
+                
+            }
+           
         }
-        elseif(Yii::$app->user->can("gad_field"))
+        else if(Yii::$app->user->can("gad_field"))
         {
             $sendTo = "Endorse to Provincial Office";
         }
@@ -116,37 +139,92 @@ $this->params['breadcrumbs'][] = $this->title;
             $sendTo = null;
         }
     ?>
-    <?php if(!empty($sendTo)){ ?>
-        <button type="button" class="btn btn-primary pull-right" id="btn-submit-report" style="margin-bottom: 5px;">
-            <?= $sendTo ?> &nbsp;<span class="glyphicon glyphicon-send" ></span> 
-        </button>
-    <?php } ?>
 
-    <?php if(Yii::$app->session["encode_gender_pb"] == "open"){ ?>
-    <div class="cust-panel input-form" id="inputFormPlan">
-    <?php }else{ ?>
-    <div class="cust-panel input-form" id="inputFormPlan" style="display: none;">
-    <?php } ?>
-        <div class="cust-panel-header gad-color">
+    <?php if(!empty($sendTo)){ ?>
+        <?php if($qryReportStatus == 0){ 
+            echo Html::a($sendTo,
+            [
+                'gad-plan-budget/change-report-status',
+                'status' => $reportStatus,
+                'tuc' => $ruc,
+                'onstep' => $onstep,
+                'tocreate' => $tocreate
+            ],
+            [
+                'class' => 'btn btn-success pull-right',
+                'id'=>"submit_to",
+                'style' => '',
+                'data' => [
+                    'confirm' => 'Are you sure you want to perform this action?',
+                    'method' => 'post']
+            ]);
+        } 
+        else
+        { ?>
+            <a class="btn btn-success pull-right" id="endorse_to"><?= $sendTo ?></a>
+            <?php
+                $this->registerJs("
+                    $('#endorse_to').click(function(){
+                        $('#text_remarks').slideDown(300);
+                        $('#submit_to').show();
+                    });
+                ");
+            ?>
+        <?php } ?>
+    <?php } // end of sendTo ?>
+    <div class="row">
+        <div class="col-sm-8">
         </div>
-        <div class="cust-panel-body">
-            <div class="cust-panel-title">
-                <p class="sub-title"><span class="glyphicon glyphicon-pencil"></span> INPUT FORM</p>
-            </div>
-            <div class="cust-panel-inner-body">
-                <?php echo $this->render('client_focused_form',[
-                    'opt_cli_focused' => $opt_cli_focused,
-                    'ruc' => $ruc,
-                    'select_GadFocused' => $select_GadFocused,
-                    'select_GadInnerCategory' => $select_GadInnerCategory,
+        <div class="col-sm-4">
+            <textarea class="form-control" rows='3' placeholder="Remarks (optional)" id="text_remarks" style="display: none;"></textarea>
+            <?php
+                echo Html::a('<i class="glyphicon glyphicon-send"></i> Submit',
+                  [
+                    'gad-plan-budget/change-report-status',
+                    'status' => $reportStatus,
+                    'tuc' => $ruc,
                     'onstep' => $onstep,
-                    'tocreate' => $tocreate,
-                    'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
-                    ]);
-                ?>
-            </div>
+                    'tocreate' => $tocreate
+                  ],
+                  [
+                    'class' => 'btn btn-primary btn-sm pull-right',
+                    'id'=>"submit_to",
+                    'style' => 'margin-bottom:5px; margin-top:5px; display:none;',
+                    'data' => [
+                        'confirm' => 'Are you sure you want Submit this Report?',
+                        'method' => 'post']
+                  ]);
+            ?>
         </div>
     </div>
+    <?php if($qryReportStatus != 2){ //if report status is encoding ?> 
+        <?php if(Yii::$app->session["encode_gender_pb"] == "open"){ ?>
+        <div class="cust-panel input-form" id="inputFormPlan">
+        <?php }else{ ?>
+        <div class="cust-panel input-form" id="inputFormPlan" style="display: none;">
+        <?php } ?>
+            <div class="cust-panel-header gad-color">
+            </div>
+            <div class="cust-panel-body">
+                <div class="cust-panel-title">
+                    <p class="sub-title"><span class="glyphicon glyphicon-pencil"></span> INPUT FORM</p>
+                </div>
+                <div class="cust-panel-inner-body">
+                    <?php 
+                        echo $this->render('client_focused_form',[
+                            'opt_cli_focused' => $opt_cli_focused,
+                            'ruc' => $ruc,
+                            'select_GadFocused' => $select_GadFocused,
+                            'select_GadInnerCategory' => $select_GadInnerCategory,
+                            'onstep' => $onstep,
+                            'tocreate' => $tocreate,
+                            'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
+                        ]);
+                    ?>
+                </div>
+            </div>
+        </div>
+    <?php } ?>
 
     
     <br/>
@@ -326,52 +404,56 @@ $this->params['breadcrumbs'][] = $this->title;
                         <tr class="attributed_program_title">
                             <td colspan="5">
                                 <b>ATTRIBUTED PROGRAMS</b> 
-                                <button id="btn_encode_attributed_program" type="button" class="btn btn-success btn-sm">
-                                    <span class="glyphicon glyphicon-pencil"></span>
-                                    Encode
-                                </button>
-                                <?php
-                                    $this->registerJs("
-                                        $('#btn_encode_attributed_program').click(function(){
-                                            var trigger = 'open';
-                                            var form_type = 'attribute';
-                                            var report_type = 'pb';
-                                            $.ajax({
-                                                url: '".$urlSetSession."',
-                                                data: { 
-                                                        trigger:trigger,
-                                                        form_type:form_type,
-                                                        report_type:report_type
-                                                        }
-                                                
-                                                }).done(function(result) {
+                                <?php if($qryReportStatus != 2){ ?>
+                                    <button id="btn_encode_attributed_program" type="button" class="btn btn-success btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                        Encode
+                                    </button>
+                                    <?php
+                                        $this->registerJs("
+                                            $('#btn_encode_attributed_program').click(function(){
+                                                var trigger = 'open';
+                                                var form_type = 'attribute';
+                                                var report_type = 'pb';
+                                                $.ajax({
+                                                    url: '".$urlSetSession."',
+                                                    data: { 
+                                                            trigger:trigger,
+                                                            form_type:form_type,
+                                                            report_type:report_type
+                                                            }
                                                     
+                                                    }).done(function(result) {
+                                                        
+                                                });
+                                                $('.attributed_program_form').slideDown(300);
                                             });
-                                            $('.attributed_program_form').slideDown(300);
-                                        });
-                                    ");
-                                ?>
+                                        ");
+                                    ?>
+                                <?php } ?>
                             </td>
                             <td colspan="3"></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <?php if(Yii::$app->session["encode_attribute_pb"] == "open"){ ?>
-                            <tr class="attributed_program_form">
-                        <?php }else{ ?>
-                            <tr class="attributed_program_form" style="display: none;">
+                        <?php if($qryReportStatus != 2){ ?>
+                            <?php if(Yii::$app->session["encode_attribute_pb"] == "open"){ ?>
+                                <tr class="attributed_program_form">
+                            <?php }else{ ?>
+                                <tr class="attributed_program_form" style="display: none;">
+                            <?php } ?>
+                                <td colspan="10">
+                                    <?php
+                                        echo $this->render('attributed_program_form', [
+                                            'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
+                                            'ruc' => $ruc,
+                                            'onstep' => $onstep,
+                                            'tocreate' => $tocreate,
+                                        ]);
+                                    ?>
+                                </td>
+                            </tr>
                         <?php } ?>
-                            <td colspan="10">
-                                <?php
-                                    echo $this->render('attributed_program_form', [
-                                        'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
-                                        'ruc' => $ruc,
-                                        'onstep' => $onstep,
-                                        'tocreate' => $tocreate,
-                                    ]);
-                                ?>
-                            </td>
-                        </tr>
                         <tr class="attributed_program_thead">
                             <td colspan="2"><b>Title of LGU Program or Project</b></td>
                             <td colspan="1"><b>HGDG Design/ Funding Facility/ Generic Checklist Score</b></td>

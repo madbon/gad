@@ -38,6 +38,16 @@ class GadPlanBudgetController extends Controller
         ];
     }
 
+    public function actionChangeReportStatus($status,$tuc,$onstep,$tocreate)
+    {
+        $qry = GadRecord::find()->where(['tuc' => $tuc])->one();
+        $qry->status = $status;
+        $qry->save(false);
+
+        \Yii::$app->getSession()->setFlash('success', "Action has been performed");
+        return $this->redirect(['index', 'ruc' => $tuc,'onstep' => $onstep, 'tocreate' => $tocreate]);
+    }
+
     /**
      * Lists all GadPlanBudget models.
      * @return mixed
@@ -193,6 +203,10 @@ class GadPlanBudgetController extends Controller
         $select_GadInnerCategory = ArrayHelper::map(\common\models\GadInnerCategory::find()->all(), 'id', 'title');
         $select_PpaAttributedProgram = ArrayHelper::map(\common\models\GadPpaAttributedProgram::find()->all(), 'id', 'title');
 
+        $reportStatus = 0;
+        $modelRecord = GadRecord::find()->where(['tuc' => $ruc])->one();
+        $qryReportStatus = $modelRecord->status;
+
 
         if($onstep == "to_create_gpb")
         {
@@ -226,6 +240,7 @@ class GadPlanBudgetController extends Controller
             'tocreate' => $tocreate,
             'grand_total_pb' => $grand_total_pb,
             'fivePercentTotalLguBudget' => $fivePercentTotalLguBudget,
+            'qryReportStatus' => $qryReportStatus,
         ]);
     }
 

@@ -72,15 +72,15 @@ use kartik\select2\Select2;
                 'customStyle' => '',
             ]);
         ?>
-        <br/>
+        <!-- <br/> -->
         <?php
-            echo $this->render('common_tools/textinput_suggest',[
-                'placeholder_title' => "GAD Attributed Program/Project Budget",
-                'attribute_name' => "attributed_pro_budget",
-                'urlLoadResult' => '/report/default/load-attributed-pro-budget',
-                'classValue' => 'form-control',
-                'customStyle' => '',
-            ]);
+            // echo $this->render('common_tools/textinput_suggest',[
+            //     'placeholder_title' => "GAD Attributed Program/Project Budget",
+            //     'attribute_name' => "attributed_pro_budget",
+            //     'urlLoadResult' => '/report/default/load-attributed-pro-budget',
+            //     'classValue' => 'form-control',
+            //     'customStyle' => '',
+            // ]);
         ?>
 	</div>
 	<div class="col-sm-4">
@@ -109,7 +109,6 @@ use kartik\select2\Select2;
                 var lgu_program_project 			= $("#lgu_program_project").val();
                 var hgdg 							= $("#hgdg").val();
                 var total_annual_pro_budget 		= $("#total_annual_pro_budget").val();
-                var attributed_pro_budget 			= $("#attributed_pro_budget").val();
                 var lead_responsible_office 		= $("#ap_lead_responsible_office").val();
                 var controller_id					= "'.(Yii::$app->controller->id).'";
                 var tocreate                        = "'.$tocreate.'";
@@ -122,7 +121,6 @@ use kartik\select2\Select2;
                             lgu_program_project:lgu_program_project,
                             hgdg:hgdg,
                             total_annual_pro_budget:total_annual_pro_budget,
-                            attributed_pro_budget:attributed_pro_budget,
                             lead_responsible_office:lead_responsible_office,
                             controller_id:controller_id,
                             tocreate:tocreate

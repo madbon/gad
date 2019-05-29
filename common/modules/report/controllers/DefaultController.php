@@ -796,7 +796,7 @@ class DefaultController extends Controller
         
         return $is_save;
     }
-    public  function actionCreatePbAttributedProgram($ruc,$onstep,$ppa_attributed_program_id,$lgu_program_project,$hgdg,$total_annual_pro_budget,$attributed_pro_budget,$lead_responsible_office,$controller_id,$tocreate)
+    public  function actionCreatePbAttributedProgram($ruc,$onstep,$ppa_attributed_program_id,$lgu_program_project,$hgdg,$total_annual_pro_budget,$lead_responsible_office,$controller_id,$tocreate)
     {
         // print_r($ppa_attributed_program_id); exit;
         $model = new GadAttributedProgram();
@@ -805,7 +805,6 @@ class DefaultController extends Controller
         $model->lgu_program_project = $lgu_program_project;
         $model->hgdg = $hgdg;
         $model->total_annual_pro_budget = $total_annual_pro_budget;
-        $model->attributed_pro_budget = $attributed_pro_budget;
         $model->ap_lead_responsible_office = $lead_responsible_office;
 
         date_default_timezone_set("Asia/Manila");

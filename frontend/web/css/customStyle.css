@@ -1,4 +1,13 @@
 
+
+/*Alert Message*/
+.alert-success
+{
+    background-color: #5cb85c !important;
+    border-color: #4cae4c !important;
+    color: white !important;
+}
+
 /*-----------------------Accomplishment Report Start*/
 p.sup_data
 {
