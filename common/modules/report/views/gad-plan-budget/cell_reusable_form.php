@@ -66,6 +66,7 @@ use common\modules\report\controllers\DefaultController;
                 var attr_name = "'.$attribute_name.'";
                 var enableComment = "'.$enableComment.'";
                 var enableEdit = "'.$enableEdit.'";
+                var enableViewComment = "'.$enableViewComment.'";
 
                 $(".common-cell-container").removeClass("active-cell"); // remove other .active-cell if not active
                 $("#cell-"+attr_name+"-'.$row_id.'").addClass("active-cell"); // add class .active-cell if active
@@ -87,18 +88,26 @@ use common\modules\report\controllers\DefaultController;
                 if(enableComment == "true")
                 {
                     $(".btn-comment-cell").hide(); // hide btn comment if not active cell
-                    $(".btn-view-comment-common").hide();
                     $("#btn-comment-"+attr_name+"-'.$row_id.'").show(); // if active show btn common
-                    var countComment = '.(DefaultController::countComment2($controller_id,$form_id,$row_id,$attribute_name)).';
-                    if(countComment > 0)
-                    {
-                        $("#btn-view-comment-"+attr_name+"-'.$row_id.'").show(); // if active show btn common
-                    }
                 }
                 else
                 {
                     $(".btn-comment-cell").hide(); // hide btn comment if not active cell
+                    
+                }
+
+                if(enableViewComment == "true")
+                {
+                    var countComment = '.(DefaultController::countComment2($controller_id,$form_id,$row_id,$attribute_name)).';
                     $(".btn-view-comment-common").hide();
+                    if(countComment > 0)
+                    {
+                        $("#btn-view-comment-"+attr_name+"-'.$row_id.'").show(); // if active show btn common
+                    }
+                    else
+                    {
+                        $(".btn-view-comment-common").hide();
+                    }
                 }
                 
 
@@ -307,8 +316,23 @@ use common\modules\report\controllers\DefaultController;
                                     cols += "<p id=comment_confirm_message-"+value.comment_id+" class=confirm-message><i></i> <span></span></p>";
                                     cols += "<p class=psgc_value><span></span> ";
                                     cols +=     "<i class=office>"+value.office_name+" | </i>";
-                                    cols +=     "<i class=citymun>"+value.citymun_name+"</i>";
-                                    cols +=     " <i class=province>"+value.province_name+"</i>";
+                                    if(value.citymun_name == null)
+                                    {
+                                        cols +=     "<i class=citymun></i>";
+                                    }
+                                    else
+                                    {
+                                        cols +=     "<i class=citymun>"+value.citymun_name+"</i>";
+                                    }
+
+                                    if(value.province_name == null)
+                                    {
+                                        cols +=     " <i class=province></i>";
+                                    }
+                                    else
+                                    {
+                                        cols +=     " <i class=province>"+value.province_name+"</i>";
+                                    }
                                     cols +=     " <i class=region>"+"("+value.region_name+")"+"</i>";
                                     cols += "</p>";
                                     cols += "<p class=who_date_value>";

@@ -44,8 +44,17 @@ class GadPlanBudgetController extends Controller
         $qry->status = $status;
         $qry->save(false);
 
+        if($onstep == "to_create_ar")
+        {
+            $redirectTo = "gad-accomplishment-report/index";
+        }
+        else
+        {
+            $redirectTo = "gad-plan-budget/index";
+        }
+
         \Yii::$app->getSession()->setFlash('success', "Action has been performed");
-        return $this->redirect(['index', 'ruc' => $tuc,'onstep' => $onstep, 'tocreate' => $tocreate]);
+        return $this->redirect([$redirectTo, 'ruc' => $tuc,'onstep' => $onstep, 'tocreate' => $tocreate]);
     }
 
     /**

@@ -93,7 +93,7 @@ use kartik\select2\Select2;
 		    //     'customStyle' => 'height:88px;',
 		    // ]);
 		?>
-        <textarea rows="2" class="form-control" id="variance_remarks" placeholder="Variance or Remarks"></textarea>
+        <textarea rows="2" class="form-control" id="ar_ap_variance_remarks" placeholder="Variance or Remarks"></textarea>
 		<br/>
 		<button id="saveAttributedProgram" type="button" class="btn btn-primary btn-sm">
 			<span class="glyphicon glyphicon-floppy-disk"></span> Save
@@ -110,7 +110,7 @@ use kartik\select2\Select2;
                 var lgu_program_project 			= $("#lgu_program_project").val();
                 var hgdg_pimme 					    = $("#hgdg_pimme").val();
                 var total_annual_pro_cost 		    = $("#total_annual_pro_cost").val();
-                var variance_remarks 		        = $("#variance_remarks").val();
+                var ar_ap_variance_remarks 		        = $("#ar_ap_variance_remarks").val();
                 var controller_id					= "'.(Yii::$app->controller->id).'";
                 var tocreate                        = "'.$tocreate.'";
                 $.ajax({
@@ -123,7 +123,7 @@ use kartik\select2\Select2;
                             lgu_program_project:lgu_program_project,
                             hgdg_pimme:hgdg_pimme,
                             total_annual_pro_cost:total_annual_pro_cost,
-                            variance_remarks:variance_remarks,
+                            ar_ap_variance_remarks:ar_ap_variance_remarks,
                             controller_id:controller_id,
                             tocreate:tocreate
                         }

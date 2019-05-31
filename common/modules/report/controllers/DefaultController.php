@@ -16,12 +16,46 @@ use common\models\GadAttributedProgram;
 use common\models\GadArAttributedProgram;
 use common\models\GadRecord;
 use common\models\GadAccomplishmentReport;
+use common\models\GadReportHistory;
 use Yii;
 /**
  * Default controller for the `report` module
  */
 class DefaultController extends Controller
 {
+    public  function DisplayStatus($value)
+    {
+        $returnValue = "";
+        if($value == 0)
+        {
+            $returnValue = "<span class='label label-warning'>Encoding Process</span>";
+        }
+        else if($value == 1)
+        {
+            $returnValue = "<span class='label label-info'>For Review by PPDO</span>";
+        }
+        else if($value == 2)
+        {
+            $returnValue = "<span class='label label-success'>For Review by PPDO</span>";
+        }
+    }
+
+    public function actionCreateReportHistory($valueTextRemarks,$valueReportStatus,$tuc,$valueOnStep,$valueToCreate)
+    {
+        date_default_timezone_set("Asia/Manila");
+        $model = new GadReportHistory();
+        $model->remarks = $valueTextRemarks;
+        $model->tuc = $tuc;
+        $model->status = $valueReportStatus;
+        $model->date_created = date('Y-m-d');
+        $model->time_created = date("h:i:sa");
+        $model->save();
+
+        // \Yii::$app->getSession()->setFlash('success', "Action has been performed");
+        // return $this->redirect(['/index', 'ruc' => $tuc,'onstep' => $valueOnStep, 'tocreate' => $valueToCreate]);
+
+    }
+
     public function actionSessionEncode($trigger,$form_type,$report_type)
     {
         if($report_type == "ar") // if accomplishment report
@@ -218,7 +252,7 @@ class DefaultController extends Controller
     public function actionUpdateArVarianceRemarks($uid,$upd8_value)
     {
         $qry = GadArAttributedProgram::find()->where(['id' => $uid])->one();
-        $qry->variance_remarks = $upd8_value;
+        $qry->ar_ap_variance_remarks = $upd8_value;
 
         if($qry->save())
         {
@@ -305,7 +339,7 @@ class DefaultController extends Controller
         
         return $is_save;
     }
-    public  function actionCreateArAttributedProgram($ruc,$onstep,$ppa_attributed_program_id,$ppa_attributed_program_others,$lgu_program_project,$hgdg_pimme,$total_annual_pro_cost,$variance_remarks,$controller_id,$tocreate)
+    public  function actionCreateArAttributedProgram($ruc,$onstep,$ppa_attributed_program_id,$ppa_attributed_program_others,$lgu_program_project,$hgdg_pimme,$total_annual_pro_cost,$ar_ap_variance_remarks,$controller_id,$tocreate)
     {
         // print_r($ppa_attributed_program_id); exit;
         $model = new GadArAttributedProgram();
@@ -315,7 +349,7 @@ class DefaultController extends Controller
         $model->lgu_program_project = $lgu_program_project;
         $model->hgdg_pimme = $hgdg_pimme;
         $model->total_annual_pro_cost = $total_annual_pro_cost;
-        $model->variance_remarks = $variance_remarks;
+        $model->ar_ap_variance_remarks = $ar_ap_variance_remarks;
 
         date_default_timezone_set("Asia/Manila");
         $model->date_created = date('Y-m-d');
@@ -1082,7 +1116,37 @@ class DefaultController extends Controller
         $model->date_created = date('Y-m-d');
         $model->time_created = date("h:i:sa");
         $model->user_id = Yii::$app->user->identity->userinfo->user_id;
-        $model->office_c = 2;
+        $office_value = 0;
+        if(Yii::$app->user->can("gad_lgu"))
+        {
+            $office_value = 0;
+        }
+        else if(Yii::$app->user->can("gad_field"))
+        {
+            if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS") 
+            {
+                $office_value = 4;
+            }
+            else
+            {
+                $office_value = 3;
+            }
+            
+        }
+        else if(Yii::$app->user->can("gad_region"))
+        {
+            $office_value = 1;
+        }
+        else if(Yii::$app->user->can("gad_province"))
+        {
+            $office_value = 2;
+        }
+        else if(Yii::$app->user->can("gad_central"))
+        {
+            $office_value = 5;
+        }
+
+        $model->office_c = $office_value;
         $model->region_c = !empty(Yii::$app->user->identity->userinfo->REGION_C) ? Yii::$app->user->identity->userinfo->REGION_C : NULL;
         $model->province_c = !empty(Yii::$app->user->identity->userinfo->PROVINCE_C) ? Yii::$app->user->identity->userinfo->PROVINCE_C : NULL;
         $model->citymun_c = !empty(Yii::$app->user->identity->userinfo->CITYMUN_C) ? Yii::$app->user->identity->userinfo->CITYMUN_C : NULL;
@@ -1309,6 +1373,7 @@ class DefaultController extends Controller
         $model->time_created = date("h:i:sa");
         if($model->save())
         {
+            \Yii::$app->getSession()->setFlash('success', "Data has been saved");
             return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
         }
         else

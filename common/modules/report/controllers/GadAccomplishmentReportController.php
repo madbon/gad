@@ -47,7 +47,7 @@ class GadAccomplishmentReportController extends Controller
             'AP.hgdg_pimme',
             'AP.total_annual_pro_cost',
             'AP.gad_attributed_pro_cost',
-            'AP.variance_remarks',
+            'AP.ar_ap_variance_remarks',
             'AP.record_tuc',
             'AP.controller_id'
         ])
@@ -175,6 +175,10 @@ class GadAccomplishmentReportController extends Controller
         $select_GadInnerCategory = ArrayHelper::map(\common\models\GadInnerCategory::find()->all(), 'id', 'title');
         $select_PpaAttributedProgram = ArrayHelper::map(\common\models\GadPpaAttributedProgram::find()->all(), 'id', 'title');
 
+        $reportStatus = 0;
+        $modelRecord = GadRecord::find()->where(['tuc' => $ruc])->one();
+        $qryReportStatus = $modelRecord->status;
+
         $render_index = "";
         if($onstep == "to_create_ar")
         {
@@ -204,6 +208,7 @@ class GadAccomplishmentReportController extends Controller
             'dataAttributedProgram' => $dataAttributedProgram,
             'grand_total_ar' => $grand_total_ar,
             'fivePercentTotalLguBudget' => $fivePercentTotalLguBudget,
+            'qryReportStatus' => $qryReportStatus
         ]);
     }
 

@@ -225,19 +225,19 @@ div.navbar-header a img
                     [
                         'label' => 'Home','url' => ['/site/index']],
 
-                    [
+                    Yii::$app->user->can('gad_menu_create') ? [
                         'label' => 'Create', 'items' => [
-                            ['label' => 'Plan and Budget', 'url' =>  ['/report/gad-record/create','ruc'=>'empty','onstep'=>'create_new','tocreate'=>'gad_plan_budget']],
-                            ['label' => 'Accomplishment Report', 'url' =>  ['/report/gad-record/create','ruc'=>'empty','onstep'=>'create_new','tocreate'=>'accomp_report']],
+                            Yii::$app->user->can('gad_create_planbudget') ? ['label' => 'Plan and Budget', 'url' =>  ['/report/gad-record/create','ruc'=>'empty','onstep'=>'create_new','tocreate'=>'gad_plan_budget']] : "",
+                            Yii::$app->user->can('gad_create_accomplishment') ? ['label' => 'Accomplishment Report', 'url' =>  ['/report/gad-record/create','ruc'=>'empty','onstep'=>'create_new','tocreate'=>'accomp_report']] : "",
                         ],
-                    ],
-                    [
+                    ] : "",
+                    Yii::$app->user->can('gad_menu_report') ? [
                         'label' => 'Report', 'items' => [
-                            ['label' => 'GAD Plan and Budget', 'url' => ['/report/gad-record/','report_type' => 'plan_budget']],
-                            ['label' => 'Accomplishment Report', 'url' => ['/report/gad-record/','report_type' => 'accomplishment' ]],
+                            Yii::$app->user->can('gad_viewreport_planbudget') ? ['label' => 'GAD Plan and Budget', 'url' => ['/report/gad-record/','report_type' => 'plan_budget']] : "",
+                            Yii::$app->user->can('gad_viewreport_accomplishment') ? ['label' => 'Accomplishment Report', 'url' => ['/report/gad-record/','report_type' => 'accomplishment' ]] : "",
                         ],
                         // 'url' => ['/site/about']
-                    ],
+                    ] : "",
                     // ['label' => 'Contact', 'url' => ['/site/contact']],
                 ];
             }

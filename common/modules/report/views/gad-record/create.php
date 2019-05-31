@@ -33,11 +33,11 @@ $this->params['breadcrumbs'][] = $this->title;
 		  	<?php if($onstep == 'to_create_gpb'){ ?>
 			  	<?= $this->render('/common_tools/tabs/tab_encode',[
 			  			'tabTitle' => 'Step 2. Encode Annual GAD Plan and Budget',
-			  			'liClass' => '',
+			  			'liClass' => 'disabled',
 			  			'ruc' => $ruc,
 			  			'onstep' => $onstep,
 			  			'tocreate' => $tocreate,
-			  			'linkClass' => '',
+			  			'linkClass' => 'disabled',
 			  			'url' => '/report/gad-plan-budget/index'
 			  		]);
 			  	?>
@@ -75,101 +75,109 @@ $this->params['breadcrumbs'][] = $this->title;
 			  			'url' => '/report/gad-accomplishment-report/index'
 			  		]);
 			  	?>
-			  	<?= $this->render('/common_tools/tabs/tab_submit',[
-			  			'tabTitle' => 'Step 3. Submit Report',
-			  			'liClass' => '',
-			  			'ruc' => $ruc,
-			  			'onstep' => $onstep,
-			  			'tocreate' => $tocreate,
-			  			'linkClass' => '',
-			  			'url' => '/report/gad-plan-budget/index'
-			  		]);
-			  	?>
-
-			  	<?= $this->render('/common_tools/tabs/tab_completed',[
-			  			'tabTitle' => 'Step 4. Report has been submitted',
-			  			'liClass' => '',
-			  			'ruc' => $ruc,
-			  			'onstep' => $onstep,
-			  			'tocreate' => $tocreate,
-			  			'linkClass' => '',
-			  			'url' => '/report/gad-plan-budget/index'
-			  		]);
-			  	?>
-		  	<?php }else{  //onstep=create_new ?>
-		  		<?php if($tocreate == "gad_plan_budget"){ ?> 
-					<?= $this->render('/common_tools/tabs/tab_encode',[
-				  			'tabTitle' => 'Step 2. Encode Annual GAD Plan and Budget',
-				  			'liClass' => 'disabled',
-				  			'ruc' => $ruc,
-				  			'onstep' => $onstep,
-				  			'tocreate' => $tocreate,
-				  			'linkClass' => '',
-				  			'url' => ''
-				  		]);
-				  	?>
-				  	
-
-				  	<li class="disabled">
-						<?= Html::a("Step 3. For Review by PPDO &nbsp;<span class='glyphicon glyphicon-eye-open'></span>", ['','ruc' => $ruc, 'onstep' => $onstep,'tocreate' => $tocreate], ['class' => " btn btn-success"]) ?>
-					</li>
-
-				  	<?php  if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS"){ ?>
+			  	<?php  if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS"){ ?>
 					  	<?= $this->render('/common_tools/tabs/tab_completed',[
-					  			'tabTitle' => 'Step 4. Endorse to DILG Regional Office',
+					  			'tabTitle' => 'Step 3. Endorse to DILG Regional Office',
 					  			'liClass' => 'disabled',
 					  			'ruc' => $ruc,
 					  			'onstep' => $onstep,
 					  			'tocreate' => $tocreate,
-					  			'linkClass' => '',
+					  			'linkClass' => 'disabled',
 					  			'url' => ''
 					  		]);
 					  	?>
 				  	<?php }else{ ?>
+				  		<li class="disabled">
+							<?= Html::a("Step 3. For Review by PPDO &nbsp;<span class='glyphicon glyphicon-eye-open'></span>", ['','ruc' => $ruc, 'onstep' => $onstep,'tocreate' => $tocreate], ['class' => "disabled btn btn-success"]) ?>
+						</li>
 				  		<?= $this->render('/common_tools/tabs/tab_completed',[
 					  			'tabTitle' => 'Step 4. Endorse to DILG (C/MLGOO)',
 					  			'liClass' => 'disabled',
 					  			'ruc' => $ruc,
 					  			'onstep' => $onstep,
 					  			'tocreate' => $tocreate,
-					  			'linkClass' => '',
+					  			'linkClass' => 'disabled',
 					  			'url' => ''
 					  		]);
 					  	?>
 				  	<?php } ?>
-				<?php }else{ ?>
+		  	<?php }else{  //onstep=create_new ?>
+		  		<?php if($tocreate == "gad_plan_budget"){ //-----------------------tocreate=gad_plan_budget (GAD Plan and Budget) ?> 
+					<?= $this->render('/common_tools/tabs/tab_encode',[
+				  			'tabTitle' => 'Step 2. Encode Annual GAD Plan and Budget',
+				  			'liClass' => 'disabled',
+				  			'ruc' => $ruc,
+				  			'onstep' => $onstep,
+				  			'tocreate' => $tocreate,
+				  			'linkClass' => 'disabled',
+				  			'url' => ''
+				  		]);
+				  	?>
+
+				  	<?php  if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS"){ ?>
+					  	<?= $this->render('/common_tools/tabs/tab_completed',[
+					  			'tabTitle' => 'Step 3. Endorse to DILG Regional Office',
+					  			'liClass' => 'disabled',
+					  			'ruc' => $ruc,
+					  			'onstep' => $onstep,
+					  			'tocreate' => $tocreate,
+					  			'linkClass' => 'disabled',
+					  			'url' => ''
+					  		]);
+					  	?>
+				  	<?php }else{ ?>
+				  		<li class="disabled">
+							<?= Html::a("Step 3. For Review by PPDO &nbsp;<span class='glyphicon glyphicon-eye-open'></span>", ['','ruc' => $ruc, 'onstep' => $onstep,'tocreate' => $tocreate], ['class' => "disabled btn btn-success"]) ?>
+						</li>
+				  		<?= $this->render('/common_tools/tabs/tab_completed',[
+					  			'tabTitle' => 'Step 4. Endorse to DILG (C/MLGOO)',
+					  			'liClass' => 'disabled',
+					  			'ruc' => $ruc,
+					  			'onstep' => $onstep,
+					  			'tocreate' => $tocreate,
+					  			'linkClass' => 'disabled',
+					  			'url' => ''
+					  		]);
+					  	?>
+				  	<?php } ?>
+				<?php }else{ //------------------------------------------------tocreate=accomp_report (Accomplishment Report)?>
 					<?= $this->render('/common_tools/tabs/tab_encode',[
 				  			'tabTitle' => 'Step 2. Encode Annual Accomplishment Report',
 				  			'liClass' => 'disabled',
 				  			'ruc' => $ruc,
 				  			'onstep' => $onstep,
 				  			'tocreate' => $tocreate,
-				  			'linkClass' => '',
+				  			'linkClass' => 'disabled',
 				  			'url' => ''
 				  		]);
 				  	?>
 
-				  	<?= $this->render('/common_tools/tabs/tab_submit',[
-				  			'tabTitle' => 'Step 3. Submit Report',
-				  			'liClass' => 'disabled',
-				  			'ruc' => $ruc,
-				  			'onstep' => $onstep,
-				  			'tocreate' => $tocreate,
-				  			'linkClass' => '',
-				  			'url' => ''
-				  		]);
-				  	?>
-
-				  	<?= $this->render('/common_tools/tabs/tab_completed',[
-				  			'tabTitle' => 'Step 4. Report has been submitted',
-				  			'liClass' => 'disabled',
-				  			'ruc' => $ruc,
-				  			'onstep' => $onstep,
-				  			'tocreate' => $tocreate,
-				  			'linkClass' => '',
-				  			'url' => ''
-				  		]);
-				  	?>
+				  	<?php  if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS"){ ?>
+					  	<?= $this->render('/common_tools/tabs/tab_completed',[
+					  			'tabTitle' => 'Step 3. Endorse to DILG Regional Office',
+					  			'liClass' => 'disabled',
+					  			'ruc' => $ruc,
+					  			'onstep' => $onstep,
+					  			'tocreate' => $tocreate,
+					  			'linkClass' => 'disabled',
+					  			'url' => ''
+					  		]);
+					  	?>
+				  	<?php }else{ ?>
+				  		<li class="disabled">
+							<?= Html::a("Step 3. For Review by PPDO &nbsp;<span class='glyphicon glyphicon-eye-open'></span>", ['','ruc' => $ruc, 'onstep' => $onstep,'tocreate' => $tocreate], ['class' => "disabled btn btn-success"]) ?>
+						</li>
+				  		<?= $this->render('/common_tools/tabs/tab_completed',[
+					  			'tabTitle' => 'Step 4. Endorse to DILG (C/MLGOO)',
+					  			'liClass' => 'disabled',
+					  			'ruc' => $ruc,
+					  			'onstep' => $onstep,
+					  			'tocreate' => $tocreate,
+					  			'linkClass' => 'disabled',
+					  			'url' => ''
+					  		]);
+					  	?>
+				  	<?php } ?>
 				<?php } ?>
 	  		<?php } ?>
 	  	

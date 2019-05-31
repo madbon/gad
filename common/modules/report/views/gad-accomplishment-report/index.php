@@ -7,8 +7,8 @@ use yii\grid\GridView;
 /* @var $searchModel common\modules\report\models\GadAccomplishmentReportSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Annual GAD Accomplishment Reports FY '.date("Y");
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = "Annual GAD Accomplishment Reports";
+// $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="gad-accomplishment-report-index">
 
@@ -58,16 +58,21 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <br/>
-    <button type="button" class="btn btn-success" id="btn-encode" style="margin-bottom: 5px;">
-        <span class="glyphicon glyphicon-pencil"></span> Encode Gender Issue or GAD Mandate
-    </button>
+    <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
+        <?php if($qryReportStatus == 1 || $qryReportStatus == 0){ ?>
+            <button type="button" class="btn btn-success" id="btn-encode" style="margin-bottom: 5px;">
+                <span class="glyphicon glyphicon-pencil"></span> Encode Gender Issue or GAD Mandate
+            </button>
+        <?php } ?>
+    <?php } ?>
+
     <?php
         $urlSetSession = \yii\helpers\Url::to(['default/session-encode']);
         $this->registerJs("
             $('#btn-encode').click(function(){
                 var trigger = 'open';
                 var form_type = 'gender_issue';
-                var report_type = 'ar';
+                var report_type = 'pb';
                 $.ajax({
                     url: '".$urlSetSession."',
                     data: { 
@@ -77,44 +82,244 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                     
                     }).done(function(result) {
-                        $('#input-form-gender').slideDown(300);
+                        
                 });
+                $('#inputFormPlan').slideDown(300);
             });
         ");
     ?>
 
-    <button type="button" class="btn btn-primary pull-right" id="btn-submit-report" style="margin-bottom: 5px;">
-        <span class="glyphicon glyphicon-send"></span> Submit Report to Provincial Office
-    </button>
+    <?php
+        $sendTo = "";
+        $reportStatus = 0;
+        $defaultRemarks = "";
 
-    <?php if(Yii::$app->session["encode_gender_ar"] == "open") {  ?>
-        <div class="cust-panel input-form" id="input-form-gender">
-    <?php }else{ ?>
-        <div class="cust-panel input-form" id="input-form-gender" style="display: none;">
-    <?php } ?>
-            <div class="cust-panel-header gad-color">
-            </div>
-            <div class="cust-panel-body">
-                <div class="cust-panel-title">
-                    <p class="sub-title"><span class="glyphicon glyphicon-pencil"></span> INPUT FORM</p>
-                </div>
-                <div class="cust-panel-inner-body">
-                    <div class="input_form_ar">
-                        <?php
-                            echo $this->render('ar_input_form',[
-                                'select_GadFocused' => $select_GadFocused,
-                                'select_GadInnerCategory' => $select_GadInnerCategory,
-                                'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
-                                'ruc' => $ruc,
-                                'onstep' => $onstep,
-                                'tocreate' => $tocreate,
-                            ]);
-                        ?>
+        if(Yii::$app->user->can("gad_lgu"))
+        {
+            if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
+            {
+
+                $reportStatus = 3;
+                $sendTo = "Endorse to DILG Regional Office";
+            }
+            else
+            {
+                $reportStatus = 1;
+                if($qryReportStatus == 0)
+                {
+                    $reportStatus = 1;
+                    $sendTo = 'Mark as "For Review by PPDO"';
+                    $defaultRemarks = "For Review by PPDO";
+                }
+                else if($qryReportStatus == 1)
+                {
+                    $reportStatus = 2;
+                    $sendTo = 'Endorse to DILG Office (C/MLGOO)';
+                    $defaultRemarks = "Endorsed to DILG Office (C/MLGOO)";
+                }
+                
+            }
+           
+        }
+        else if(Yii::$app->user->can("gad_field"))
+        {
+            $reportStatus = 4;
+            $sendTo = "Endorse to Central Office";
+        }
+        else if(Yii::$app->user->can("gad_province"))
+        {
+            $sendTo = "Submit to Regional Office";
+        }
+        else if(Yii::$app->user->can("gad_region"))
+        {
+            $reportStatus = 4;
+            $sendTo = "Submit to Central Office";
+        }
+        else
+        {
+            $sendTo = null;
+        }
+    ?>
+
+    <?php 
+    if(Yii::$app->user->can("gad_lgu"))
+    {
+        if(!empty($sendTo) && $qryReportStatus == 0 || $qryReportStatus == 1)
+        { 
+            if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS" && $qryReportStatus == 0)
+            { 
+                echo '<a class="btn btn-success pull-right" id="endorse_to">'.$sendTo.'</a>';
+            
+            }
+            else
+            {
+                if($qryReportStatus == 0)
+                {
+                    echo Html::a($sendTo,
+                    [
+                        'gad-plan-budget/change-report-status',
+                        'status' => $reportStatus,
+                        'tuc' => $ruc,
+                        'onstep' => $onstep,
+                        'tocreate' => $tocreate
+                    ],
+                    [
+                        'class' => 'btn btn-success pull-right',
+                        'id'=>"submit_to",
+                        'style' => '',
+                        'data' => [
+                            'confirm' => 'Are you sure you want to perform this action?',
+                            'method' => 'post']
+                    ]);
+                }
+                else
+                {
+                    echo '<a class="btn btn-success pull-right" id="endorse_to">'.$sendTo.'</a>';
+                }
+            }
+        } 
+    }
+    else if(Yii::$app->user->can("gad_field"))
+    { 
+        if(!empty($sendTo) && $qryReportStatus == 2)
+        { 
+            if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS" && $qryReportStatus == 0)
+            { 
+                echo '<br/><a class="btn btn-success pull-left" id="endorse_to">'.$sendTo.'</a>';
+            
+            }
+            else
+            {
+                if($qryReportStatus == 0)
+                {
+                    echo "<br/>".Html::a($sendTo,
+                    [
+                        'gad-plan-budget/change-report-status',
+                        'status' => $reportStatus,
+                        'tuc' => $ruc,
+                        'onstep' => $onstep,
+                        'tocreate' => $tocreate
+                    ],
+                    [
+                        'class' => 'btn btn-success pull-right',
+                        'id'=>"submit_to",
+                        'style' => '',
+                        'data' => [
+                            'confirm' => 'Are you sure you want to perform this action?',
+                            'method' => 'post']
+                    ]);
+                }
+                else
+                {
+                    echo '<br/><a class="btn btn-success pull-right" id="endorse_to">'.$sendTo.'</a>';
+                }
+            }
+        }
+    } 
+    ?>
+    <?php
+        $this->registerJs("
+            $('#endorse_to').click(function(){
+                $('#text_remarks').slideDown(300);
+                $('#submit_to').show();
+            });
+        ");
+    ?>
+    <br/> <br/>
+    <div class="row">
+        <div class="col-sm-8">
+        </div>
+        <div class="col-sm-4">
+            <!-- //////////////////////////////////////////////////////////// Remarks Form Start -->
+            <textarea class="form-control" rows='3' placeholder="Remarks (optional)" id="text_remarks" style="display: none;"></textarea>
+            <?php
+                echo Html::a('<i class="glyphicon glyphicon-send"></i> Submit',
+                  [
+                    'gad-plan-budget/change-report-status',
+                    'status' => $reportStatus,
+                    'tuc' => $ruc,
+                    'onstep' => $onstep,
+                    'tocreate' => $tocreate
+                  ],
+                  [
+                    'class' => 'btn btn-primary btn-sm pull-right',
+                    'id'=>"submit_to",
+                    'style' => 'margin-bottom:5px; margin-top:5px; display:none;',
+                    'data' => [
+                        'confirm' => 'Are you sure you want Submit this Report?',
+                        'method' => 'post']
+                  ]);
+            ?>
+            <?php
+                $urlSaveReportValidationHistory =  \yii\helpers\Url::to(['/report/default/create-report-history']);
+                $this->registerJs("
+                    $('#submit_to').click(function(){
+                        var valQryReportStatus = '".$qryReportStatus."';
+                        var valueTextRemarks;
+                        if($('#text_remarks').val() == '')
+                        {
+                            valueTextRemarks = '".$defaultRemarks."';
+                        }
+                        else
+                        {
+                            valueTextRemarks = $.trim($('#text_remarks').val());
+                        }
+                        
+                        var valueReportStatus = '".$reportStatus."';
+                        var tuc = '".$ruc."';
+                        var valueOnStep = '".$onstep."';
+                        var valueToCreate = '".$tocreate."';
+                        $.ajax({
+                            url: '".$urlSaveReportValidationHistory."',
+                            data: { 
+                                    valueTextRemarks:valueTextRemarks,
+                                    valueReportStatus:valueReportStatus,
+                                    tuc:tuc,
+                                    valueOnStep:valueOnStep,
+                                    valueToCreate:valueToCreate
+                                    }
+                            
+                            }).done(function(result) {
+                                
+                        });
+                    });
+                ");
+            ?>
+            <!-- /////////////////////////////////////////////////////////////// Remarks Form End -->
+        </div>
+    </div>
+
+    <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
+        <?php if($qryReportStatus == 1 || $qryReportStatus == 0){ ?>
+            <?php if(Yii::$app->session["encode_gender_ar"] == "open") {  ?>
+                <div class="cust-panel input-form" id="input-form-gender">
+            <?php }else{ ?>
+                <div class="cust-panel input-form" id="input-form-gender" style="display: none;">
+            <?php } ?>
+                    <div class="cust-panel-header gad-color">
+                    </div>
+                    <div class="cust-panel-body">
+                        <div class="cust-panel-title">
+                            <p class="sub-title"><span class="glyphicon glyphicon-pencil"></span> INPUT FORM</p>
+                        </div>
+                        <div class="cust-panel-inner-body">
+                            <div class="input_form_ar">
+                                <?php
+                                    echo $this->render('ar_input_form',[
+                                        'select_GadFocused' => $select_GadFocused,
+                                        'select_GadInnerCategory' => $select_GadInnerCategory,
+                                        'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
+                                        'ruc' => $ruc,
+                                        'onstep' => $onstep,
+                                        'tocreate' => $tocreate,
+                                    ]);
+                                ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    
+        <?php } ?>
+    <?php } ?>
     <br/>
 
     <div class="cust-panel tabular-report">
@@ -214,8 +419,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => Yii::$app->controller->id,
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
-                                        'enableComment' => 'true',
-                                        'enableEdit' => 'true',
+                                        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <?php
@@ -231,8 +437,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => "gad-accomplishment-report",
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
-                                        'enableComment' => 'true',
-                                        'enableEdit' => 'true',
+                                        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <?php
@@ -248,8 +455,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => "gad-accomplishment-report",
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
-                                        'enableComment' => 'true',
-                                        'enableEdit' => 'true',
+                                        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <?php
@@ -265,8 +473,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => "gad-accomplishment-report",
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
-                                        'enableComment' => 'true',
-                                        'enableEdit' => 'true',
+                                        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <?php
@@ -282,8 +491,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => "gad-accomplishment-report",
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
-                                        'enableComment' => 'true',
-                                        'enableEdit' => 'true',
+                                        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <?php
@@ -316,8 +526,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => "gad-accomplishment-report",
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
-                                        'enableComment' => 'true',
-                                        'enableEdit' => 'true',
+                                        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <?php
@@ -333,8 +544,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => "gad-accomplishment-report",
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => 'text-align:right;',
-                                        'enableComment' => 'true',
-                                        'enableEdit' => 'true',
+                                        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <?php
@@ -350,8 +562,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => "gad-accomplishment-report",
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => 'text-align:right;',
-                                        'enableComment' => 'true',
-                                        'enableEdit' => 'true',
+                                        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <?php
@@ -367,8 +580,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => "gad-accomplishment-report",
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
-                                        'enableComment' => 'true',
-                                        'enableEdit' => 'true',
+                                        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableViewComment' => 'true',
                                     ])
                                 ?>
                             </tr>
@@ -440,8 +654,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         
                         <tr class="ar_attributed_program">
                             <td colspan="5">ATTRIBUTED PROGRAMS 
-                                <button id="btnEncodeAP" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-pencil"></span> Encode
-                                </button>
+                                <?php if($qryReportStatus == 1 || $qryReportStatus == 0){ ?>
+                                    <button id="btnEncodeAP" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-pencil"></span> Encode
+                                    </button>
+                                </td><?php } ?>
                             </td>
                             <td></td>
                             <td></td>
@@ -469,23 +685,24 @@ $this->params['breadcrumbs'][] = $this->title;
                             ");
                         ?>
 
-                        <?php // print_r(Yii::$app->session["encode_attribute_ar"]); exit; ?>
-                        <?php if(Yii::$app->session["encode_attribute_ar"] == "open") {  ?>
-                            <tr class="attributed_program_form" id="attributed_program_anchor">
-                        <?php }else{ ?>
-                            <tr class="attributed_program_form" id="attributed_program_anchor" style="display: none;">
+                        <?php if($qryReportStatus == 1 || $qryReportStatus == 0){ ?>
+                            <?php if(Yii::$app->session["encode_attribute_ar"] == "open") {  ?>
+                                <tr class="attributed_program_form" id="attributed_program_anchor">
+                            <?php }else{ ?>
+                                <tr class="attributed_program_form" id="attributed_program_anchor" style="display: none;">
+                            <?php } ?>
+                                <td colspan="9">
+                                    <?php
+                                        echo $this->render('attributed_program_form', [
+                                            'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
+                                            'ruc' => $ruc,
+                                            'onstep' => $onstep,
+                                            'tocreate' => $tocreate,
+                                        ]);
+                                    ?>
+                                </td>
+                            </tr>
                         <?php } ?>
-                            <td colspan="9">
-                                <?php
-                                    echo $this->render('attributed_program_form', [
-                                        'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
-                                        'ruc' => $ruc,
-                                        'onstep' => $onstep,
-                                        'tocreate' => $tocreate,
-                                    ]);
-                                ?>
-                            </td>
-                        </tr>
                         
                         <tr class="ar_attributed_program_head">
                             <td colspan="5">Title of LGU Program or Project</td>
@@ -513,8 +730,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
                                         'customStyle' => '',
-                                        'enableComment' => 'true',
-                                        'enableEdit' => 'true',
+                                        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <!-- COMPUTATION OF GAD ATTRIBUTED PROGRAM/PROJECT BUDGET -->
@@ -574,8 +792,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center;',
-                                        'enableComment' => 'true',
-                                        'enableEdit' => 'true',
+                                        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <?php
@@ -591,8 +810,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:right;',
-                                        'enableComment' => 'true',
-                                        'enableEdit' => 'true',
+                                        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <?php
@@ -608,16 +828,17 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:right;',
-                                        'enableComment' => 'true',
+                                        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+                                        'enableViewComment' => 'true',
                                         'enableEdit' => 'false',
                                     ])
                                 ?>
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
-                                        'cell_value' => $dap["variance_remarks"],
+                                        'cell_value' => $dap["ar_ap_variance_remarks"],
                                         'row_id' => $dap["id"],
                                         'record_unique_code' => $dap["record_tuc"],
-                                        'attribute_name' => "variance_remarks",
+                                        'attribute_name' => "ar_ap_variance_remarks",
                                         'data_type' => 'string',
                                         'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-ar-variance-remarks']),
                                         'column_title' => 'Variance or Remarks',
@@ -625,8 +846,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
                                         'customStyle' => '',
-                                        'enableComment' => 'true',
-                                        'enableEdit' => 'true',
+                                        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableViewComment' => 'true',
                                     ])
                                 ?>
                             </tr>

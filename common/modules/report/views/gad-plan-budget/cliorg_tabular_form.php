@@ -12,8 +12,9 @@
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
-        'enableComment' => 'true',
-        'enableEdit' => 'true',
+        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+        'enableViewComment' => 'true',
     ])
 ?>
 <?php
@@ -29,8 +30,9 @@
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
-        'enableComment' => 'true',
-        'enableEdit' => 'true',
+        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+        'enableViewComment' => 'true',
     ])
 ?>
 
@@ -47,8 +49,9 @@
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
-        'enableComment' => 'true',
-        'enableEdit' => 'true',
+        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+        'enableViewComment' => 'true',
     ])
 ?>
 
@@ -65,8 +68,9 @@
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
-        'enableComment' => 'true',
-        'enableEdit' => 'true',
+        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+        'enableViewComment' => 'true',
     ])
 ?>
 
@@ -83,8 +87,9 @@
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
-        'enableComment' => 'true',
-        'enableEdit' => 'true',
+        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+        'enableViewComment' => 'true',
     ])
 ?>
 
@@ -119,8 +124,9 @@
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
         'customStyle' => 'text-align:right;',
-        'enableComment' => 'true',
-        'enableEdit' => 'true',
+        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+        'enableViewComment' => 'true',
     ])
 ?>
 
@@ -137,8 +143,9 @@
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
         'customStyle' => 'text-align:right;',
-        'enableComment' => 'true',
-        'enableEdit' => 'true',
+        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+        'enableViewComment' => 'true',
     ])
 ?>
 
@@ -155,8 +162,9 @@
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
         'customStyle' => 'text-align:right;',
-        'enableComment' => 'true',
-        'enableEdit' => 'true',
+        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+        'enableViewComment' => 'true',
     ])
 ?>
 
@@ -173,7 +181,8 @@
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
-        'enableComment' => 'true',
-        'enableEdit' => 'true',
+        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+        'enableViewComment' => 'true',
     ])
 ?>

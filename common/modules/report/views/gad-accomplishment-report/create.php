@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $model common\models\GadAccomplishmentReport */
 
 $this->title = 'Create Gad Accomplishment Report';
-$this->params['breadcrumbs'][] = ['label' => 'Gad Accomplishment Reports', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+// $this->params['breadcrumbs'][] = ['label' => 'Gad Accomplishment Reports', 'url' => ['index']];
+// $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="gad-accomplishment-report-create">
 

@@ -41,13 +41,13 @@ class GadArAttributedProgram extends \yii\db\ActiveRecord
         return [
             [['record_id'], 'integer'],
             // [['lgu_program_project','ppa_attributed_program_id'],'required'],
-            [['ppa_attributed_program_others', 'lgu_program_project', 'variance_remarks'], 'string'],
+            [['ppa_attributed_program_others', 'lgu_program_project', 'ar_ap_variance_remarks'], 'string'],
             [['total_annual_pro_cost', 'gad_attributed_pro_cost','hgdg_pimme'], 'number'],
             [['date_created', 'date_updated'], 'safe'],
             [['record_tuc', 'controller_id'], 'string', 'max' => 150],
             [['hgdg_pimme', 'time_created', 'time_updated'], 'string', 'max' => 10],
 
-            [['ppa_attributed_program_id','lgu_program_project','hgdg_pimme','total_annual_pro_cost'], Yii::$app->controller->action->id == "create-ar-attributed-program" ? 'required' : 'safe'],
+            [['ppa_attributed_program_id','lgu_program_project','hgdg_pimme','total_annual_pro_cost','ar_ap_variance_remarks'], Yii::$app->controller->action->id == "create-ar-attributed-program" ? 'required' : 'safe'],
 
             [['lgu_program_project'],Yii::$app->controller->action->id == "update-ar-ap-lgu-program-project" ? 'required' : 'safe'],
 
@@ -55,7 +55,7 @@ class GadArAttributedProgram extends \yii\db\ActiveRecord
 
             [['total_annual_pro_cost'],Yii::$app->controller->action->id == "update-ar-total-annual-pro-cost" ? 'required' : 'safe'],
 
-            [['variance_remarks'],Yii::$app->controller->action->id == "update-ar-variance-remarks" ? 'required' : 'safe'],
+            [['ar_ap_variance_remarks'],Yii::$app->controller->action->id == "update-ar-variance-remarks" ? 'required' : 'safe'],
             // [['ppa_attributed_program_others'],'required', 'when' => function ($model) { return $model->ppa_attributed_program_id == 0; }]
         ];
     }
@@ -76,7 +76,7 @@ class GadArAttributedProgram extends \yii\db\ActiveRecord
             'hgdg_pimme' => 'HGDG PIMME / FIMME Score',
             'total_annual_pro_cost' => 'Total Annual Program / Project Cost or Expenditure',
             'gad_attributed_pro_cost' => 'GAD Attributed Program / Project Cost or Expenditure',
-            'variance_remarks' => 'Variance or Remarks',
+            'ar_ap_variance_remarks' => 'Variance or Remarks',
             'date_created' => 'Date Created',
             'time_created' => 'Time Created',
             'date_updated' => 'Date Updated',

@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="gad-record-index">
 
     <!-- <h1><?php // Html::encode($this->title) ?></h1> -->
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php //print_r($report_type); exit; ?>
 
     <!-- <p>
         <?php // Html::a('Create Annex A', ['create'], ['class' => 'btn btn-success']) ?>
@@ -64,10 +64,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     // 'id',
                     // 'responsbile',
-                    [
-                        'label' => 'Created by',
-                        'attribute' => 'responsbile',
-                    ],
+                    // [
+                    //     'label' => 'Created by',
+                    //     'attribute' => 'responsbile',
+                    // ],
                     [
                         'label' => 'Region',
                         'attribute' => 'region_name',
@@ -108,9 +108,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     ['class' => 'yii\grid\ActionColumn',
                         'template' => '{view}',
                         'buttons' => [
-                            'view' => function($url, $model) use ($urlReport){
+                            'view' => function($url, $model) use ($urlReport,$report_type){
                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View Report', [$urlReport,
-                                        'ruc' => $model['record_tuc'], 'onstep' => 'view_report','tocreate'=>'not'], ['class'=>'btn btn-primary btn-xs btn-block']);
+                                        'ruc' => $model['record_tuc'], 
+                                        'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
+                                        'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
+                                    ], 
+                                        ['class'=>'btn btn-primary btn-xs btn-block']);
                             },
                         ],
                     ],
