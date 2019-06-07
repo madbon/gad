@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use common\modules\report\controllers\DefaultController;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\modules\report\models\GadAccomplishmentReportSearch */
@@ -20,7 +21,7 @@ $this->title = "Annual GAD Accomplishment Reports";
         </div> -->
         <div class="cust-panel-body">
             <div class="cust-panel-title">
-                <p class="sub-title"><span class="glyphicon glyphicon-info-sign"></span> Primary Information</p>
+                <p class="sub-title"><span class="glyphicon glyphicon-info-sign"></span> Primary Information <?= DefaultController::DisplayStatusByTuc($ruc); ?></p>
             </div>
             <div class="cust-panel-inner-body">
                 <table class="table table-responsive table-hover table-bordered basic-information">
@@ -59,7 +60,7 @@ $this->title = "Annual GAD Accomplishment Reports";
 
     <br/>
     <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-        <?php if($qryReportStatus == 1 || $qryReportStatus == 0){ ?>
+        <?php if($qryReportStatus == 1 || $qryReportStatus == 0 || $qryReportStatus == 5 || $qryReportStatus == 6){ ?>
             <button type="button" class="btn btn-success" id="btn-encode" style="margin-bottom: 5px;">
                 <span class="glyphicon glyphicon-pencil"></span> Encode Gender Issue or GAD Mandate
             </button>
@@ -72,7 +73,7 @@ $this->title = "Annual GAD Accomplishment Reports";
             $('#btn-encode').click(function(){
                 var trigger = 'open';
                 var form_type = 'gender_issue';
-                var report_type = 'pb';
+                var report_type = 'ar';
                 $.ajax({
                     url: '".$urlSetSession."',
                     data: { 
@@ -84,7 +85,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                     }).done(function(result) {
                         
                 });
-                $('#inputFormPlan').slideDown(300);
+                $('#input-form-gender').slideDown(300);
             });
         ");
     ?>
@@ -93,8 +94,14 @@ $this->title = "Annual GAD Accomplishment Reports";
         $sendTo = "";
         $reportStatus = 0;
         $defaultRemarks = "";
-
-        if(Yii::$app->user->can("gad_lgu"))
+        $returnTo = "";
+        $returnStatus = 0;
+        if(Yii::$app->user->can("gad_lgu_province_permission"))
+        {
+            $reportStatus = 3;
+            $sendTo = "Endorse to DILG Regional Office";
+        }
+        else if(Yii::$app->user->can("gad_lgu_permission"))
         {
             if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
             {
@@ -125,6 +132,8 @@ $this->title = "Annual GAD Accomplishment Reports";
         {
             $reportStatus = 4;
             $sendTo = "Endorse to Central Office";
+            $returnStatus = 5;
+            $returnTo = "Return to LGU";
         }
         else if(Yii::$app->user->can("gad_province"))
         {
@@ -134,6 +143,8 @@ $this->title = "Annual GAD Accomplishment Reports";
         {
             $reportStatus = 4;
             $sendTo = "Submit to Central Office";
+            $returnStatus = 6;
+            $returnTo = "Return to LGU";
         }
         else
         {
@@ -142,9 +153,28 @@ $this->title = "Annual GAD Accomplishment Reports";
     ?>
 
     <?php 
-    if(Yii::$app->user->can("gad_lgu"))
+    if(Yii::$app->user->can("gad_region_permission"))
     {
-        if(!empty($sendTo) && $qryReportStatus == 0 || $qryReportStatus == 1)
+        if($qryReportStatus == 3)
+        {
+            echo '<br/><a class="btn btn-danger pull-right" id="return_to" style="border-radius:0px 5px 5px 0px;">'.$returnTo.'</a><a class="btn btn-success pull-right" id="endorse_to" style="border-radius:5px 0px 0px 5px;">'.$sendTo.'</a>';
+        }
+    }
+    else if(Yii::$app->user->can("gad_lgu_province_permission"))
+    {
+        if($qryReportStatus == 3)
+        {
+
+        }
+        else
+        {
+            echo '<a class="btn btn-success pull-right" id="endorse_to">'.$sendTo.'</a>';
+        }
+        
+    }
+    else if(Yii::$app->user->can("gad_lgu_permission"))
+    {
+        if(!empty($sendTo) && $qryReportStatus == 0 || $qryReportStatus == 1 || $qryReportStatus == 5 || $qryReportStatus == 6)
         { 
             if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS" && $qryReportStatus == 0)
             { 
@@ -179,13 +209,13 @@ $this->title = "Annual GAD Accomplishment Reports";
             }
         } 
     }
-    else if(Yii::$app->user->can("gad_field"))
+    else if(Yii::$app->user->can("gad_field_permission"))
     { 
         if(!empty($sendTo) && $qryReportStatus == 2)
         { 
             if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS" && $qryReportStatus == 0)
             { 
-                echo '<br/><a class="btn btn-success pull-left" id="endorse_to">'.$sendTo.'</a>';
+                echo '<br/><a class="btn btn-danger pull-right" id="return_to" style="border-radius:0px 5px 5px 0px;">'.$returnTo.'</a><a class="btn btn-success pull-right" id="endorse_to" style="border-radius:5px 0px 0px 5px;">'.$sendTo.'</a>';
             
             }
             else
@@ -211,7 +241,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                 }
                 else
                 {
-                    echo '<br/><a class="btn btn-success pull-right" id="endorse_to">'.$sendTo.'</a>';
+                    echo '<br/><a class="btn btn-danger pull-right" id="return_to" style="border-radius:0px 5px 5px 0px;">'.$returnTo.'</a><a class="btn btn-success pull-right" id="endorse_to" style="border-radius:5px 0px 0px 5px;">'.$sendTo.'</a>';
                 }
             }
         }
@@ -221,7 +251,14 @@ $this->title = "Annual GAD Accomplishment Reports";
         $this->registerJs("
             $('#endorse_to').click(function(){
                 $('#text_remarks').slideDown(300);
+                $('#submitAsReturn').hide();
                 $('#submit_to').show();
+            });
+
+            $('#return_to').click(function(){
+                $('#text_remarks').slideDown(300);
+                $('#submit_to').hide();
+                $('#submitAsReturn').show();
             });
         ");
     ?>
@@ -242,12 +279,24 @@ $this->title = "Annual GAD Accomplishment Reports";
                     'tocreate' => $tocreate
                   ],
                   [
-                    'class' => 'btn btn-primary btn-sm pull-right',
+                    'class' => 'btn btn-success btn-sm pull-right',
                     'id'=>"submit_to",
                     'style' => 'margin-bottom:5px; margin-top:5px; display:none;',
-                    'data' => [
-                        'confirm' => 'Are you sure you want Submit this Report?',
-                        'method' => 'post']
+                  ]);
+            ?>
+            <?php
+                echo Html::a('<i class="glyphicon glyphicon-send"></i> Return',
+                  [
+                    'gad-plan-budget/change-report-status',
+                    'status' => $returnStatus,
+                    'tuc' => $ruc,
+                    'onstep' => $onstep,
+                    'tocreate' => $tocreate
+                  ],
+                  [
+                    'class' => 'btn btn-danger btn-sm pull-right',
+                    'id'=>"submitAsReturn",
+                    'style' => 'margin-bottom:5px; margin-top:5px; display:none;',
                   ]);
             ?>
             <?php
@@ -269,19 +318,63 @@ $this->title = "Annual GAD Accomplishment Reports";
                         var tuc = '".$ruc."';
                         var valueOnStep = '".$onstep."';
                         var valueToCreate = '".$tocreate."';
-                        $.ajax({
-                            url: '".$urlSaveReportValidationHistory."',
-                            data: { 
-                                    valueTextRemarks:valueTextRemarks,
-                                    valueReportStatus:valueReportStatus,
-                                    tuc:tuc,
-                                    valueOnStep:valueOnStep,
-                                    valueToCreate:valueToCreate
-                                    }
-                            
-                            }).done(function(result) {
+                        if (confirm('Are you sure you want Submit this Report?')) {
+                            $.ajax({
+                                url: '".$urlSaveReportValidationHistory."',
+                                data: { 
+                                        valueTextRemarks:valueTextRemarks,
+                                        valueReportStatus:valueReportStatus,
+                                        tuc:tuc,
+                                        valueOnStep:valueOnStep,
+                                        valueToCreate:valueToCreate
+                                        }
                                 
-                        });
+                                }).done(function(result) {
+                                    
+                            });
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    });
+                ");
+                $this->registerJs("
+                    $('#submitAsReturn').click(function(){
+                        var valQryReportStatus = '".$qryReportStatus."';
+                        var valueTextRemarks;
+                        if($('#text_remarks').val() == '')
+                        {
+                            valueTextRemarks = '".$defaultRemarks."';
+                        }
+                        else
+                        {
+                            valueTextRemarks = $.trim($('#text_remarks').val());
+                        }
+                        
+                        var valueReportStatus = '".$returnStatus."';
+                        var tuc = '".$ruc."';
+                        var valueOnStep = '".$onstep."';
+                        var valueToCreate = '".$tocreate."';
+                        
+                        if (confirm('Are you sure you want Return this Report?')) {
+                            $.ajax({
+                                url: '".$urlSaveReportValidationHistory."',
+                                data: { 
+                                        valueTextRemarks:valueTextRemarks,
+                                        valueReportStatus:valueReportStatus,
+                                        tuc:tuc,
+                                        valueOnStep:valueOnStep,
+                                        valueToCreate:valueToCreate
+                                        }
+                                
+                                }).done(function(result) {
+                                    
+                            });
+                        } else {
+                          return false;
+                        }
+                        
                     });
                 ");
             ?>
@@ -290,7 +383,7 @@ $this->title = "Annual GAD Accomplishment Reports";
     </div>
 
     <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-        <?php if($qryReportStatus == 1 || $qryReportStatus == 0){ ?>
+        <?php if($qryReportStatus == 1 || $qryReportStatus == 0 || $qryReportStatus == 5 || $qryReportStatus == 6){ ?>
             <?php if(Yii::$app->session["encode_gender_ar"] == "open") {  ?>
                 <div class="cust-panel input-form" id="input-form-gender">
             <?php }else{ ?>
@@ -654,7 +747,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                         
                         <tr class="ar_attributed_program">
                             <td colspan="5">ATTRIBUTED PROGRAMS 
-                                <?php if($qryReportStatus == 1 || $qryReportStatus == 0){ ?>
+                                <?php if($qryReportStatus == 1 || $qryReportStatus == 0  || $qryReportStatus == 5 || $qryReportStatus == 6){ ?>
                                     <button id="btnEncodeAP" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-pencil"></span> Encode
                                     </button>
                                 </td><?php } ?>
@@ -685,7 +778,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                             ");
                         ?>
 
-                        <?php if($qryReportStatus == 1 || $qryReportStatus == 0){ ?>
+                        <?php if($qryReportStatus == 1 || $qryReportStatus == 0  || $qryReportStatus == 5 || $qryReportStatus == 6){ ?>
                             <?php if(Yii::$app->session["encode_attribute_ar"] == "open") {  ?>
                                 <tr class="attributed_program_form" id="attributed_program_anchor">
                             <?php }else{ ?>

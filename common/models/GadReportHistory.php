@@ -32,7 +32,7 @@ class GadReportHistory extends \yii\db\ActiveRecord
         return [
             [['remarks'], 'string'],
             [['status'], 'integer'],
-            [['date_created', 'time_created'], 'safe'],
+            [['date_created', 'time_created','responsible_office_c','responsible_user_id'], 'safe'],
             [['tuc'], 'string', 'max' => 100],
         ];
     }

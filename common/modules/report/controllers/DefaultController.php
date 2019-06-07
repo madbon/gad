@@ -23,25 +23,52 @@ use Yii;
  */
 class DefaultController extends Controller
 {
+
     public  function DisplayStatus($value)
     {
         $returnValue = "";
         if($value == 0)
         {
-            $returnValue = "<span class='label label-warning'>Encoding Process</span>";
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-pencil'></i> Encoding Process</span>";
         }
         else if($value == 1)
         {
-            $returnValue = "<span class='label label-info'>For Review by PPDO</span>";
+            $returnValue = "<span class='label label-success'><i class='glyphicon glyphicon-search'></i> For Review by PPDO</span>";
         }
         else if($value == 2)
         {
-            $returnValue = "<span class='label label-success'>For Review by PPDO</span>";
+            $returnValue = "<span class='label label-info'><i class='glyphicon glyphicon-thumbs-up'></i> Endorsed to DILG Field Office (C/MLGOO)</span>";
         }
+        else if($value == 3)
+        {
+            $returnValue = "<span class='label label-info'><i class='glyphicon glyphicon-thumbs-up'></i> Endorsed to DILG Regional Office</span>";
+        }
+        else if($value == 4)
+        {
+            $returnValue = "<span class='label label-primary'><i class='glyphicon glyphicon-flag'></i> Submitted to Central Office</span>";
+        }
+        else if($value == 5)
+        {
+            $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-flag'></i> Returned by DILG Field Office (C/MLGOO)</span>";
+        }
+        else if($value == 6)
+        {
+            $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-flag'></i> Returned by DILG Regional Office</span>";
+        }
+
+        return $returnValue;
+    }
+
+    public function DisplayStatusByTuc($tuc)
+    {
+        $qry = GadRecord::find()->where(['tuc' => $tuc])->one();
+
+        return DefaultController::DisplayStatus($qry->status);
     }
 
     public function actionCreateReportHistory($valueTextRemarks,$valueReportStatus,$tuc,$valueOnStep,$valueToCreate)
     {
+        
         date_default_timezone_set("Asia/Manila");
         $model = new GadReportHistory();
         $model->remarks = $valueTextRemarks;

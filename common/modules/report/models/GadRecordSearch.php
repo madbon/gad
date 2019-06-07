@@ -46,17 +46,17 @@ class GadRecordSearch extends GadRecord
         $this->load($params);
 
         $filteredByRole = [];
-        if(Yii::$app->user->can("gad_lgu"))
+        if(Yii::$app->user->can("gad_lgu_permission"))
         {
-            $filteredByRole = ['GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C];
+            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C];
         }
-        elseif(Yii::$app->user->can("gad_field"))
+        elseif(Yii::$app->user->can("gad_field_permission"))
         {
-            $filteredByRole = ['GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C];
+            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C];
         }
-        else if(Yii::$app->user->can("gad_province"))
+        else if(Yii::$app->user->can("gad_province_permission") || Yii::$app->user->can("gad_lgu_province_permission"))
         {
-            $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,'GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C];
+            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => NULL,'GR.office_c' => 2];
         }
         else if(Yii::$app->user->can("gad_region"))
         {
@@ -66,6 +66,8 @@ class GadRecordSearch extends GadRecord
         {
             $filteredByRole = [];
         }
+
+       
 
         $query = (new Query())
         ->select([
@@ -80,13 +82,17 @@ class GadRecordSearch extends GadRecord
             'GR.date_created as record_date',
             'GR.time_created as record_time',
             'GR.form_type as record_form_type',
-            'CONCAT(UI.FIRST_M, " ",UI.LAST_M) as responsbile'
+            'CONCAT(UI.FIRST_M, " ",UI.LAST_M) as responsbile',
+            'OFC.OFFICE_M as office_name'
+            // 'HIST.remarks as remarks'
         ])
         ->from('gad_record GR')
         ->leftJoin(['UI' => 'user_info'], 'UI.user_id = GR.user_id')
         ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = GR.region_c')
         ->leftJoin(['PROV' => 'tblprovince'], 'PROV.province_c = GR.province_c')
         ->leftJoin(['CTY' => 'tblcitymun'], 'CTY.citymun_c = GR.citymun_c and CTY.province_c = GR.province_c')
+        ->leftJoin(['OFC' => 'tbloffice'], 'OFC.OFFICE_C = GR.office_c')
+        // ->leftJoin(['HIST' => 'gad_report_history'],'HIST.tuc = GR.tuc')
         ->andFilterWhere(['LIKE','GR.tuc',$this->record_tuc])
         ->andFilterWhere($filteredByRole)
         ->groupBy(['GR.id'])

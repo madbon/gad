@@ -29,6 +29,80 @@ class GadRecordController extends Controller
         ];
     }
 
+    public function GenerateRemarks($tuc)
+    {
+        $qryModel = \common\models\GadReportHistory::find()->where(['tuc' => $tuc])->orderBy(['id'=>SORT_DESC])->one();
+        $value = !empty($qryModel->remarks) ? $qryModel->remarks : "";
+
+        return $value;
+    }
+
+    public function actionMultipleSubmit($report_type)
+    {
+        if($report_type == "plan_budget")
+        {
+            $reportValue = 1;
+        }
+        else
+        {
+            $reportValue = 2;
+        }
+
+        GadRecord::updateAll(['status' => 4],['status' => 3,'region_c' => Yii::$app->user->identity->userinfo->REGION_C,'report_type_id'=>$reportValue]);
+
+        $qryThis = (new \yii\db\Query())
+        ->select(["*"])
+        ->from('gad_record REC')
+        ->andWhere(['REC.status' => 3,'region_c' => Yii::$app->user->identity->userinfo->REGION_C])
+        ->andWhere(['report_type_id' => $reportValue])
+        ->groupBy(['REC.id'])
+        ->all();
+
+        $responsible_office_c = 0;
+        if(Yii::$app->user->can("gad_region_permission"))
+        {
+            $responsible_office_c = 1;
+        }
+        else if(Yii::$app->user->can("gad_field_permission"))
+        {
+            if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
+            {
+                $responsible_office_c = 4;
+            }
+            else
+            {
+                $responsible_office_c = 3;
+            }
+        }
+
+        $bulkInsertArray = array();
+        foreach ($qryThis as $key => $row) {
+            $bulkInsertArray[]=[
+                'remarks' => 'Default remarks : Submitted to Central Office',
+                'tuc'=>$row["tuc"],
+                'status' => $row["status"],
+                'responsible_office_c' => $responsible_office_c,
+                'responsible_user_id' => Yii::$app->user->identity->id,
+                'date_created' => date('Y-m-d'),
+                'time_created' => date("h:i:sa"),
+            ];
+        }
+        
+
+        if(count($bulkInsertArray)>0){
+            
+            $columnNameArray=['remarks','tuc','status','responsible_office_c','responsible_user_id','date_created','time_created'];
+            // below line insert all your record and return number of rows inserted
+            $insertCount = Yii::$app->db->createCommand()
+               ->batchInsert(
+                     'gad_report_history', $columnNameArray, $bulkInsertArray
+                 )
+               ->execute();
+        }
+
+        \Yii::$app->getSession()->setFlash('success', "Action has been performed");
+        return $this->redirect(['gad-record/index','report_type' => $report_type]);
+    }
 
     /**
      * Lists all GadRecord models.
@@ -94,13 +168,46 @@ class GadRecordController extends Controller
         $model = new GadRecord();
         $model->region_c = Yii::$app->user->identity->userinfo->region->region_c;
         $model->province_c = Yii::$app->user->identity->userinfo->province->province_c;
-        $model->citymun_c = Yii::$app->user->identity->userinfo->citymun->citymun_c;
+        if(Yii::$app->user->can("gad_lgu_province_permission"))
+        {
+            $model->citymun_c = NULL;
+            $model->isdilg = 0;
+            $model->office_c = 2;
+        }
+        else if(Yii::$app->user->can("gad_lgu_permission"))
+        {
+            $model->citymun_c = Yii::$app->user->identity->userinfo->citymun->citymun_c;
+            $model->isdilg = 0;
+            if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS"){ 
+                $model->office_c = 4; //city office
+            }
+            else
+            {
+                $model->office_c = 3;
+            }
+        }
+        else if(Yii::$app->user->can("gad_field_permission"))
+        {
+            $model->isdilg = 1;
+            if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS"){ 
+                $model->office_c = 4; //city office
+            }
+            else
+            {
+                $model->office_c = 3;
+            }
+        }
+        else if(Yii::$app->user->can("gad_province_permission"))
+        {
+            $model->office_c = 2;
+            $model->isdilg = 1;
+        }
+        
         $model->user_id = Yii::$app->user->identity->userinfo->user_id;
         $model->status = 0;
         date_default_timezone_set("Asia/Manila");
         $model->date_created = date('Y-m-d');
         $model->time_created = date("h:i:sa");
-        // print_r(Yii::$app->controller->id); exit;
         $model->report_type_id = $tocreate == "gad_plan_budget" ? 1 : 2;
         $model->footer_date = date('Y-m-d');
 
@@ -117,6 +224,7 @@ class GadRecordController extends Controller
             }
             else
             {
+
                 $miliseconds = round(microtime(true) * 1000);
                 $hash =  md5(date('Y-m-d')."-".date("h-i-sa")."-".$miliseconds);
                 $model->tuc = $hash;
@@ -138,7 +246,6 @@ class GadRecordController extends Controller
                 $onstepValue = "to_create_gpb";
                 Yii::$app->session["encode_gender_pb"] = "open";
                 Yii::$app->session["encode_attribute_pb"] = "open";
-
             }
             
             // $ruc if back to step 1 use $ruc to update the record

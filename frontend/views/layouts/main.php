@@ -179,33 +179,38 @@ div.navbar-header a img
         } else {
             $officer_role = "";
             $location_name = "";
-            if(Yii::$app->user->can("gad_lgu"))
+            if(Yii::$app->user->can("gad_lgu_permission"))
             {
                 $officer_role = "lgu";
                 $location_name = !empty(Yii::$app->user->identity->userinfo->citymun->citymun_m) ? " <i class='location_name'>".Yii::$app->user->identity->userinfo->citymun->citymun_m."</i>" : "";
             }
-            elseif(Yii::$app->user->can("gad_field"))
+            else if(Yii::$app->user->can("gad_field_permission"))
             {
-                $officer_role = "field officer";
+                $officer_role = "C/MLGOO";
                 $location_name = !empty(Yii::$app->user->identity->userinfo->citymun->citymun_m) ? " <i class='location_name'>".Yii::$app->user->identity->userinfo->citymun->citymun_m."</i>" : "";
             }
-            else if(Yii::$app->user->can("gad_province"))
+            else if(Yii::$app->user->can("gad_province_permission"))
             {
                 $officer_role = "provincial officer";
                 $location_name = !empty(Yii::$app->user->identity->userinfo->province->province_m) ? " <i class='location_name'>".Yii::$app->user->identity->userinfo->province->province_m."</i>" : "";
             }
-            else if(Yii::$app->user->can("gad_region"))
+            else if(Yii::$app->user->can("gad_region_permission"))
             {
                 $officer_role = "regional officer";
                 $location_name = !empty(Yii::$app->user->identity->userinfo->region->region_m) ? " <i class='location_name'>".Yii::$app->user->identity->userinfo->region->region_m."</i>" : "";
             }
-            else if(Yii::$app->user->can("gad_central"))
+            else if(Yii::$app->user->can("gad_central_permission"))
             {
                 $officer_role = "central";
             }
-            else if(Yii::$app->user->can("gad_admin"))
+            else if(Yii::$app->user->can("gad_admin_permission"))
             {
                 $officer_role = "administrator";
+            }
+            else if(Yii::$app->user->can("gad_lgu_province_permission"))
+            {
+                $officer_role = "LGU Provincial Officer";
+                $location_name = !empty(Yii::$app->user->identity->userinfo->province->province_m) ? " <i class='location_name'>".Yii::$app->user->identity->userinfo->province->province_m."</i>" : "";
             }
             else
             {

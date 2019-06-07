@@ -38,8 +38,132 @@ class GadPlanBudgetController extends Controller
         ];
     }
 
+    public function ComputeGadBudget($ruc)
+    {
+        $dataAttributedProgram = (new \yii\db\Query())
+        ->select([
+            'AP.id',
+            // 'IF(AP.ppa_attributed_program_id = 0, AP.ppa_attributed_program_others, PAP.title) as ap_ppa_value',
+            'AP.lgu_program_project',
+            'AP.hgdg',
+            'AP.total_annual_pro_budget',
+            'AP.attributed_pro_budget',
+            'AP.ap_lead_responsible_office',
+            'AP.record_tuc',
+            'AP.controller_id'
+        ])
+        ->from('gad_attributed_program AP')
+        ->leftJoin(['PAP' => 'gad_ppa_attributed_program'], 'PAP.id = AP.ppa_attributed_program_id')
+        ->where(['AP.record_tuc' => $ruc])
+        ->groupBy(['AP.lgu_program_project'])
+        ->orderBy(['AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
+        ->all();
+
+        $varTotalGadAttributedProBudget = 0;
+        foreach ($dataAttributedProgram as $key => $dap) {
+            $varHgdg = $dap["hgdg"];
+            $varTotalAnnualProBudget = $dap["total_annual_pro_budget"];
+            $computeGadAttributedProBudget = 0;
+            $HgdgMessage = null;
+            $HgdgWrongSign = "";
+            
+            if($varHgdg < 4) // 0%
+            {
+                $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
+            }
+            else if($varHgdg >= 4 && $varHgdg <= 7.9) // 25%
+            {
+                $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.25);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
+            }
+            else if($varHgdg >= 8 && $varHgdg <= 14.9) // 50%
+            {
+                $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.50);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
+            }
+            else if($varHgdg >= 15 && $varHgdg <= 19.9) // 75%
+            {
+                $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.75);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
+            }
+            else if($varHgdg == 20) // 100%
+            {
+                $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 1);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
+            }
+            else
+            {
+                
+            }
+        }
+
+        $dataPlanBudget = (new \yii\db\Query())
+        ->select([
+            'PB.id',
+            'PB.ppa_value',
+            'IF(PB.ppa_focused_id = 0, PB.cause_gender_issue,CF.title) as activity_category',
+            'PB.cause_gender_issue as other_activity_category',
+            'PB.objective',
+            'PB.relevant_lgu_program_project',
+            'PB.activity',
+            'PB.performance_target',
+            'PB.performance_indicator',
+            'PB.budget_mooe',
+            'PB.budget_ps',
+            'PB.budget_co',
+            'PB.lead_responsible_office',
+            'COUNT(GC.plan_budget_id) as count_comment',
+            'GC.attribute_name as attr_name',
+            'PB.record_tuc as record_uc',
+            'GF.title as gad_focused_title',
+            'IC.title as inner_category_title',
+            'GC.id as gad_focused_id',
+            'IC.id as inner_category_id',
+            'PB.focused_id'
+        ])
+        ->from('gad_plan_budget PB')
+        ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = PB.ppa_focused_id')
+        ->leftJoin(['GC' => 'gad_comment'], 'GC.plan_budget_id = PB.id')
+        ->leftJoin(['GF' => 'gad_focused'], 'GF.id = PB.focused_id')
+        ->leftJoin(['IC' => 'gad_inner_category'], 'IC.id = PB.inner_category_id')
+        ->where(['PB.record_tuc' => $ruc])
+        ->orderBy(['PB.focused_id' => SORT_ASC,'PB.inner_category_id' => SORT_ASC,'PB.ppa_value' => SORT_ASC,'PB.id' => SORT_ASC])
+        ->groupBy(['PB.focused_id','PB.inner_category_id','PB.ppa_value','PB.objective','PB.relevant_lgu_program_project','PB.activity','PB.performance_target'])
+        ->all();
+        // echo "<pre>";
+        // print_r($dataPlanBudget); exit;
+
+        $sum_dbp_mooe = 0;
+        $sum_dbp_ps = 0;
+        $sum_dbp_co = 0;
+        $sum_db_budget = 0;
+        foreach ($dataPlanBudget as $key => $dpb) {
+            $sum_dbp_mooe += $dpb["budget_mooe"];
+            $sum_dbp_ps += $dpb["budget_ps"];
+            $sum_dbp_co += $dpb["budget_co"];
+        }
+        $sum_db_budget = ($sum_dbp_co + $sum_dbp_mooe + $sum_dbp_ps);
+        $grand_total_pb = ($sum_db_budget + $varTotalGadAttributedProBudget);
+
+        $qryRecord = GadRecord::find()->where(['tuc' => $ruc])->one();
+        $recTotalLguBudget = $qryRecord->total_lgu_budget;
+
+        $fivePercentTotalLguBudget = ($recTotalLguBudget * 0.05);
+
+        if($grand_total_pb < $fivePercentTotalLguBudget)
+        {
+            return "<span style='color:red;'>  Php ".number_format($grand_total_pb,2)."</span>";
+        }
+        else
+        {
+            return "<span style='color:blue;'>  Php ".number_format($grand_total_pb,2)."</span>";
+        }
+    }
+
     public function actionChangeReportStatus($status,$tuc,$onstep,$tocreate)
     {
+        
         $qry = GadRecord::find()->where(['tuc' => $tuc])->one();
         $qry->status = $status;
         $qry->save(false);

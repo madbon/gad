@@ -38,7 +38,7 @@ class GadRecord extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'form_type', 'status', 'is_archive','report_type_id'], 'integer'],
+            [['user_id', 'form_type', 'status', 'is_archive','report_type_id','office_c','isdilg'], 'integer'],
             [['year'],'integer'],
             [['total_lgu_budget'], 'number'],
             [['date_created'], 'safe'],

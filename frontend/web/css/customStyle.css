@@ -39,14 +39,14 @@ p.sub-title
 {
     font-size: 20px !important; 
     text-transform: uppercase;
-    color: #29012cc4 !important;
+    color: #7e57b1 !important;
     font-weight: bold;
 }
 button.btn-success
 {
-    /*background-color: #29012cc4 !important;*/
+    /*background-color: #7e57b1 !important;*/
     background-color: #7e57b1 !important;
-    border-color: #29012cc4 !important;
+    border-color: #7e57b1 !important;
 }
 button.btn-success:hover
 {
