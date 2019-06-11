@@ -23,6 +23,35 @@ use Yii;
  */
 class DefaultController extends Controller
 {
+    public function actionDeleteAccomplishmentAttrib($id,$ruc,$onstep,$tocreate)
+    {
+        $model = GadArAttributedProgram::deleteAll(['id'=>$id]);
+
+        \Yii::$app->getSession()->setFlash('success', "Data has been deleted");
+        return $this->redirect(['gad-accomplishment-report/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
+    }
+    public function actionDeleteAccomplishment($id,$ruc,$onstep,$tocreate)
+    {
+        $model = GadAccomplishmentReport::deleteAll(['id'=>$id]);
+
+        \Yii::$app->getSession()->setFlash('success', "Data has been deleted");
+        return $this->redirect(['gad-accomplishment-report/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
+    }
+    public function actionDeletePlanBudgetAttrib($id,$ruc,$onstep,$tocreate)
+    {
+        $model = GadAttributedProgram::deleteAll(['id'=>$id]);
+
+        \Yii::$app->getSession()->setFlash('success', "Data has been deleted");
+        return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
+    }
+
+    public function actionDeletePlanBudgetGenderIssue($id,$ruc,$onstep,$tocreate)
+    {
+        $model = GadPlanBudget::deleteAll(['id'=>$id]);
+
+        \Yii::$app->getSession()->setFlash('success', "Data has been deleted");
+        return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
+    }
 
     public  function DisplayStatus($value)
     {

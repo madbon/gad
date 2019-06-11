@@ -294,7 +294,8 @@ class GadPlanBudgetController extends Controller
             'IC.title as inner_category_title',
             'GC.id as gad_focused_id',
             'IC.id as inner_category_id',
-            'PB.focused_id'
+            'PB.focused_id',
+            'PB.gi_sup_data as sup_data'
         ])
         ->from('gad_plan_budget PB')
         ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = PB.ppa_focused_id')

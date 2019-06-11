@@ -3,8 +3,10 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use common\modules\report\controllers\GadPlanBudgetController;
+use common\modules\report\controllers\GadAccomplishmentReportController;
 use common\modules\report\controllers\DefaultController;
 use common\modules\report\controllers\GadRecordController;
+
 /* @var $this yii\web\View */
 /* @var $searchModel common\modules\report\models\GadRecordSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -38,20 +40,34 @@ $this->title = $index_title;
     {
         border:1px solid #7e57b1;
     }
+    a.btn-view-report
+    {
+        background-color: #4a4242 !important;
+        border:1px solid #2a2626 !important;
+        color: white;   
+    }
+    a.btn-view-report:hover
+    {
+        color: white;
+        background-color: #5f5858 !important;
+    }
 </style>
 <div class="gad-record-index">
 
-    <!-- <h1><?php // Html::encode($this->title) ?></h1> -->
-    <?php //print_r($report_type); exit; ?>
-
-    <!-- <p>
-        <?php // Html::a('Create Annex A', ['create'], ['class' => 'btn btn-success']) ?>
-    </p> -->
-
+<!-- <p>
+    <?php // Html::a('Create Annex A', ['create'], ['class' => 'btn btn-success']) ?>
+</p> -->
+<h3 style="text-transform: uppercase;"><b><?= Html::encode($this->title) ?></b></h3>
 <div class="cust-panel">
+
     <div class="cust-panel-header gad-color">
+        
         </div>
-        <div class="cust-panel-body">
+        <div class="cust-panel-body table-responsive">
+            <br/>
+            <?php
+                echo $this->render('_search', ['model' => $searchModel, 'region' => $region,'province' => $province,'citymun' => $citymun,'report_type' => $report_type]);
+            ?>
             <?php
                 if(Yii::$app->user->can("gad_submit_all_to_central"))
                 {
@@ -135,7 +151,7 @@ $this->title = $index_title;
                                                 'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                 'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                             ], 
-                                                ['class'=>'btn btn-default btn-sm']);
+                                                ['class'=>'btn btn-default btn-sm btn-view-report']);
                                         }
                                        
                                     },
@@ -171,11 +187,18 @@ $this->title = $index_title;
                                 }
                             ],
                             [
-                                'label' => 'Total GAD Budget',
+                                'label' => $report_type == "plan_budget" ? "Total GAD Budgdet" : "Total GAD Expenditure",
                                 'format' => 'raw',
-                                'value' => function($model)
+                                'value' => function($model) use ($report_type)
                                 {
-                                    return GadPlanBudgetController::ComputeGadBudget($model['record_tuc']);
+                                    if($report_type == "accomplishment")
+                                    {
+                                        return GadAccomplishmentReportController::ComputeAccomplishment($model['record_tuc']);
+                                    }
+                                    else
+                                    {
+                                        return GadPlanBudgetController::ComputeGadBudget($model['record_tuc']);
+                                    }
                                 }
                             ],
                             [
@@ -204,7 +227,7 @@ $this->title = $index_title;
                                                 'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                 'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                             ], 
-                                                ['class'=>'btn btn-default btn-sm']);
+                                                ['class'=>'btn btn-default btn-sm btn-view-report']);
                                     },
                                 ],
                             ],
@@ -238,11 +261,18 @@ $this->title = $index_title;
                                 }
                             ],
                             [
-                                'label' => 'Total GAD Budget',
+                                'label' => $report_type == "plan_budget" ? "Total GAD Budgdet" : "Total GAD Expenditure",
                                 'format' => 'raw',
-                                'value' => function($model)
+                                'value' => function($model) use ($report_type)
                                 {
-                                    return GadPlanBudgetController::ComputeGadBudget($model['record_tuc']);
+                                    if($report_type == "accomplishment")
+                                    {
+                                        return GadAccomplishmentReportController::ComputeAccomplishment($model['record_tuc']);
+                                    }
+                                    else
+                                    {
+                                        return GadPlanBudgetController::ComputeGadBudget($model['record_tuc']);
+                                    }
                                 }
                             ],
                             [
@@ -271,7 +301,7 @@ $this->title = $index_title;
                                                 'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                 'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                             ], 
-                                                ['class'=>'btn btn-default btn-sm']);
+                                                ['class'=>'btn btn-default btn-sm btn-view-report']);
                                     },
                                 ],
                             ],
@@ -313,11 +343,18 @@ $this->title = $index_title;
                                 }
                             ],
                             [
-                                'label' => 'Total GAD Budget',
+                                'label' => $report_type == "plan_budget" ? "Total GAD Budgdet" : "Total GAD Expenditure",
                                 'format' => 'raw',
-                                'value' => function($model)
+                                'value' => function($model) use ($report_type)
                                 {
-                                    return GadPlanBudgetController::ComputeGadBudget($model['record_tuc']);
+                                    if($report_type == "accomplishment")
+                                    {
+                                        return GadAccomplishmentReportController::ComputeAccomplishment($model['record_tuc']);
+                                    }
+                                    else
+                                    {
+                                        return GadPlanBudgetController::ComputeGadBudget($model['record_tuc']);
+                                    }
                                 }
                             ],
                             [
@@ -348,7 +385,7 @@ $this->title = $index_title;
                                                 'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                 'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                             ], 
-                                                ['class'=>'btn btn-default btn-sm']);
+                                                ['class'=>'btn btn-default btn-sm btn-view-report']);
                                         }
                                         
                                     },
@@ -368,8 +405,20 @@ $this->title = $index_title;
                                 'attribute' => 'office_name',
                             ],
                             [
+                                'label' => 'Region',
+                                'attribute' => 'region_name',
+                            ],
+                            [
+                                'label' => 'Province',
+                                'attribute' => 'province_name',
+                            ],
+                            [
                                 'label' => 'City/Municipality',
                                 'attribute' => 'citymun_name',
+                                'value' => function($model)
+                                {
+                                    return !empty($model["citymun_name"]) ? $model["citymun_name"] : "";
+                                }
                             ],
                             [
                                 'label' => 'Year',
@@ -384,22 +433,29 @@ $this->title = $index_title;
                                 }
                             ],
                             [
-                                'label' => 'Total GAD Budget',
+                                'label' => $report_type == "plan_budget" ? "Total GAD Budgdet" : "Total GAD Expenditure",
                                 'format' => 'raw',
-                                'value' => function($model)
+                                'value' => function($model) use ($report_type)
                                 {
-                                    return GadPlanBudgetController::ComputeGadBudget($model['record_tuc']);
+                                    if($report_type == "accomplishment")
+                                    {
+                                        return GadAccomplishmentReportController::ComputeAccomplishment($model['record_tuc']);
+                                    }
+                                    else
+                                    {
+                                        return GadPlanBudgetController::ComputeGadBudget($model['record_tuc']);
+                                    }
                                 }
                             ],
-                            [
-                                'label' => 'Status',
-                                'attribute' => 'record_status',
-                                'format' => 'raw',
-                                'value' => function($model)
-                                {
-                                    return DefaultController::DisplayStatus($model["record_status"]);
-                                }
-                            ],
+                            // [
+                            //     'label' => 'Status',
+                            //     'attribute' => 'record_status',
+                            //     'format' => 'raw',
+                            //     'value' => function($model)
+                            //     {
+                            //         return DefaultController::DisplayStatus($model["record_status"]);
+                            //     }
+                            // ],
                             [
                                 'label' => 'Remarks',
                                 'value' => function($model)
@@ -418,7 +474,7 @@ $this->title = $index_title;
                                                 'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                 'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                             ], 
-                                                ['class'=>'btn btn-primary btn-sm']);
+                                                ['class'=>'btn btn-primary btn-sm btn-view-report']);
                                     },
                                 ],
                             ],

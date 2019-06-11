@@ -31,6 +31,128 @@ class GadAccomplishmentReportController extends Controller
         ];
     }
 
+    public function ComputeAccomplishment($ruc)
+    {
+        $grand_total_ar = 0;
+        $dataAttributedProgram = (new \yii\db\Query())
+        ->select([
+            'AP.id',
+            // 'IF(AP.ppa_attributed_program_id = 0, AP.ppa_attributed_program_others, PAP.title) as ap_ppa_value',
+            'AP.lgu_program_project',
+            'AP.hgdg_pimme',
+            'AP.total_annual_pro_cost',
+            'AP.gad_attributed_pro_cost',
+            'AP.ar_ap_variance_remarks',
+            'AP.record_tuc',
+            'AP.controller_id'
+        ])
+        ->from('gad_ar_attributed_program AP')
+        ->leftJoin(['PAP' => 'gad_ppa_attributed_program'], 'PAP.id = AP.ppa_attributed_program_id')
+        ->where(['AP.record_tuc' => $ruc])
+        ->groupBy(['AP.lgu_program_project'])
+        ->orderBy(['AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
+        ->all();
+
+        $varTotalGadAttributedProBudget = 0;
+        foreach ($dataAttributedProgram as $key => $dap) {
+            // $sum_ap_apc += $dap['gad_attributed_pro_cost'];
+            $varHgdg = $dap["hgdg_pimme"];
+            $varTotalAnnualProCost = $dap["total_annual_pro_cost"];
+            $computeGadAttributedProCost = 0;
+            $HgdgMessage = null;
+            $HgdgWrongSign = "";
+            
+            if($varHgdg < 4) // 0%
+            {
+                // echo "GAD is invisible";
+                $computeGadAttributedProCost = ($varTotalAnnualProCost * 0);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
+            }
+            else if($varHgdg >= 4 && $varHgdg <= 7.9) // 25%
+            {
+                // echo "Promising GAD prospects (conditional pass)";
+                $computeGadAttributedProCost = ($varTotalAnnualProCost * 0.25);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
+            }
+            else if($varHgdg >= 8 && $varHgdg <= 14.9) // 50%
+            {
+                // echo "Gender Sensetive";
+                $computeGadAttributedProCost = ($varTotalAnnualProCost * 0.50);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
+            }
+            else if($varHgdg >= 15 && $varHgdg <= 19.9) // 75%
+            {
+                // echo "Gender-responsive";
+                $computeGadAttributedProCost = ($varTotalAnnualProCost * 0.75);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
+            }
+            else if($varHgdg == 20) // 100%
+            {
+                // echo "Full gender-resposive";
+                $computeGadAttributedProCost = ($varTotalAnnualProCost * 1);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
+            }
+            else
+            {
+                $HgdgMessage = "Unable to compute (undefined HGDG Score).";
+                $HgdgWrongSign = "<span class='glyphicon glyphicon-alert' style='color:red;' title='Not HGDG Score Standard'></span>";
+            }
+        }
+
+        $dataAR = (new \yii\db\Query())
+        ->select([
+            'AR.id',
+            // 'IF(AR.ppa_focused_id = 0, AR.ppa_value,CF.title) as ppa_value',
+            'AR.ppa_value',
+            'AR.cause_gender_issue',
+            'AR.objective',
+            'AR.relevant_lgu_ppa',
+            'AR.activity',
+            'AR.performance_indicator',
+            'AR.target',
+            'AR.actual_results',
+            'AR.total_approved_gad_budget',
+            'AR.actual_cost_expenditure',
+            'AR.variance_remarks',
+            'AR.record_tuc',
+            'GF.title as gad_focused_title',
+            'IC.title as inner_category_title',
+            'GC.id as gad_focused_id',
+            'IC.id as inner_category_id',
+            'AR.focused_id'
+        ])
+        ->from('gad_accomplishment_report AR')
+        ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = AR.ppa_focused_id')
+        ->leftJoin(['GC' => 'gad_comment'], 'GC.plan_budget_id = AR.id')
+        ->leftJoin(['GF' => 'gad_focused'], 'GF.id = AR.focused_id')
+        ->leftJoin(['IC' => 'gad_inner_category'], 'IC.id = AR.inner_category_id')
+        ->where(['AR.record_tuc' => $ruc])
+        ->orderBy(['AR.focused_id' => SORT_ASC,'AR.inner_category_id' => SORT_ASC,'AR.ppa_value' => SORT_ASC,'AR.id' => SORT_ASC])
+        ->groupBy(['AR.focused_id','AR.inner_category_id','AR.ppa_value','AR.cause_gender_issue','AR.objective','AR.relevant_lgu_ppa','AR.activity','AR.performance_indicator','AR.target','AR.actual_results'])
+        ->all();
+
+        $sum_ar_ace = 0;
+        foreach ($dataAR as $key => $dr) {
+            $sum_ar_ace += $dr["actual_cost_expenditure"]; // cliorg table
+        }
+
+        $grand_total_ar = ($sum_ar_ace + $varTotalGadAttributedProBudget);
+
+        $qryRecord = GadRecord::find()->where(['tuc' => $ruc])->one();
+        $recTotalLguBudget = $qryRecord->total_lgu_budget;
+
+        $fivePercentTotalLguBudget = ($recTotalLguBudget * 0.05);
+
+        if($grand_total_ar < $fivePercentTotalLguBudget)
+        {
+            return "<span style='color:red;'>  Php ".number_format($grand_total_ar,2)."</span>";
+        }
+        else
+        {
+            return "<span style='color:blue;'>  Php ".number_format($grand_total_ar,2)."</span>";
+        }
+    }
+
     /**
      * Lists all GadAccomplishmentReport models.
      * @return mixed

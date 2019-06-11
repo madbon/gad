@@ -27,7 +27,7 @@ use common\modules\report\controllers\DefaultController;
         </p>
     <?php } else{ ?>
         <p style="<?= $customStyle ?> white-space: pre-line;" id="content-<?= $attribute_name ?>-<?= $row_id ?>">
-            <?= $cell_value ?>  <!-- Display the content of attribute or cell value -->
+            <?= $display_value ?>  <!-- Display the content of attribute or cell value -->
             <div id="actn-btns-<?= $attribute_name ?>-<?= $row_id?>" class="actn-btn-bubble actn-buble-common-class" style="display: none;">
                 <button id="btn-select-<?= $attribute_name ?>-<?= $row_id?>" type="button" class="btn btn-info btn-xs btn-select-cell" >
                     Select
@@ -37,7 +37,7 @@ use common\modules\report\controllers\DefaultController;
         
         <?php
             $this->registerJs("
-                var res = `".$cell_value."`.replace(/--/g, '<span class=bullet>&#8226</span>');
+                var res = `".$display_value."`.replace(/--/g, '<span class=bullet>&#8226</span>');
                 $('p#content-".$attribute_name."-".$row_id."').html(res);
                 $('.confirm-message').click(function(){
                     $(this).hide();
@@ -131,7 +131,8 @@ use common\modules\report\controllers\DefaultController;
             $this->registerJs('
                 $("#btn-edit-'.$attribute_name.'-'.$row_id.'").click(function(){
                     var attr_name = "'.$attribute_name.'";
-                    var cell_value =  $("#content-"+attr_name+"-'.$row_id.'").text();
+                    var cell_value =  $("#content-"+attr_name+"-'.$row_id.' span.cell_span_value").text();
+                    console.log("'.$cell_value.'");
                     $(".div-tooltip-form").hide();
                     
                     $("#txt-edit-'.$attribute_name.'-'.$row_id.'").val(`'.$cell_value.'`);
@@ -533,7 +534,7 @@ use common\modules\report\controllers\DefaultController;
             <p style="background-color: white; font-weight: bold; color: black; text-align: left; border-bottom: 1px solid white; margin-top: 5px; padding-left: 10px;">GENDER ISSUE SUPPORTING STATISTICS DATA</p>
             <div style="background-color: white; width: 90%; margin-right: 5%; margin-left: auto; margin-top: 10px; overflow-y: scroll; max-height: 100px;">
 
-                <p id="content_sup_data-<?= $row_id ?>" style="color:black; text-align: justify; width: 90%; margin-right: 5%; margin-left: auto; font-style: italic;">
+                <p id="content_sup_data-<?= $row_id ?>" style="color:black; text-align: justify; width: 90%; margin-right: 5%; margin-left: auto; font-style: italic; display: none;">
                 </p>
             </div>
             <textarea id="ta_edit_supdata-<?= $row_id ?>" rows="3" class="form-control" style="display: none; width: 90%; margin-left: 5%; margin-right: auto; margin-top: 10px; background-color: skyblue; color:black; border-radius: 15px;">

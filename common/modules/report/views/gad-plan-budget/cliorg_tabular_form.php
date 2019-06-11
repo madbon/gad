@@ -2,6 +2,7 @@
 <?php
     echo $this->render('cell_reusable_form',[
         'cell_value' => $plan["ppa_value"],
+        'display_value' => "<span class='cell_span_value'>".$plan["ppa_value"]."</span>".(!empty($plan["sup_data"]) ? "<br/><br/><span style='text-decoration:underline; font-style:italic; font-weight:bold;'>Supporting Statistics Data : </span><br/> <i style=''>".$plan["sup_data"]."</i>" : ""),
         'row_id' => $plan["id"],
         'record_unique_code' => $plan["record_uc"],
         'attribute_name' => "ppa_value",
@@ -20,6 +21,7 @@
 <?php
     echo $this->render('cell_reusable_form',[
         'cell_value' => $plan["objective"],
+        'display_value' => $plan["objective"],
         'row_id' => $plan["id"],
         'record_unique_code' => $plan["record_uc"],
         'attribute_name' => "objective",
@@ -39,6 +41,7 @@
 <?php
     echo $this->render('cell_reusable_form',[
         'cell_value' => $plan["relevant_lgu_program_project"],
+        'display_value' => $plan["relevant_lgu_program_project"],
         'row_id' => $plan["id"],
         'record_unique_code' => $plan["record_uc"],
         'attribute_name' => "relevant_lgu_program_project",
@@ -58,6 +61,7 @@
 <?php
     echo $this->render('cell_reusable_form',[
         'cell_value' => $plan["activity"],
+        'display_value' => $plan["activity"],
         'row_id' => $plan["id"],
         'record_unique_code' => $plan["record_uc"],
         'attribute_name' => "activity",
@@ -77,6 +81,7 @@
 <?php
     echo $this->render('cell_reusable_form',[
         'cell_value' => $plan["performance_target"],
+        'display_value' => $plan["performance_target"],
         'row_id' => $plan["id"],
         'record_unique_code' => $plan["record_uc"],
         'attribute_name' => "performance_target",
@@ -114,6 +119,7 @@
 <?php
     echo $this->render('cell_reusable_form',[
         'cell_value' => $plan["budget_mooe"],
+        'display_value' => $plan["budget_mooe"],
         'row_id' => $plan["id"],
         'record_unique_code' => $plan["record_uc"],
         'attribute_name' => "budget_mooe",
@@ -133,6 +139,7 @@
 <?php
     echo $this->render('cell_reusable_form',[
         'cell_value' => $plan["budget_ps"],
+        'display_value' => $plan["budget_ps"],
         'row_id' => $plan["id"],
         'record_unique_code' => $plan["record_uc"],
         'attribute_name' => "budget_ps",
@@ -152,6 +159,7 @@
 <?php
     echo $this->render('cell_reusable_form',[
         'cell_value' => $plan["budget_co"],
+        'display_value' => $plan["budget_co"],
         'row_id' => $plan["id"],
         'record_unique_code' => $plan["record_uc"],
         'attribute_name' => "budget_co",
@@ -171,6 +179,7 @@
 <?php
     echo $this->render('cell_reusable_form',[
         'cell_value' => $plan["lead_responsible_office"],
+        'display_value' => $plan["lead_responsible_office"],
         'row_id' => $plan["id"],
         'record_unique_code' => $plan["record_uc"],
         'attribute_name' => "lead_responsible_office",
@@ -180,7 +189,7 @@
         'colspanValue' => '',
         'controller_id' => Yii::$app->controller->id,
         'form_id' => 'cli-org-focused-form',
-        'customStyle' => '',
+        'customStyle' => 'border-bottom:none;',
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
         'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
         'enableViewComment' => 'true',

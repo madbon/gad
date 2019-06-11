@@ -381,8 +381,8 @@ use kartik\select2\Select2;
                             });
                       }); ');
                 ?>
-                <button type="button" class="btn btn-danger btn-sm" title="Close" id="exit-gender-issue">
-                    <span class="glyphicon glyphicon-remove"></span> Close
+                <button type="button" class="btn btn-warning btn-sm" title="Close" id="exit-gender-issue">
+                    <span class="glyphicon glyphicon-eye-close"></span> Hide
                 </button>
                 <?php
                     $urlSetSession = \yii\helpers\Url::to(['default/session-encode']);

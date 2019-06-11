@@ -15,7 +15,12 @@ use common\modules\report\controllers\DefaultController;
 
 $this->title = "Annual GAD Plan and Budget";
 ?>
-
+<style>
+    /*div.input-form
+    {
+        background-color: skyblue !important;
+    }*/
+</style>
 <div class="gad-plan-budget-index">
    
     <div class="cust-panel basic-information inner-panel">
@@ -66,7 +71,7 @@ $this->title = "Annual GAD Plan and Budget";
         <br/>
         <?php if($qryReportStatus == 1 || $qryReportStatus == 0 ||  $qryReportStatus == 5 || $qryReportStatus == 6){ ?>
             <button type="button" class="btn btn-success" id="btn-encode" style="margin-bottom: 5px;">
-                <span class="glyphicon glyphicon-pencil"></span> Encode Gender Issue or GAD Mandate
+                <span class="glyphicon glyphicon-pencil"></span> Encode Plan
             </button>
         <?php } ?>
     <?php } ?>
@@ -396,9 +401,9 @@ $this->title = "Annual GAD Plan and Budget";
             <?php } ?>
                 <div class="cust-panel-header gad-color">
                 </div>
-                <div class="cust-panel-body">
+                <div class="cust-panel-body" style="background-color: #1fc8db; background-image: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);">
                     <div class="cust-panel-title">
-                        <p class="sub-title"><span class="glyphicon glyphicon-pencil"></span> INPUT FORM</p>
+                        <p class="sub-title" style="color: white !important;"><span class="glyphicon glyphicon-pencil"></span> Encode Plan</p>
                     </div>
                     <div class="cust-panel-inner-body">
                         <?php 
@@ -424,12 +429,12 @@ $this->title = "Annual GAD Plan and Budget";
     <div class="cust-panel tabular-report">
         <div class="cust-panel-header gad-color">
         </div>
-        <div class="cust-panel-body">
+        <div class="cust-panel-body table-responsive">
             <div class="cust-panel-title">
                 <p class="sub-title"><span class="glyphicon glyphicon-th"></span> Tabular Report</p>
             </div>
             <div class="cust-panel-inner-body">
-                <table class="table table-responsive table-bordered gad-plan-budget">
+                <table class="table table-responsive table-bordered gad-plan-budget table-hover">
                     <thead>
                         <tr>
                             <th style="border-bottom: none;">Gender Issue or GAD Mandate </th>
@@ -454,8 +459,8 @@ $this->title = "Annual GAD Plan and Budget";
                             <th>MOOE</th>
                             <th>PS</th>
                             <th>CO</th>
-                            <th style="border-top: none;"></th>
-                            <th style="border-top: none;">Action</th>
+                            <th style="border-top: none; border-bottom: none;"></th>
+                            <th style="border-top: none; border-bottom: none;"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -504,8 +509,8 @@ $this->title = "Annual GAD Plan and Budget";
                                 <tr class="focused_title">
                                     <td style="border-bottom: none;" colspan='5'><b><?= $plan["gad_focused_title"] ?></b></td>
                                     <td colspan="3" style="border-bottom: none;"></td>
-                                    <td style="border-bottom: none;"></td>
-                                    <td style="border-bottom: none;"></td>
+                                    <td style="border-bottom: none; border-top: none;"></td>
+                                    <td style="border-bottom: none; border-top: none;"></td>
                                 </tr>
                             <?php } ?>
 
@@ -514,8 +519,8 @@ $this->title = "Annual GAD Plan and Budget";
                                 <tr class="inner_category_title">
                                     <td style="border-top: none;" colspan='5'><b><?= $plan["inner_category_title"] ?></b></td>
                                     <td colspan="3" style="border-top: none;"></td>
-                                    <td  style="border-top:none;"></td>
-                                    <td style="border-top: none;"></td>
+                                    <td  style="border-top:none; border-bottom: none;"></td>
+                                    <td style="border-top: none; border-bottom: none;"></td>
                                 </tr>
                             <?php } ?>
 
@@ -525,7 +530,29 @@ $this->title = "Annual GAD Plan and Budget";
                                         'plan' => $plan
                                     ]);
                                 ?>
-                                <td></td>
+                                <td style="border-bottom: none;">
+                                    <?php
+                                        if(Yii::$app->user->can("gad_delete_plan_budget"))
+                                        {
+                                            echo Html::a("<span class='glyphicon glyphicon-trash'></span> Delete ",
+                                            [
+                                                'default/delete-plan-budget-gender-issue',
+                                                'id' => $plan['id'],
+                                                'ruc' => $ruc,
+                                                'onstep' => $onstep,
+                                                'tocreate' => $tocreate
+                                            ],
+                                            [
+                                                'class' => 'btn btn-danger btn-xs',
+                                                'id'=>"submit_to",
+                                                'style' => '',
+                                                'data' => [
+                                                    'confirm' => 'Are you sure you want to perform this action?',
+                                                    'method' => 'post']
+                                            ]);
+                                        }
+                                    ?>
+                                </td>
                             </tr>
                         <!-- Display Sub-Total -->
                         <?php 
@@ -544,14 +571,14 @@ $this->title = "Annual GAD Plan and Budget";
                                         <td style='text-align:right;'><b>".(number_format($sum_mooe,2))."</b></td>
                                         <td style='text-align:right;'><b>".(number_format($sum_ps,2))."</b></td>
                                         <td style='text-align:right;'><b>".(number_format($sum_co,2))."</b></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td style='border-bottom:none;'></td>
+                                        <td style='border-bottom:none;'></td>
                                     </tr>
                                     <tr class='total_a'>
                                         <td colspan='5'><b>Total A (MOEE+PS+CO)</b></td>
                                         <td colspan='3'>".(number_format($total_a,2))."</td>
-                                        <td></td>
-                                        <td></td>
+                                        <td style='border-top:none; border-bottom:none;'></td>
+                                        <td style='border-top:none; border-bottom:none;'></td>
                                     </tr>
                                     ";
                                     $sum_mooe = 0;
@@ -575,14 +602,14 @@ $this->title = "Annual GAD Plan and Budget";
                                         <td style='text-align:right;'><b>".(number_format($sum_mooe,2))."</b></td>
                                         <td style='text-align:right;'><b>".(number_format($sum_ps,2))."</b></td>
                                         <td style='text-align:right;'><b>".(number_format($sum_co,2))."</b></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td style='border-bottom:none;'></td>
+                                        <td style='border-bottom:none;'></td>
                                     </tr>
                                     <tr class='total_b'>
                                         <td colspan='5'><b>Total B (MOEE+PS+CO)</b></td>
                                         <td colspan='3'>".(number_format($total_b,2))."</td>
-                                        <td></td>
-                                        <td></td>
+                                        <td style='border-top:none; border-bottom:none;'></td>
+                                        <td style='border-top:none; border-bottom:none;'></td>
                                     </tr>
                                     ";
                                 }
@@ -593,7 +620,7 @@ $this->title = "Annual GAD Plan and Budget";
                         } //End of dataClient ?>
                         
 
-                        <tr class="attributed_program_title">
+                        <tr class="attributed_program_title" style="border-top: none;">
                             <td colspan="5">
                                 <b>ATTRIBUTED PROGRAMS</b> 
                                 <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
@@ -627,8 +654,8 @@ $this->title = "Annual GAD Plan and Budget";
                                 <?php } ?>
                             </td>
                             <td colspan="3"></td>
-                            <td></td>
-                            <td></td>
+                            <td style="border-top: none;"></td>
+                            <td style="border-top: none; border-bottom: none;"></td>
                         </tr>
                         <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
                             <?php if($qryReportStatus == 1 || $qryReportStatus == 0 || $qryReportStatus == 5 || $qryReportStatus == 6){ ?>
@@ -637,7 +664,7 @@ $this->title = "Annual GAD Plan and Budget";
                                 <?php }else{ ?>
                                     <tr class="attributed_program_form" style="display: none;">
                                 <?php } ?>
-                                    <td colspan="10">
+                                    <td colspan="10" style="background-color: #1fc8db; background-image: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);">
                                         <?php
                                             echo $this->render('attributed_program_form', [
                                                 'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
@@ -656,7 +683,7 @@ $this->title = "Annual GAD Plan and Budget";
                             <td colspan="2"><b>Total Annual Program/ Project Budget</b></td>
                             <td colspan="3"><b>GAD Attributed Program/Project Budget</b></td>
                             <td><b>Lead or Responsible Office</b></td>
-                            <td></td>
+                            <td style="border-top: none;"></td>
                         </tr>
                         <?php 
                         $notnull_apPpaValue = null;
@@ -668,6 +695,7 @@ $this->title = "Annual GAD Plan and Budget";
                                 <?php
                                     echo $this->render('cell_reusable_form',[
                                         'cell_value' => $dap["lgu_program_project"],
+                                        'display_value' => $dap["lgu_program_project"],
                                         'row_id' => $dap["id"],
                                         'record_unique_code' => $dap["record_tuc"],
                                         'attribute_name' => "lgu_program_project",
@@ -723,14 +751,15 @@ $this->title = "Annual GAD Plan and Budget";
                                     }
                                     else
                                     {
-                                        $HgdgMessage = "Unable to compute (undefined HGDG Score).";
-                                        $HgdgWrongSign = "<span class='glyphicon glyphicon-alert' style='color:red;' title='Not HGDG Score Standard'></span>";
+                                        $HgdgMessage = Yii::$app->user->can("gad_hgdg_score_standard") ? "Unable to compute (undefined HGDG Score)." : "";
+                                        $HgdgWrongSign = Yii::$app->user->can("gad_hgdg_score_standard") ? "<span class='glyphicon glyphicon-alert' style='color:red;' title='Not HGDG Score Standard'></span>" : "";
                                     }
                                 ?>
                                 <?php
 
                                     echo $this->render('cell_reusable_form',[
-                                        'cell_value' => $HgdgWrongSign." ".$dap["hgdg"],
+                                        'cell_value' => $dap["hgdg"],
+                                        'display_value' => $HgdgWrongSign." ".$dap["hgdg"],
                                         'row_id' => $dap["id"],
                                         'record_unique_code' => $dap["record_tuc"],
                                         'attribute_name' => "hgdg",
@@ -749,6 +778,7 @@ $this->title = "Annual GAD Plan and Budget";
                                 <?php
                                     echo $this->render('cell_reusable_form',[
                                         'cell_value' => $dap["total_annual_pro_budget"],
+                                        'display_value' => $dap["total_annual_pro_budget"],
                                         'row_id' => $dap["id"],
                                         'record_unique_code' => $dap["record_tuc"],
                                         'attribute_name' => "total_annual_pro_budget",
@@ -782,7 +812,8 @@ $this->title = "Annual GAD Plan and Budget";
                                 
                                 <?php
                                     echo $this->render('cell_reusable_form',[
-                                        'cell_value' => !empty($HgdgMessage) ? $HgdgMessage : number_format($computeGadAttributedProBudget,2),
+                                        'cell_value' => !empty($HgdgMessage) ? $HgdgMessage : $computeGadAttributedProBudget,
+                                        'display_value' =>  !empty($HgdgMessage) ? $HgdgMessage : number_format($computeGadAttributedProBudget,2),
                                         'row_id' => $dap["id"],
                                         'record_unique_code' => $dap["record_tuc"],
                                         'attribute_name' => "attributed_pro_budget",
@@ -801,6 +832,7 @@ $this->title = "Annual GAD Plan and Budget";
                                 <?php
                                     echo $this->render('cell_reusable_form',[
                                         'cell_value' => $dap["ap_lead_responsible_office"],
+                                        'display_value' => $dap["ap_lead_responsible_office"],
                                         'row_id' => $dap["id"],
                                         'record_unique_code' => $dap["record_tuc"],
                                         'attribute_name' => "ap_lead_responsible_office",
@@ -816,7 +848,29 @@ $this->title = "Annual GAD Plan and Budget";
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
-                                <td></td>
+                                <td>
+                                    <?php
+                                        if(Yii::$app->user->can("gad_delete_plan_budget"))
+                                        {
+                                            echo Html::a("<span class='glyphicon glyphicon-trash'></span> Delete",
+                                            [
+                                                'default/delete-plan-budget-attrib',
+                                                'id' => $dap['id'],
+                                                'ruc' => $ruc,
+                                                'onstep' => $onstep,
+                                                'tocreate' => $tocreate
+                                            ],
+                                            [
+                                                'class' => 'btn btn-danger btn-xs',
+                                                'id'=>"submit_to",
+                                                'style' => '',
+                                                'data' => [
+                                                    'confirm' => 'Are you sure you want to perform this action?',
+                                                    'method' => 'post']
+                                            ]);
+                                        }
+                                    ?>
+                                </td>
                             </tr>
                         <?php 
                         $total_c = $varTotalGadAttributedProBudget;
@@ -825,8 +879,8 @@ $this->title = "Annual GAD Plan and Budget";
                             <td><b>Total C</b></td>
                             <td colspan="4"></td>
                             <td colspan="3"><?= number_format($total_c,2) ?></td>
-                            <td></td>
-                            <td></td>
+                            <td style="border-bottom: none;"></td>
+                            <td style="border-bottom: none;"></td>
                         </tr>
                         <tr class="grand_total">
                             <td colspan="2"><b>GRAND TOTAL (A+B+C</b></td>
@@ -837,8 +891,8 @@ $this->title = "Annual GAD Plan and Budget";
                                     echo number_format($grand_total,2);
                                 ?>
                             </td>
-                            <td></td>
-                            <td></td>
+                            <td style="border-top: none;"></td>
+                            <td style="border-top: none; background-color: white;"></td>
                         </tr>
                         <tr class="signatory_label">
                             <td colspan="2"><b>Prepared by:</b></td>

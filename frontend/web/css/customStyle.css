@@ -86,7 +86,7 @@ table.ar tbody tr.signatory_title td
 }
 table.ar tbody tr.grand_total td
 {
-    background-color: #0080006b;
+    /*background-color: #0080006b;*/
     color: black;
     font-weight: bold;
 }
@@ -98,14 +98,14 @@ table.ar tbody tr.grand_total td:nth-child(3)
 
 table.ar tbody tr.total_a td,tr.total_b td, tr.total_c td
 {
-    background-color: #7e57b1 !important;
+    /*background-color: #7e57b1 !important;*/
     color:white;
     font-weight: bold;
 }
 
 table.ar tbody tr.subtotal td
 {
-    background-color: #8080803b;
+    /*background-color: #8080803b;*/
 }
 table.ar tbody tr.total_a td:nth-child(2), tr.total_b td:nth-child(2)
 {
@@ -156,7 +156,7 @@ table.gad-plan-budget
 }
 table.gad-plan-budget tbody tr.grand_total td
 {
-    background-color: #0080006b;
+    /*background-color: #0080006b;*/
     color: black;
 }
 table.gad-plan-budget tbody tr.grand_total td:nth-child(3)
@@ -167,13 +167,13 @@ table.gad-plan-budget tbody tr.grand_total td:nth-child(3)
 
 table.gad-plan-budget tbody tr.total_a td,tr.total_b td, tr.total_c td
 {
-    background-color: #7e57b1 !important;
-    color: white !important;
+    /*background-color: #7e57b1 !important;*/
+    color: black !important;
 }
 
 table.gad-plan-budget tbody tr.subtotal td
 {
-    background-color: #8080803b;
+    /*background-color: #8080803b;*/
 }
 table.gad-plan-budget tbody tr.total_a td:nth-child(2), tr.total_b td:nth-child(2)
 {

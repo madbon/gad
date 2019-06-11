@@ -418,7 +418,7 @@ $this->title = "Annual GAD Accomplishment Reports";
     <div class="cust-panel tabular-report">
         <div class="cust-panel-header gad-color">
         </div>
-        <div class="cust-panel-body">
+        <div class="cust-panel-body table-responsive">
             <div class="cust-panel-title">
                 <p class="sub-title"><span class="glyphicon glyphicon-th"></span> Tabular Report</p>
             </div>
@@ -437,6 +437,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                             <th>Approved GAD Budget</th>
                             <th>Actual Cost or Expenditure</th>
                             <th>Variance or Remarks</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -485,6 +486,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
                                 </tr>
                             <?php } ?>
 
@@ -492,6 +494,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                             <?php if($not_InnerCategoryId != $ar["inner_category_title"]) { ?>
                                 <tr class="inner_category_title">
                                     <td colspan='5'><b><?= $ar["inner_category_title"] ?></b></td>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -678,6 +681,29 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
+                                <td>
+                                    <?php
+                                        if(Yii::$app->user->can("gad_delete_accomplishment_report"))
+                                        {
+                                            echo Html::a("<span class='glyphicon glyphicon-trash'></span> Delete",
+                                            [
+                                                'default/delete-accomplishment',
+                                                'id' => $ar['id'],
+                                                'ruc' => $ruc,
+                                                'onstep' => $onstep,
+                                                'tocreate' => $tocreate
+                                            ],
+                                            [
+                                                'class' => 'btn btn-danger btn-xs',
+                                                'id'=>"submit_to",
+                                                'style' => '',
+                                                'data' => [
+                                                    'confirm' => 'Are you sure you want to perform this action?',
+                                                    'method' => 'post']
+                                            ]);
+                                        }
+                                    ?>
+                                </td>
                             </tr>
                         <?php 
                             if($ar["focused_id"] == 1) // client-focused
@@ -698,10 +724,12 @@ $this->title = "Annual GAD Accomplishment Reports";
                                             <b>".(number_format($total_a,2))."</b>
                                         </td>
                                         <td></td>
+                                        <td></td>
                                     </tr>
                                     <tr class='total_a'>
                                         <td colspan='7'><b>Total A (MOEE+PS+CO)</b></td>
                                         <td  style='text-align:right;'>".(number_format($total_a,2))."</td>
+                                        <td></td>
                                         <td></td>
                                     </tr>
                                     ";
@@ -756,6 +784,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                         </tr>
                         <?php
                             $this->registerJs("
@@ -794,6 +823,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         ]);
                                     ?>
                                 </td>
+                                <td></td>
                             </tr>
                         <?php } ?>
                         
@@ -803,6 +833,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                             <td>Total Annual Program/ Project Cost or Expenditure</td>
                             <td>GAD Attributed Program/Project Cost or Expenditure</td>
                             <td>Variance or Remarks</td>
+                            <td>Action</td>
                         </tr>
                          <?php 
                         $notnull_apPpaValue = null;
@@ -944,6 +975,29 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
+                                <td>
+                                    <?php
+                                        if(Yii::$app->user->can("gad_delete_accomplishment_report"))
+                                        {
+                                            echo Html::a("<span class='glyphicon glyphicon-trash'></span> Delete",
+                                            [
+                                                'default/delete-accomplishment-attrib',
+                                                'id' => $dap['id'],
+                                                'ruc' => $ruc,
+                                                'onstep' => $onstep,
+                                                'tocreate' => $tocreate
+                                            ],
+                                            [
+                                                'class' => 'btn btn-danger btn-xs',
+                                                'id'=>"submit_to",
+                                                'style' => '',
+                                                'data' => [
+                                                    'confirm' => 'Are you sure you want to perform this action?',
+                                                    'method' => 'post']
+                                            ]);
+                                        }
+                                    ?>
+                                </td>
                             </tr>
                         <?php 
                         $total_c = $varTotalGadAttributedProBudget;
@@ -952,6 +1006,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                         <tr class="total_c">
                             <td colspan="7">Total C</td>
                             <td style="text-align: right;"><?= number_format($total_c,2) ?></td>
+                            <td></td>
                             <td></td>
                         </tr>
                         <tr class="grand_total">
@@ -964,12 +1019,14 @@ $this->title = "Annual GAD Accomplishment Reports";
                                 ?>
                             </td>
                             <td></td>
+                            <td></td>
                         </tr>
                         <tr class="signatory_label">
                             <td colspan="3"><b>Prepared by:</b></td>
 
                             <td colspan="4"><b>Approved by:</b></td>
                             <td colspan="4"><b>Date:</b></td>
+                            <!-- <td></td> -->
                         </tr>
                         <tr class="signatory">
                             <?php foreach ($dataRecord as $key => $rec) { ?>
@@ -1024,6 +1081,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                             <td colspan="3">Chairperson, GFPS TWG</td>
                             <td colspan="4">Local Chief Executive</td>
                             <td colspan="4">DD/MM/YEAR</td>
+                            <!-- <td></td> -->
                             <!-- <td></td> -->
                         </tr>
                     </tbody>

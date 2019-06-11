@@ -56,11 +56,12 @@ class GadRecordSearch extends GadRecord
         }
         else if(Yii::$app->user->can("gad_province_permission") || Yii::$app->user->can("gad_lgu_province_permission"))
         {
-            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => NULL,'GR.office_c' => 2];
+            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => NULL,
+            'GR.office_c' => 2];
         }
         else if(Yii::$app->user->can("gad_region"))
         {
-            $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C];
+            $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,'GR.status' => [3,0,4,6],'GR.office_c' => [4,2]];
         }
         else
         {
@@ -95,6 +96,12 @@ class GadRecordSearch extends GadRecord
         // ->leftJoin(['HIST' => 'gad_report_history'],'HIST.tuc = GR.tuc')
         ->andFilterWhere(['LIKE','GR.tuc',$this->record_tuc])
         ->andFilterWhere($filteredByRole)
+        ->andFilterWhere(['GR.region_c' => $this->region_c])
+        ->andFilterWhere(['GR.province_c' => $this->province_c])
+        ->andFilterWhere(['GR.citymun_c' => $this->citymun_c])
+        ->andFilterWhere(['GR.status' => $this->status])
+        ->andFilterWhere(['GR.status' => Yii::$app->user->can("gad_central") ? 4 : ""])
+        ->andFilterWhere(['GR.year' => $this->year])
         ->groupBy(['GR.id'])
         ->orderBy(['GR.id' => SORT_DESC]);
 

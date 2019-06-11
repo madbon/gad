@@ -139,9 +139,10 @@ div.navbar-header a img
 {
 
 }
+
 .cust-panel .cust-panel-body
 {
-    background-color: white !important;
+    background-color: white;
     min-height: 15px;
     padding-left: 15px;
     padding-right: 15px;
@@ -153,10 +154,13 @@ div.navbar-header a img
 }
 .cust-panel .cust-panel-title
 {
-    border-bottom: 1px solid rgba(150,150,150,0.5);
+    border-bottom: 2px solid white;
     padding-top: 10px;
     margin-bottom: 10px;
 }
+
+
+
 /*#f1e5e8;*/
 /*Panel*/
 </style>
@@ -237,7 +241,7 @@ div.navbar-header a img
                         ],
                     ] : "",
                     Yii::$app->user->can('gad_menu_report') ? [
-                        'label' => 'Report', 'items' => [
+                        'label' => 'Report Status', 'items' => [
                             Yii::$app->user->can('gad_viewreport_planbudget') ? ['label' => 'GAD Plan and Budget', 'url' => ['/report/gad-record/','report_type' => 'plan_budget']] : "",
                             Yii::$app->user->can('gad_viewreport_accomplishment') ? ['label' => 'Accomplishment Report', 'url' => ['/report/gad-record/','report_type' => 'accomplishment' ]] : "",
                         ],
@@ -280,7 +284,7 @@ div.navbar-header a img
         <?= Alert::widget() ?>
         <p class="main-title"> 
 
-            <?= Html::encode($this->title) ?>
+            <?php // Html::encode($this->title) ?>
                 
         </p>
         <?= $content; ?>

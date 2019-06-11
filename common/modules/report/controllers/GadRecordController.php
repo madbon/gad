@@ -8,7 +8,10 @@ use common\modules\report\models\GadRecordSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use niksko12\user\models\Region;
+use niksko12\user\models\Province;
+use niksko12\user\models\Citymun;
+use yii\helpers\ArrayHelper;
 /**
  * GadRecordController implements the CRUD actions for GadRecord model.
  */
@@ -112,6 +115,9 @@ class GadRecordController extends Controller
     {
         $searchModel = new GadRecordSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $regionCondition = [];
+        $provinceCondition = [];
+        $citymunCondition = [];
 
         $index_title = "";
         $urlReport = "";
@@ -136,12 +142,52 @@ class GadRecordController extends Controller
             break;
         }
 
+        if(Yii::$app->user->can("gad_lgu_permission") || Yii::$app->user->can("gad_field_permission")) // C/MLGOO
+        {
+            $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
+            $provinceCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
+            $citymunCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C, 'citymun_c' => $searchModel->citymun_c  = Yii::$app->user->identity->userinfo->CITYMUN_C];
+        }
+        else if(Yii::$app->user->can("gad_region_permission")) // Regional Office
+        {
+            $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
+            $provinceCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
+
+            if(!empty($searchModel->citymun_c) || !empty($searchModel->province_c))
+            {
+                $citymunCondition = ['province_c' => $searchModel->province_c];
+            }
+            else
+            {
+                $citymunCondition = ['region_c' => 0];
+            }
+            
+        }
+        else if(Yii::$app->user->can("gad_province_permission") || Yii::$app->user->can("gad_lgu_province_permission")) // Provincial Office
+        {
+            $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
+            $provinceCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
+            $citymunCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
+        } 
+        else if(Yii::$app->user->can("gad_central_permission") || Yii::$app->user->can("gad_admin_permission"))
+        {
+            $provinceCondition = ['region_c' => $searchModel->region_c];
+        }
+
+
+        $region = ArrayHelper::map(Region::find()->where($regionCondition)->all(), 'region_c', 'region_m');
+        $province = ArrayHelper::map(Province::find()->where($provinceCondition)->all(), 'province_c', 'province_m');
+        $citymun = ArrayHelper::map(Citymun::find()->where($citymunCondition)->all(), 'citymun_c', 'citymun_m');
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'index_title' => $index_title,
             'urlReport' => $urlReport,
-            'report_type' =>  $report_type
+            'report_type' =>  $report_type,
+            'region' => $region,
+            'province' => $province,
+            'citymun' => $citymun,
         ]);
     }
 
