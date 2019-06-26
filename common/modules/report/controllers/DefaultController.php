@@ -18,11 +18,49 @@ use common\models\GadRecord;
 use common\models\GadAccomplishmentReport;
 use common\models\GadReportHistory;
 use Yii;
+use yii\data\ActiveDataProvider;
+use yii\db\Expression;
 /**
  * Default controller for the `report` module
  */
 class DefaultController extends Controller
 {
+    public function GetProvinceName($ruc)
+    {
+        $Record = GadRecord::find()->where(['tuc' => $ruc])->one();
+        $Query = Province::find()->where(['province_c' => $Record->province_c])->one();
+
+        return $Query->province_m;
+    }
+    public function GetRegionName($ruc)
+    {
+        $Record = GadRecord::find()->where(['tuc' => $ruc])->one();
+        $Query = Region::find()->where(['region_c' => $Record->region_c])->one();
+
+        return $Query->region_m;
+    }
+    public function GetCitymunName($ruc)
+    {
+        $Record = GadRecord::find()->where(['tuc' => $ruc])->one();
+
+        if($Record->office_c == 2 || $Record->office_c == 3)
+        {
+            $Query = Citymun::find()->where(['province_c' => $Record->province_c, 'citymun_c' => $Record->citymun_c])->one();
+            return $Query->citymun_m;
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    public function GetPlanYear($ruc)
+    {
+        $Query = GadRecord::find()->where(['tuc' => $ruc])->one();
+
+        return !empty($Query->year) ? $Query->year : "No set Year";
+    }
+
     public function actionDeleteAccomplishmentAttrib($id,$ruc,$onstep,$tocreate)
     {
         $model = GadArAttributedProgram::deleteAll(['id'=>$id]);
@@ -83,6 +121,10 @@ class DefaultController extends Controller
         else if($value == 6)
         {
             $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-flag'></i> Returned by DILG Regional Office</span>";
+        }
+        else if($value == 7)
+        {
+            $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-flag'></i> Returned by PPDO</span>";
         }
 
         return $returnValue;
@@ -1072,6 +1114,110 @@ class DefaultController extends Controller
         {
             return "update_comment_error_occured";
         }
+    }
+
+    public function actionUpdateAttachedAr($record_id,$ruc,$tocreate,$onstep)
+    {
+        // $record_id is the accomplishment rcord id
+        GadRecord::updateAll(['attached_ar_record_id' => $record_id], 'tuc = "'.$ruc.'" ');
+
+        // GadRecord::updateAll(['attached_ar_record_id' => null], 'attached_ar_record_id = '.$record_id.' ');
+        // $getGpbRecordId = GadRecord::find()->where(['tuc' => $ruc])->one();
+        // GadRecord::updateAll(['attached_ar_record_id' => $getGpbRecordId->id], 'id = '.$record_id.' ');
+        \Yii::$app->getSession()->setFlash('success', "Accomplishment Report has been attached");
+
+
+
+        return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
+
+    }
+
+    public function actionLoadAr($params)
+    {
+        $condition = [];
+        $condition2 = [];
+        $condition3 = [];
+        if(Yii::$app->user->can("gad_lgu_permission"))
+        {
+            $condition = ['REC.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C, 'REC.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C];
+        }
+        else if(Yii::$app->user->can("gad_lgu_province_permission"))
+        {
+            $condition = ['REC.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C, 'REC.citymun_c' => null, 'REC.office_c' => 2];
+        }
+
+        $arrComma = [];
+        $QueryComma = GadRecord::find()->select(['attached_ar_record_id'])->where(['not',['attached_ar_record_id' => null]])->all();
+        foreach ($QueryComma as $key => $row) {
+            # code...
+            $arrComma[] = $row["attached_ar_record_id"];
+        }
+
+        $QueryGetArId = GadRecord::find()->where(['tuc' => $params])->one();
+
+        $arrComma2 = [];
+        $QueryComma2 = GadRecord::find()->select(["id"])->where(['not',['id' => $arrComma]])->andWhere(['report_type_id' => 2])->orWhere(['id' => $QueryGetArId->attached_ar_record_id])->all();
+
+        foreach ($QueryComma2 as $key => $row2) {
+            $arrComma2[] = $row2["id"];
+        }
+
+        if(empty($QueryGetArId->attached_ar_record_id))
+        {
+            $condition2 = ['not',['REC.id' => $arrComma]];
+        }
+        else
+        {
+            // $condition3 = ['REC.id' => $QueryGetArId->attached_ar_record_id];
+            $condition2 = ['in','REC.id',$arrComma2];
+        }
+
+
+        $qry = (new \yii\db\Query())
+        ->select([
+            'PRV.province_m as province_name',
+            'CTC.citymun_m as citymun_name',
+            'REC.status as record_status',
+            'REC.total_lgu_budget',
+            'REC.year',
+            'REC.prepared_by',
+            'REC.approved_by',
+            'REC.id as record_id',
+            'REC.attached_ar_record_id as ar_id'
+        ])
+        ->from('gad_record REC')
+        ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = REC.region_c')
+        ->leftJoin(['PRV' => 'tblprovince'], 'PRV.province_c = REC.province_c')
+        ->leftJoin(['CTC' => 'tblcitymun'], 'CTC.citymun_c = REC.citymun_c AND CTC.province_c = REC.province_c')
+        ->where(['REC.report_type_id' => 2])
+        ->andWhere($condition)
+        // ->andWhere($condition3)
+        ->andFilterWhere($condition2)
+        ->andWhere(['REC.is_archive' => 0])
+        // ->andFilterWhere(['REC.id' => ])
+        ->groupBy(['REC.id'])
+        ->orderBy(['REC.id' => SORT_DESC])
+        ->all();
+        // ->createCommand()->rawSql;
+        // print_r($qry); /exit;
+
+        $arr = [];
+        foreach ($qry as  $item) {
+            $arr[] = [
+
+                        'province_name' => $item["province_name"],
+                        'citymun_name' => $item["citymun_name"],
+                        'record_id' => $item["record_id"],
+                        'total_lgu_budget' => $item["total_lgu_budget"],
+                        'year' => $item["year"],
+                        'prepared_by' => $item["prepared_by"],
+                        'approved_by' => $item["approved_by"],
+                        'ar_id' => $item["ar_id"],
+                     ];
+        }
+        
+        \Yii::$app->response->format = 'json';
+        return $arr;
     }
 
     public function actionLoadComment($id,$attribute,$controller_id,$form_id)

@@ -34,15 +34,20 @@ use common\modules\report\controllers\DefaultController;
             $("#cell-'.$attribute_name.'-'.$row_id.'").mouseover(function(){
                 var attr_name = "'.$attribute_name.'";
                 $(".actn-buble-common-class").hide();
+                var disableSelect = "'.$disableSelect.'";
 
-                if($(this).hasClass("active-cell")) // if td.active cell has class  .active-cell hide button select
+                if(disableSelect == "false")
                 {
-                    $("#actn-btns-"+attr_name+"-'.$row_id.'").hide();
+                    if($(this).hasClass("active-cell")) // if td.active cell has class  .active-cell hide button select
+                    {
+                        $("#actn-btns-"+attr_name+"-'.$row_id.'").hide();
+                    }
+                    else
+                    {
+                        $("#actn-btns-"+attr_name+"-'.$row_id.'").show();
+                    }
                 }
-                else
-                {
-                    $("#actn-btns-"+attr_name+"-'.$row_id.'").show();
-                }
+                
             });
 
             $("#btn-select-'.$attribute_name.'-'.$row_id.'").click(function(){

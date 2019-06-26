@@ -178,7 +178,7 @@ $this->title = 'Annual GAD Accomplishment Report';
                 </li>
             <?php }else{ ?>
                 <li class="disabled">
-                    <?= Html::a("Step 3. For Review by PPDO &nbsp;<span class='glyphicon glyphicon-eye-open'></span>", ['','ruc' => $ruc, 'onstep' => $onstep,'tocreate' => $tocreate], ['class' => "disabled btn btn-success"]) ?>
+                    <?= Html::a("For Review by PPDO &nbsp;<span class='glyphicon glyphicon-eye-open'></span>", ['','ruc' => $ruc, 'onstep' => $onstep,'tocreate' => $tocreate], ['class' => "disabled btn btn-success"]);?>
                 </li>
             <?php } ?>
 
@@ -198,7 +198,7 @@ $this->title = 'Annual GAD Accomplishment Report';
                 else
                 {
                     echo $this->render('/common_tools/tabs/tab_completed',[
-                        'tabTitle' => 'Step 4. Endorse to DILG Office (C/MLGOO)',
+                        'tabTitle' => 'Endorse to DILG Office (C/MLGOO)',
                         'liClass' => 'disabled',
                         'ruc' => $ruc,
                         'onstep' => $onstep,

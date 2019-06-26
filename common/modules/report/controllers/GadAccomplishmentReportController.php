@@ -119,13 +119,15 @@ class GadAccomplishmentReportController extends Controller
             'IC.title as inner_category_title',
             'GC.id as gad_focused_id',
             'IC.id as inner_category_id',
-            'AR.focused_id'
+            'AR.focused_id',
+            'REC.status as record_status'
         ])
         ->from('gad_accomplishment_report AR')
         ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = AR.ppa_focused_id')
         ->leftJoin(['GC' => 'gad_comment'], 'GC.plan_budget_id = AR.id')
         ->leftJoin(['GF' => 'gad_focused'], 'GF.id = AR.focused_id')
         ->leftJoin(['IC' => 'gad_inner_category'], 'IC.id = AR.inner_category_id')
+        ->leftJoin(['REC' => 'gad_record'], 'REC.id = AR.record_id')
         ->where(['AR.record_tuc' => $ruc])
         ->orderBy(['AR.focused_id' => SORT_ASC,'AR.inner_category_id' => SORT_ASC,'AR.ppa_value' => SORT_ASC,'AR.id' => SORT_ASC])
         ->groupBy(['AR.focused_id','AR.inner_category_id','AR.ppa_value','AR.cause_gender_issue','AR.objective','AR.relevant_lgu_ppa','AR.activity','AR.performance_indicator','AR.target','AR.actual_results'])
@@ -159,6 +161,7 @@ class GadAccomplishmentReportController extends Controller
      */
     public function actionIndex($ruc,$onstep,$tocreate)
     {
+        Yii::$app->session["activelink"] = $tocreate;
         $grand_total_ar = 0;
         $dataRecord = GadRecord::find()->where(['tuc' => $ruc, 'report_type_id' => 2])->all();
         $dataAttributedProgram = (new \yii\db\Query())
@@ -171,10 +174,12 @@ class GadAccomplishmentReportController extends Controller
             'AP.gad_attributed_pro_cost',
             'AP.ar_ap_variance_remarks',
             'AP.record_tuc',
-            'AP.controller_id'
+            'AP.controller_id',
+            'REC.status as record_status'
         ])
         ->from('gad_ar_attributed_program AP')
         ->leftJoin(['PAP' => 'gad_ppa_attributed_program'], 'PAP.id = AP.ppa_attributed_program_id')
+        ->leftJoin(['REC' => 'gad_record'], 'REC.tuc = AP.record_tuc')
         ->where(['AP.record_tuc' => $ruc])
         ->groupBy(['AP.lgu_program_project'])
         ->orderBy(['AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
@@ -271,13 +276,15 @@ class GadAccomplishmentReportController extends Controller
             'IC.title as inner_category_title',
             'GC.id as gad_focused_id',
             'IC.id as inner_category_id',
-            'AR.focused_id'
+            'AR.focused_id',
+            'REC.status as record_status'
         ])
         ->from('gad_accomplishment_report AR')
         ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = AR.ppa_focused_id')
         ->leftJoin(['GC' => 'gad_comment'], 'GC.plan_budget_id = AR.id')
         ->leftJoin(['GF' => 'gad_focused'], 'GF.id = AR.focused_id')
         ->leftJoin(['IC' => 'gad_inner_category'], 'IC.id = AR.inner_category_id')
+        ->leftJoin(['REC' => 'gad_record'], 'REC.id = AR.record_id')
         ->where(['AR.record_tuc' => $ruc])
         ->orderBy(['AR.focused_id' => SORT_ASC,'AR.inner_category_id' => SORT_ASC,'AR.ppa_value' => SORT_ASC,'AR.id' => SORT_ASC])
         ->groupBy(['AR.focused_id','AR.inner_category_id','AR.ppa_value','AR.cause_gender_issue','AR.objective','AR.relevant_lgu_ppa','AR.activity','AR.performance_indicator','AR.target','AR.actual_results'])

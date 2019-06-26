@@ -14,7 +14,7 @@
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $plan["record_status"] != 1 ? 'true' : 'false',
         'enableViewComment' => 'true',
     ])
 ?>
@@ -33,7 +33,7 @@
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $plan["record_status"] != 1 ? 'true' : 'false',
         'enableViewComment' => 'true',
     ])
 ?>
@@ -53,7 +53,7 @@
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $plan["record_status"] != 1 ? 'true' : 'false',
         'enableViewComment' => 'true',
     ])
 ?>
@@ -73,7 +73,7 @@
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $plan["record_status"] != 1 ? 'true' : 'false',
         'enableViewComment' => 'true',
     ])
 ?>
@@ -93,7 +93,7 @@
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $plan["record_status"] != 1 ? 'true' : 'false',
         'enableViewComment' => 'true',
     ])
 ?>
@@ -131,7 +131,7 @@
         'form_id' => 'cli-org-focused-form',
         'customStyle' => 'text-align:right;',
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $plan["record_status"] != 1 ? 'true' : 'false',
         'enableViewComment' => 'true',
     ])
 ?>
@@ -151,7 +151,7 @@
         'form_id' => 'cli-org-focused-form',
         'customStyle' => 'text-align:right;',
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $plan["record_status"] != 1 ? 'true' : 'false',
         'enableViewComment' => 'true',
     ])
 ?>
@@ -171,7 +171,7 @@
         'form_id' => 'cli-org-focused-form',
         'customStyle' => 'text-align:right;',
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $plan["record_status"] != 1 ? 'true' : 'false',
         'enableViewComment' => 'true',
     ])
 ?>
@@ -191,7 +191,7 @@
         'form_id' => 'cli-org-focused-form',
         'customStyle' => 'border-bottom:none;',
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $plan["record_status"] != 1 ? 'true' : 'false',
         'enableViewComment' => 'true',
     ])
 ?>

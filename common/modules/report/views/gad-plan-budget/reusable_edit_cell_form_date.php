@@ -36,13 +36,18 @@ use kartik\date\DatePicker;
                 var attr_name = "'.$attribute_name.'";
                 $(".actn-buble-common-class").hide();
 
-                if($(this).hasClass("active-cell")) // if td.active cell has class  .active-cell hide button select
+                var disableSelect = "'.$disableSelect.'";
+
+                if(disableSelect == "false")
                 {
-                    $("#actn-btns-"+attr_name+"-'.$row_id.'").hide();
-                }
-                else
-                {
-                    $("#actn-btns-"+attr_name+"-'.$row_id.'").show();
+                    if($(this).hasClass("active-cell")) // if td.active cell has class  .active-cell hide button select
+                    {
+                        $("#actn-btns-"+attr_name+"-'.$row_id.'").hide();
+                    }
+                    else
+                    {
+                        $("#actn-btns-"+attr_name+"-'.$row_id.'").show();
+                    }
                 }
             });
 

@@ -9,6 +9,7 @@ use yii\helpers\ArrayHelper;
 use kartik\typeahead\Typeahead;
 use kartik\select2\Select2;
 use common\modules\report\controllers\DefaultController;
+use richardfan\widget\JSRegister;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\GadPlanBudgetSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -21,6 +22,7 @@ $this->title = "Annual GAD Plan and Budget";
         background-color: skyblue !important;
     }*/
 </style>
+
 <div class="gad-plan-budget-index">
    
     <div class="cust-panel basic-information inner-panel">
@@ -28,8 +30,102 @@ $this->title = "Annual GAD Plan and Budget";
         </div> -->
         <div class="cust-panel-body">
             <div class="cust-panel-title">
-                <p class="sub-title"><span class="glyphicon glyphicon-info-sign"></span> Primary Information <?= DefaultController::DisplayStatusByTuc($ruc); ?></p>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="sub-title"><span class="glyphicon glyphicon-info-sign"></span> Primary Information <?= DefaultController::DisplayStatusByTuc($ruc); ?></p>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="pull-right">
+                            <?php
+                                $urlLoadAr = \yii\helpers\Url::to(['/report/default/load-ar']);
+                                $urlUpdateAttachedAr = \yii\helpers\Url::to(['/report/default/update-attached-ar']);
+                                $recordOne = \common\models\GadRecord::find()->where(['tuc' => $ruc])->one();
+                                $recordOne_attached_ar_record_id = $recordOne->attached_ar_record_id;
+                            ?>
+                            <a>Needed before submitting GBP: </a>
+                            <?php if($grand_total_pb < $fivePercentTotalLguBudget){ ?>
+                                <a class="btn btn-default btn-sm" style="background-color: gray; color:white;"><span class="glyphicon glyphicon-remove"></span> &nbsp;Reached the 5%</a>
+                            <?php }else{ ?>
+                                <a class="btn btn-success btn-sm"><span class="glyphicon glyphicon-ok"></span> &nbsp;Reached the 5%</a>
+                            <?php } ?>
+                            <?php if(!empty($recordOne_attached_ar_record_id)){ ?>
+                                <a class="btn btn-success btn-sm" id="btn_attachar"><span class="glyphicon glyphicon-ok"></span> &nbsp;
+                                     Attached the Accomplishment
+                                </a>
+                            <?php }else{ ?>
+                                <a class="btn btn-dafault btn-sm" id="btn_attachar" style="background-color: gray; color:white;"><span class="glyphicon glyphicon-remove"></span> &nbsp;
+                                     Attached the Accomplishment
+                                </a>
+                            <?php } ?>
+
+                            
+                            <?php JSRegister::begin(); ?>
+                            <script>
+                                $("#btn_attachar").click(function(){
+                                    var params = "<?= $ruc ?>";
+                                    var recordOne_attached_ar_record_id = "<?= $recordOne_attached_ar_record_id ?>";
+                                    $("table#result_ar tbody").html("");
+                                    $.ajax({
+                                        url: "<?= $urlLoadAr ?>",
+                                        data: { 
+                                            params:params,
+                                        }
+                                        
+                                        }).done(function(data) {
+                                            $("#select_ar").slideDown(300);
+                                            $.each(data, function(key, value){
+                                                var cols = "";
+                                                cols += "<tr id=list_ar-"+value.record_id+">";
+                                                cols +=     "<td>"+value.province_name+"</td>";
+                                                cols +=     "<td>"+value.citymun_name+"</td>";
+                                                cols +=     "<td>"+value.year+"</td>";
+                                                cols +=     "<td>"+value.total_lgu_budget+"</td>";
+                                                cols +=     "<td>"+value.prepared_by+"</td>";
+                                                cols +=     "<td>"+value.approved_by+"</td>";
+                                                
+                                                if(recordOne_attached_ar_record_id == value.record_id)
+                                                {
+                                                    cols += "<td><span class='label label-success'>Attached to GPB</span></td>";
+                                                }
+                                                else
+                                                {
+                                                    cols +=     "<td><button type='button' id='attach_id-"+value.record_id+"' class='btn btn-success btn-xs'>Attach to GPB</button></td>";
+                                                }
+                                                
+                                                
+                                                cols += "</tr>";
+                                                $("table#result_ar tbody").append(cols);
+
+                                                $("#attach_id-"+value.record_id+"").click(function(){
+                                                    var record_id = value.record_id;
+                                                    var ruc = "<?= $ruc ?>";
+                                                    var onstep = "<?= $onstep ?>";
+                                                    var tocreate  = "<?= $tocreate ?>";
+
+                                                    $.ajax({
+                                                        url: "<?= $urlUpdateAttachedAr ?>",
+                                                        data: { 
+                                                            record_id:record_id,
+                                                            ruc:ruc,
+                                                            onstep:onstep,
+                                                            tocreate:tocreate,
+                                                        }
+                                                        }).done(function(data) {
+
+                                                    });
+                                                });
+                                            });
+                                        });
+                                });
+                            </script>
+
+                            <?php JSRegister::end(); ?>
+
+                        </div>
+                    </div>
+                </div>
             </div>
+
             <div class="cust-panel-inner-body">
                 <table class="table table-responsive table-hover table-bordered basic-information">
                     <tbody>
@@ -65,14 +161,36 @@ $this->title = "Annual GAD Plan and Budget";
             </div>
         </div>
     </div>
-    
+
+     <div class="row" style="display: none;" id="select_ar">
+        <div class="col-sm-12">
+            <h3>Attach One(1) Accomplishment Report</h3>
+            <table id="result_ar" class="table table-responsive table-striped">
+                <thead>
+                    <tr>
+                        <th>PROVINCE</th>
+                        <th>CITY/MUNICIPALITY</th>
+                        <th>TOTAL LGU BUDGET</th>
+                        <th>YEAR</th>
+                        <th>PREPARED BY</th>
+                        <th>APPROVED BY</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
         <br/>
-        <?php if($qryReportStatus == 1 || $qryReportStatus == 0 ||  $qryReportStatus == 5 || $qryReportStatus == 6){ ?>
+        <?php if($qryReportStatus == 0 ||  $qryReportStatus == 5 || $qryReportStatus == 6){ ?>
             <button type="button" class="btn btn-success" id="btn-encode" style="margin-bottom: 5px;">
                 <span class="glyphicon glyphicon-pencil"></span> Encode Plan
             </button>
+            <?php echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Letter of Review (.docx)',['/cms/document/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-primary']); ?>
         <?php } ?>
     <?php } ?>
 
@@ -120,13 +238,13 @@ $this->title = "Annual GAD Plan and Budget";
             else
             {
                 $reportStatus = 1;
-                if($qryReportStatus == 0)
+                if($qryReportStatus == 0) // encoding process
                 {
                     $reportStatus = 1;
-                    $sendTo = 'Mark as "For Review by PPDO"';
-                    $defaultRemarks = "For Review by PPDO";
+                    $sendTo = 'Submit to PPDO';
+                    $defaultRemarks = "Default Remarks : For Review by PPDO";
                 }
-                else if($qryReportStatus == 1)
+                else if($qryReportStatus == 1) // submitted to PPDO
                 {
                     $reportStatus = 2;
                     $sendTo = 'Endorse to DILG Office (C/MLGOO)';
@@ -135,16 +253,23 @@ $this->title = "Annual GAD Plan and Budget";
             }
            
         }
-        else if(Yii::$app->user->can("gad_field"))
+        else if(Yii::$app->user->can("gad_field_permission"))
         {
             $reportStatus = 4;
             $sendTo = "Endorse to Central Office";
             $returnTo = "Return to LGU";
             $returnStatus = 5;
         }
-        else if(Yii::$app->user->can("gad_province"))
+        else if(Yii::$app->user->can("gad_province_permission"))
         {
             $sendTo = "Submit to Regional Office";
+        }
+        else if(Yii::$app->user->can("gad_ppdo_permission"))
+        {
+            $reportStatus = 2; 
+            $sendTo = "Endorse to DILG C/M Office";
+            $returnTo = "Return to LGU";
+            $returnStatus = 7;
         }
         else if(Yii::$app->user->can("gad_region"))
         {
@@ -178,6 +303,13 @@ $this->title = "Annual GAD Plan and Budget";
             echo '<a class="btn btn-success pull-right" id="endorse_to">'.$sendTo.'</a>';
         }
     }
+    else if(Yii::$app->user->can("gad_ppdo_permission")) 
+    {
+        if($qryReportStatus == 1)
+        {
+            echo '<br/><a class="btn btn-danger pull-right" id="return_to" style="border-radius:0px 5px 5px 0px;">'.$returnTo.'</a><a class="btn btn-success pull-right" id="endorse_to" style="border-radius:5px 0px 0px 5px;">'.$sendTo.'</a>';
+        }
+    }
     else if(Yii::$app->user->can("gad_lgu_permission"))
     {
         if(!empty($sendTo) && $qryReportStatus == 0 || $qryReportStatus == 1)
@@ -185,32 +317,16 @@ $this->title = "Annual GAD Plan and Budget";
             if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS" && $qryReportStatus == 0)
             { 
                 echo '<a class="btn btn-success pull-right" id="endorse_to">'.$sendTo.'</a>';
-            
             }
             else
             {
                 if($qryReportStatus == 0)
                 {
-                    echo Html::a($sendTo,
-                    [
-                        'gad-plan-budget/change-report-status',
-                        'status' => $reportStatus,
-                        'tuc' => $ruc,
-                        'onstep' => $onstep,
-                        'tocreate' => $tocreate
-                    ],
-                    [
-                        'class' => 'btn btn-success pull-right',
-                        'id'=>"submit_to",
-                        'style' => '',
-                        'data' => [
-                            'confirm' => 'Are you sure you want to perform this action?',
-                            'method' => 'post']
-                    ]);
+                    echo '<a class="btn btn-success pull-right" id="endorse_to">'.$sendTo.'</a>';
                 }
                 else
                 {
-                    echo '<a class="btn btn-success pull-right" id="endorse_to">'.$sendTo.'</a>';
+                    // echo '<a class="btn btn-success pull-right" id="endorse_to">'.$sendTo.'</a>';
                 }
             }
         } 
@@ -277,7 +393,7 @@ $this->title = "Annual GAD Plan and Budget";
         <div class="col-sm-4">
             <textarea class="form-control" rows='3' placeholder="Remarks (optional)" id="text_remarks" style="display: none;"></textarea>
     <?php
-        echo Html::a('<i class="glyphicon glyphicon-send"></i> Endorse',
+        echo Html::a('<i class="glyphicon glyphicon-send"></i> Proceed',
           [
             'gad-plan-budget/change-report-status',
             'status' => $reportStatus,
@@ -393,7 +509,7 @@ $this->title = "Annual GAD Plan and Budget";
     
             <!-- /////////////////////////////////////////////////////////////// Remarks Form End -->
     <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-        <?php if($qryReportStatus == 0 || $qryReportStatus == 1 || $qryReportStatus == 5 || $qryReportStatus == 6){ //if report status is encoding ?> 
+        <?php if($qryReportStatus == 0 || $qryReportStatus == 5 || $qryReportStatus == 6){ //if report status is encoding ?> 
             <?php if(Yii::$app->session["encode_gender_pb"] == "open"){  ?>
             <div class="cust-panel input-form" id="inputFormPlan">
             <?php }else{ ?>
@@ -420,7 +536,7 @@ $this->title = "Annual GAD Plan and Budget";
                     </div>
                 </div>
             </div>
-        <?php } ?>
+        <?php  } ?>
     <?php } ?>
 
     
@@ -532,7 +648,7 @@ $this->title = "Annual GAD Plan and Budget";
                                 ?>
                                 <td style="border-bottom: none;">
                                     <?php
-                                        if(Yii::$app->user->can("gad_delete_plan_budget"))
+                                        if(Yii::$app->user->can("gad_delete_rowplanbudget") && $plan["record_status"] != 1)
                                         {
                                             echo Html::a("<span class='glyphicon glyphicon-trash'></span> Delete ",
                                             [
@@ -624,7 +740,7 @@ $this->title = "Annual GAD Plan and Budget";
                             <td colspan="5">
                                 <b>ATTRIBUTED PROGRAMS</b> 
                                 <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-                                    <?php if($qryReportStatus == 1 || $qryReportStatus == 0 || $qryReportStatus == 5 || $qryReportStatus == 6){ ?>
+                                    <?php if($qryReportStatus == 0 || $qryReportStatus == 5 || $qryReportStatus == 6){ ?>
                                         <button id="btn_encode_attributed_program" type="button" class="btn btn-success btn-sm">
                                             <span class="glyphicon glyphicon-pencil"></span>
                                             Encode
@@ -658,7 +774,7 @@ $this->title = "Annual GAD Plan and Budget";
                             <td style="border-top: none; border-bottom: none;"></td>
                         </tr>
                         <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-                            <?php if($qryReportStatus == 1 || $qryReportStatus == 0 || $qryReportStatus == 5 || $qryReportStatus == 6){ ?>
+                            <?php if($qryReportStatus == 0 || $qryReportStatus == 5 || $qryReportStatus == 6){ ?>
                                 <?php if(Yii::$app->session["encode_attribute_pb"] == "open"){ ?>
                                     <tr class="attributed_program_form">
                                 <?php }else{ ?>
@@ -706,8 +822,8 @@ $this->title = "Annual GAD Plan and Budget";
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
                                         'customStyle' => '',
-                                        'enableComment' => 'true',
-                                        'enableEdit' => 'true',
+                                        'enableComment' => Yii::$app->user->can("gad_create_comment") && $dap["record_status"] != 1 ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can("gad_edit_cell") && $dap["record_status"] != 1  ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
@@ -770,8 +886,8 @@ $this->title = "Annual GAD Plan and Budget";
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center;',
-                                        'enableComment' => 'true',
-                                        'enableEdit' => 'true',
+                                        'enableComment' => Yii::$app->user->can("gad_create_comment") && $dap["record_status"] != 1 ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can("gad_edit_cell") && $dap["record_status"] != 1  ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
@@ -789,8 +905,8 @@ $this->title = "Annual GAD Plan and Budget";
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:right;',
-                                        'enableComment' => 'true',
-                                        'enableEdit' => 'true',
+                                        'enableComment' => Yii::$app->user->can("gad_create_comment") && $dap["record_status"] != 1 ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can("gad_edit_cell") && $dap["record_status"] != 1  ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
@@ -824,8 +940,8 @@ $this->title = "Annual GAD Plan and Budget";
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:right; ',
-                                        'enableComment' => "true",
-                                        'enableEdit' => "false",
+                                         'enableComment' => Yii::$app->user->can("gad_create_comment") && $dap["record_status"] != 1 ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can("gad_edit_cell") && $dap["record_status"] != 1  ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
@@ -843,8 +959,8 @@ $this->title = "Annual GAD Plan and Budget";
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
                                         'customStyle' => '',
-                                        'enableComment' => 'true',
-                                        'enableEdit' => 'true',
+                                        'enableComment' => Yii::$app->user->can("gad_create_comment") && $dap["record_status"] != 1 ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can("gad_edit_cell") && $dap["record_status"] != 1  ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
@@ -916,6 +1032,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'controller_id' => "gad-plan-budget",
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; font-size:20px;',
+                                        'disableSelect' => $rec["status"] == 1 ? 'true' : 'false',
                                     ]);
                                 ?>
                                 <?php
@@ -931,6 +1048,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'controller_id' => "gad-plan-budget",
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; font-size:20px;',
+                                        'disableSelect' =>  $rec["status"] == 1 ? 'true' : 'false',
                                     ]);
                                 ?>
                                 <?php
@@ -946,6 +1064,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'controller_id' => "gad-plan-budget",
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; font-size:20px;',
+                                        'disableSelect' => 'true',
                                     ]);
                                 ?>
                                  <td colspan="2"></td>
@@ -965,3 +1084,5 @@ $this->title = "Annual GAD Plan and Budget";
 
     
 </div>
+
+

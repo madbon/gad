@@ -174,40 +174,40 @@ $this->title = "Annual GAD Accomplishment Reports";
     }
     else if(Yii::$app->user->can("gad_lgu_permission"))
     {
-        if(!empty($sendTo) && $qryReportStatus == 0 || $qryReportStatus == 1 || $qryReportStatus == 5 || $qryReportStatus == 6)
-        { 
-            if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS" && $qryReportStatus == 0)
-            { 
-                echo '<a class="btn btn-success pull-right" id="endorse_to">'.$sendTo.'</a>';
+        // if(!empty($sendTo) && $qryReportStatus == 0 || $qryReportStatus == 1 || $qryReportStatus == 5 || $qryReportStatus == 6)
+        // { 
+        //     if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS" && $qryReportStatus == 0)
+        //     { 
+        //         echo '<a class="btn btn-success pull-right" id="endorse_to">'.$sendTo.'</a>';
             
-            }
-            else
-            {
-                if($qryReportStatus == 0)
-                {
-                    echo Html::a($sendTo,
-                    [
-                        'gad-plan-budget/change-report-status',
-                        'status' => $reportStatus,
-                        'tuc' => $ruc,
-                        'onstep' => $onstep,
-                        'tocreate' => $tocreate
-                    ],
-                    [
-                        'class' => 'btn btn-success pull-right',
-                        'id'=>"submit_to",
-                        'style' => '',
-                        'data' => [
-                            'confirm' => 'Are you sure you want to perform this action?',
-                            'method' => 'post']
-                    ]);
-                }
-                else
-                {
-                    echo '<a class="btn btn-success pull-right" id="endorse_to">'.$sendTo.'</a>';
-                }
-            }
-        } 
+        //     }
+        //     else
+        //     {
+        //         if($qryReportStatus == 0)
+        //         {
+        //             echo Html::a($sendTo,
+        //             [
+        //                 'gad-plan-budget/change-report-status',
+        //                 'status' => $reportStatus,
+        //                 'tuc' => $ruc,
+        //                 'onstep' => $onstep,
+        //                 'tocreate' => $tocreate
+        //             ],
+        //             [
+        //                 'class' => 'btn btn-success pull-right',
+        //                 'id'=>"submit_to",
+        //                 'style' => '',
+        //                 'data' => [
+        //                     'confirm' => 'Are you sure you want to perform this action?',
+        //                     'method' => 'post']
+        //             ]);
+        //         }
+        //         else
+        //         {
+        //             echo '<a class="btn btn-success pull-right" id="endorse_to">'.$sendTo.'</a>';
+        //         }
+        //     }
+        // } 
     }
     else if(Yii::$app->user->can("gad_field_permission"))
     { 
@@ -423,7 +423,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                 <p class="sub-title"><span class="glyphicon glyphicon-th"></span> Tabular Report</p>
             </div>
             <div class="cust-panel-inner-body">
-                <table class="table ar table-responsive table-bordered">
+                <table class="table ar table-responsive table-bordered" style="border: 2px solid black;">
                     <thead>
                         <tr>
                             <th>Gender Issues or GAD Mandate</th>
@@ -437,7 +437,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                             <th>Approved GAD Budget</th>
                             <th>Actual Cost or Expenditure</th>
                             <th>Variance or Remarks</th>
-                            <th>Action</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -516,8 +516,9 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $ar["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
+                                        'display_value' => $ar["ppa_value"],
                                     ])
                                 ?>
                                 <?php
@@ -534,13 +535,15 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $ar["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
+                                        'display_value' => $ar["objective"],
                                     ])
                                 ?>
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
                                         'cell_value' => $ar["relevant_lgu_ppa"],
+                                        'display_value' => $ar["relevant_lgu_ppa"],
                                         'row_id' => $ar["id"],
                                         'record_unique_code' => $ar["record_tuc"],
                                         'attribute_name' => "relevant_lgu_ppa",
@@ -552,13 +555,14 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $ar["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
                                         'cell_value' => $ar["activity"],
+                                        'display_value' => $ar["activity"],
                                         'row_id' => $ar["id"],
                                         'record_unique_code' => $ar["record_tuc"],
                                         'attribute_name' => "activity",
@@ -570,13 +574,14 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $ar["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
                                         'cell_value' => $ar["performance_indicator"],
+                                        'display_value' => $ar["performance_indicator"],
                                         'row_id' => $ar["id"],
                                         'record_unique_code' => $ar["record_tuc"],
                                         'attribute_name' => "performance_indicator",
@@ -588,7 +593,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $ar["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
@@ -612,6 +617,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
                                         'cell_value' => $ar["actual_results"],
+                                        'display_value' => $ar["actual_results"],
                                         'row_id' => $ar["id"],
                                         'record_unique_code' => $ar["record_tuc"],
                                         'attribute_name' => "actual_results",
@@ -623,13 +629,14 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $ar["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
                                         'cell_value' => $ar["total_approved_gad_budget"],
+                                        'display_value' => $ar["total_approved_gad_budget"],
                                         'row_id' => $ar["id"],
                                         'record_unique_code' => $ar["record_tuc"],
                                         'attribute_name' => "total_approved_gad_budget",
@@ -641,13 +648,14 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => 'text-align:right;',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $ar["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
                                         'cell_value' => $ar["actual_cost_expenditure"],
+                                        'display_value' => $ar["actual_cost_expenditure"],
                                         'row_id' => $ar["id"],
                                         'record_unique_code' => $ar["record_tuc"],
                                         'attribute_name' => "actual_cost_expenditure",
@@ -659,13 +667,14 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => 'text-align:right;',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $ar["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
                                         'cell_value' => $ar["variance_remarks"],
+                                        'display_value' => $ar["variance_remarks"],
                                         'row_id' => $ar["id"],
                                         'record_unique_code' => $ar["record_tuc"],
                                         'attribute_name' => "variance_remarks",
@@ -677,13 +686,13 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'form_id' => 'gad-ar-input-form',
                                         'customStyle' => '',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $ar["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <td>
                                     <?php
-                                        if(Yii::$app->user->can("gad_delete_accomplishment_report"))
+                                        if(Yii::$app->user->can("gad_delete_rowaccomplishment") && $ar["record_status"] != 1)
                                         {
                                             echo Html::a("<span class='glyphicon glyphicon-trash'></span> Delete",
                                             [
@@ -833,7 +842,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                             <td>Total Annual Program/ Project Cost or Expenditure</td>
                             <td>GAD Attributed Program/Project Cost or Expenditure</td>
                             <td>Variance or Remarks</td>
-                            <td>Action</td>
+                            <td></td>
                         </tr>
                          <?php 
                         $notnull_apPpaValue = null;
@@ -844,6 +853,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
                                         'cell_value' => $dap["lgu_program_project"],
+                                        'display_value' => $dap["lgu_program_project"],
                                         'row_id' => $dap["id"],
                                         'record_unique_code' => $dap["record_tuc"],
                                         'attribute_name' => "lgu_program_project",
@@ -855,7 +865,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => '',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $dap["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
@@ -905,7 +915,8 @@ $this->title = "Annual GAD Accomplishment Reports";
                                 ?>
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
-                                        'cell_value' => $HgdgWrongSign." ".$dap["hgdg_pimme"],
+                                        'cell_value' => $dap["hgdg_pimme"],
+                                        'display_value' => $HgdgWrongSign." ".$dap["hgdg_pimme"],
                                         'row_id' => $dap["id"],
                                         'record_unique_code' => $dap["record_tuc"],
                                         'attribute_name' => "hgdg_pimme",
@@ -917,13 +928,14 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center;',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $dap["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
                                         'cell_value' => $dap["total_annual_pro_cost"],
+                                        'display_value' => $dap["total_annual_pro_cost"],
                                         'row_id' => $dap["id"],
                                         'record_unique_code' => $dap["record_tuc"],
                                         'attribute_name' => "total_annual_pro_cost",
@@ -935,13 +947,14 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:right;',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $dap["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
-                                        'cell_value' => !empty($HgdgMessage) ? $HgdgMessage : number_format($computeGadAttributedProCost,2),
+                                        'cell_value' => $HgdgMessage,
+                                        'display_value' => !empty($HgdgMessage) ? $HgdgMessage : number_format($computeGadAttributedProCost,2),
                                         'row_id' => $dap["id"],
                                         'record_unique_code' => $dap["record_tuc"],
                                         'attribute_name' => "gad_attributed_pro_cost",
@@ -953,13 +966,14 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:right;',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $dap["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
-                                        'enableEdit' => 'false',
                                     ])
                                 ?>
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
                                         'cell_value' => $dap["ar_ap_variance_remarks"],
+                                        'display_value' => $dap["ar_ap_variance_remarks"],
                                         'row_id' => $dap["id"],
                                         'record_unique_code' => $dap["record_tuc"],
                                         'attribute_name' => "ar_ap_variance_remarks",
@@ -971,13 +985,13 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => '',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $dap["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                     ])
                                 ?>
                                 <td>
                                     <?php
-                                        if(Yii::$app->user->can("gad_delete_accomplishment_report"))
+                                        if(Yii::$app->user->can("gad_delete_accomplishment_report") && $dap["record_status"] != 1 )
                                         {
                                             echo Html::a("<span class='glyphicon glyphicon-trash'></span> Delete",
                                             [
@@ -1043,6 +1057,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'controller_id' => "gad-plan-budget",
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; font-size:20px;',
+                                        'disableSelect' => $rec["status"] == 1 ? 'true' : 'false',
                                     ]);
                                 ?>
                                 <?php
@@ -1058,6 +1073,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'controller_id' => "gad-plan-budget",
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; font-size:20px;',
+                                        'disableSelect' =>  $rec["status"] == 1 ? 'true' : 'false',
                                     ]);
                                 ?>
                                 <?php
@@ -1073,6 +1089,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'controller_id' => "gad-plan-budget",
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; font-size:20px;',
+                                        'disableSelect' => 'true',
                                     ]);
                                 ?>
                             <?php } ?>

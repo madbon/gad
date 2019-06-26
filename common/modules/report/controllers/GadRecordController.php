@@ -122,12 +122,12 @@ class GadRecordController extends Controller
         $index_title = "";
         $urlReport = "";
 
+        Yii::$app->session["activelink"] = $report_type;
         switch ($report_type) {
             case 'plan_budget':
                 $dataProvider->query->andWhere(['GR.report_type_id' => 1]);
                 $index_title = "List of GAD Plan and Budget";
                 $urlReport = "gad-plan-budget/index";
-
 
             break;
             case 'accomplishment':
@@ -214,6 +214,7 @@ class GadRecordController extends Controller
         $model = new GadRecord();
         $model->region_c = Yii::$app->user->identity->userinfo->region->region_c;
         $model->province_c = Yii::$app->user->identity->userinfo->province->province_c;
+        Yii::$app->session["activelink"] = $tocreate;
         if(Yii::$app->user->can("gad_lgu_province_permission"))
         {
             $model->citymun_c = NULL;

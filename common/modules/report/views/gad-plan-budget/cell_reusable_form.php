@@ -486,17 +486,22 @@ use common\modules\report\controllers\DefaultController;
         </div>
 
         <?php 
+            $recordStatus = 0;
+            // print_r($queryRecord->tuc."hello"); exit;
             if(Yii::$app->controller->id == "gad-accomplishment-report")
             {
                 $findOneQry =  \common\models\GadAccomplishmentReport::find()->where(['id' => $row_id, 'inner_category_id' => 1])->andWhere(['not', ['gi_sup_data' => null]]);
+                $planTuc = $findOneQry->one();
+                $recordQuery = \common\models\GadRecord::find()->where(['tuc' => $planTuc->record_tuc])->one();
             }
             else if(Yii::$app->controller->id == "gad-plan-budget")
             {
                 $findOneQry =  \common\models\GadPlanBudget::find()->where(['id' => $row_id, 'inner_category_id' => 1])->andWhere(['not', ['gi_sup_data' => null]]);
+                $planTuc = $findOneQry->one();
+                $recordQuery = \common\models\GadRecord::find()->where(['tuc' => !empty($planTuc->record_tuc) ? $planTuc->record_tuc : ""])->one();
             }
-            
         ?>
-        <?php if($findOneQry->exists() && $attribute_name == "ppa_value"){ ?>
+        <?php if($findOneQry->exists() && $attribute_name == "ppa_value" && $recordQuery->status != 1){ ?>
             <button id="btn_view_gi_sup_data-<?= $row_id ?>" type="button" class="btn btn-warning btn-xs" title="Gender Issue Supporting Statistics Data">
                 <span class="glyphicon glyphicon-list"></span>
             </button>

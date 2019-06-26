@@ -7,6 +7,7 @@ use yii\data\ActiveDataProvider;
 use common\models\GadRecord;
 use yii\db\Query;
 use Yii;
+use yii\db\Expression;
 /**
  * GadRecordSearch represents the model behind the search form of `common\models\GadRecord`.
  */
@@ -56,12 +57,16 @@ class GadRecordSearch extends GadRecord
         }
         else if(Yii::$app->user->can("gad_province_permission") || Yii::$app->user->can("gad_lgu_province_permission"))
         {
-            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => NULL,
+            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,
             'GR.office_c' => 2];
         }
-        else if(Yii::$app->user->can("gad_region"))
+        else if(Yii::$app->user->can("gad_region_permission"))
         {
             $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,'GR.status' => [3,0,4,6],'GR.office_c' => [4,2]];
+        }
+        else if(Yii::$app->user->can("gad_ppdo_permission"))
+        {
+            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,];
         }
         else
         {
@@ -102,6 +107,7 @@ class GadRecordSearch extends GadRecord
         ->andFilterWhere(['GR.status' => $this->status])
         ->andFilterWhere(['GR.status' => Yii::$app->user->can("gad_central") ? 4 : ""])
         ->andFilterWhere(['GR.year' => $this->year])
+        ->andFilterWhere(Yii::$app->user->can("gad_ppdo_permission") ? ['not in', 'CTY.lgu_type', ["HUC","ICC"]] : [])
         ->groupBy(['GR.id'])
         ->orderBy(['GR.id' => SORT_DESC]);
 

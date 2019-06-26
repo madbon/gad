@@ -12,7 +12,7 @@ $this->title = 'Annual GAD Plan and Budget';
 <style>
 	
 </style>
-
+<h2>Annual GAD Plan and Budget FY <?= \common\modules\report\controllers\DefaultController::GetPlanYear($ruc) ?></h2>
 <div class="gad-record-create">
 <?php if(Yii::$app->user->can("gad_lgu_province_permission")){ ?>
     <ul class="nav nav-tabs">
@@ -212,7 +212,6 @@ $this->title = 'Annual GAD Plan and Budget';
 <?php } ?>
 <?php }// end of gad_lgu  ?>
 	</ul>
-
 
     <?= $this->render('index', [
         'dataRecord' => $dataRecord,

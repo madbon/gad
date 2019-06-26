@@ -394,6 +394,92 @@ $this->title = $index_title;
                         ],
                     ]);
                 }
+                else if(Yii::$app->user->can("gad_ppdo_permission"))
+                {
+                    echo GridView::widget([
+                        'dataProvider' => $dataProvider,
+                        'columns' => [
+                            ['class' => 'yii\grid\SerialColumn'],
+                            [
+                                'label' => 'Office',
+                                'attribute' => 'office_name',
+                            ],
+                            [
+                                'label' => 'Province',
+                                'attribute' => 'province_name',
+                            ],
+                            [
+                                'label' => 'City/Municipality',
+                                'attribute' => 'citymun_name',
+                            ],
+                            [
+                                'label' => 'Year',
+                                'attribute' => 'record_year',
+                            ],
+                            [
+                                'label' => 'Total LGU Budget',
+                                'attribute' => 'record_total_lgu_budget',
+                                'value' => function($model)
+                                {   
+                                    return !empty($model["record_total_lgu_budget"]) ? "Php ".number_format($model["record_total_lgu_budget"],2) : "";
+                                }
+                            ],
+                            [
+                                'label' => $report_type == "plan_budget" ? "Total GAD Budgdet" : "Total GAD Expenditure",
+                                'format' => 'raw',
+                                'value' => function($model) use ($report_type)
+                                {
+                                    if($report_type == "accomplishment")
+                                    {
+                                        return GadAccomplishmentReportController::ComputeAccomplishment($model['record_tuc']);
+                                    }
+                                    else
+                                    {
+                                        return GadPlanBudgetController::ComputeGadBudget($model['record_tuc']);
+                                    }
+                                }
+                            ],
+                            [
+                                'label' => 'Status',
+                                'attribute' => 'record_status',
+                                'format' => 'raw',
+                                'value' => function($model)
+                                {
+                                    return DefaultController::DisplayStatus($model["record_status"]);
+                                }
+                            ],
+                            [
+                                'label' => 'Remarks',
+                                'value' => function($model)
+                                {
+                                    return GadRecordController::GenerateRemarks($model["record_tuc"]);
+                                }
+                            ],
+
+                            ['class' => 'yii\grid\ActionColumn',
+                                'template' => '{view}',
+                                'buttons' => [
+                                    'view' => function($url, $model) use ($urlReport,$report_type){
+                                        if($model['record_status'] == 1 || $model['record_status'] == 2 || $model['record_status'] == 4)
+                                        {
+                                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View Report', [$urlReport,
+                                                'ruc' => $model['record_tuc'], 
+                                                'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
+                                                'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
+                                            ], 
+                                                ['class'=>'btn btn-default btn-sm btn-view-report']);
+                                        }
+                                        else
+                                        {
+                                            return false;
+                                        }
+                                        
+                                    },
+                                ],
+                            ],
+                        ],
+                    ]);
+                }
                 else
                 {
                     echo GridView::widget([

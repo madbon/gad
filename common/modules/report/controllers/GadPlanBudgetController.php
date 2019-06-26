@@ -18,6 +18,7 @@ use niksko12\user\models\Province;
 use niksko12\user\models\Citymun;
 use yii\helpers\ArrayHelper;
 
+
 /**
  * GadPlanBudgetController implements the CRUD actions for GadPlanBudget model.
  */
@@ -37,6 +38,8 @@ class GadPlanBudgetController extends Controller
             ],
         ];
     }
+
+    
 
     public function ComputeGadBudget($ruc)
     {
@@ -72,17 +75,17 @@ class GadPlanBudgetController extends Controller
                 $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0);
                 $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
             }
-            else if($varHgdg >= 4 && $varHgdg <= 7.9) // 25%
+            else if($varHgdg >= 4 && $varHgdg <= 7.99) // 25%
             {
                 $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.25);
                 $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
             }
-            else if($varHgdg >= 8 && $varHgdg <= 14.9) // 50%
+            else if($varHgdg >= 8 && $varHgdg <= 14.99) // 50%
             {
                 $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.50);
                 $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
             }
-            else if($varHgdg >= 15 && $varHgdg <= 19.9) // 75%
+            else if($varHgdg <= 19.99 && $varHgdg >= 15) // 75%
             {
                 $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.75);
                 $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
@@ -163,9 +166,27 @@ class GadPlanBudgetController extends Controller
 
     public function actionChangeReportStatus($status,$tuc,$onstep,$tocreate)
     {
-        
         $qry = GadRecord::find()->where(['tuc' => $tuc])->one();
-        $qry->status = $status;
+
+        if($status == 1)
+        {
+            if(!empty($qry->attached_ar_record_id))
+            {
+                $queryAr = GadRecord::updateAll(['footer_date' => date("Y-m-d"), 'status' => $status], 'id = '.$qry->attached_ar_record_id.' ');
+            }
+            $qry->status = $status;
+        }
+        else if($status == 2 || $status == 3)
+        {
+            // if gpb is submit to dilg field office
+            $qry->footer_date = date("Y-m-d");
+            $qry->status = $status;
+        }
+        else
+        {
+            $qry->status = $status;
+        }
+
         $qry->save(false);
 
         if($onstep == "to_create_ar")
@@ -187,6 +208,7 @@ class GadPlanBudgetController extends Controller
      */
     public function actionIndex($ruc,$onstep,$tocreate)
     {
+        Yii::$app->session["activelink"] = $tocreate;
         $grand_total_pb = 0;
         $dataRecord = GadRecord::find()->where(['tuc' => $ruc, 'report_type_id' => 1])->all();
         $dataAttributedProgram = (new \yii\db\Query())
@@ -199,10 +221,12 @@ class GadPlanBudgetController extends Controller
             'AP.attributed_pro_budget',
             'AP.ap_lead_responsible_office',
             'AP.record_tuc',
-            'AP.controller_id'
+            'AP.controller_id',
+            'REC.status as record_status'
         ])
         ->from('gad_attributed_program AP')
         ->leftJoin(['PAP' => 'gad_ppa_attributed_program'], 'PAP.id = AP.ppa_attributed_program_id')
+        ->leftJoin(['REC' => 'gad_record'], 'REC.tuc = AP.record_tuc')
         ->where(['AP.record_tuc' => $ruc])
         ->groupBy(['AP.lgu_program_project'])
         ->orderBy(['AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
@@ -255,7 +279,9 @@ class GadPlanBudgetController extends Controller
             'PRV.province_m as province_name',
             'CTC.citymun_m as citymun_name',
             'GR.total_lgu_budget',
-            'GR.total_gad_budget'
+            'GR.total_gad_budget',
+            'GR.status as record_status'
+
         ])
         ->from('gad_record GR')
         ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = GR.region_c')
@@ -295,13 +321,15 @@ class GadPlanBudgetController extends Controller
             'GC.id as gad_focused_id',
             'IC.id as inner_category_id',
             'PB.focused_id',
-            'PB.gi_sup_data as sup_data'
+            'PB.gi_sup_data as sup_data',
+            'REC.status as record_status'
         ])
         ->from('gad_plan_budget PB')
         ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = PB.ppa_focused_id')
         ->leftJoin(['GC' => 'gad_comment'], 'GC.plan_budget_id = PB.id')
         ->leftJoin(['GF' => 'gad_focused'], 'GF.id = PB.focused_id')
         ->leftJoin(['IC' => 'gad_inner_category'], 'IC.id = PB.inner_category_id')
+        ->leftJoin(['REC' => 'gad_record'], 'REC.id = PB.record_id')
         ->where(['PB.record_tuc' => $ruc])
         ->orderBy(['PB.focused_id' => SORT_ASC,'PB.inner_category_id' => SORT_ASC,'PB.ppa_value' => SORT_ASC,'PB.id' => SORT_ASC])
         ->groupBy(['PB.focused_id','PB.inner_category_id','PB.ppa_value','PB.objective','PB.relevant_lgu_program_project','PB.activity','PB.performance_target'])
