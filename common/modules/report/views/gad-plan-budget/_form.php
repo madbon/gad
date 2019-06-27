@@ -14,7 +14,7 @@ use kartik\select2\Select2;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput()->label("Row Id") ?>
+    <?= $form->field($model, 'id')->textInput()->label("Plan Id") ?>
 
     <?= \file\components\AttachmentsInput::widget([
         'id' => 'file-input', // Optional
