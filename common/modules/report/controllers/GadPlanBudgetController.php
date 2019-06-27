@@ -208,6 +208,7 @@ class GadPlanBudgetController extends Controller
      */
     public function actionIndex($ruc,$onstep,$tocreate)
     {
+        $model = new GadPlanBudget();
         Yii::$app->session["activelink"] = $tocreate;
         $grand_total_pb = 0;
         $dataRecord = GadRecord::find()->where(['tuc' => $ruc, 'report_type_id' => 1])->all();
@@ -403,6 +404,7 @@ class GadPlanBudgetController extends Controller
             'grand_total_pb' => $grand_total_pb,
             'fivePercentTotalLguBudget' => $fivePercentTotalLguBudget,
             'qryReportStatus' => $qryReportStatus,
+            'model' => $model,
         ]);
     }
 
@@ -446,15 +448,15 @@ class GadPlanBudgetController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id,$ruc,$onstep,$tocreate)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
         }
 
-        return $this->render('update', [
+        return $this->renderAjax("_form", [
             'model' => $model,
         ]);
     }

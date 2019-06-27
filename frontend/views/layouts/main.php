@@ -9,9 +9,11 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
+use yii\bootstrap\Modal;
 
 AppAsset::register($this);
 ?>
+
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
@@ -106,15 +108,45 @@ nav.navbar-default div.navbar-header a
 {
     color:white !important;
 }*/
+img.file-preview-image
+{
+    height: auto !important;
+    width: auto !important;
+    max-height: 100% !important;
+    max-width: 100% !important;
+
+}
 nav.navbar-default div.navbar-header a
 {
     color: #7e57b1;
 }
+/*.clearfix
+{
+    min-height: 1000px;
+    overflow-y: scroll !important;
+}*/
 /*#f1e5e8;*/
 /*Panel*/
 </style>
 <body>
 <?php $this->beginBody() ?>
+<?php
+    $this->registerJs("
+        $('img.file-preview-image').addClass('img-responsive');
+    ");
+?>
+<?php
+    Modal::begin([
+        // 'header'=>'<h4>Person</h4>',
+            'id'=>'modal',
+            'size'=>'modal-lg',
+            'options' => [
+            'tabindex' => false // important for Select2 to work properly
+            ],
+        ]);
+        echo '<div id="modalContent"></div>';
+    Modal::end();
+?>
 
         <?php if (Yii::$app->user->isGuest) { ?>
         <div id="wrapper">

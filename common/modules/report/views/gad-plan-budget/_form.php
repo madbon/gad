@@ -9,31 +9,24 @@ use kartik\select2\Select2;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+
 <div class="gad-plan-budget-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-        <div class="row">
-            <div class="col-sm-2">
-            </div>
-        </div>
-    <?= $form->field($model, 'issue_mandate')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'id')->textInput() ?>
 
-    <?= $form->field($model, 'objective')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'relevant_lgu_program_project')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'activity')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'performance_indicator_target')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'budget_mooe')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'budget_ps')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'budget_co')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'lead_responsible_office_id')->textInput() ?>
+    <?= \file\components\AttachmentsInput::widget([
+        'id' => 'file-input', // Optional
+        'model' => $model,
+        'options' => [ // Options of the Kartik's FileInput widget
+            'multiple' => true, // If you want to allow multiple upload, default to false
+        ],
+        'pluginOptions' => [ // Plugin options of the Kartik's FileInput widget 
+            'maxFileCount' => 10, // Client max files
+            'allowedFileExtensions' => ["jpg", "jpeg", "png","pdf","doc","docx","xlsx","xlsm"],
+        ]
+    ]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

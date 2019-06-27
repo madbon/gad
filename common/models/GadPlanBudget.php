@@ -30,6 +30,14 @@ use Yii;
  */
 class GadPlanBudget extends \yii\db\ActiveRecord
 {
+    public function behaviors()
+    {
+        return [
+            'fileBehavior' => [
+                'class' => \file\behaviors\FileBehavior::className()
+            ]
+        ];
+    }
     /**
      * {@inheritdoc}
      */

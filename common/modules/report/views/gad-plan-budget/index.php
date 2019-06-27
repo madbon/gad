@@ -10,6 +10,7 @@ use kartik\typeahead\Typeahead;
 use kartik\select2\Select2;
 use common\modules\report\controllers\DefaultController;
 use richardfan\widget\JSRegister;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\GadPlanBudgetSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -531,6 +532,7 @@ $this->title = "Annual GAD Plan and Budget";
                                 'onstep' => $onstep,
                                 'tocreate' => $tocreate,
                                 'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
+                                'model' => $model,
                             ]);
                         ?>
                     </div>
@@ -667,6 +669,10 @@ $this->title = "Annual GAD Plan and Budget";
                                                     'method' => 'post']
                                             ]);
                                         }
+
+                                        $t = '@web/report/gad-plan-budget/update?id='.$plan['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
+                                        echo Html::button('<span class="glyphicon glyphicon-upload"></span> Upload', ['value'=>Url::to($t),
+                                            'class' => 'btn btn-info btn-xs modalButton']);
                                     ?>
                                 </td>
                             </tr>

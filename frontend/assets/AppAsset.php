@@ -24,6 +24,7 @@ class AppAsset extends AssetBundle
         'sbadmin2/js/bootstrap.min.js',
         'sbadmin2/js/plugins/metisMenu/jquery.metisMenu.js',
         'sbadmin2/js/sb-admin.js',
+        'js/main.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

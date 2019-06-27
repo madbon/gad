@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use kartik\select2\Select2;
+use yii\widgets\ActiveForm;
 ?>
 <style type="text/css">
     tr#row-input-form td
@@ -8,7 +9,28 @@ use kartik\select2\Select2;
         border:none;
         background-color: white;
     }
+    .file-drop-zone-title
+    {
+        background-color: white;
+    }
+    .file-drop-zone
+    {
+        background-color: gray;
+    }
+    .file-preview 
+    {
+        background-color: #c0b2b2;
+    }
+    div.clearfix
+    {
+        background-color: white;
+    }
+    div.file-preview-frame
+    {
+        background-color: #cdc6d2;
+    }
 </style>
+<?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 <tr id="genderIssueInputForm" style="display: none;">
     <td colspan='12'>
         <div class="row">
@@ -263,10 +285,11 @@ use kartik\select2\Select2;
                         'customStyle' => '',
                     ]);
                 ?>
-                <br/>
+                
                 <button type="button" class="btn btn-primary btn-sm" title="Save" id="save-gender-issue">
                     <span class="glyphicon glyphicon-floppy-disk"></span> Save
                 </button>
+                <?php // Html::submitButton('<span class="glyphicon glyphicon-floppy-disk"></span> Save', ['class' => 'btn btn-primary btn-sm','id' => 'save-gender-issue','type' => 'button']) ?>
                 <?php
                     $url = \yii\helpers\Url::to(['/report/default/create-gad-plan-budget']);
                     $this->registerJs('
@@ -408,7 +431,7 @@ use kartik\select2\Select2;
                 ?>
             </div>
         </div>
-                
     </td>
  </tr>
+ <?php ActiveForm::end(); ?>
                 
