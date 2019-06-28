@@ -242,21 +242,10 @@ nav.navbar-default div.navbar-header a
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i> <?= "<i>".Yii::$app->user->identity->username."</i> | ".$officer_role." | ".$location_name ?>  <i class="fa fa-caret-down"></i>
+                        <i class="fa fa-user fa-fw"></i> <?= "<i>".Yii::$app->user->identity->username."</i> | ".$officer_role." | ".$location_name ?>  
+                        
+                       
                     </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <?php
-                            echo '<li>'
-                            . Html::beginForm(['/user/logout'], 'post')
-                            . Html::submitButton(
-                                '<i class="fa fa-sign-out fa-fw"></i> Logout',
-                                ['class' => 'btn btn-link logout']
-                            )
-                            . Html::endForm()
-                            . '</li>';
-                        ?>
-                    </ul>
-                    <!-- /.dropdown-user -->
                 </li>
                 <!-- /.dropdown -->
             </ul>
@@ -341,6 +330,11 @@ nav.navbar-default div.navbar-header a
                                 echo "<li>".Html::a('<span class="fa fa-file"></span> Documents', ['/cms/document/created-document'])."</li>";
                             }
                         ?>
+                        <li>
+                            <?php
+                                echo Html::beginForm(['/user/logout'], 'post').Html::submitButton('<span class="glyphicon glyphicon-off"></span> Logout',['class' => 'btn btn-link logout']).Html::endForm();
+                            ?>
+                        </li>
                     </ul>
                     <!-- /#side-menu -->
                 </div>

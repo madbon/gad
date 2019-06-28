@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use kartik\select2\Select2;
 use yii\widgets\ActiveForm;
+use richardfan\widget\JSRegister;
 ?>
 <style type="text/css">
     tr#row-input-form td
@@ -29,6 +30,7 @@ use yii\widgets\ActiveForm;
     {
         background-color: #cdc6d2;
     }
+
 </style>
 <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 <tr id="genderIssueInputForm" style="display: none;">
@@ -246,33 +248,52 @@ use yii\widgets\ActiveForm;
             </div>
             <div class="col-sm-4">
                 <?php
-                    echo $this->render('common_tools/textinput_suggest',[
-                        'placeholder_title' => "MOOE",
-                        'attribute_name' => "budget_mooe",
-                        'urlLoadResult' => '/report/default/load-budget-mooe',
-                        'classValue' => 'form-control',
-                        'customStyle' => '',
-                    ]);
+                    // echo $this->render('common_tools/textinput_suggest',[
+                    //     'placeholder_title' => "MOOE",
+                    //     'attribute_name' => "budget_mooe",
+                    //     'urlLoadResult' => '/report/default/load-budget-mooe',
+                    //     'classValue' => 'form-control',
+                    //     'customStyle' => '',
+                    // ]);
                 ?>
+                <input type="text" class="form-control amountcomma" id="budget_mooe" placeholder="MOOE">
                 <br/>
+                <input type="text" class="form-control amountcomma" id="budget_ps" placeholder="PS">
+                <br/>
+                <input type="text" class="form-control amountcomma" id="budget_co" placeholder="CO">
+                <?php JSRegister::begin(); ?>
+                <script>
+                    $('input.amountcomma').keyup(function(event) {
+                      // skip for arrow keys
+                        if(event.which >= 37 && event.which <= 40) return;
+                      // format number
+                        $(this).val(function(index, value) {
+                        return value
+                        .replace(/\D/g, "")
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        ;
+                      });
+                    });
+                </script>
+                <?php JSRegister::end(); ?>
                 <?php
-                    echo $this->render('common_tools/textinput_suggest',[
-                        'placeholder_title' => "PS",
-                        'attribute_name' => "budget_ps",
-                        'urlLoadResult' => '/report/default/load-budget-ps',
-                        'classValue' => 'form-control',
-                        'customStyle' => '',
-                    ]);
+                    // echo $this->render('common_tools/textinput_suggest',[
+                    //     'placeholder_title' => "PS",
+                    //     'attribute_name' => "budget_ps",
+                    //     'urlLoadResult' => '/report/default/load-budget-ps',
+                    //     'classValue' => 'form-control',
+                    //     'customStyle' => '',
+                    // ]);
                 ?>
-                <br/>
+                
                 <?php
-                    echo $this->render('common_tools/textinput_suggest',[
-                        'placeholder_title' => "CO",
-                        'attribute_name' => "budget_co",
-                        'urlLoadResult' => '/report/default/load-budget-co',
-                        'classValue' => 'form-control',
-                        'customStyle' => '',
-                    ]);
+                    // echo $this->render('common_tools/textinput_suggest',[
+                    //     'placeholder_title' => "CO",
+                    //     'attribute_name' => "budget_co",
+                    //     'urlLoadResult' => '/report/default/load-budget-co',
+                    //     'classValue' => 'form-control',
+                    //     'customStyle' => '',
+                    // ]);
                 ?>
                 <br/>
                 <?php
@@ -285,7 +306,7 @@ use yii\widgets\ActiveForm;
                         'customStyle' => '',
                     ]);
                 ?>
-                
+                <br/>
                 <button type="button" class="btn btn-primary btn-sm" title="Save" id="save-gender-issue">
                     <span class="glyphicon glyphicon-floppy-disk"></span> Save
                 </button>
@@ -293,27 +314,8 @@ use yii\widgets\ActiveForm;
                 <?php
                     $url = \yii\helpers\Url::to(['/report/default/create-gad-plan-budget']);
                     $this->registerJs('
-                        $("#save-gender-issue").click(function(){
-                            var ppa_focused_id = $("#ppa_focused_id").val();
-                            var ppa_value     = $("#ppa_value").val();
-                            var issue       = $("#cause_gender_issue").val();
-                            var obj         = $("#objective").val();
-                            var relevant    = $("#relevant_lgu_program_project").val();
-                            var act         = $("#activity").val();
-                            var performance_target     = $("#performance_target").val();
-                            var budget_mooe = $("#budget_mooe").val();
-                            var budget_ps   = $("#budget_ps").val();
-                            var budget_co   = $("#budget_co").val();
-                            var lead_responsible_office   = $("#lead_responsible_office").val();
-                            var ruc         = "'.$ruc.'";
-                            var focused_id = $("#focused_id").val();
-                            var inner_category_id = $("#inner_category_id").val();
-                            var onstep = "'.$onstep.'";
-                            var tocreate = "'.$tocreate.'";
-                            var ppa_sectors = $("#cliorg_ppa_attributed_program_id").val();
-                            var cliorg_ppa_attributed_program_id = ppa_sectors.toString();
-                            var gi_sup_data = $("#gi_sup_data").val();
-
+                        function SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data)
+                        {
                             $.ajax({
                                 url: "'.$url.'",
                                 data: { 
@@ -343,15 +345,15 @@ use yii\widgets\ActiveForm;
                                         // error in select2
                                         $("p#messages2-"+index+"").text("");
                                         $("#"+index+"").next("span").css({"border":"1px solid red","border-radius":"5px"});
-                                        $("#"+index+"").next("span").after("<p id=messages2-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
+                                        $("#"+index+"").next("span").after("<p class=warningmess id=messages2-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
                                         // error in textarea
                                         $("p#messageta-"+index+"").text("");
                                         $("textarea#"+index+"").css({"border":"1px solid red"});
-                                        $("textarea#"+index+"").after("<p id=messageta-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
+                                        $("textarea#"+index+"").after("<p class=warningmess id=messageta-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
                                         // error in textbox
                                         $("p#messagete-"+index+"").text("");
                                         $("input#"+index+"").css({"border":"1px solid red"});
-                                        $("input#"+index+"").after("<p id=messagete-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
+                                        $("input#"+index+"").after("<p class=warningmess id=messagete-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
 
                                         // keypress remove error message
                                         $("textarea#"+index+"").keyup(function(){
@@ -402,6 +404,47 @@ use yii\widgets\ActiveForm;
                                         }
                                     });
                             });
+                        }
+                        $("#save-gender-issue").click(function(){
+                            var ppa_focused_id = $("#ppa_focused_id").val();
+                            var ppa_value     = $("#ppa_value").val();
+                            var issue       = $("#cause_gender_issue").val();
+                            var obj         = $("#objective").val();
+                            var relevant    = $("#relevant_lgu_program_project").val();
+                            var act         = $("#activity").val();
+                            var performance_target     = $("#performance_target").val();
+                            var mooe = $.trim($("#budget_mooe").val());
+                            var ps   = $.trim($("#budget_ps").val());
+                            var co   = $.trim($("#budget_co").val());
+                            var budget_mooe = mooe.replace(/,/g, "");
+                            var budget_ps = ps.replace(/,/g, "");
+                            var budget_co = co.replace(/,/g, "");
+                            var lead_responsible_office   = $("#lead_responsible_office").val();
+                            var ruc         = "'.$ruc.'";
+                            var focused_id = $("#focused_id").val();
+                            var inner_category_id = $("#inner_category_id").val();
+                            var onstep = "'.$onstep.'";
+                            var tocreate = "'.$tocreate.'";
+                            var ppa_sectors = $("#cliorg_ppa_attributed_program_id").val();
+                            var cliorg_ppa_attributed_program_id = ppa_sectors.toString();
+                            var gi_sup_data = $("#gi_sup_data").val();
+
+                            if(budget_mooe == "" && budget_co == "" && budget_ps == "")
+                            {
+                                if(confirm("are you sure there is no funding requirement?"))
+                                {
+                                    SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data);
+                                }
+                                else
+                                {
+
+                                }
+                            }
+                            else
+                            {
+                                SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data)
+                            }
+                            
                       }); ');
                 ?>
                 <button type="button" class="btn btn-warning btn-sm" title="Close" id="exit-gender-issue">

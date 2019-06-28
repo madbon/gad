@@ -76,7 +76,7 @@ class GadPlanBudget extends \yii\db\ActiveRecord
             [['record_tuc','tuc'], 'string', 'max' => 150],
             // [['ppa_value'], 'safe'],
             [['cause_gender_issue'], 'required', 'when' => function ($model) { return $model->ppa_focused_id == 0; }],
-            [['budget_mooe','budget_ps','budget_co'],Yii::$app->controller->action->id == "create-gad-plan-budget" ? 'required' : 'safe',  'when' => function ($model) { return $model->budget_mooe == null && $model->budget_ps == null && $model->budget_co == null; }, 'message' => 'Please fill up atleast 1 from MOOE, PS, & CO '],
+            // [['budget_mooe','budget_ps','budget_co'],Yii::$app->controller->action->id == "create-gad-plan-budget" ? 'required' : 'safe',  'when' => function ($model) { return $model->budget_mooe == null && $model->budget_ps == null && $model->budget_co == null; }, 'message' => 'Please fill up atleast 1 from MOOE, PS, & CO '],
             [['gi_sup_data'],  
             Yii::$app->controller->action->id == "create-gad-plan-budget" || 
             Yii::$app->controller->action->id == "update-gender-issue-sup-data" ? 'required' : "safe", 'when' => function ($model) { return $model->inner_category_id == 1; }],

@@ -25,6 +25,24 @@ use yii\db\Expression;
  */
 class DefaultController extends Controller
 {
+    public  function GetUploadStatus($row_id,$model_name)
+    {
+        $qry = (new \yii\db\Query())
+        ->select([
+            'FL.itemId as row_id'
+        ])
+        ->from('file FL')
+        ->where(['FL.itemId' => $row_id,'FL.model'=>$model_name]);
+
+        if($qry->exists())
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
     public function GetProvinceName($ruc)
     {
         $Record = GadRecord::find()->where(['tuc' => $ruc])->one();

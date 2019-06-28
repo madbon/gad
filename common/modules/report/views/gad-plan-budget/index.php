@@ -518,7 +518,7 @@ $this->title = "Annual GAD Plan and Budget";
             <?php } ?>
                 <div class="cust-panel-header gad-color">
                 </div>
-                <div class="cust-panel-body" style="background-color: #1fc8db; background-image: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);">
+                <div class="cust-panel-body" style="background-image: linear-gradient(141deg, #6437a1 0%, #796692 51%, #a579dc 75%)">
                     <div class="cust-panel-title">
                         <p class="sub-title" style="color: white !important;"><span class="glyphicon glyphicon-pencil"></span> Encode Plan</p>
                     </div>
@@ -661,7 +661,7 @@ $this->title = "Annual GAD Plan and Budget";
                                                 'tocreate' => $tocreate
                                             ],
                                             [
-                                                'class' => 'btn btn-danger btn-xs',
+                                                'class' => 'btn btn-danger btn-xs btn-block',
                                                 'id'=>"submit_to",
                                                 'style' => '',
                                                 'data' => [
@@ -670,9 +670,24 @@ $this->title = "Annual GAD Plan and Budget";
                                             ]);
                                         }
 
-                                        $t = '@web/report/gad-plan-budget/update?id='.$plan['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
-                                        echo Html::button('<span class="glyphicon glyphicon-upload"></span> Upload', ['value'=>Url::to($t),
-                                            'class' => 'btn btn-info btn-xs modalButton']);
+                                        if(Yii::$app->user->can("gad_upload_files_row"))
+                                        {
+                                            $t = '@web/report/gad-plan-budget/update?id='.$plan['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
+                                            echo Html::button('<span class="glyphicon glyphicon-upload"></span> Upload', ['value'=>Url::to($t),
+                                            'class' => 'btn btn-default btn-xs modalButton btn-block']);
+                                        }
+
+                                        if(DefaultController::GetUploadStatus($plan["id"],"GadPlanBudget") == 1)
+                                        {
+                                            $t = '@web/report/gad-plan-budget/view?id='.$plan['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
+                                            echo Html::button('<span class="glyphicon glyphicon-file"></span> View Uploaded File(s)', ['value'=>Url::to($t),
+                                            'class' => 'btn btn-info btn-xs modalButton btn-block']);
+                                        }
+                                        else
+                                        {
+                                            echo "<span class='label label-warning btn-block'>No File(s) Uploaded</span>";
+                                        }
+                                        
                                     ?>
                                 </td>
                             </tr>
@@ -786,7 +801,7 @@ $this->title = "Annual GAD Plan and Budget";
                                 <?php }else{ ?>
                                     <tr class="attributed_program_form" style="display: none;">
                                 <?php } ?>
-                                    <td colspan="10" style="background-color: #1fc8db; background-image: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);">
+                                    <td colspan="10" style="background-color: #1fc8db; background-image: linear-gradient(141deg, #6437a1 0%, #796692 51%, #a579dc 75%)">
                                         <?php
                                             echo $this->render('attributed_program_form', [
                                                 'select_PpaAttributedProgram' => $select_PpaAttributedProgram,

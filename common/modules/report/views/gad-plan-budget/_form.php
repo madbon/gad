@@ -14,7 +14,9 @@ use kartik\select2\Select2;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput() ?>
+    <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
+
+    <p style="background-color: #f57070; color: white; padding:5px; border-radius: 3px;">WARNING : When you click this button <button class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash"></span></button> the uploaded file from the database will be permanently removed.</p>
 
     <?= \file\components\AttachmentsInput::widget([
         'id' => 'file-input', // Optional

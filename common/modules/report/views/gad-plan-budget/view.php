@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\GadPlanBudget */
@@ -12,44 +13,34 @@ $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="gad-plan-budget-view">
+ <table class="table table-responsive">
+    <tbody>
+        <tr>
+            <td>
+                <label class="label-control"><i class="fa fa-download"></i> Download attachment(s) here</label>
+                <?= \file\components\AttachmentsTable::widget(['model' => $model]) ?>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="rpw">
+                    <?php
+                    $file = "";
+                    // print_r($model->files); exit;
+                    foreach ($model->files as $file) { ?>
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'user_id',
-            'region_c',
-            'province_c',
-            'citymun_c',
-            'issue_mandate:ntext',
-            'objective:ntext',
-            'relevant_lgu_program_project:ntext',
-            'activity:ntext',
-            'performance_indicator_target:ntext',
-            'budget_mooe',
-            'budget_ps',
-            'budget_co',
-            'lead_responsible_office_id',
-            'date_created',
-            'time_created',
-            'date_updated',
-            'time_updated',
-            'sort',
-            'tuc_parent',
-        ],
-    ]) ?>
-
+                        <div class="col-sm-6">
+                            <?php 
+                                // $file = "/gad/backend/web/file/file/download?id=".$file->id;
+                                $file = Url::base()."/file/file/download?id=".$file->id;
+                                echo Html::img($file,['width' => '100%', 'height' => 'auto','class' => 'img-responsive']);
+                            ?>
+                        </div>
+                    <?php }  ?>
+                </div>
+            </td>
+        </tr>
+        
+    </tbody>
+</table>
 </div>
