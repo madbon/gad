@@ -14,7 +14,7 @@ use kartik\select2\Select2;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput()->label("Changes") ?>
+    <?= $form->field($model, 'id')->textInput() ?>
 
     <?= \file\components\AttachmentsInput::widget([
         'id' => 'file-input', // Optional
