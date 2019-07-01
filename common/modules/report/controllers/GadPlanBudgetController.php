@@ -365,6 +365,7 @@ class GadPlanBudgetController extends Controller
         $select_GadFocused = ArrayHelper::map(\common\models\GadFocused::find()->all(), 'id', 'title');
         $select_GadInnerCategory = ArrayHelper::map(\common\models\GadInnerCategory::find()->all(), 'id', 'title');
         $select_PpaAttributedProgram = ArrayHelper::map(\common\models\GadPpaAttributedProgram::find()->all(), 'id', 'title');
+        $select_ActivityCategory = ArrayHelper::map(\common\models\GadActivityCategory::find()->all(), 'id', 'title');
 
         $reportStatus = 0;
         $modelRecord = GadRecord::find()->where(['tuc' => $ruc])->one();
@@ -383,6 +384,7 @@ class GadPlanBudgetController extends Controller
         }
 
         return $this->render($renderValue, [
+            'select_ActivityCategory' => $select_ActivityCategory,
             'dataRecord' => $dataRecord,
             'dataAttributedProgram' => $dataAttributedProgram,
             'select_PpaAttributedProgram' => $select_PpaAttributedProgram,

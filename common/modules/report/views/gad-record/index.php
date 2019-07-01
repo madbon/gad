@@ -212,6 +212,8 @@ $this->title = $index_title;
                             ],
                             [
                                 'label' => 'Remarks',
+                                'format'=>"ntext",
+                                'contentOptions' => ['style' => 'word-wrap: break-all;'],
                                 'value' => function($model)
                                 {
                                     return GadRecordController::GenerateRemarks($model["record_tuc"]);

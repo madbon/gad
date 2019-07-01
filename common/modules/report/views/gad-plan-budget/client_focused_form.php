@@ -1,8 +1,12 @@
 <?php
 use yii\helpers\Html;
 use kartik\select2\Select2;
-use yii\widgets\ActiveForm;
+// use yii\widgets\ActiveForm;
 use richardfan\widget\JSRegister;
+use kartik\date\DatePicker;
+use kartik\field\FieldRange;
+use kartik\form\ActiveForm;
+use kartik\daterange\DateRangePicker;
 ?>
 <style type="text/css">
     tr#row-input-form td
@@ -30,9 +34,26 @@ use richardfan\widget\JSRegister;
     {
         background-color: #cdc6d2;
     }
+    .help-block, .has-star
+    {
+        color:white !important;
+    }
+    .help-block
+    {
+        font-style: italic;
+    }
 
 </style>
-<?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+<?php
+$addon = <<< HTML
+<div class="input-group-append">
+    <span class="input-group-text">
+        <i class="fas fa-calendar-alt"></i>
+    </span>
+</div>
+HTML;
+?>
+<?php $form = ActiveForm::begin(); ?>
 <tr id="genderIssueInputForm" style="display: none;">
     <td colspan='12'>
         <div class="row">
@@ -173,44 +194,65 @@ use richardfan\widget\JSRegister;
                 ?>
                 <br/>
                 <?php
-                    // Activity Category
+                    // // Activity Category
+                    // echo Select2::widget([
+                    //     'name' => 'ppa_focused_id',
+                    //     'data' => [],
+                    //     'options' => [
+                    //         'placeholder' => 'Activity Category',
+                    //         'id' => "ppa_focused_id",
+                    //     ],
+                    //     'pluginEvents'=>[
+                    //         'select2:select'=>'
+                    //             function(){
+                    //                 $("#messages2-ppa_focused_id").text("");
+                    //                 $("#ppa_focused_id").next("span").css({"border":"none"});
+
+                    //                 if(this.value == "0")
+                    //                 {
+                    //                     $("#cause_gender_issue").slideDown(300);
+                    //                     $("#message-cause_gender_issue").show();
+                    //                 }
+                    //                 else
+                    //                 {
+                    //                     $("#cause_gender_issue").slideUp(300);
+                    //                     $("#cause_gender_issue").val("");
+                    //                     $("#message-cause_gender_issue").hide();
+                    //                 }
+                    //             }',
+                    //     ]     
+                    // ]);
+                ?>
+                <?= $form->field($model, 'ppa_focused_id')->hiddenInput(['maxlength' => true, 'id' => 'ppa_focused_id'])->label(false) ?>
+                <?= $form->field($model, 'cause_gender_issue')->hiddenInput(['maxlength' => true, 'id' => 'cause_gender_issue'])->label(false) ?>
+                <?php
+                    // Other Activity Category
+                    // echo $this->render('common_tools/textarea_suggest',[
+                    //     'placeholder_title' => "Pls. Specify Other Activity Category",
+                    //     'attribute_name' => "cause_gender_issue",
+                    //     'urlLoadResult' => '/report/default/load-cause-gender-issue',
+                    //     'rowsValue' => 2,
+                    //     'classValue' => 'form-control',
+                    //     'customStyle' => 'margin-top:5px; display:none;',
+                    // ]);
+                ?>
+                <?php
+                // print_r($select_PpaAttributedProgram); exit;
                     echo Select2::widget([
-                        'name' => 'ppa_focused_id',
-                        'data' => [],
+                        'name' => 'activity_category_id',
+                        'data' => $select_ActivityCategory,
                         'options' => [
-                            'placeholder' => 'Activity Category',
-                            'id' => "ppa_focused_id",
+                            'placeholder' => 'Tag Activity Category',
+                            'id' => "activity_category_id",
+                            'multiple' => true,
                         ],
                         'pluginEvents'=>[
                             'select2:select'=>'
                                 function(){
-                                    $("#messages2-ppa_focused_id").text("");
-                                    $("#ppa_focused_id").next("span").css({"border":"none"});
-
-                                    if(this.value == "0")
-                                    {
-                                        $("#cause_gender_issue").slideDown(300);
-                                        $("#message-cause_gender_issue").show();
-                                    }
-                                    else
-                                    {
-                                        $("#cause_gender_issue").slideUp(300);
-                                        $("#cause_gender_issue").val("");
-                                        $("#message-cause_gender_issue").hide();
-                                    }
+                                    $("#message-activity_category_id").text("");
+                                    $("#select2-activity_category_id-container").parent(".select2-selection").css({"border":"1px solid #ccc"});
                                 }',
                         ]     
-                    ]);
-                ?>
-                <?php
-                    // Other Activity Category
-                    echo $this->render('common_tools/textarea_suggest',[
-                        'placeholder_title' => "Pls. Specify Other Activity Category",
-                        'attribute_name' => "cause_gender_issue",
-                        'urlLoadResult' => '/report/default/load-cause-gender-issue',
-                        'rowsValue' => 2,
-                        'classValue' => 'form-control',
-                        'customStyle' => 'margin-top:5px; display:none;',
                     ]);
                 ?>
                 <?php
@@ -225,8 +267,23 @@ use richardfan\widget\JSRegister;
                 ?>
                 <br/>
                 <?php
+                    echo $form->field($model, 'date_implement_start', [
+                        'addon'=>['prepend'=>['content'=>'<i class="fas fa-calendar-alt"></i>']],
+                        'options'=>['class'=>'drp-container form-group'],
+                    ])->widget(DateRangePicker::classname(), [
+                        'useWithAddon'=>true,
+                        'pluginOptions'=>[
+                            'locale'=>[
+                                'separator'=>' to ',
+                            ],
+                            'opens'=>'left'
+                        ],
+                    ]);
+                ?>
+               
+                <?php
                     echo $this->render('common_tools/textarea_suggest',[
-                        'placeholder_title' => "Performance Target",
+                        'placeholder_title' => "Performance Target / Indicator",
                         'attribute_name' => "performance_target",
                         'urlLoadResult' => '/report/default/load-performance-target',
                         'rowsValue' => 2,
@@ -256,11 +313,11 @@ use richardfan\widget\JSRegister;
                     //     'customStyle' => '',
                     // ]);
                 ?>
-                <input type="text" class="form-control amountcomma" id="budget_mooe" placeholder="MOOE">
+                <input type="text" class="form-control amountcomma alertexceeding" id="budget_mooe" placeholder="MOOE">
                 <br/>
-                <input type="text" class="form-control amountcomma" id="budget_ps" placeholder="PS">
+                <input type="text" class="form-control amountcomma alertexceeding" id="budget_ps" placeholder="PS">
                 <br/>
-                <input type="text" class="form-control amountcomma" id="budget_co" placeholder="CO">
+                <input type="text" class="form-control amountcomma alertexceeding" id="budget_co" placeholder="CO">
                 <?php JSRegister::begin(); ?>
                 <script>
                     $('input.amountcomma').keyup(function(event) {
@@ -273,6 +330,58 @@ use richardfan\widget\JSRegister;
                         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                         ;
                       });
+                    });
+
+                    $("#budget_mooe").keyup(function(){
+                        var totalLguBudget = "<?= $recTotalLguBudget ?>";
+                        var inputedMooe = $("#budget_mooe").val();
+                        var inputedPs = $("#budget_ps").val();
+                        var inputedCo = $("#budget_co").val();
+
+                        var resTotalLguBudget = parseFloat(totalLguBudget.replace(/,/g, ""));
+                        var resMooe = parseFloat(inputedMooe.replace(/,/g, ""));
+                        var resPs = parseFloat(inputedPs.replace(/,/g, ""));
+                        var resCo = parseFloat(inputedCo.replace(/,/g, ""));
+                        var totalAmount = (resMooe+resPs+resCo)
+                        if(parseFloat(totalAmount) > parseFloat(resTotalLguBudget))
+                        {
+                            alert("Exceeding LGU budget appropriated. Please check budget or recheck previous PPAs");
+                            $(this).val("")
+                        }
+                    });
+                    $("#budget_co").keyup(function(){
+                        var totalLguBudget = "<?= $recTotalLguBudget ?>";
+                        var inputedMooe = $("#budget_mooe").val();
+                        var inputedPs = $("#budget_ps").val();
+                        var inputedCo = $("#budget_co").val();
+
+                        var resTotalLguBudget = parseFloat(totalLguBudget.replace(/,/g, ""));
+                        var resMooe = parseFloat(inputedMooe.replace(/,/g, ""));
+                        var resPs = parseFloat(inputedPs.replace(/,/g, ""));
+                        var resCo = parseFloat(inputedCo.replace(/,/g, ""));
+                        var totalAmount = (resMooe+resPs+resCo)
+                        if(parseFloat(totalAmount) > parseFloat(resTotalLguBudget))
+                        {
+                            alert("Exceeding LGU budget appropriated. Please check budget or recheck previous PPAs");
+                            $(this).val("")
+                        }
+                    });
+                    $("#budget_ps").keyup(function(){
+                        var totalLguBudget = "<?= $recTotalLguBudget ?>";
+                        var inputedMooe = $("#budget_mooe").val();
+                        var inputedPs = $("#budget_ps").val();
+                        var inputedCo = $("#budget_co").val();
+
+                        var resTotalLguBudget = parseFloat(totalLguBudget.replace(/,/g, ""));
+                        var resMooe = parseFloat(inputedMooe.replace(/,/g, ""));
+                        var resPs = parseFloat(inputedPs.replace(/,/g, ""));
+                        var resCo = parseFloat(inputedCo.replace(/,/g, ""));
+                        var totalAmount = (resMooe+resPs+resCo)
+                        if(parseFloat(totalAmount) > parseFloat(resTotalLguBudget))
+                        {
+                            alert("Exceeding LGU budget appropriated. Please check budget or recheck previous PPAs");
+                            $(this).val("")
+                        }
                     });
                 </script>
                 <?php JSRegister::end(); ?>
@@ -314,7 +423,7 @@ use richardfan\widget\JSRegister;
                 <?php
                     $url = \yii\helpers\Url::to(['/report/default/create-gad-plan-budget']);
                     $this->registerJs('
-                        function SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data)
+                        function SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data,date_implement_start,date_implement_end)
                         {
                             $.ajax({
                                 url: "'.$url.'",
@@ -336,7 +445,10 @@ use richardfan\widget\JSRegister;
                                         onstep:onstep,
                                         tocreate:tocreate,
                                         cliorg_ppa_attributed_program_id:cliorg_ppa_attributed_program_id,
-                                        gi_sup_data:gi_sup_data
+                                        gi_sup_data:gi_sup_data,
+                                        date_implement_start:date_implement_start,
+                                        date_implement_end:date_implement_end
+
                                     }
                                 
                                 }).done(function(result) {
@@ -354,6 +466,21 @@ use richardfan\widget\JSRegister;
                                         $("p#messagete-"+index+"").text("");
                                         $("input#"+index+"").css({"border":"1px solid red"});
                                         $("input#"+index+"").after("<p class=warningmess id=messagete-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
+                                        // error in date_picker
+                                        if($("#gadplanbudget-date_implement_start").val() == "")
+                                        {
+                                            $("p#date_implement").text("");
+                                            $(".help-block").text("");
+                                            $(".input-group").css({"border":"1px solid red"});
+                                            $(".input-group").after("<p class=warningmess id=date_implement style=color:red;font-style:italic;>Target Date of Implementation cannot be blank.</p>");
+                                        }
+                                        else
+                                        {
+                                            $("p#date_implement").text("");
+                                            $(".help-block").text("");
+                                            $(".input-group").css({"border":"none"});
+                                        }
+                                       
 
                                         // keypress remove error message
                                         $("textarea#"+index+"").keyup(function(){
@@ -429,11 +556,18 @@ use richardfan\widget\JSRegister;
                             var cliorg_ppa_attributed_program_id = ppa_sectors.toString();
                             var gi_sup_data = $("#gi_sup_data").val();
 
+                            var date_implement = $("#gadplanbudget-date_implement_start").val();
+                            var n = date_implement.lastIndexOf("to");
+                            var date_implement_end = $.trim(date_implement.substring(n + 2));
+                            var date_implement_start = $.trim(date_implement.substr(0, date_implement.indexOf(" ")));
+                            
+
+                            console.log(date_implement_start);
                             if(budget_mooe == "" && budget_co == "" && budget_ps == "")
                             {
                                 if(confirm("are you sure there is no funding requirement?"))
                                 {
-                                    SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data);
+                                    SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data,date_implement_start,date_implement_end);
                                 }
                                 else
                                 {
@@ -442,7 +576,7 @@ use richardfan\widget\JSRegister;
                             }
                             else
                             {
-                                SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data)
+                                SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data,date_implement_start,date_implement_end);
                             }
                             
                       }); ');

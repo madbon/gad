@@ -236,6 +236,7 @@ $this->title = 'Annual GAD Plan and Budget';
         'fivePercentTotalLguBudget' => $fivePercentTotalLguBudget,
         'qryReportStatus' => $qryReportStatus,
         'model' => $model,
+        'select_ActivityCategory' => $select_ActivityCategory,
     ]) ?>
 
 </div>

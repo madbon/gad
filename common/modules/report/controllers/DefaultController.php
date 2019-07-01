@@ -1563,7 +1563,7 @@ class DefaultController extends Controller
 
     }
 
-    public function actionCreateGadPlanBudget($ppa_focused_id,$ppa_value,$issue,$obj,$relevant,$act,$performance_target,$ruc,$budget_mooe,$budget_ps,$budget_co,$lead_responsible_office,$focused_id,$inner_category_id,$onstep,$tocreate,$cliorg_ppa_attributed_program_id,$gi_sup_data)
+    public function actionCreateGadPlanBudget($ppa_focused_id,$ppa_value,$issue,$obj,$relevant,$act,$performance_target,$ruc,$budget_mooe,$budget_ps,$budget_co,$lead_responsible_office,$focused_id,$inner_category_id,$onstep,$tocreate,$cliorg_ppa_attributed_program_id,$gi_sup_data,$date_implement_start,$date_implement_end)
     {
         $model = new \common\models\GadPlanBudget();
         $model->cause_gender_issue = $issue;
@@ -1583,6 +1583,8 @@ class DefaultController extends Controller
         $model->inner_category_id = $inner_category_id;
         $model->cliorg_ppa_attributed_program_id = $cliorg_ppa_attributed_program_id;
         $model->gi_sup_data = $gi_sup_data;
+        $model->date_implement_end = $date_implement_end;
+        $model->date_implement_start = $date_implement_start;
 
         $qryRecord = \common\models\GadRecord::find()->where(['tuc' => $ruc])->one();
         $qryRecordId = !empty($qryRecord->id) ? $qryRecord->id : null;

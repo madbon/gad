@@ -533,6 +533,8 @@ $this->title = "Annual GAD Plan and Budget";
                                 'tocreate' => $tocreate,
                                 'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
                                 'model' => $model,
+                                'recTotalLguBudget' => $recTotalLguBudget,
+                                'select_ActivityCategory' => $select_ActivityCategory,
                             ]);
                         ?>
                     </div>

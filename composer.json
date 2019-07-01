@@ -29,7 +29,8 @@
         "kartik-v/yii2-export": "@dev",
         "phpoffice/phpspreadsheet": "^1.7",
         "miloschuman/yii2-highcharts-widget": "^7.0",
-        "phpoffice/phpword": "^0.16.0"
+        "phpoffice/phpword": "^0.16.0",
+        "kartik-v/yii2-date-range": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
