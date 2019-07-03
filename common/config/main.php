@@ -9,6 +9,9 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'request' => [
+            'enableCsrfValidation' => false,
+        ],
     ],
     'modules' => [
         'user' => [
@@ -38,16 +41,16 @@ return [
           'class' => 'yii\gii\Module', //adding gii module
           'allowedIPs' => ['127.0.0.1', '::1']  //allowing ip's 
         ],
-        'file' => [
-            'class' => 'file\FileModule',
-            'webDir' => 'files',
-            'tempPath' => '@common/uploads/temp',
-            'storePath' => '@common/uploads/store',
-            'rules' => [
-                'maxFiles' => 99,
-                'maxSize' => 1024 * 1024 * 4
-            ],
-        ],
+        // 'file' => [
+        //     'class' => 'file\FileModule',
+        //     'webDir' => 'files',
+        //     'tempPath' => '@common/uploads/temp',
+        //     'storePath' => '@common/uploads/store',
+        //     'rules' => [
+        //         'maxFiles' => 99,
+        //         'maxSize' => 1024 * 1024 * 4
+        //     ],
+        // ],
         'utility' => [
                 'class' => 'c006\utility\migration\Module',
         ],

@@ -26,7 +26,7 @@ use kartik\select2\Select2;
         ],
         'pluginOptions' => [ // Plugin options of the Kartik's FileInput widget 
             'maxFileCount' => 10, // Client max files
-            'allowedFileExtensions' => ["jpg", "jpeg", "png","pdf","doc","docx","xlsx","xlsm"],
+            'allowedFileExtensions' => ["jpg", "jpeg", "png","pdf","doc","docx","xlsx","xlsm","xls"],
         ]
     ]) ?>
 

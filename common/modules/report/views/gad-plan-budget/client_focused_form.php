@@ -34,9 +34,9 @@ use kartik\daterange\DateRangePicker;
     {
         background-color: #cdc6d2;
     }
-    .help-block, .has-star
+    .help-block, .has-star, .warningmess
     {
-        color:white !important;
+        color:#e79f9f !important;
     }
     .help-block
     {

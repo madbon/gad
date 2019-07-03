@@ -20,6 +20,7 @@ use common\models\GadReportHistory;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
+use \common\models\GadFileAttached;
 /**
  * Default controller for the `report` module
  */
@@ -27,12 +28,7 @@ class DefaultController extends Controller
 {
     public  function GetUploadStatus($row_id,$model_name)
     {
-        $qry = (new \yii\db\Query())
-        ->select([
-            'FL.itemId as row_id'
-        ])
-        ->from('file FL')
-        ->where(['FL.itemId' => $row_id,'FL.model'=>$model_name]);
+        $qry = GadFileAttached::find()->where(['model_id' => $row_id, 'model_name' => $model_name]);
 
         if($qry->exists())
         {

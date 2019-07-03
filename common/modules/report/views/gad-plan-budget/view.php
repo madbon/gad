@@ -7,40 +7,58 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model common\models\GadPlanBudget */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Gad Plan Budgets', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+// $this->title = $model->id;
+// $this->params['breadcrumbs'][] = ['label' => 'Gad Plan Budgets', 'url' => ['index']];
+// $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="gad-plan-budget-view">
  <table class="table table-responsive">
+    <thead>
+        <tr>
+            <th>Uploaded File(s)</th>
+            <th></th>
+        </tr>
+    </thead>
     <tbody>
-        <tr>
-            <td>
-                <label class="label-control"><i class="fa fa-download"></i> Download attachment(s) here</label>
-                <?= \file\components\AttachmentsTable::widget(['model' => $model]) ?>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="rpw">
-                    <?php
-                    $file = "";
-                    // print_r($model->files); exit;
-                    foreach ($model->files as $file) { ?>
-
-                        <div class="col-sm-6">
-                            <?php 
-                                // $file = "/gad/backend/web/file/file/download?id=".$file->id;
-                                $file = Url::base()."/file/file/download?id=".$file->id;
-                                echo Html::img($file,['width' => '100%', 'height' => 'auto','class' => 'img-responsive']);
-                            ?>
-                        </div>
-                    <?php }  ?>
-                </div>
-            </td>
-        </tr>
         
+        <?php
+            $folder_id = null;
+            foreach ($qry as $key => $row) {
+                if($folder_id != $row["folder_id"])
+                {
+                    echo 
+                    "<tr>
+                        <td style='font-size:18px; font-weight:bold;'>".$row['folder_title']."</td>
+                    ";
+                }
+                echo 
+                "<tr>
+                    <td>".$row['file_name']."</td>
+                    <td>".(Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', ['view-uploaded-file', 'hash' => $row['hash'], 'extension' => $row['extension']], ['target' => '_blank','class'=>'btn btn-info btn-xs']))." ".
+                    (Html::a('<span class="glyphicon glyphicon-download"></span> Download', ['download-uploaded-file', 'hash' => $row['hash'], 'extension' => $row['extension']], ['target' => '_blank','class'=>'btn btn-primary btn-xs']))." ".
+                    (Html::a('<span class="glyphicon glyphicon-trash"></span> Delete', 
+                        [
+                            'delete-uploaded-file', 
+                            'hash' => $row['hash'], 
+                            'extension' => $row['extension'],
+                            'ruc' => $ruc,
+                            'onstep' => $onstep,
+                            'tocreate' => $tocreate
+                        ], 
+                        [
+                        'target' => '_blank',
+                        'class'=>'btn btn-danger btn-xs',
+                        'data' => [
+                            'confirm' => 'Are you sure you want to delete this file?',
+                            'method' => 'post',
+                        ],
+                    ]))."</td>";
+
+
+                $folder_id = $row["folder_id"];
+            } 
+        ?>
     </tbody>
 </table>
 </div>

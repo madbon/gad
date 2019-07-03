@@ -17,6 +17,10 @@ use niksko12\user\models\Region;
 use niksko12\user\models\Province;
 use niksko12\user\models\Citymun;
 use yii\helpers\ArrayHelper;
+use yii\base\Model;
+use yii\web\UploadedFile;
+use common\models\GadFileAttached;
+
 
 
 /**
@@ -416,10 +420,62 @@ class GadPlanBudgetController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($row_id,$model_name,$ruc,$onstep,$tocreate)
     {
+        $qry = (new \yii\db\Query())
+        ->select([
+            'FT.title as folder_title',
+            'FA.hash',
+            'FA.model_name',
+            'FA.model_id',
+            'FA.file_name',
+            'FA.extension',
+            'FT.id as folder_id'
+        ])
+        ->from('gad_file_attached FA')
+        ->leftJoin(['FT' => 'gad_file_folder_type'], 'FT.id = FA.file_folder_type_id')
+        ->groupBy(['FA.file_folder_type_id','FA.id'])
+        ->orderBy(['FA.file_folder_type_id' => SORT_ASC,'FA.id' => SORT_ASC])
+        ->where(['FA.model_id' => $row_id, 'FA.model_name' => $model_name])
+        ->all();
+        // ->createCommand()->rawSql;
+        // print_r($qry); exit;
         return $this->renderAjax('view', [
-            'model' => $this->findModel($id),
+            'qry' => $qry,
+            'ruc' => $ruc,
+            'onstep' => $onstep,
+            'tocreate' => $tocreate
+        ]);
+    }
+
+    public function actionDeleteUploadedFile($hash,$extension,$ruc,$tocreate,$onstep)
+    {
+        $hash_name = $hash.".".$extension;
+        unlink(Yii::getAlias('@webroot')."/uploads/file_attached/".$hash_name);
+        $qry = GadFileAttached::find()->where(['hash' => $hash])->one();
+        $qry->delete();
+
+        return $this->redirect(['index','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
+    }
+
+    public function actionDownloadUploadedFile($hash,$extension)
+    {
+        $hash_name = $hash.".".$extension;
+        $path = Yii::getAlias('@webroot')."/uploads/file_attached/".$hash_name;
+        $qry = GadFileAttached::find()->where(['hash' => $hash])->one();
+        $file_name = !empty($qry->file_name) ? $qry->file_name.".".$extension : "";
+
+        if (file_exists($path)) {
+            return Yii::$app->response->sendFile($path, $file_name);
+        }
+    }
+
+    public function actionViewUploadedFile($hash,$extension)
+    {
+
+        $file = $hash.".".$extension;
+        return $this->render('_view_uploaded_file', [
+            'file' => $file
         ]);
     }
 
@@ -443,24 +499,73 @@ class GadPlanBudgetController extends Controller
         ]);
     }
 
-    /**
-     * Updates an existing GadPlanBudget model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id,$ruc,$onstep,$tocreate)
-    {
-        $model = $this->findModel($id);
+    // /**
+    //  * Updates an existing GadPlanBudget model.
+    //  * If update is successful, the browser will be redirected to the 'view' page.
+    //  * @param integer $id
+    //  * @return mixed
+    //  * @throws NotFoundHttpException if the model cannot be found
+    //  */
+    // public function actionUpdate($id,$ruc,$onstep,$tocreate)
+    // {
+    //     $model = new UploadForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index', 'ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
-        }
+    //     if (Yii::$app->request->isPost) {
+    //         $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+    //         if ($model->upload()) {
+    //             // file is uploaded successfully
+    //             return;
+    //         }
+    //     }
 
-        return $this->renderAjax("_form", [
-            'model' => $model,
-        ]);
+    //     return $this->render('_upload_form', ['model' => $model]);
+    // }
+
+    public function actionUpdate($id,$ruc,$onstep,$tocreate){
+
+           $upload = new GadFileAttached();
+           $folder_type = ArrayHelper::map(\common\models\GadFileFolderType::find()->all(), 'id', 'title');
+
+           if($upload->load(Yii::$app->request->post()))
+           {
+                $upload->file_name = UploadedFile::getInstances($upload,'file_name');
+                if($upload->file_name)
+                {
+                    $basepath = Yii::getAlias('@app');
+                    $imagepath= $basepath.'/web/uploads/file_attached/';
+                    
+                    $countLoop = 0;
+                    foreach ($upload->file_name as $image) {
+                        $modelName = "GadPlanBudget";
+                        $countLoop += 1;
+                        $model = new GadFileAttached();
+                        $rand_name=rand(10,100);
+                        $model->file_name = $image;
+                        $model->model_id = $id;
+                        $model->model_name = $modelName;
+                        $miliseconds = round(microtime(true) * 1000);
+                        $hash =  md5(date('Y-m-d')."-".date("h-i-sa")."-".$miliseconds.$rand_name.$countLoop.$modelName.$id);
+                        $model->hash = $hash; 
+                        $model->extension = $image->extension;
+                        $model->file_folder_type_id = $upload->file_folder_type_id;
+
+
+                        if($model->save(false))
+                        {
+                            $image->saveAs($imagepath.$hash.".".$image->extension);
+                        }
+                    }
+                    return $this->redirect(['index','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
+
+                }
+           }
+                
+
+           return $this->renderAjax('_upload_form',[
+                'upload'=>$upload,
+                'folder_type' => $folder_type,
+            ]);
+
     }
 
     /**

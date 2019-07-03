@@ -681,7 +681,7 @@ $this->title = "Annual GAD Plan and Budget";
 
                                         if(DefaultController::GetUploadStatus($plan["id"],"GadPlanBudget") == 1)
                                         {
-                                            $t = '@web/report/gad-plan-budget/view?id='.$plan['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
+                                            $t = '@web/report/gad-plan-budget/view?row_id='.$plan['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadPlanBudget";
                                             echo Html::button('<span class="glyphicon glyphicon-file"></span> View Uploaded File(s)', ['value'=>Url::to($t),
                                             'class' => 'btn btn-info btn-xs modalButton btn-block']);
                                         }
