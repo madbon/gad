@@ -74,27 +74,6 @@ HTML;
                                     $("#focused_id").next("span").css({"border":"none"});
 
                                     var focused_id = this.value;
-
-                                    $.ajax({
-                                        url: "'.$urlLoadPpaCategory.'",
-                                        data: { 
-                                                focused_id:focused_id
-                                              }
-                                    }).done(function(result){
-                                        var newOption = $("<option>");
-                                        $("#ppa_focused_id").html("").select2(
-                                        {
-                                            data:result, 
-                                            theme:"krajee", 
-                                            allowClear:true, 
-                                            width:"100%", 
-                                            placeholder:"Select Activity Category",
-                                        });
-                                        
-                                        newOption.attr("value","0").text("Others");
-                                        $("#ppa_focused_id").append(newOption);
-
-                                    });
                                 }',
                         ]     
                     ]);
@@ -423,7 +402,7 @@ HTML;
                 <?php
                     $url = \yii\helpers\Url::to(['/report/default/create-gad-plan-budget']);
                     $this->registerJs('
-                        function SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data,date_implement_start,date_implement_end)
+                        function SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data,date_implement_start,date_implement_end,activity_category_id)
                         {
                             $.ajax({
                                 url: "'.$url.'",
@@ -447,7 +426,8 @@ HTML;
                                         cliorg_ppa_attributed_program_id:cliorg_ppa_attributed_program_id,
                                         gi_sup_data:gi_sup_data,
                                         date_implement_start:date_implement_start,
-                                        date_implement_end:date_implement_end
+                                        date_implement_end:date_implement_end,
+                                        activity_category_id:activity_category_id
 
                                     }
                                 
@@ -560,6 +540,8 @@ HTML;
                             var n = date_implement.lastIndexOf("to");
                             var date_implement_end = $.trim(date_implement.substring(n + 2));
                             var date_implement_start = $.trim(date_implement.substr(0, date_implement.indexOf(" ")));
+                            var arr_activity_category_id = $("#activity_category_id").val();
+                            var activity_category_id = arr_activity_category_id.toString();
                             
 
                             console.log(date_implement_start);
@@ -567,7 +549,7 @@ HTML;
                             {
                                 if(confirm("are you sure there is no funding requirement?"))
                                 {
-                                    SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data,date_implement_start,date_implement_end);
+                                    SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data,date_implement_start,date_implement_end,activity_category_id);
                                 }
                                 else
                                 {
@@ -576,7 +558,7 @@ HTML;
                             }
                             else
                             {
-                                SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data,date_implement_start,date_implement_end);
+                                SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data,date_implement_start,date_implement_end,activity_category_id);
                             }
                             
                       }); ');

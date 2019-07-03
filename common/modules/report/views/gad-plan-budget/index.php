@@ -680,17 +680,45 @@ $this->title = "Annual GAD Plan and Budget";
                                         }
 
                                         if(DefaultController::GetUploadStatus($plan["id"],"GadPlanBudget") == 1)
-                                        {
+                                        { // if has uploaded files show button to view file
                                             $t = '@web/report/gad-plan-budget/view?row_id='.$plan['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadPlanBudget";
                                             echo Html::button('<span class="glyphicon glyphicon-file"></span> View Uploaded File(s)', ['value'=>Url::to($t),
                                             'class' => 'btn btn-info btn-xs modalButton btn-block']);
                                         }
                                         else
-                                        {
-                                            echo "<span class='label label-warning btn-block'>No File(s) Uploaded</span>";
+                                        { // else no uploaded file yet
+                                            if(DefaultController::PlanUploadStatus($plan['id']) == 0)
+                                            { // the upload_status = 0 means no uploaded file or not upload later
+                                                echo "<button class='btn btn-default btn-xs btn-block' id='upload_later_".$plan['id']."'><span class='glyphicon glyphicon-time'></span> Upload Later</button>";
+                                                echo "<span class='label label-warning btn-block' id='label_nuf_".$plan['id']."'>No Uploaded File(s) </span>";
+                                            }
+                                            else if(DefaultController::PlanUploadStatus($plan['id']) == 1)
+                                            {
+                                                echo "<span class='label label-warning btn-block' id='label_nuf_".$plan['id']."'>Upload later </span>";
+                                            }
+                                            ?>
+                                            <?php 
                                         }
-                                        
                                     ?>
+                                    <?php $url_upload_status = \yii\helpers\Url::to(['/report/default/update-upload-status']); ?>
+                                    <?php JSRegister::begin(); ?>
+                                        <script>
+                                            $("#upload_later_<?= $plan['id'] ?>").click(function(){
+                                                var row_id = "<?= $plan['id'] ?>";
+
+                                                $.ajax({
+                                                url: "<?= $url_upload_status ?>",
+                                                data: { 
+                                                        row_id:row_id
+                                                    }
+                                                
+                                                }).done(function(result) {
+                                                    $("#upload_later_<?= $plan['id'] ?>").hide();
+                                                    $("#label_nuf_<?= $plan['id'] ?>").text("Upload Later");
+                                                });
+                                            });
+                                        </script>
+                                    <?php JSRegister::end(); ?>
                                 </td>
                             </tr>
                         <!-- Display Sub-Total -->

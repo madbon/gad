@@ -26,6 +26,23 @@ use \common\models\GadFileAttached;
  */
 class DefaultController extends Controller
 {
+    public function PlanUploadStatus($row_id)
+    {
+        // 0 = no uploaded files
+        // 1 = upload later
+        // 2 = has an uploaded file
+        $qry = GadPlanBudget::find()->select(['upload_status','id'])->where(['id' => $row_id])->one();
+
+        return $qry->upload_status;
+    }
+
+    public function actionUpdateUploadStatus($row_id)
+    {
+        $qry = GadPlanBudget::updateAll(['upload_status' => 1],'id = '.$row_id.' ');
+
+        return 1;
+    }
+
     public  function GetUploadStatus($row_id,$model_name)
     {
         $qry = GadFileAttached::find()->where(['model_id' => $row_id, 'model_name' => $model_name]);
@@ -1559,7 +1576,7 @@ class DefaultController extends Controller
 
     }
 
-    public function actionCreateGadPlanBudget($ppa_focused_id,$ppa_value,$issue,$obj,$relevant,$act,$performance_target,$ruc,$budget_mooe,$budget_ps,$budget_co,$lead_responsible_office,$focused_id,$inner_category_id,$onstep,$tocreate,$cliorg_ppa_attributed_program_id,$gi_sup_data,$date_implement_start,$date_implement_end)
+    public function actionCreateGadPlanBudget($ppa_focused_id,$ppa_value,$issue,$obj,$relevant,$act,$performance_target,$ruc,$budget_mooe,$budget_ps,$budget_co,$lead_responsible_office,$focused_id,$inner_category_id,$onstep,$tocreate,$cliorg_ppa_attributed_program_id,$gi_sup_data,$date_implement_start,$date_implement_end,$activity_category_id)
     {
         $model = new \common\models\GadPlanBudget();
         $model->cause_gender_issue = $issue;
@@ -1581,10 +1598,12 @@ class DefaultController extends Controller
         $model->gi_sup_data = $gi_sup_data;
         $model->date_implement_end = $date_implement_end;
         $model->date_implement_start = $date_implement_start;
+        $model->activity_category_id = $activity_category_id;
 
         $qryRecord = \common\models\GadRecord::find()->where(['tuc' => $ruc])->one();
         $qryRecordId = !empty($qryRecord->id) ? $qryRecord->id : null;
         $model->record_id = $qryRecordId;
+
 
         date_default_timezone_set("Asia/Manila");
         $model->date_created = date('Y-m-d');

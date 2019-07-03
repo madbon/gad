@@ -556,8 +556,8 @@ class GadPlanBudgetController extends Controller
                             $image->saveAs($imagepath.$hash.".".$image->extension);
                         }
                     }
+                    $qry = GadPlanBudget::updateAll(['upload_status' => 2],'id = '.$id.' ');
                     return $this->redirect(['index','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
-
                 }
            }
                 
