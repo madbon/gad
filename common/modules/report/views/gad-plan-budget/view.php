@@ -13,11 +13,10 @@ use yii\helpers\Url;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="gad-plan-budget-view">
- <table class="table table-responsive">
+ <table class="table table-responsive table-hover table-striped" style="border:1px solid #7e57b1;">
     <thead>
         <tr>
-            <th>Uploaded File(s)</th>
-            <th></th>
+            <th style="font-size: 18px; background-color: #7e57b1; color:white;" colspan="2">Uploaded File(s)</th>
         </tr>
     </thead>
     <tbody>
@@ -30,30 +29,58 @@ use yii\helpers\Url;
                     echo 
                     "<tr>
                         <td style='font-size:18px; font-weight:bold;'>".$row['folder_title']."</td>
+                        <td></td>
                     ";
                 }
-                echo 
-                "<tr>
-                    <td>".$row['file_name']."</td>
-                    <td>".(Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', ['view-uploaded-file', 'hash' => $row['hash'], 'extension' => $row['extension']], ['target' => '_blank','class'=>'btn btn-info btn-xs']))." ".
-                    (Html::a('<span class="glyphicon glyphicon-download"></span> Download', ['download-uploaded-file', 'hash' => $row['hash'], 'extension' => $row['extension']], ['target' => '_blank','class'=>'btn btn-primary btn-xs']))." ".
-                    (Html::a('<span class="glyphicon glyphicon-trash"></span> Delete', 
-                        [
-                            'delete-uploaded-file', 
-                            'hash' => $row['hash'], 
-                            'extension' => $row['extension'],
-                            'ruc' => $ruc,
-                            'onstep' => $onstep,
-                            'tocreate' => $tocreate
-                        ], 
-                        [
-                        'target' => '_blank',
-                        'class'=>'btn btn-danger btn-xs',
-                        'data' => [
-                            'confirm' => 'Are you sure you want to delete this file?',
-                            'method' => 'post',
-                        ],
-                    ]))."</td>";
+
+                if($row["extension"] == "jpeg" || $row["extension"] == "jpg" || $row["extension"] == "png" || $row["extension"] == "pdf")
+                {
+                    echo 
+                    "<tr>
+                        <td>".$row['file_name']."</td>
+                        <td>".(Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', ['view-uploaded-file', 'hash' => $row['hash'], 'extension' => $row['extension']], ['target' => '_blank','class'=>'btn btn-info btn-xs']))." ".
+                        (Html::a('<span class="glyphicon glyphicon-download"></span> Download', ['download-uploaded-file', 'hash' => $row['hash'], 'extension' => $row['extension']], ['target' => '_blank','class'=>'btn btn-primary btn-xs']))." ".
+                        (Html::a('<span class="glyphicon glyphicon-trash"></span> Delete', 
+                            [
+                                'delete-uploaded-file', 
+                                'hash' => $row['hash'], 
+                                'extension' => $row['extension'],
+                                'ruc' => $ruc,
+                                'onstep' => $onstep,
+                                'tocreate' => $tocreate
+                            ], 
+                            [
+                            'class'=>'btn btn-danger btn-xs',
+                            'data' => [
+                                'confirm' => 'Are you sure you want to delete this file?',
+                                'method' => 'post',
+                            ],
+                        ]))."</td>";
+                }
+                else
+                {
+                    echo 
+                    "<tr>
+                        <td>".$row['file_name']."</td>
+                        <td>".(Html::a('<span class="glyphicon glyphicon-download"></span> Download', ['download-uploaded-file', 'hash' => $row['hash'], 'extension' => $row['extension']], ['target' => '_blank','class'=>'btn btn-primary btn-xs']))." ".
+                        (Html::a('<span class="glyphicon glyphicon-trash"></span> Delete', 
+                            [
+                                'delete-uploaded-file', 
+                                'hash' => $row['hash'], 
+                                'extension' => $row['extension'],
+                                'ruc' => $ruc,
+                                'onstep' => $onstep,
+                                'tocreate' => $tocreate
+                            ], 
+                            [
+                            'class'=>'btn btn-danger btn-xs',
+                            'data' => [
+                                'confirm' => 'Are you sure you want to delete this file?',
+                                'method' => 'post',
+                            ],
+                        ]))."</td>";
+                }
+                
 
 
                 $folder_id = $row["folder_id"];

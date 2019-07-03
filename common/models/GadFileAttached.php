@@ -37,7 +37,7 @@ class GadFileAttached extends \yii\db\ActiveRecord
             // [['file_name'], 'string', 'max' => 250],
             [['model_name', 'hash'], 'string', 'max' => 150],
             [['extension'], 'string', 'max' => 10],
-            [['file_name'], 'file', 'extensions' => ['jpg','jpeg','png'],'maxFiles'=>0,'skipOnEmpty'=>false],
+            [['file_name'], 'file', 'extensions' => ['jpg','jpeg','png','pdf','xlsx','xlsm','xlsb','xls','xlt','xltx','xltm','csv','doc','docx'],'maxFiles'=>0,'skipOnEmpty'=>false],
         ];
     }
 

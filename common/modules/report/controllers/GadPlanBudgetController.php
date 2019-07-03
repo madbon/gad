@@ -475,7 +475,8 @@ class GadPlanBudgetController extends Controller
 
         $file = $hash.".".$extension;
         return $this->render('_view_uploaded_file', [
-            'file' => $file
+            'file' => $file,
+            'extension' => $extension,
         ]);
     }
 
