@@ -40,7 +40,7 @@ use yii\helpers\Url;
                         <td>".$row['file_name']."</td>
                         <td>".(Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', ['view-uploaded-file', 'hash' => $row['hash'], 'extension' => $row['extension']], ['target' => '_blank','class'=>'btn btn-info btn-xs']))." ".
                         (Html::a('<span class="glyphicon glyphicon-download"></span> Download', ['download-uploaded-file', 'hash' => $row['hash'], 'extension' => $row['extension']], ['target' => '_blank','class'=>'btn btn-primary btn-xs']))." ".
-                        (Html::a('<span class="glyphicon glyphicon-trash"></span> Delete', 
+                        (!Yii::$app->user->can("gad_delete_attachment") ? "" : (Html::a('<span class="glyphicon glyphicon-trash"></span> Delete', 
                             [
                                 'delete-uploaded-file', 
                                 'hash' => $row['hash'], 
@@ -55,7 +55,7 @@ use yii\helpers\Url;
                                 'confirm' => 'Are you sure you want to delete this file?',
                                 'method' => 'post',
                             ],
-                        ]))."</td>";
+                        ])))."</td>";
                 }
                 else
                 {
@@ -63,7 +63,7 @@ use yii\helpers\Url;
                     "<tr>
                         <td>".$row['file_name']."</td>
                         <td>".(Html::a('<span class="glyphicon glyphicon-download"></span> Download', ['download-uploaded-file', 'hash' => $row['hash'], 'extension' => $row['extension']], ['target' => '_blank','class'=>'btn btn-primary btn-xs']))." ".
-                        (Html::a('<span class="glyphicon glyphicon-trash"></span> Delete', 
+                        (!Yii::$app->user->can("gad_delete_attachment") ? "" : (Html::a('<span class="glyphicon glyphicon-trash"></span> Delete', 
                             [
                                 'delete-uploaded-file', 
                                 'hash' => $row['hash'], 
@@ -78,7 +78,7 @@ use yii\helpers\Url;
                                 'confirm' => 'Are you sure you want to delete this file?',
                                 'method' => 'post',
                             ],
-                        ]))."</td>";
+                        ])))."</td>";
                 }
                 
 

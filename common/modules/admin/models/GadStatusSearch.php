@@ -17,7 +17,7 @@ class GadStatusSearch extends GadStatus
     public function rules()
     {
         return [
-            [['id'], 'integer'],
+            [['id', 'code'], 'integer'],
             [['title'], 'safe'],
         ];
     }
@@ -59,6 +59,7 @@ class GadStatusSearch extends GadStatus
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'code' => $this->code,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title]);

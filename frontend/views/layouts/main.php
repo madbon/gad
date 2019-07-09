@@ -141,7 +141,9 @@ nav.navbar-default div.navbar-header a
             'id'=>'modal',
             'size'=>'modal-lg',
             'options' => [
-            'tabindex' => false // important for Select2 to work properly
+            'tabindex' => false, // important for Select2 to work properly
+            'data-keyboard' => false,
+            'data-backdrop' => 'static',
             ],
         ]);
         echo '<div id="modalContent"></div>';

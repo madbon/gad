@@ -43,7 +43,10 @@ class GadPlanBudgetController extends Controller
         ];
     }
 
-    
+    public function actionCreateComment()
+    {
+        
+    }
 
     public function ComputeGadBudget($ruc)
     {

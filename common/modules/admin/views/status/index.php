@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\modules\admin\models\GadStatusSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Status';
+$this->title = 'List of Status';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="gad-status-index">
@@ -25,7 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // 'id',
+            'code',
             'title',
 
             ['class' => 'yii\grid\ActionColumn'],

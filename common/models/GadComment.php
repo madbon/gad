@@ -8,15 +8,19 @@ use Yii;
  * This is the model class for table "gad_comment".
  *
  * @property int $id
- * @property int $user_id
+ * @property int $resp_user_id
+ * @property int $resp_office_c
  * @property int $record_id
- * @property string $record_tuc
  * @property int $plan_budget_id
- * @property string $plan_budget_tuc
- * @property string $region_c
- * @property string $province_c
- * @property string $citymun_c
+ * @property string $resp_region_c
+ * @property string $resp_province_c
+ * @property string $resp_citymun_c
  * @property string $comment
+ * @property int $row_no
+ * @property int $column_no
+ * @property string $row_value
+ * @property string $column_value
+ * @property string $model_name
  * @property string $attribute_name
  * @property string $date_created
  * @property string $time_created
@@ -39,15 +43,13 @@ class GadComment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'record_id', 'plan_budget_id','office_c'], 'integer'],
-            [['plan_budget_id'], 'required'],
-            [['comment'], 'string'],
+            [['resp_user_id', 'resp_office_c', 'record_id', 'plan_budget_id', 'row_no', 'column_no'], 'integer'],
+            [['plan_budget_id', 'row_no', 'column_no', 'row_value', 'column_value','comment'], 'required'],
+            [['comment', 'row_value', 'column_value'], 'string'],
             [['date_created', 'date_updated'], 'safe'],
-            [['record_tuc', 'plan_budget_tuc'], 'string', 'max' => 100],
-            [['region_c', 'province_c', 'citymun_c'], 'string', 'max' => 2],
-            [['attribute_name'], 'string', 'max' => 150],
+            [['resp_region_c', 'resp_province_c', 'resp_citymun_c'], 'string', 'max' => 2],
+            [['model_name', 'attribute_name'], 'string', 'max' => 150],
             [['time_created', 'time_updated'], 'string', 'max' => 10],
-            [['comment'],'required'],
         ];
     }
 
@@ -58,15 +60,19 @@ class GadComment extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
+            'resp_user_id' => 'Resp User ID',
+            'resp_office_c' => 'Resp Office C',
             'record_id' => 'Record ID',
-            'record_tuc' => 'Record Tuc',
             'plan_budget_id' => 'Plan Budget ID',
-            'plan_budget_tuc' => 'Plan Budget Tuc',
-            'region_c' => 'Region C',
-            'province_c' => 'Province C',
-            'citymun_c' => 'Citymun C',
-            'comment' => 'Comment',
+            'resp_region_c' => 'Resp Region C',
+            'resp_province_c' => 'Resp Province C',
+            'resp_citymun_c' => 'Resp Citymun C',
+            'comment' => 'Observation & Recommendation',
+            'row_no' => 'Row No.',
+            'column_no' => 'Column No.',
+            'row_value' => 'Row Value',
+            'column_value' => 'Column Value',
+            'model_name' => 'Model Name',
             'attribute_name' => 'Attribute Name',
             'date_created' => 'Date Created',
             'time_created' => 'Time Created',

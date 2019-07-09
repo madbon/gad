@@ -55,7 +55,11 @@ class GadRecordSearch extends GadRecord
         {
             $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C];
         }
-        else if(Yii::$app->user->can("gad_province_permission") || Yii::$app->user->can("gad_lgu_province_permission"))
+        else if(Yii::$app->user->can("gad_province_permission")) // all lgu under its province
+        {
+            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C];
+        }
+        else if(Yii::$app->user->can("gad_lgu_province_permission")) // all plan submitted by this province
         {
             $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,
             'GR.office_c' => 2];

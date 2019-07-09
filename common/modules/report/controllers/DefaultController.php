@@ -125,37 +125,40 @@ class DefaultController extends Controller
     public  function DisplayStatus($value)
     {
         $returnValue = "";
+        $query = \common\models\GadStatus::find()->where(['code' => $value])->one();
+        $title = !empty($query->title) ? $query->title : "";
+
         if($value == 0)
         {
-            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-pencil'></i> Encoding Process</span>";
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-pencil'></i> ".$title."</span>";
         }
         else if($value == 1)
         {
-            $returnValue = "<span class='label label-success'><i class='glyphicon glyphicon-search'></i> For Review by PPDO</span>";
+            $returnValue = "<span class='label label-success'><i class='glyphicon glyphicon-search'></i> ".$title."</span>";
         }
         else if($value == 2)
         {
-            $returnValue = "<span class='label label-info'><i class='glyphicon glyphicon-thumbs-up'></i> Endorsed to DILG Field Office (C/MLGOO)</span>";
+            $returnValue = "<span class='label label-info'><i class='glyphicon glyphicon-thumbs-up'></i> ".$title."</span>";
         }
         else if($value == 3)
         {
-            $returnValue = "<span class='label label-info'><i class='glyphicon glyphicon-thumbs-up'></i> Endorsed to DILG Regional Office</span>";
+            $returnValue = "<span class='label label-info'><i class='glyphicon glyphicon-thumbs-up'></i> ".$title."</span>";
         }
         else if($value == 4)
         {
-            $returnValue = "<span class='label label-primary'><i class='glyphicon glyphicon-flag'></i> Submitted to Central Office</span>";
+            $returnValue = "<span class='label label-primary'><i class='glyphicon glyphicon-flag'></i> ".$title."</span>";
         }
         else if($value == 5)
         {
-            $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-flag'></i> Returned by DILG Field Office (C/MLGOO)</span>";
+            $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-flag'></i> ".$title."</span>";
         }
         else if($value == 6)
         {
-            $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-flag'></i> Returned by DILG Regional Office</span>";
+            $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-flag'></i> ".$title."</span>";
         }
         else if($value == 7)
         {
-            $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-flag'></i> Returned by PPDO</span>";
+            $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-flag'></i> ".$title."</span>";
         }
 
         return $returnValue;
@@ -1327,16 +1330,17 @@ class DefaultController extends Controller
 
     public function countComment2($controller_id,$form_id,$id,$attribute)
     {
-        $qry = \common\models\GadComment::find()
-        ->where([
-            'plan_budget_id' => $id, 
-            'attribute_name' => $attribute,
-            'controller_id' => $controller_id, 
-            'form_id' => $form_id
-        ])->count();
+        // $qry = \common\models\GadComment::find()
+        // ->where([
+        //     'plan_budget_id' => $id, 
+        //     'attribute_name' => $attribute,
+        //     'controller_id' => $controller_id, 
+        //     'form_id' => $form_id
+        // ])->count();
         // print_r($qry->createCommand()->rawSql); exit;
         // print_r("hello".$qry); exit;
-        return $qry;
+        // return $qry;
+        return 0;
     }
 
     public function actionSaveComment($plan_budget_id,$comment,$attribute_name,$record_uc,$controller_id,$form_id)

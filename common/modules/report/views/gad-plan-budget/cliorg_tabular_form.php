@@ -16,6 +16,8 @@
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $plan["record_status"] != 1 ? 'true' : 'false',
         'enableViewComment' => 'true',
+        'countRow' => $countRow,
+        'columnNumber' => 1,
     ])
 ?>
 <?php
@@ -35,6 +37,8 @@
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $plan["record_status"] != 1 ? 'true' : 'false',
         'enableViewComment' => 'true',
+        'countRow' => $countRow,
+        'columnNumber' => 2,
     ])
 ?>
 
@@ -55,6 +59,8 @@
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $plan["record_status"] != 1 ? 'true' : 'false',
         'enableViewComment' => 'true',
+        'countRow' => $countRow,
+        'columnNumber' => 3
     ])
 ?>
 
@@ -75,6 +81,8 @@
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $plan["record_status"] != 1 ? 'true' : 'false',
         'enableViewComment' => 'true',
+        'countRow' => $countRow,
+        'columnNumber' => 4,
     ])
 ?>
 
@@ -95,6 +103,8 @@
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $plan["record_status"] != 1 ? 'true' : 'false',
         'enableViewComment' => 'true',
+        'countRow' => $countRow,
+        'columnNumber' => 5,
     ])
 ?>
 
@@ -133,6 +143,8 @@
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $plan["record_status"] != 1 ? 'true' : 'false',
         'enableViewComment' => 'true',
+        'countRow' => $countRow,
+        'columnNumber' => 6,
     ])
 ?>
 
@@ -153,6 +165,8 @@
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $plan["record_status"] != 1 ? 'true' : 'false',
         'enableViewComment' => 'true',
+        'countRow' => $countRow,
+        'columnNumber' => 7,
     ])
 ?>
 
@@ -173,6 +187,8 @@
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $plan["record_status"] != 1 ? 'true' : 'false',
         'enableViewComment' => 'true',
+        'countRow' => $countRow,
+        'columnNumber' => 8,
     ])
 ?>
 
@@ -193,5 +209,7 @@
         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $plan["record_status"] != 1 ? 'true' : 'false',
         'enableViewComment' => 'true',
+        'countRow' => $countRow,
+        'columnNumber' => 9,
     ])
 ?>

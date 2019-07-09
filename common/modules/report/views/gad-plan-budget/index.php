@@ -613,7 +613,9 @@ $this->title = "Annual GAD Plan and Budget";
                         $total_b = 0;
                         $total_a = 0;
                         $grand_total = 0;
+                        $countRow = 0;
                         foreach ($dataPlanBudget as $key2 => $plan) {
+                            $countRow += 1;
                             if($plan["focused_id"] == 1)
                             {
                                 $countClient ++;
@@ -647,7 +649,8 @@ $this->title = "Annual GAD Plan and Budget";
                             <tr>
                                 <?php
                                     echo $this->render('cliorg_tabular_form',[
-                                        'plan' => $plan
+                                        'plan' => $plan,
+                                        'countRow' => $countRow,
                                     ]);
                                 ?>
                                 <td style="border-bottom: none;">
@@ -856,7 +859,10 @@ $this->title = "Annual GAD Plan and Budget";
                         $notnull_apPpaValue = null;
                         // $total_c = 0;
                         $varTotalGadAttributedProBudget = 0;
-                        foreach ($dataAttributedProgram as $key => $dap) { ?>
+                        $countRowAttribute = 0;
+                        foreach ($dataAttributedProgram as $key => $dap) { 
+                            $countRowAttribute += 1;
+                            ?>
 
                             <tr class="attributed_program_td">
                                 <?php
@@ -876,6 +882,9 @@ $this->title = "Annual GAD Plan and Budget";
                                         'enableComment' => Yii::$app->user->can("gad_create_comment") && $dap["record_status"] != 1 ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can("gad_edit_cell") && $dap["record_status"] != 1  ? 'true' : 'false',
                                         'enableViewComment' => 'true',
+                                        'countRow' => $countRowAttribute,
+                                        'columnNumber' => 1,
+
                                     ])
                                 ?>
                                 <!-- COMPUTATION OF GAD ATTRIBUTED PROGRAM/PROJECT BUDGET -->
@@ -940,6 +949,8 @@ $this->title = "Annual GAD Plan and Budget";
                                         'enableComment' => Yii::$app->user->can("gad_create_comment") && $dap["record_status"] != 1 ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can("gad_edit_cell") && $dap["record_status"] != 1  ? 'true' : 'false',
                                         'enableViewComment' => 'true',
+                                        'countRow' => $countRowAttribute,
+                                        'columnNumber' => 2,
                                     ])
                                 ?>
                                 <?php
@@ -959,6 +970,8 @@ $this->title = "Annual GAD Plan and Budget";
                                         'enableComment' => Yii::$app->user->can("gad_create_comment") && $dap["record_status"] != 1 ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can("gad_edit_cell") && $dap["record_status"] != 1  ? 'true' : 'false',
                                         'enableViewComment' => 'true',
+                                        'countRow' => $countRowAttribute,
+                                        'columnNumber' => 3,
                                     ])
                                 ?>
                                 <?php
@@ -994,6 +1007,8 @@ $this->title = "Annual GAD Plan and Budget";
                                          'enableComment' => Yii::$app->user->can("gad_create_comment") && $dap["record_status"] != 1 ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can("gad_edit_cell") && $dap["record_status"] != 1  ? 'true' : 'false',
                                         'enableViewComment' => 'true',
+                                        'countRow' => $countRowAttribute,
+                                        'columnNumber' => 4,
                                     ])
                                 ?>
                                 <?php
@@ -1013,6 +1028,8 @@ $this->title = "Annual GAD Plan and Budget";
                                         'enableComment' => Yii::$app->user->can("gad_create_comment") && $dap["record_status"] != 1 ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can("gad_edit_cell") && $dap["record_status"] != 1  ? 'true' : 'false',
                                         'enableViewComment' => 'true',
+                                        'countRow' => $countRowAttribute,
+                                        'columnNumber' => 5,
                                     ])
                                 ?>
                                 <td>

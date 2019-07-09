@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use common\modules\report\controllers\DefaultController;
+use yii\helpers\Url;
 ?>
 <?php if(DefaultController::countComment2($controller_id,$form_id,$row_id,$attribute_name) > 0) { ?>
 <td style="<?= $customStyle ?>" title="<?= $column_title ?>" colspan="<?= $colspanValue ?>" id="cell-<?= $attribute_name ?>-<?= $row_id ?>" class="common-cell-container has-comment"> <!-- put border if has comment  -->
@@ -76,7 +77,6 @@ use common\modules\report\controllers\DefaultController;
 
                 if(enableEdit == "true")
                 {
-
                     $(".btn-edit-cell").hide(); // hide btn edit if not active cell
                     $("#btn-edit-"+attr_name+"-'.$row_id.'").show(); // if active show btn edit
                 }
@@ -88,12 +88,11 @@ use common\modules\report\controllers\DefaultController;
                 if(enableComment == "true")
                 {
                     $(".btn-comment-cell").hide(); // hide btn comment if not active cell
-                    $("#btn-comment-"+attr_name+"-'.$row_id.'").show(); // if active show btn common
+                    $("#btn-comment-'.$attribute_name.'-'.$row_id.'").show(); // if active show btn common
                 }
                 else
                 {
                     $(".btn-comment-cell").hide(); // hide btn comment if not active cell
-                    
                 }
 
                 if(enableViewComment == "true")
@@ -137,8 +136,6 @@ use common\modules\report\controllers\DefaultController;
                     
                     $("#txt-edit-'.$attribute_name.'-'.$row_id.'").val(`'.$cell_value.'`);
                     $("#div-edit-"+attr_name+"-'.$row_id.'").slideDown(300);
-
-                    
                 });
             ');
         ?>
@@ -199,18 +196,24 @@ use common\modules\report\controllers\DefaultController;
 
     <!-- button comment and textarea -->
         <!-- button comment -->
-        <button id="btn-comment-<?= $attribute_name ?>-<?= $row_id ?>" type="button" class="btn btn-warning btn-xs btn-comment-cell" title="Comment" style="display: none;">
-            <span class="glyphicon glyphicon-comment"></span>
-        </button>
         <?php
-            $this->registerJs('
-                $("#btn-comment-'.$attribute_name.'-'.$row_id.'").click(function(){
-                    var attr_name = "'.$attribute_name.'";
-                    $(".div-tooltip-form").hide();
-                    $("#txt-comment-'.$attribute_name.'-'.$row_id.'").val("");
-                    $("#div-comment-"+attr_name+"-'.$row_id.'").slideDown(300);
-                });
-            ');
+            // $t = '@web/report/gad-plan-budget/create?row_id='."1"."&ruc="."ruc"."&onstep="."1"."&tocreate="."1"."&model_name=GadPlanBudget";
+            $urlCreateComment = '@web/report/comment/create?plan_id='.$row_id.'&row_no='.$countRow.'&column_no='.$columnNumber.'&attribute_name='.$attribute_name.'&column_title='.(urlencode($column_title)).' ';
+            echo Html::button('<span class="glyphicon glyphicon-comment"></span>', ['value'=>Url::to($urlCreateComment),
+            'class' => 'btn btn-info btn-xs modalButton btn-comment-cell', 'id' => 'btn-comment-'.$attribute_name.'-'.$row_id.'','style' => 'display:none;']);
+        ?>
+        <!-- <button id="btn-comment-<?= $attribute_name ?>-<?= $row_id ?>" type="button" class="btn btn-warning btn-xs btn-comment-cell" title="Comment" style="display: none;">
+            <span class="glyphicon glyphicon-comment"></span>
+        </button> -->
+        <?php
+            // $this->registerJs('
+            //     $("#btn-comment-'.$attribute_name.'-'.$row_id.'").click(function(){
+            //         var attr_name = "'.$attribute_name.'";
+            //         $(".div-tooltip-form").hide();
+            //         $("#txt-comment-'.$attribute_name.'-'.$row_id.'").val("");
+            //         $("#div-comment-"+attr_name+"-'.$row_id.'").slideDown(300);
+            //     });
+            // ');
         ?>
         <!-- Comment Box -->
         <div id="div-comment-<?= $attribute_name ?>-<?= $row_id ?>" class="bubble-comment div-tooltip-form unik-div-tooltip-form-<?= $row_id ?>">
