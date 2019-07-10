@@ -14,21 +14,52 @@ use richardfan\widget\JSRegister;
     }
 
     table#comment_list th,table td{
-        width:430px;
+        /*width:430px;*/
+    }
+    table#comment_list thead th:nth-child(2)
+    {
+        width: 100%;
+    }
+    table#comment_list thead th:first-child
+    {
+        width: 200px;
+        text-align: center;
+    }
+    table#comment_list tbody td:first-child
+    {
+        width: 200px;
+    }
+    table#comment_list tboody td:nth-child(2)
+    {
+        width: 250px;
     }
     table#comment_list  tbody{
       display:block;
       height:200px;
       overflow:auto;
     }
+    div.mess-success
+    {
+        background-color: #5cb85c;
+        color:white;
+    }
+    div.confirm
+    {
+        height: 50px;
+        width: 100%;     
+        border-radius: 2px;   
+        padding-top: 15px;
+        padding-left: 10px;
+    }
 
 </style>
 
 <div class="gad-comment-form">
-
+<div class="confirm" style="display: none;"></div>
     <?php $form = ActiveForm::begin(); ?>
     <?= $form->field($model, 'plan_budget_id')->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'attribute_name')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'record_tuc')->hiddenInput()->label(false) ?>
 
     <div class="row">
         <div class="col-sm-4">
@@ -51,15 +82,108 @@ use richardfan\widget\JSRegister;
             <div class="form-group pull-right">
 
                 <?= Html::button('Save', ['class' => 'btn btn-success', 'id' => 'saveObservation', 'type' => 'submit']) ?>
-
                 <?php 
                     $url = \yii\helpers\Url::to(['/report/comment/create-comment']);
                     $urlLoadComment = \yii\helpers\Url::to(['/report/comment/load-comment']); 
+                    $urlEditComment = \yii\helpers\Url::to(['/report/comment/edit-comment']); 
                 ?>
                 <?php JSRegister::begin(); ?>
                     <script>
+
+                        var record_tuc = $.trim($("#gadcomment-record_tuc").val());
+                        function loadcomment()
+                        {
+                            $.ajax({
+                                url: "<?= $urlLoadComment ?>",
+                                data: { 
+                                        record_tuc:record_tuc
+                                    }
+                                }).done(function(data) {
+                                    $("#comment_list tbody").html("");
+                                    $.each(data, function(key, value){
+                                        var cols = "";
+                                        cols += "<tr>"
+                                        cols +=     "<td> Row "+value.row_no+"<br/>"+value.row_value+"</td>";
+                                        cols +=     "<td style='white-space:pre-line;'> Column "+value.column_no+". "+value.column_value+"<br/>"+value.comment+"</td>";
+                                        cols +=     "<td><button class='btn btn-primary btn-xs' id='editcomment-"+value.comment_id+"'><span class='glyphicon glyphicon-edit'></span></button>";
+                                        cols +=     "&nbsp;<button class='btn btn-danger btn-xs' id='deletecomment-"+value.comment_id+"'><span class='glyphicon glyphicon-trash'></span></button></td>";
+                                        cols += "</tr>";
+                                        $("#comment_list tbody").append(cols);
+
+                                        $("#editcomment-"+value.comment_id+"").click(function(){
+                                            var comment_id = value.comment_id;
+                                            $.ajax({
+                                                url: "<?= $urlEditComment ?>",
+                                                data: { 
+                                                        comment_id:comment_id
+                                                    }
+                                                }).done(function(data1) {
+                                                    console.log(data1.row_no);
+                                            });
+                                        });
+                                    });
+                            });
+                        }
+
+                        loadcomment();
+
                         $("#gadcomment-comment").keyup(function(){
-                            if($.trim($("#gadcomment-comment").val()) == "")
+                            if($.trim($("#gadcomment-comment").val()) == "" || $.trim($("#gadcomment-row_value").val()) == "" || $.trim($("#gadcomment-row_no").val()) == "" || $.trim($("#gadcomment-column_no").val()) == "" || $.trim($("#gadcomment-column_value").val()) == "" || $.trim($("#gadcomment-attribute_name").val()) == "")
+                            {
+                                $("#saveObservation").attr("type","submit");
+                            }
+                            else
+                            {
+                                $("#saveObservation").attr("type","button");
+                            }
+                        });
+
+                        $("#gadcomment-row_no").keyup(function(){
+                            if($.trim($("#gadcomment-comment").val()) == "" || $.trim($("#gadcomment-row_value").val()) == "" || $.trim($("#gadcomment-row_no").val()) == "" || $.trim($("#gadcomment-column_no").val()) == "" || $.trim($("#gadcomment-column_value").val()) == "" || $.trim($("#gadcomment-attribute_name").val()) == "")
+                            {
+                                $("#saveObservation").attr("type","submit");
+                            }
+                            else
+                            {
+                                $("#saveObservation").attr("type","button");
+                            }
+                        });
+
+                        $("#gadcomment-row_value").keyup(function(){
+                            if($.trim($("#gadcomment-comment").val()) == "" || $.trim($("#gadcomment-row_value").val()) == "" || $.trim($("#gadcomment-row_no").val()) == "" || $.trim($("#gadcomment-column_no").val()) == "" || $.trim($("#gadcomment-column_value").val()) == "" || $.trim($("#gadcomment-attribute_name").val()) == "")
+                            {
+                                $("#saveObservation").attr("type","submit");
+                            }
+                            else
+                            {
+                                $("#saveObservation").attr("type","button");
+                            }
+                        });
+
+                        $("#gadcomment-column_no").keyup(function(){
+                            if($.trim($("#gadcomment-comment").val()) == "" || $.trim($("#gadcomment-row_value").val()) == "" || $.trim($("#gadcomment-row_no").val()) == "" || $.trim($("#gadcomment-column_no").val()) == "" || $.trim($("#gadcomment-column_value").val()) == "" || $.trim($("#gadcomment-attribute_name").val()) == "")
+                            {
+                                $("#saveObservation").attr("type","submit");
+                            }
+                            else
+                            {
+                                $("#saveObservation").attr("type","button");
+                            }
+                        });
+
+                        $("#gadcomment-column_value").keyup(function(){
+                            if($.trim($("#gadcomment-comment").val()) == "" || $.trim($("#gadcomment-row_value").val()) == "" || $.trim($("#gadcomment-row_no").val()) == "" || $.trim($("#gadcomment-column_no").val()) == "" || $.trim($("#gadcomment-column_value").val()) == "" || $.trim($("#gadcomment-attribute_name").val()) == "")
+                            {
+                                $("#saveObservation").attr("type","submit");
+                            }
+                            else
+                            {
+                                $("#saveObservation").attr("type","button");
+                            }
+                        });
+
+                        $("#gadcomment-attribute_name").keyup(function(){
+                            if($.trim($("#gadcomment-comment").val()) == "" || $.trim($("#gadcomment-row_value").val()) == "" || $.trim($("#gadcomment-row_no").val()) == "" || $.trim($("#gadcomment-column_no").val()) == "" || $.trim($("#gadcomment-column_value").val()) == "" || $.trim($("#gadcomment-attribute_name").val()) == "")
                             {
                                 $("#saveObservation").attr("type","submit");
                             }
@@ -79,9 +203,9 @@ use richardfan\widget\JSRegister;
                             var comment = $.trim($("#gadcomment-comment").val());
                             var plan_budget_id = $.trim($("#gadcomment-plan_budget_id").val());
 
-                            if($.trim($("#gadcomment-comment").val()) == "")
+                            if($.trim($("#gadcomment-comment").val()) == "" || $.trim($("#gadcomment-row_value").val()) == "" || $.trim($("#gadcomment-row_no").val()) == "" || $.trim($("#gadcomment-column_no").val()) == "" || $.trim($("#gadcomment-column_value").val()) == "" || $.trim($("#gadcomment-attribute_name").val()) == "")
                             {
-
+                                $("#saveObservation").attr("type","submit");
                             }
                             else
                             {
@@ -98,27 +222,25 @@ use richardfan\widget\JSRegister;
                                             column_title:column_title
                                         }
                                     }).done(function(result) {
-                                        
+
+                                        $(".confirm").addClass("mess-success");
+                                        $(".confirm").text("Observation and Recommendation has been saved");
+                                        $(".confirm").slideDown(300); 
+                                        loadcomment();
+                                        setTimeout(function(){
+                                            $(".confirm").slideUp(300); 
+                                        }, 3000);
+
+                                        $("#gadcomment-row_no").val("");
+                                        $("#gadcomment-row_value").val("");
+                                        $("#gadcomment-column_no").val("");
+                                        $("#gadcomment-column_value").val("");
+                                        $("#gadcomment-column_title").val("");
+                                        $("#gadcomment-attribute_name").val("");
+                                        $("#gadcomment-comment").val("");
+                                        $("#gadcomment-plan_budget_id").val("");
                                 });
                             }
-                        });
-
-                        var plan_budget_id2 = $.trim($("#gadcomment-plan_budget_id").val());
-
-                        $.ajax({
-                            url: "<?= $urlLoadComment ?>",
-                            data: { 
-                                    plan_budget_id:plan_budget_id2
-                                }
-                            }).done(function(data) {
-                                $.each(data, function(key, value){
-                                    var cols = "";
-                                    cols += "<tr>"
-                                    cols +=     "<td> Row "+value.row_no+"<br/>"+value.row_value+"</td>";
-                                    cols +=     "<td> Column "+value.column_no+". "+value.column_value+"<br/>"+value.comment+"</td>";
-                                    cols += "</tr>";
-                                    $("#comment_list tbody").append(cols);
-                                });
                         });
                     </script>
                 <?php JSRegister::end(); ?>

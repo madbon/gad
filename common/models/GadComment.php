@@ -32,6 +32,7 @@ class GadComment extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    public $record_tuc;
     public static function tableName()
     {
         return 'gad_comment';
@@ -44,9 +45,9 @@ class GadComment extends \yii\db\ActiveRecord
     {
         return [
             [['resp_user_id', 'resp_office_c', 'record_id', 'plan_budget_id', 'row_no', 'column_no'], 'integer'],
-            [['plan_budget_id', 'row_no', 'column_no', 'row_value', 'column_value','comment'], 'required'],
+            [['row_no', 'column_no', 'row_value', 'column_value','comment'], 'required'],
             [['comment', 'row_value', 'column_value'], 'string'],
-            [['date_created', 'date_updated'], 'safe'],
+            [['date_created', 'date_updated','record_tuc'], 'safe'],
             [['resp_region_c', 'resp_province_c', 'resp_citymun_c'], 'string', 'max' => 2],
             [['model_name', 'attribute_name'], 'string', 'max' => 150],
             [['time_created', 'time_updated'], 'string', 'max' => 10],

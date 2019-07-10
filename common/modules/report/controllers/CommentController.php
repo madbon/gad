@@ -29,7 +29,7 @@ class CommentController extends Controller
         ];
     }
 
-    public function actionLoadComment($plan_budget_id)
+    public function actionLoadComment($record_tuc)
     {
         $qry = (new \yii\db\Query())
         ->select([
@@ -51,11 +51,12 @@ class CommentController extends Controller
         ])
         ->from('gad_comment GC')
         ->leftJoin(['UI' => 'user_info'], 'UI.user_id = GC.resp_user_id')
+        ->leftJoin(['REC' => 'gad_record'], 'REC.id = GC.record_id')
         ->leftJoin(['OFC' => 'tbloffice'], 'OFC.OFFICE_C = GC.resp_office_c')
         ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = GC.resp_region_c')
         ->leftJoin(['PRV' => 'tblprovince'], 'PRV.province_c = GC.resp_province_c')
         ->leftJoin(['CTC' => 'tblcitymun'], 'CTC.citymun_c = GC.resp_citymun_c AND CTC.province_c = GC.resp_province_c')
-        // ->where(['GC.record_id' => $record_id])
+        ->where(['REC.tuc' => $record_tuc])
         ->groupBy(['GC.id'])
         ->orderBy(['GC.id' => SORT_DESC])
         ->all();
@@ -84,6 +85,19 @@ class CommentController extends Controller
         
         \Yii::$app->response->format = 'json';
         return $arr;
+    }
+
+    public function actionEditComment($comment_id)
+    {
+        $qry = GadComment::find()->where(['id' => $comment_id])->one();
+
+        $arr = [
+            'row_no' => $qry->row_no
+        ];
+
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
     }
 
     /**
@@ -119,7 +133,7 @@ class CommentController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($plan_id,$row_no,$column_no,$attribute_name,$column_title)
+    public function actionCreate($plan_id,$row_no,$column_no,$attribute_name,$column_title,$ruc)
     {
         $model = new GadComment();
         $searchModel = new GadCommentSearch();
@@ -130,6 +144,7 @@ class CommentController extends Controller
         $model->attribute_name = $attribute_name;
         $model->plan_budget_id = $plan_id;
         $model->column_title = $column_title;
+        $model->record_tuc = $ruc;
 
         $qry = \common\models\GadPlanBudget::find()->where(['id' => $plan_id])->one();
         $project_title = !empty($qry->ppa_value) ? $qry->ppa_value : "";
