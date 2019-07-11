@@ -80,6 +80,7 @@ class CommentController extends Controller
                         'column_value' => $item["column_value"],
                         'row_no' => $item["row_no"],
                         'row_value' => $item["row_value"],
+                        'column_title' => $item["column_title"]
                      ];
         }
         
@@ -92,7 +93,16 @@ class CommentController extends Controller
         $qry = GadComment::find()->where(['id' => $comment_id])->one();
 
         $arr = [
-            'row_no' => $qry->row_no
+            'row_no' => $qry->row_no,
+            'column_no' => $qry->column_no,
+            'column_title' => $qry->column_title,
+            'row_value' => $qry->row_value,
+            'column_value' => $qry->column_value,
+            'comment' => $qry->comment,
+            'plan_budget_id' => $qry->plan_budget_id,
+            'attribute_name' => $qry->attribute_name,
+            'record_id' => $qry->record_id,
+            'id' => $qry->id
         ];
 
         \Yii::$app->response->format = 'json';
@@ -210,9 +220,20 @@ class CommentController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreateComment($row_no,$row_value,$column_no,$column_value,$attribute_name,$comment,$plan_budget_id,$column_title)
+    public function actionCreateComment()
     {
+
         $model = new GadComment();
+
+        $arrVal = Yii::$app->request->post();
+        $row_no = $arrVal["row_no"];
+        $row_value = $arrVal["row_value"];
+        $column_no = $arrVal["column_no"];
+        $column_value = $arrVal["column_value"];
+        $attribute_name = $arrVal["attribute_name"];
+        $comment = $arrVal["comment"];
+        $plan_budget_id = $arrVal["plan_budget_id"];
+        $column_title = $arrVal["column_title"];
 
         $model->row_no = $row_no;
         $model->column_no = $column_no;
@@ -220,6 +241,10 @@ class CommentController extends Controller
         $model->plan_budget_id = $plan_budget_id;
         $model->comment = $comment;
         $model->column_title = $column_title;
+
+        date_default_timezone_set("Asia/Manila");
+        $model->date_created = date('Y-m-d');
+        $model->time_created = date("h:i:sa");
 
         $qry = \common\models\GadPlanBudget::find()->where(['id' => $plan_budget_id])->one();
 
@@ -252,6 +277,17 @@ class CommentController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
+    public function actionUpdateComment()
+    {
+        $arrVal = Yii::$app->request->post();
+        $qry = GadComment::find()->where(['id' => $arrVal['id']])->one();
+        $qry->comment = $arrVal["comment"];
+        date_default_timezone_set("Asia/Manila");
+        $qry->date_updated = date('Y-m-d');
+        $qry->time_updated = date("h:i:sa");
+        $qry->save(false);
+    }
+
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -272,6 +308,12 @@ class CommentController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
+
+    public function actionDeleteComment($comment_id)
+    {
+        $this->findModel($comment_id)->delete();
+    }
+
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();

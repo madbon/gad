@@ -60,6 +60,8 @@ use richardfan\widget\JSRegister;
     <?= $form->field($model, 'plan_budget_id')->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'attribute_name')->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'record_tuc')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'record_id')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
 
     <div class="row">
         <div class="col-sm-4">
@@ -83,14 +85,25 @@ use richardfan\widget\JSRegister;
 
                 <?= Html::button('Save', ['class' => 'btn btn-success', 'id' => 'saveObservation', 'type' => 'submit']) ?>
                 <?php 
-                    $url = \yii\helpers\Url::to(['/report/comment/create-comment']);
+                    $urlCreate = \yii\helpers\Url::to(['/report/comment/create-comment']);
                     $urlLoadComment = \yii\helpers\Url::to(['/report/comment/load-comment']); 
-                    $urlEditComment = \yii\helpers\Url::to(['/report/comment/edit-comment']); 
+                    $urlEditComment = \yii\helpers\Url::to(['/report/comment/edit-comment']);
+                    $urlUpdate = \yii\helpers\Url::to(['/report/comment/update-comment']); 
+                    $urlDelete = \yii\helpers\Url::to(['/report/comment/delete-comment']); 
                 ?>
                 <?php JSRegister::begin(); ?>
                     <script>
 
                         var record_tuc = $.trim($("#gadcomment-record_tuc").val());
+                        function triggermessage(type,message)
+                        {
+                            $(".confirm").addClass(type);
+                            $(".confirm").text(message);
+                            $(".confirm").slideDown(300); 
+                            setTimeout(function(){
+                                $(".confirm").slideUp(300); 
+                            }, 3000);
+                        }
                         function loadcomment()
                         {
                             $.ajax({
@@ -104,7 +117,7 @@ use richardfan\widget\JSRegister;
                                         var cols = "";
                                         cols += "<tr>"
                                         cols +=     "<td> Row "+value.row_no+"<br/>"+value.row_value+"</td>";
-                                        cols +=     "<td style='white-space:pre-line;'> Column "+value.column_no+". "+value.column_value+"<br/>"+value.comment+"</td>";
+                                        cols +=     "<td style='white-space:pre-line;'> Column "+value.column_no+". ("+value.column_title+") <i>"+value.column_value+"</i> <br/>"+value.comment+"</td>";
                                         cols +=     "<td><button class='btn btn-primary btn-xs' id='editcomment-"+value.comment_id+"'><span class='glyphicon glyphicon-edit'></span></button>";
                                         cols +=     "&nbsp;<button class='btn btn-danger btn-xs' id='deletecomment-"+value.comment_id+"'><span class='glyphicon glyphicon-trash'></span></button></td>";
                                         cols += "</tr>";
@@ -118,8 +131,37 @@ use richardfan\widget\JSRegister;
                                                         comment_id:comment_id
                                                     }
                                                 }).done(function(data1) {
-                                                    console.log(data1.row_no);
+                                                    $("#gadcomment-row_no").val(data1.row_no);
+                                                    $("#gadcomment-row_value").val(data1.row_value);
+                                                    $("#gadcomment-column_no").val(data1.column_no);
+                                                    $("#gadcomment-column_title").val(data1.column_title);
+                                                    $("#gadcomment-column_value").val(data1.column_value);
+                                                    $("#gadcomment-comment").val(data1.comment);
+                                                    $("#gadcomment-plan_budget_id").val(data1.plan_budget_id);
+                                                    $("#gadcomment-attribute_name").val(data1.attribute_name);
+                                                    $("#gadcomment-record_id").val(data1.record_id);
+                                                    $("#gadcomment-id").val(data1.id);
+                                                    $("#saveObservation").text("Update");
                                             });
+                                        });
+                                        $("#deletecomment-"+value.comment_id+"").click(function(){
+                                            var comment_id = value.comment_id;
+                                            if(confirm("Are you sure you want to delete this item?"))
+                                            {
+                                                $.ajax({
+                                                    url: "<?= $urlDelete ?>",
+                                                    data: { 
+                                                            comment_id:comment_id
+                                                        }
+                                                    }).done(function(data) {
+                                                        triggermessage("mess-success","Observation and Recommendation has been deleted");
+                                                        loadcomment();
+                                                });
+                                            }
+                                            else
+                                            {
+                                                
+                                            }
                                         });
                                     });
                             });
@@ -202,6 +244,17 @@ use richardfan\widget\JSRegister;
                             var attribute_name = $.trim($("#gadcomment-attribute_name").val());
                             var comment = $.trim($("#gadcomment-comment").val());
                             var plan_budget_id = $.trim($("#gadcomment-plan_budget_id").val());
+                            var id = $.trim($("#gadcomment-id").val());
+                            var route = "";
+
+                            if($("#saveObservation").text() == "Save")
+                            {
+                                route = "<?= $urlCreate ?>";
+                            }
+                            else
+                            {
+                                route = "<?= $urlUpdate ?>";
+                            }
 
                             if($.trim($("#gadcomment-comment").val()) == "" || $.trim($("#gadcomment-row_value").val()) == "" || $.trim($("#gadcomment-row_no").val()) == "" || $.trim($("#gadcomment-column_no").val()) == "" || $.trim($("#gadcomment-column_value").val()) == "" || $.trim($("#gadcomment-attribute_name").val()) == "")
                             {
@@ -210,7 +263,8 @@ use richardfan\widget\JSRegister;
                             else
                             {
                                 $.ajax({
-                                    url: "<?= $url ?>",
+                                    type: "POST",
+                                    url: route,
                                     data: { 
                                             row_no:row_no,
                                             row_value:row_value,
@@ -219,17 +273,19 @@ use richardfan\widget\JSRegister;
                                             attribute_name:attribute_name,
                                             comment:comment,
                                             plan_budget_id:plan_budget_id,
-                                            column_title:column_title
+                                            column_title:column_title,
+                                            id:id
                                         }
                                     }).done(function(result) {
-
-                                        $(".confirm").addClass("mess-success");
-                                        $(".confirm").text("Observation and Recommendation has been saved");
-                                        $(".confirm").slideDown(300); 
+                                        if($("#saveObservation").text() == "Save")
+                                        {
+                                            triggermessage("mess-success","Observation and Recommend has been saved");
+                                        }
+                                        else
+                                        {
+                                            triggermessage("mess-success","Observation and Recommend has been changed");
+                                        }
                                         loadcomment();
-                                        setTimeout(function(){
-                                            $(".confirm").slideUp(300); 
-                                        }, 3000);
 
                                         $("#gadcomment-row_no").val("");
                                         $("#gadcomment-row_value").val("");
