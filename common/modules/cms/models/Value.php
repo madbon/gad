@@ -36,7 +36,7 @@ class Value extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'bpls_values';
+        return 'gad_cms_values';
     }
 
     /**

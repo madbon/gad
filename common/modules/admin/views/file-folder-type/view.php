@@ -7,13 +7,13 @@ use yii\widgets\DetailView;
 /* @var $model common\models\GadFileFolderType */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Gad File Folder Types', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'File Types', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="gad-file-folder-type-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!-- <h1><?php // Html::encode($this->title) ?></h1> -->
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>

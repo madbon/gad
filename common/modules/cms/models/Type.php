@@ -19,7 +19,7 @@ class Type extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'bpls_type';
+        return 'gad_cms_type';
     }
 
     /**

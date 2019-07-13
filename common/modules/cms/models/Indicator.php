@@ -30,7 +30,7 @@ class Indicator extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'bpls_indicator';
+        return 'gad_cms_indicator';
     }
 
     /**

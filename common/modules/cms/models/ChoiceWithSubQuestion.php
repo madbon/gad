@@ -20,7 +20,7 @@ class ChoiceWithSubQuestion extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'bpls_choice_with_subquestion';
+        return 'gad_cms_choice_with_subquestion';
     }
 
     /**

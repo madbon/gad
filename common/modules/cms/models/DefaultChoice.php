@@ -17,7 +17,7 @@ class DefaultChoice extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'bpls_ind_default_choices';
+        return 'gad_cms_ind_default_choices';
     }
 
     /**

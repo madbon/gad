@@ -30,7 +30,10 @@
         "phpoffice/phpspreadsheet": "^1.7",
         "miloschuman/yii2-highcharts-widget": "^7.0",
         "phpoffice/phpword": "^0.16.0",
-        "kartik-v/yii2-date-range": "*"
+        "kartik-v/yii2-date-range": "*",
+        "symfony/dom-crawler": "2.8",
+        "symfony/css-selector": "2.8",
+        "wbraganca/yii2-dynamicform": "2.0.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

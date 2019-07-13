@@ -123,7 +123,7 @@ class GadAccomplishmentReportController extends Controller
             'REC.status as record_status'
         ])
         ->from('gad_accomplishment_report AR')
-        ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = AR.ppa_focused_id')
+        // ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = AR.ppa_focused_id')
         ->leftJoin(['GC' => 'gad_comment'], 'GC.plan_budget_id = AR.id')
         ->leftJoin(['GF' => 'gad_focused'], 'GF.id = AR.focused_id')
         ->leftJoin(['IC' => 'gad_inner_category'], 'IC.id = AR.inner_category_id')
@@ -280,7 +280,7 @@ class GadAccomplishmentReportController extends Controller
             'REC.status as record_status'
         ])
         ->from('gad_accomplishment_report AR')
-        ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = AR.ppa_focused_id')
+        // ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = AR.ppa_focused_id')
         ->leftJoin(['GC' => 'gad_comment'], 'GC.plan_budget_id = AR.id')
         ->leftJoin(['GF' => 'gad_focused'], 'GF.id = AR.focused_id')
         ->leftJoin(['IC' => 'gad_inner_category'], 'IC.id = AR.inner_category_id')

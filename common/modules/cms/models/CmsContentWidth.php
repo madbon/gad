@@ -18,7 +18,7 @@ class CmsContentWidth extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'bpls_content_width';
+        return 'gad_cms_content_width';
     }
 
     /**

@@ -25,7 +25,7 @@ class SubQuestionValue extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'cms_sub_question_value';
+        return 'gad_cms_sub_question_value';
     }
 
     /**

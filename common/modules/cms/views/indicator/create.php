@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="indicator-create">
 
-    <h3 class="page-header"><?= Html::encode($this->title) ?></h3>
+    <!-- <h3 class="page-header"><?php // Html::encode($this->title) ?></h3> -->
  
 	    <?= $this->render('_form', [
 	        'model' => $model,

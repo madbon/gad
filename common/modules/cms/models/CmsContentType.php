@@ -18,7 +18,7 @@ class CmsContentType extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'bpls_content_type';
+        return 'gad_cms_content_type';
     }
 
     /**

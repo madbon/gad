@@ -8,12 +8,12 @@ use yii\helpers\Url;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Categories';
-// $this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="category-index"> 
     <div class="box box-primary">
         <div class="box-header">
-              <h3 class="box-title"><strong><?= Html::encode($this->title) ?></strong></h3>
+              <!-- <h3 class="box-title"><strong><?php // Html::encode($this->title) ?></strong></h3> -->
             <div class="form-group">
                 <?= Html::a('<span class="glyphicon glyphicon-pencil"> </span> &nbsp;Create', ['create'], ['class' => 'btn btn-success']) ?>
             </div>

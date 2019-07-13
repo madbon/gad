@@ -23,7 +23,7 @@ class SubQuestion extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'bpls_sub_question';
+        return 'gad_cms_sub_question';
     }
 
     /**

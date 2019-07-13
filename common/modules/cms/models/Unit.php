@@ -19,7 +19,7 @@ class Unit extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'bpls_unit';
+        return 'gad_cms_unit';
     }
 
     /**

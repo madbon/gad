@@ -20,7 +20,7 @@ class Frequency extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'bpls_frequency';
+        return 'gad_cms_frequency';
     }
 
     /**

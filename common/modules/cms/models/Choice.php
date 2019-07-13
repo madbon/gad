@@ -20,7 +20,7 @@ class Choice extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'bpls_ind_choices';
+        return 'gad_cms_ind_choices';
     }
 
     /**

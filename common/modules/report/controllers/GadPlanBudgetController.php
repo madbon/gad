@@ -112,7 +112,7 @@ class GadPlanBudgetController extends Controller
         ->select([
             'PB.id',
             'PB.ppa_value',
-            'IF(PB.ppa_focused_id = 0, PB.cause_gender_issue,CF.title) as activity_category',
+            // 'IF(PB.ppa_focused_id = 0, PB.cause_gender_issue,CF.title) as activity_category',
             'PB.cause_gender_issue as other_activity_category',
             'PB.objective',
             'PB.relevant_lgu_program_project',
@@ -133,7 +133,7 @@ class GadPlanBudgetController extends Controller
             'PB.focused_id'
         ])
         ->from('gad_plan_budget PB')
-        ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = PB.ppa_focused_id')
+        // ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = PB.ppa_focused_id')
         ->leftJoin(['GC' => 'gad_comment'], 'GC.plan_budget_id = PB.id')
         ->leftJoin(['GF' => 'gad_focused'], 'GF.id = PB.focused_id')
         ->leftJoin(['IC' => 'gad_inner_category'], 'IC.id = PB.inner_category_id')
@@ -310,7 +310,7 @@ class GadPlanBudgetController extends Controller
         ->select([
             'PB.id',
             'PB.ppa_value',
-            'IF(PB.ppa_focused_id = 0, PB.cause_gender_issue,CF.title) as activity_category',
+            // 'IF(PB.ppa_focused_id = 0, PB.cause_gender_issue,CF.title) as activity_category',
             'PB.cause_gender_issue as other_activity_category',
             'PB.objective',
             'PB.relevant_lgu_program_project',
@@ -333,7 +333,7 @@ class GadPlanBudgetController extends Controller
             'REC.status as record_status'
         ])
         ->from('gad_plan_budget PB')
-        ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = PB.ppa_focused_id')
+        // ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = PB.ppa_focused_id')
         ->leftJoin(['GC' => 'gad_comment'], 'GC.plan_budget_id = PB.id')
         ->leftJoin(['GF' => 'gad_focused'], 'GF.id = PB.focused_id')
         ->leftJoin(['IC' => 'gad_inner_category'], 'IC.id = PB.inner_category_id')
@@ -366,8 +366,8 @@ class GadPlanBudgetController extends Controller
                             ->select(['relevant_lgu_program_project'])
                             ->distinct()
                             ->all(), 'relevant_lgu_program_project');
-        $opt_org_focused = ArrayHelper::map(\common\models\GadPpaOrganizationalFocused::find()->all(), 'id', 'title');
-        $opt_cli_focused = ArrayHelper::map(\common\models\GadPpaClientFocused::find()->all(), 'id', 'title');
+        // $opt_org_focused = ArrayHelper::map(\common\models\GadPpaOrganizationalFocused::find()->all(), 'id', 'title');
+        // $opt_cli_focused = ArrayHelper::map(\common\models\GadPpaClientFocused::find()->all(), 'id', 'title');
 
         $select_GadFocused = ArrayHelper::map(\common\models\GadFocused::find()->all(), 'id', 'title');
         $select_GadInnerCategory = ArrayHelper::map(\common\models\GadInnerCategory::find()->all(), 'id', 'title');
@@ -398,8 +398,8 @@ class GadPlanBudgetController extends Controller
             'dataPlanBudget' => $dataPlanBudget,
             'ruc' => $ruc,
             'objective_type' => $objective_type,
-            'opt_org_focused' => $opt_org_focused,
-            'opt_cli_focused' => $opt_cli_focused,
+            'opt_org_focused' => [],
+            'opt_cli_focused' => [],
             'relevant_type' => $relevant_type,
             'recRegion' => $recRegion,
             'recProvince' => $recProvince,

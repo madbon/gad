@@ -13,7 +13,7 @@ $this->title = 'Indicators';
 <div class="indicator-index">
         <div class="box box-primary">
             <div class="box-header" >
-              <h3 class="box-title"><strong><?= Html::encode($this->title) ?></strong></h3>
+              <!-- <h3 class="box-title"><strong><?php // Html::encode($this->title) ?></strong></h3> -->
                 <div class="form-group">
                     <?= Html::a('<span class="glyphicon glyphicon-pencil"> </span> &nbsp;Create', ['create'], ['class' => 'btn btn-flat btn-success']) ?>
                 </div>
@@ -32,10 +32,10 @@ $this->title = 'Indicators';
                         'categoryTitle',
                         'indicatorTitle',
                         [
-                            'label' => Yii::$app->user->can("bpls_super_admin") ? 'Indicator ID' : "",
+                            'label' => Yii::$app->user->can("gad_cms_super_admin") ? 'Indicator ID' : "",
                             'attribute' => 'id',
                             'value' => function($model){
-                                return Yii::$app->user->can("bpls_super_admin") ? !empty($model->id) ? $model->id : "" : "";
+                                return Yii::$app->user->can("gad_cms_super_admin") ? !empty($model->id) ? $model->id : "" : "";
                             }
                         ],
                         [
@@ -65,7 +65,7 @@ $this->title = 'Indicators';
                         ],
                         [
                             'class' => 'yii\grid\ActionColumn',                            
-                            'template' => Yii::$app->user->can("bpls_super_admin") ? '{view} {update} {delete}' : '{view} {update}',   
+                            'template' => Yii::$app->user->can("gad_cms_super_admin") ? '{view} {update} {delete}' : '{view} {update}',   
                                 'buttons'=>[    
                                     'view'=>function ($url, $model) {
                                         
