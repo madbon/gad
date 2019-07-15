@@ -256,8 +256,8 @@ nav.navbar-default div.navbar-header a
             <div class="navbar-default navbar-static-side" role="navigation">
                 <div class="sidebar-collapse">
                     <ul class="nav" id="side-menu">
-                        <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        <?= Yii::$app->session["activelink"] == "dashboard" ? "<li class='activelink'>" : "<li>" ?>
+                            <?= Html::a('<i class="fa fa-dashboard fa-fw"></i> Dashboard',['/report/dashboard']); ?>
                         </li>
                         
                         <?php if(Yii::$app->user->can('gad_menu_report')){ ?>    
