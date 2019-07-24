@@ -55,9 +55,9 @@ class GadRecordSearch extends GadRecord
         {
             $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C];
         }
-        else if(Yii::$app->user->can("gad_province_permission")) // all lgu under its province
+        else if(Yii::$app->user->can("gad_province_permission")) // all lower level lgu under its province
         {
-            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C];
+            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C, 'CTY.lgu_type' => ['CC','M']];
         }
         else if(Yii::$app->user->can("gad_lgu_province_permission")) // all plan submitted by this province
         {
@@ -66,7 +66,7 @@ class GadRecordSearch extends GadRecord
         }
         else if(Yii::$app->user->can("gad_region_permission"))
         {
-            $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,'GR.status' => [3,0,4,6],'GR.office_c' => [4,2]];
+            $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,'CTY.lgu_type' => ['ICC','HUC']];
         }
         else if(Yii::$app->user->can("gad_ppdo_permission"))
         {
@@ -93,6 +93,7 @@ class GadRecordSearch extends GadRecord
             'GR.time_created as record_time',
             'GR.form_type as record_form_type',
             'CONCAT(UI.FIRST_M, " ",UI.LAST_M) as responsbile',
+            'GR.id as record_id',
             'OFC.OFFICE_M as office_name'
             // 'HIST.remarks as remarks'
         ])
@@ -112,6 +113,8 @@ class GadRecordSearch extends GadRecord
         ->andFilterWhere(['GR.status' => Yii::$app->user->can("gad_central") ? 4 : ""])
         ->andFilterWhere(['GR.year' => $this->year])
         ->andFilterWhere(Yii::$app->user->can("gad_ppdo_permission") ? ['not in', 'CTY.lgu_type', ["HUC","ICC"]] : [])
+        ->orFilterWhere(Yii::$app->user->can("gad_region_permission") ? ['GR.office_c' => 2] : [])
+        ->andFilterWhere(['GR.status' => $this->status])
         ->groupBy(['GR.id'])
         ->orderBy(['GR.id' => SORT_DESC]);
 

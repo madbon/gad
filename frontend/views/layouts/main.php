@@ -256,9 +256,11 @@ nav.navbar-default div.navbar-header a
             <div class="navbar-default navbar-static-side" role="navigation">
                 <div class="sidebar-collapse">
                     <ul class="nav" id="side-menu">
-                        <?= Yii::$app->session["activelink"] == "dashboard" ? "<li class='activelink'>" : "<li>" ?>
-                            <?= Html::a('<i class="fa fa-dashboard fa-fw"></i> Dashboard',['/report/dashboard']); ?>
-                        </li>
+                        <?php if(Yii::$app->user->can('gad_dashboard_menu')){ ?>
+                            <?= Yii::$app->session["activelink"] == "dashboard" ? "<li class='activelink'>" : "<li>" ?>
+                                <?= Html::a('<i class="fa fa-dashboard fa-fw"></i> Dashboard',['/report/dashboard']); ?>
+                            </li>
+                        <?php } ?>
                         
                         <?php if(Yii::$app->user->can('gad_menu_report')){ ?>    
                             <?php if(Yii::$app->controller->id == "gad-plan-budget" || Yii::$app->controller->id == "gad-record" && Yii::$app->session["activelink"] == "plan_budget" || Yii::$app->session["activelink"] == "accomplishment"){  ?>
@@ -323,14 +325,14 @@ nav.navbar-default div.navbar-header a
                         <?php } ?>
                         
                         <?php 
-                            if(Yii::$app->session["activelink"] == "created_document")
-                            {
-                                echo "<li class='activelink'>".Html::a('<span class="fa fa-file"></span> Documents', ['/cms/document/created-document'])."</li>";
-                            }
-                            else
-                            {
-                                echo "<li>".Html::a('<span class="fa fa-file"></span> Documents', ['/cms/document/created-document'])."</li>";
-                            }
+                            // if(Yii::$app->session["activelink"] == "created_document")
+                            // {
+                            //     echo "<li class='activelink'>".Html::a('<span class="fa fa-file"></span> Documents', ['/cms/document/created-document'])."</li>";
+                            // }
+                            // else
+                            // {
+                            //     echo "<li>".Html::a('<span class="fa fa-file"></span> Documents', ['/cms/document/created-document'])."</li>";
+                            // }
                         ?>
                         <li>
                             <?php

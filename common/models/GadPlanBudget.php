@@ -72,7 +72,7 @@ class GadPlanBudget extends \yii\db\ActiveRecord
             [['inner_category_id','focused_id','cliorg_ppa_attributed_program_id'], Yii::$app->controller->action->id == "create-gad-plan-budget" ? 'required' : 'safe'],
 
             [['date_implement_start', 'date_implement_end'], 'required'],
-            [['date_created', 'date_updated','date_implementation'], 'safe'],
+            [['date_created', 'date_updated','date_implementation','old_plan_id'], 'safe'],
             [['time_created', 'time_updated'], 'string', 'max' => 10],
             [['record_tuc','tuc'], 'string', 'max' => 150],
             // [['ppa_value'], 'safe'],

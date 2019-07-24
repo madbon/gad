@@ -1,25 +1,25 @@
 <?php
 
 use yii\helpers\Html;
-
+use \common\modules\report\controllers\DefaultController;
 /* @var $this yii\web\View */
 /* @var $model common\models\GadRecord */
 
 $this->title = 'Annual GAD Plan and Budget';
-// $this->params['breadcrumbs'][] = ['label' => 'Step 1. Input Primary Information', 'url' => ['gad-record/create', 'ruc' => $ruc,'onstep' => $onstep], ['class' => 'btn btn-success']];
+// $this->params['breadcrumbs'][] = ['label' => ' Input Primary Information', 'url' => ['gad-record/create', 'ruc' => $ruc,'onstep' => $onstep], ['class' => 'btn btn-success']];
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style>
 	
 </style>
-<h2>Annual GAD Plan and Budget FY <?= \common\modules\report\controllers\DefaultController::GetPlanYear($ruc) ?></h2>
+<h2>Annual GAD Plan and Budget FY <?= DefaultController::GetPlanYear($ruc) ?> <i style="text-decoration: underline; font-size: 25px;">(<?= DefaultController::CreatePlanStatus($ruc) ?>)</i></h2>
 <div class="gad-record-create">
 <?php if(Yii::$app->user->can("gad_lgu_province_permission")){ ?>
     <ul class="nav nav-tabs">
-        <?php if($qryReportStatus == 0 || $qryReportStatus == 6) // if report status is under encoding tab
+        <?php if($qryReportStatus == 9) // if report status is under encoding tab
             {
                 echo $this->render('/common_tools/tabs/tab_input',[
-                    'tabTitle' => 'Step 1. Input Primary Information',
+                    'tabTitle' => ' Input Primary Information',
                     'liClass' => '',
                     'ruc' => $ruc,
                     'onstep' => $onstep,
@@ -28,7 +28,7 @@ $this->title = 'Annual GAD Plan and Budget';
                     'url' => '/report/gad-record/create'
                 ]);
                 echo $this->render('/common_tools/tabs/tab_encode',[
-                    'tabTitle' => 'Step 2. Encode Annual GAD Plan and Budget',
+                    'tabTitle' => 'Encode Annual GAD Plan and Budget',
                     'liClass' => 'active',
                     'ruc' => $ruc,
                     'onstep' => $onstep,
@@ -37,46 +37,17 @@ $this->title = 'Annual GAD Plan and Budget';
                     'url' => 'index'
                 ]);
             }
-            else // else on PPDO or Submitted to DILG
-            {
-                echo $this->render('/common_tools/tabs/tab_input',[
-                    'tabTitle' => 'Step 1. Input Primary Information',
-                    'liClass' => 'disabled',
-                    'ruc' => $ruc,
-                    'onstep' => $onstep,
-                    'tocreate' => $tocreate,
-                    'linkClass' => 'disabled',
-                    'url' => ''
-                ]);
-                echo $this->render('/common_tools/tabs/tab_encode',[
-                    'tabTitle' => 'Step 2. Encode Annual GAD Plan and Budget',
-                    'liClass' => 'disabled',
-                    'ruc' => $ruc,
-                    'onstep' => $onstep,
-                    'tocreate' => $tocreate,
-                    'linkClass' => 'disabled',
-                    'url' => ''
-                ]);
-            }
         ?>
 
-        <?php if($qryReportStatus == 3){ ?>
-            <li class="active">
-                <?= Html::a("Step 3. Endorsed to DILG Regional Office &nbsp;<span class='glyphicon glyphicon-ok'></span>", ['','ruc' => $ruc, 'onstep' => $onstep,'tocreate' => $tocreate], ['class' => "btn btn-success"]) ?>
-            </li>
-        <?php }else{ ?>
-            <li class="disabled">
-                <?= Html::a("Step 3. Endorsed to DILG Regional Office &nbsp;<span class='glyphicon glyphicon-ok'></span>", ['','ruc' => $ruc, 'onstep' => $onstep,'tocreate' => $tocreate], ['class' => "disabled btn btn-success"]) ?>
-            </li>
-        <?php } ?>
+        
 <?php }else if(Yii::$app->user->can("gad_lgu_permission")){ ?>
 
 <?php  if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS"){ // id HUC ?>
     <ul class="nav nav-tabs">
-        <?php if($qryReportStatus == 0 || $qryReportStatus == 6) // if report status is under encoding tab
+        <?php if($qryReportStatus == 0 || $qryReportStatus == 8) // if report status is under encoding tab
             {
                 echo $this->render('/common_tools/tabs/tab_input',[
-                    'tabTitle' => 'Step 1. Input Primary Information',
+                    'tabTitle' => 'Input Primary Information',
                     'liClass' => '',
                     'ruc' => $ruc,
                     'onstep' => $onstep,
@@ -85,7 +56,7 @@ $this->title = 'Annual GAD Plan and Budget';
                     'url' => '/report/gad-record/create'
                 ]);
                 echo $this->render('/common_tools/tabs/tab_encode',[
-                    'tabTitle' => 'Step 2. Encode Annual GAD Plan and Budget',
+                    'tabTitle' => 'Encode Annual GAD Plan and Budget',
                     'liClass' => 'active',
                     'ruc' => $ruc,
                     'onstep' => $onstep,
@@ -94,45 +65,13 @@ $this->title = 'Annual GAD Plan and Budget';
                     'url' => 'index'
                 ]);
             }
-            else // else on PPDO or Submitted to DILG
-            {
-                echo $this->render('/common_tools/tabs/tab_input',[
-                    'tabTitle' => 'Step 1. Input Primary Information',
-                    'liClass' => 'disabled',
-                    'ruc' => $ruc,
-                    'onstep' => $onstep,
-                    'tocreate' => $tocreate,
-                    'linkClass' => 'disabled',
-                    'url' => ''
-                ]);
-                echo $this->render('/common_tools/tabs/tab_encode',[
-                    'tabTitle' => 'Step 2. Encode Annual GAD Plan and Budget',
-                    'liClass' => 'disabled',
-                    'ruc' => $ruc,
-                    'onstep' => $onstep,
-                    'tocreate' => $tocreate,
-                    'linkClass' => 'disabled',
-                    'url' => ''
-                ]);
-            }
         ?>
-
-        <?php if($qryReportStatus == 3){ ?>
-            <li class="active">
-                <?= Html::a("Step 3. Endorsed to DILG Regional Office &nbsp;<span class='glyphicon glyphicon-ok'></span>", ['','ruc' => $ruc, 'onstep' => $onstep,'tocreate' => $tocreate], ['class' => "btn btn-success"]) ?>
-            </li>
-        <?php }else{ ?>
-            <li class="disabled">
-                <?= Html::a("Step 3. Endorsed to DILG Regional Office &nbsp;<span class='glyphicon glyphicon-ok'></span>", ['','ruc' => $ruc, 'onstep' => $onstep,'tocreate' => $tocreate], ['class' => "disabled btn btn-success"]) ?>
-            </li>
-        <?php } ?>
-
 <?php }else{ // else non HUC -/////////////////////////////////////////////////// ?>   
     <ul class="nav nav-tabs">
-        <?php if($qryReportStatus == 0 || $qryReportStatus == 5) // if report status is under encoding tab
+        <?php if($qryReportStatus == 0) // if report status is under encoding tab
             {
                 echo $this->render('/common_tools/tabs/tab_input',[
-                    'tabTitle' => 'Step 1. Input Primary Information',
+                    'tabTitle' => ' Input Primary Information',
                     'liClass' => '',
                     'ruc' => $ruc,
                     'onstep' => $onstep,
@@ -141,7 +80,7 @@ $this->title = 'Annual GAD Plan and Budget';
                     'url' => '/report/gad-record/create'
                 ]);
                 echo $this->render('/common_tools/tabs/tab_encode',[
-                    'tabTitle' => 'Step 2. Encode Annual GAD Plan and Budget',
+                    'tabTitle' => 'Encode Annual GAD Plan and Budget',
                     'liClass' => 'active',
                     'ruc' => $ruc,
                     'onstep' => $onstep,
@@ -150,65 +89,8 @@ $this->title = 'Annual GAD Plan and Budget';
                     'url' => 'index'
                 ]);
             }
-            else // else on PPDO or Submitted to DILG
-            {
-                echo $this->render('/common_tools/tabs/tab_input',[
-                    'tabTitle' => 'Step 1. Input Primary Information',
-                    'liClass' => 'disabled',
-                    'ruc' => $ruc,
-                    'onstep' => $onstep,
-                    'tocreate' => $tocreate,
-                    'linkClass' => 'disabled',
-                    'url' => ''
-                ]);
-                echo $this->render('/common_tools/tabs/tab_encode',[
-                    'tabTitle' => 'Step 2. Encode Annual GAD Plan and Budget',
-                    'liClass' => 'disabled',
-                    'ruc' => $ruc,
-                    'onstep' => $onstep,
-                    'tocreate' => $tocreate,
-                    'linkClass' => 'disabled',
-                    'url' => ''
-                ]);
-            }
         ?>
 
-        <?php if($qryReportStatus == 1){ ?>
-            <li class="active">
-                <?= Html::a("Step 3. For Review by PPDO &nbsp;<span class='glyphicon glyphicon-eye-open'></span>", ['','ruc' => $ruc, 'onstep' => $onstep,'tocreate' => $tocreate], ['class' => "btn btn-success"]) ?>
-            </li>
-        <?php }else{ ?>
-            <li class="disabled">
-                <?= Html::a("Step 3. For Review by PPDO &nbsp;<span class='glyphicon glyphicon-eye-open'></span>", ['','ruc' => $ruc, 'onstep' => $onstep,'tocreate' => $tocreate], ['class' => "disabled btn btn-success"]) ?>
-            </li>
-        <?php } ?>
-
-        <?php 
-            if($qryReportStatus == 2)
-            {
-                echo $this->render('/common_tools/tabs/tab_completed',[
-                    'tabTitle' => 'Step 4. Endorsed to DILG Office (C/MLGOO)',
-                    'liClass' => 'active',
-                    'ruc' => $ruc,
-                    'onstep' => $onstep,
-                    'tocreate' => $tocreate,
-                    'linkClass' => '',
-                    'url' => ''
-                ]);
-            }
-            else
-            {
-                echo $this->render('/common_tools/tabs/tab_completed',[
-                    'tabTitle' => 'Step 4. Endorse to DILG Office (C/MLGOO)',
-                    'liClass' => 'disabled',
-                    'ruc' => $ruc,
-                    'onstep' => $onstep,
-                    'tocreate' => $tocreate,
-                    'linkClass' => 'disabled',
-                    'url' => ''
-                ]);
-            }
-        ?>
 <?php } ?>
 <?php }// end of gad_lgu  ?>
 	</ul>

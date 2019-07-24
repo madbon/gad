@@ -36,6 +36,7 @@ phpunit.phar
 /.vagrant
 /common/uploads/store
 /common/uploads/temp
+/frontend/web/uploads/file_attached
 
 # ignore generated files
 /frontend/web/index.php

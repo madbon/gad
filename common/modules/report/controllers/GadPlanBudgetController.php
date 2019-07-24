@@ -43,9 +43,86 @@ class GadPlanBudgetController extends Controller
         ];
     }
 
-    public function actionCreateComment()
+    public function actionLoadPlan($ruc,$onstep,$tocreate)
     {
+        $query_record = GadRecord::find()->where(['tuc' => $ruc])->one();
+        $for_revision_record_id = $query_record->for_revision_record_id;
+        $record_id = $query_record->id;
+
+        $query = GadPlanBudget::find()->where(['record_id' => $for_revision_record_id])->groupBy(['id'])->distinct()->all();
+       
+        date_default_timezone_set("Asia/Manila");
+
+        foreach ($query as $key => $row) {
+            $model = new GadPlanBudget();
+            $model->record_id = $record_id;
+            $model->focused_id = $row['focused_id'];
+            $model->inner_category_id = $row['inner_category_id'];
+            $model->gi_sup_data = $row['gi_sup_data'];
+            $model->source = $row['source'];
+            $model->cliorg_ppa_attributed_program_id = $row['cliorg_ppa_attributed_program_id'];
+            $model->ppa_focused_id = $row['ppa_focused_id'];
+            $model->ppa_value = $row['ppa_value'];
+            $model->cause_gender_issue = $row['cause_gender_issue'];
+            $model->objective = $row['objective'];
+            $model->relevant_lgu_program_project = $row['relevant_lgu_program_project'];
+            $model->activity_category_id = $row['activity_category_id'];
+            $model->activity = $row['activity'];
+            $model->date_implement_start = $row['date_implement_start'];
+            $model->date_implement_end = $row['date_implement_end'];
+            $model->performance_target = $row['performance_target'];
+            $model->budget_mooe = $row['budget_mooe'];
+            $model->budget_ps = $row['budget_ps'];
+            $model->budget_co = $row['budget_co'];
+            $model->lead_responsible_office = $row['lead_responsible_office'];
+            $model->date_created = date('Y-m-d');
+            $model->time_created = date("h:i:sa");
+            $model->record_tuc = $ruc;
+            $model->upload_status = $row['upload_status'];
+            $model->old_plan_id = $row["id"];
+            $model->save(false);
+        }
         
+        return $this->redirect(['index', 'ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate]);
+    }
+
+    public function actionLoadFile($ruc,$onstep,$tocreate)
+    {
+        $query_record = GadRecord::find()->where(['tuc' => $ruc])->one();
+        $record_id = $query_record->id;
+
+        $queryFileAttached = (new \yii\db\Query())
+        ->select([
+            'FILE.id',
+            'FILE.file_name',
+            'FILE.model_name',
+            'FILE.hash',
+            'FILE.extension',
+            'FILE.file_folder_type_id',
+            'FILE.model_id',
+            'PLAN.id as plan_id'
+        ])
+        ->from('gad_file_attached FILE')
+        ->leftJoin(['PLAN' => 'gad_plan_budget'], 'PLAN.old_plan_id = FILE.model_id')
+        ->where(['FILE.model_name' => 'GadPlanBudget', 'PLAN.record_id' => $record_id])
+        ->groupBy(['FILE.id'])
+        ->all();
+
+        // echo "<pre>";
+        // print_r($queryFileAttached);  exit;
+
+        foreach ($queryFileAttached as $key1 => $row1) {
+
+            $model2 = new GadFileAttached();
+            $model2->model_id = $row1['plan_id'];
+            $model2->file_name = $row1['file_name'];
+            $model2->model_name = $row1['model_name'];
+            $model2->hash = $row1['hash'];
+            $model2->extension = $row1['extension'];
+            $model2->file_folder_type_id = $row1['file_folder_type_id'];
+            $model2->save(false);
+        }
+        return $this->redirect(['index', 'ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate]);
     }
 
     public function ComputeGadBudget($ruc)
@@ -169,6 +246,16 @@ class GadPlanBudgetController extends Controller
         {
             return "<span style='color:blue;'>  Php ".number_format($grand_total_pb,2)."</span>";
         }
+    }
+
+    public function actionFormChangeReportStatus($qryReportStatus, $ruc, $onstep,$tocreate)
+    {
+        return $this->renderAjax('_form_change_report_status', [
+            'qryReportStatus' => $qryReportStatus,
+            'ruc' => $ruc,
+            'onstep' => $onstep,
+            'tocreate' => $tocreate
+        ]);
     }
 
     public function actionChangeReportStatus($status,$tuc,$onstep,$tocreate)
@@ -455,8 +542,9 @@ class GadPlanBudgetController extends Controller
     {
         $hash_name = $hash.".".$extension;
         unlink(Yii::getAlias('@webroot')."/uploads/file_attached/".$hash_name);
-        $qry = GadFileAttached::find()->where(['hash' => $hash])->one();
-        $qry->delete();
+        // $qry = GadFileAttached::find()->where(['hash' => $hash])->one();
+        // $qry->delete();
+        GadFileAttached::deleteAll(['hash' => $hash]);
 
         return $this->redirect(['index','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
     }

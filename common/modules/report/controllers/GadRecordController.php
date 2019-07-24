@@ -214,12 +214,14 @@ class GadRecordController extends Controller
         $model = new GadRecord();
         $model->region_c = Yii::$app->user->identity->userinfo->region->region_c;
         $model->province_c = Yii::$app->user->identity->userinfo->province->province_c;
+        $create_plan_status = ArrayHelper::map(\common\models\CreateStatus::find()->all(), "code","title");
         Yii::$app->session["activelink"] = $tocreate;
         if(Yii::$app->user->can("gad_lgu_province_permission"))
         {
             $model->citymun_c = NULL;
             $model->isdilg = 0;
             $model->office_c = 2;
+            $model->status = 9;
         }
         else if(Yii::$app->user->can("gad_lgu_permission"))
         {
@@ -227,31 +229,16 @@ class GadRecordController extends Controller
             $model->isdilg = 0;
             if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS"){ 
                 $model->office_c = 4; //city office
+                $model->status = 8; // encoding HUC
             }
             else
             {
                 $model->office_c = 3;
+                $model->status = 0; // encoding non HUC
             }
-        }
-        else if(Yii::$app->user->can("gad_field_permission"))
-        {
-            $model->isdilg = 1;
-            if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS"){ 
-                $model->office_c = 4; //city office
-            }
-            else
-            {
-                $model->office_c = 3;
-            }
-        }
-        else if(Yii::$app->user->can("gad_province_permission"))
-        {
-            $model->office_c = 2;
-            $model->isdilg = 1;
         }
         
         $model->user_id = Yii::$app->user->identity->userinfo->user_id;
-        $model->status = 0;
         date_default_timezone_set("Asia/Manila");
         $model->date_created = date('Y-m-d');
         $model->time_created = date("h:i:sa");
@@ -259,14 +246,14 @@ class GadRecordController extends Controller
         $model->footer_date = date('Y-m-d');
 
         $modelUpdate = GadRecord::find()->where(['tuc' => $ruc])->one();
-
         if ($model->load(Yii::$app->request->post())) {
-
             if($onstep == "to_create_gpb")
             {
                 $modelUpdate->total_lgu_budget = $model->total_lgu_budget;
                 $modelUpdate->total_gad_budget = $model->total_gad_budget;
                 $modelUpdate->year = $model->year;
+                $modelUpdate->create_status_id = $model->create_status_id;
+                $modelUpdate->for_revision_record_id = $model->for_revision_record_id;
                 $modelUpdate->save();
             }
             else
@@ -300,7 +287,8 @@ class GadRecordController extends Controller
             return $this->redirect([$urlReportIndex, 
                 'ruc'       => $onstep == "to_create_gpb" ? $ruc : $hash,
                 'onstep'    => $onstepValue,
-                'tocreate'  => $tocreate]);
+                'tocreate'  => $tocreate,
+            ]);
         }
 
         return $this->render('create', [
@@ -308,7 +296,8 @@ class GadRecordController extends Controller
             'model' => $onstep == "to_create_gpb" || $onstep == "to_create_ar" ? $modelUpdate : $model, 
             'ruc' =>  $ruc,
             'onstep' => $onstep,
-            'tocreate' => $tocreate
+            'tocreate' => $tocreate,
+            'create_plan_status' => $create_plan_status
         ]);
     }
 
@@ -343,7 +332,7 @@ class GadRecordController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index','report_type' => 'plan_budget']);
     }
 
     /**

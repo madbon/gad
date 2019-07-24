@@ -21,11 +21,87 @@ use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
 use \common\models\GadFileAttached;
+use common\models\CreateStatus;
+use common\modules\report\controllers\GadPlanBudgetController;
+use common\modules\report\controllers\GadRecordController;
 /**
  * Default controller for the `report` module
  */
 class DefaultController extends Controller
 {
+    public function actionLoadRecordByStatus($status)
+    {
+        $andFilterValue = [];
+        $station = [];
+        if(Yii::$app->user->can("gad_lgu_permission"))
+        {
+            if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
+            {
+                $status = 6;
+                $andFilterValue = ['REC.office_c' => [3,4]];
+                $station = ['REC.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C, 'REC.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C];
+            }
+        }
+        else if(Yii::$app->user->can("gad_lgu_province_permission"))
+        {
+            $status = 6;
+            $andFilterValue = ['REC.office_c' => 2];
+            $station = ['REC.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C, 'REC.citymun_c' => null];
+        }
+
+        $qry = (new \yii\db\Query())
+        ->select([
+            'PRV.province_m as province_name',
+            'CTC.citymun_m as citymun_name',
+            'REC.status as record_status',
+            'REC.total_lgu_budget',
+            'REC.year',
+            'REC.prepared_by',
+            'REC.approved_by',
+            'REC.id as record_id',
+            'ST.title as status_name',
+            'REC.tuc as ruc',
+            'OF.OFFICE_M as office_name'
+        ])
+        ->from('gad_record REC')
+        ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = REC.region_c')
+        ->leftJoin(['PRV' => 'tblprovince'], 'PRV.province_c = REC.province_c')
+        ->leftJoin(['CTC' => 'tblcitymun'], 'CTC.citymun_c = REC.citymun_c AND CTC.province_c = REC.province_c')
+        ->leftJoin(['ST' => 'gad_status'], 'ST.id = REC.status')
+        ->leftJoin(['OF' => 'tbloffice'], 'OF.OFFICE_C = REC.office_c')
+        ->where(['REC.status' => $status,'REC.report_type_id' => 1])
+        ->andFilterWhere($andFilterValue)
+        ->andFilterWhere($station)
+        ->all();
+
+        $arr = [];
+        foreach ($qry as  $item) {
+            $arr[] = [
+                        'record_id' => $item["record_id"],
+                        'province_name' => $item["province_name"],
+                        'citymun_name' => $item["citymun_name"],
+                        'record_status' => $item["record_status"],
+                        'total_lgu_budget' => $item["total_lgu_budget"],
+                        'prepared_by' => $item["prepared_by"],
+                        'approved_by' => $item["approved_by"],
+                        'status_name' => $this::DisplayStatus($item["record_status"]),
+                        'year' => $item["year"],
+                        'ruc' => $item["ruc"],
+                        'office_name' => $item["office_name"],
+                        'total_gad_budget' => GadPlanBudgetController::ComputeGadBudget($item["ruc"]),
+                        'remarks' => GadRecordController::GenerateRemarks($item["ruc"]),
+                    ];
+        }
+        \Yii::$app->response->format = 'json';
+        return $arr;
+
+    }
+    public function CreatePlanStatus($ruc)
+    {
+        $record = GadRecord::find()->where(['tuc' => $ruc])->one();
+        $qry = CreateStatus::find()->where(['code' => $record->create_status_id])->one();
+        return !empty($qry->title) ? $qry->title : "unknown status";
+    }
     public function PlanUploadStatus($row_id)
     {
         // 0 = no uploaded files
@@ -132,6 +208,14 @@ class DefaultController extends Controller
         {
             $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-pencil'></i> ".$title."</span>";
         }
+        else if($value == 8)
+        {
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-pencil'></i> ".$title."</span>";
+        }
+        else if($value == 9)
+        {
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-pencil'></i> ".$title."</span>";
+        }
         else if($value == 1)
         {
             $returnValue = "<span class='label label-success'><i class='glyphicon glyphicon-search'></i> ".$title."</span>";
@@ -148,6 +232,10 @@ class DefaultController extends Controller
         {
             $returnValue = "<span class='label label-primary'><i class='glyphicon glyphicon-flag'></i> ".$title."</span>";
         }
+        else if($value == 10)
+        {
+            $returnValue = "<span class='label label-primary'><i class='glyphicon glyphicon-flag'></i> ".$title."</span>";
+        }
         else if($value == 5)
         {
             $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-flag'></i> ".$title."</span>";
@@ -160,6 +248,7 @@ class DefaultController extends Controller
         {
             $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-flag'></i> ".$title."</span>";
         }
+
 
         return $returnValue;
     }
