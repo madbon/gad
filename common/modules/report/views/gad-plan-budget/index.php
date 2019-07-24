@@ -43,7 +43,7 @@ $this->title = "Annual GAD Plan and Budget";
                                 $recordOne = \common\models\GadRecord::find()->where(['tuc' => $ruc])->one();
                                 $recordOne_attached_ar_record_id = $recordOne->attached_ar_record_id;
                             ?>
-                            <a>Needed before submitting GBP: </a>
+                            <a>Needed before submitting GPB: </a>
                             <?php
                              if($grand_total_pb < $fivePercentTotalLguBudget){ ?>
                                 <a class="btn btn-default btn-sm" style="background-color: gray; color:white;"><span class="glyphicon glyphicon-remove"></span> &nbsp;Reached the 5%</a>
@@ -193,9 +193,12 @@ $this->title = "Annual GAD Plan and Budget";
                     <button type="button" class="btn btn-success" id="btn-encode" style="margin-bottom: 5px;">
                         <span class="glyphicon glyphicon-pencil"></span> Encode Plan
                     </button>
-                    <?php //echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Letter of Review (.docx)',['/cms/document/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-primary','style' => 'margin-top:-5px;']); ?>
                 <?php } ?>
             <?php } ?>
+
+            <?php 
+                echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Letter of Review / Endorsement',['/cms/document/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-primary pull-left','style' => 'margin-top:20px;']); 
+            ?>
         </div>
         <div class="col-sm-4">
         </div>

@@ -35,7 +35,8 @@ use richardfan\widget\JSRegister;
     }
     table#comment_list  tbody{
       display:block;
-      height:200px;
+      min-height:200px;
+      max-height: 500px;
       overflow:auto;
     }
     div.mess-success
@@ -63,14 +64,23 @@ use richardfan\widget\JSRegister;
     <?= $form->field($model, 'record_id')->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
 
-    <div class="row">
+    <div class="row" style="margin-top: -45px;">
         <div class="col-sm-4">
             <h3>SECTION</h3>
             <?= $form->field($model, 'row_no')->textInput() ?>
             <?= $form->field($model, 'row_value')->textarea(['rows' => 3]) ?>
+            <?= Html::a('<span class="fa fa-download"> Download Letter of Review.docx</span>',
+            [
+                '/cms/document/download-specific-observation',
+                'ruc' => $ruc
+            ],
+            [
+                'class' => 'btn btn-md btn-primary',
+                'title' => 'Download Letter/Certificate'
+            ])  ?>
         </div>
         <div class="col-sm-8">
-            <h3>OBSERVATION & RECOMMENDATION</h3>
+            <h3>SPECIFIC OBSERVATION & RECOMMENDATION</h3>
             <div class="row">
                 <div class="col-sm-6">
                     <?= $form->field($model, 'column_no')->textInput() ?>
@@ -79,10 +89,11 @@ use richardfan\widget\JSRegister;
                     <?= $form->field($model, 'column_title')->textInput()->label("Column Title") ?>
                 </div>
             </div>
-            <?= $form->field($model, 'column_value')->textarea(['rows' => 3]) ?>
-            <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
-            <div class="form-group pull-right">
+            <?= $form->field($model, 'column_value')->textarea(['rows' => 3]); ?>
+            <?= $form->field($model, 'comment')->textarea(['rows' => 6])->label("Observation & Recommendation <i style='color:red; font-weight:normal;'>(Important Note: Avoid using ampersand(&) in comment box it causes error when downloading .docx)</i>"); ?>
 
+            <div class="form-group pull-right">
+                
                 <?= Html::button('Save', ['class' => 'btn btn-success', 'id' => 'saveObservation', 'type' => 'submit']) ?>
                 <?php 
                     $urlCreate = \yii\helpers\Url::to(['/report/comment/create-comment']);

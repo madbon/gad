@@ -67,13 +67,13 @@ class DocumentSearch extends Category
             'GR.report_type_id as report_type',
             'CAT.id as category_id'
         ])
-        ->from('bpls_values GV')
+        ->from('gad_cms_values GV')
         ->leftJoin(['GR' => 'gad_record'], 'GR.id = GV.yearly_record_id')
         ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = GR.region_c')
         ->leftJoin(['PRO' => 'tblprovince'], 'PRO.province_c = GR.province_c')
         ->leftJoin(['CIT' => 'tblcitymun'], 'CIT.citymun_c = GR.citymun_c AND CIT.province_c = GR.province_c')
         ->leftJoin(['OFF' => 'tbloffice'], 'OFF.OFFICE_C = GR.office_c')
-        ->leftJoin(['CAT' => 'bpls_category'], 'CAT.id = GV.category_id')
+        ->leftJoin(['CAT' => 'gad_cms_category'], 'CAT.id = GV.category_id')
         ->where($condition)
         ->groupBy(['GV.yearly_record_id','GV.category_id']);
         // ->orderBy(['GR.id' => ]);

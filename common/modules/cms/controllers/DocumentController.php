@@ -14,6 +14,9 @@ use common\modules\cms\models\Value;
 use yii\helpers\ArrayHelper;
 use common\models\GadCategoryComment;
 use common\models\GadRecord;
+use niksko12\user\models\Region;
+use niksko12\user\models\Province;
+use niksko12\user\models\Citymun;
 
 /**
  * DocumentController implements the CRUD actions for Category model.
@@ -44,6 +47,92 @@ class DocumentController extends Controller
         return $this->render('create_document',['searchModel' => $searchModel, 'dataProvider' => $dataProvider]);
     }
 
+    public function getProvinceName($province_c)
+    {
+        $query = Province::find()->where(['province_c' => $province_c])->one();
+        $value = !empty($query->province_m) ? $query->province_m : ""; 
+        return $value;
+    }
+
+    public function getCitymunName($province_c,$citymun_c)
+    {
+        $query = Citymun::find()->where(['province_c' => $province_c,'citymun_c' => $citymun_c])->one();
+        $value = !empty($query->citymun_m) ? $query->citymun_m : ""; 
+        return $value;
+    }
+
+
+    
+    public function actionDownloadSpecificObservation($ruc)
+    {
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+        $office_c = "";
+        $address_lgu = "";
+        $name_lgu = "";
+        $queryRecord = GadRecord::find()->where(['tuc' => $ruc])->one();
+        $office = !empty($queryRecord->office_c) ? $queryRecord->office_c : "";
+
+        $generated_date = date("F j, Y", strtotime(date("Y-m-d")));
+        $lce_name = !empty($queryRecord->approved_by) ? $queryRecord->approved_by : "(Name of LCE)";
+        $prepared_by = !empty($queryRecord->prepared_by) ? $queryRecord->prepared_by : "";
+
+        if($office == 2) // provincial office
+        {
+            $address_lgu = $this::getProvinceName($queryRecord->province_c);
+            $name_lgu = $this::getProvinceName($queryRecord->province_c);
+        }
+        else if($office == 3 || $office == 4) // citymun office
+        {
+            $address_lgu = $this::getCitymunName($queryRecord->province_c,$queryRecord->citymun_c).", ".$this::getProvinceName($queryRecord->province_c);
+            $name_lgu = $this::getCitymunName($queryRecord->province_c,$queryRecord->citymun_c);
+        }
+
+        $fy = date('Y');
+
+        $qryComment = (new \yii\db\Query())
+        ->select([
+            'GC.id as comment_id',
+            'GC.comment as comment_value',
+            'REG.region_m as region_name',
+            'PRV.province_m as province_name',
+            'CTC.citymun_m as citymun_name',
+            'GC.resp_user_id as user_id',
+            'GC.date_created',
+            'GC.time_created',
+            'CONCAT(UI.FIRST_M," ",UI.LAST_M) as full_name',
+            'OFC.OFFICE_M as office_name',
+            'GC.row_value',
+            'GC.row_no',
+            'GC.column_no',
+            'GC.column_title',
+            'GC.column_value'
+        ])
+        ->from('gad_comment GC')
+        ->leftJoin(['UI' => 'user_info'], 'UI.user_id = GC.resp_user_id')
+        ->leftJoin(['REC' => 'gad_record'], 'REC.id = GC.record_id')
+        ->leftJoin(['OFC' => 'tbloffice'], 'OFC.OFFICE_C = GC.resp_office_c')
+        ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = GC.resp_region_c')
+        ->leftJoin(['PRV' => 'tblprovince'], 'PRV.province_c = GC.resp_province_c')
+        ->leftJoin(['CTC' => 'tblcitymun'], 'CTC.citymun_c = GC.resp_citymun_c AND CTC.province_c = GC.resp_province_c')
+        ->where(['REC.tuc' => $ruc])
+        ->groupBy(['GC.id'])
+        ->orderBy(['GC.id' => SORT_ASC])
+        ->all();
+
+        return $this->render('word_document/specific_observation',
+        [
+            'phpWord' => $phpWord,
+            'generated_date' => $generated_date,
+            'address_lgu' => ucwords($address_lgu),
+            'lce_name' => $lce_name,
+            'fy' => $fy,
+            'name_lgu' => ucwords($name_lgu),
+            'prepared_by' => $prepared_by,
+            'qryComment' => $qryComment,
+        ]);
+        
+    }
+
     public function actionDownloadWord($ruc,$category_id)
     {
         $phpWord = new \PhpOffice\PhpWord\PhpWord();
@@ -58,10 +147,10 @@ class DocumentController extends Controller
             'IND.id as indicator_id',
             'REC.approved_by as record_approved_by'
         ])
-        ->from('bpls_values VAL')
+        ->from('gad_cms_values VAL')
         ->leftJoin(['REC' => 'gad_record'], 'REC.id = VAL.yearly_record_id')
-        ->leftJoin(['IND' => 'bpls_indicator'], 'IND.id = VAL.indicator_id')
-        ->leftJoin(['CAT' => 'bpls_category'], 'CAT.id = IND.category_id')
+        ->leftJoin(['IND' => 'gad_cms_indicator'], 'IND.id = VAL.indicator_id')
+        ->leftJoin(['CAT' => 'gad_cms_category'], 'CAT.id = IND.category_id')
         ->where(['REC.tuc' => $ruc, 'VAL.category_id' => $category_id])
         ->groupBy(['IND.id','VAL.id'])
         ->all();
@@ -84,8 +173,7 @@ class DocumentController extends Controller
 
         $queryCatCom = GadCategoryComment::find()->where(['record_id' => $record_id, 'category_id' => $category_id])->all();
 
-
-        return $this->render('word_document/letter_review',
+        return $this->render('word_document/general_observation',
             [
                 'phpWord' => $phpWord, 
                 'arrCategory7' => $arrCategory7,
@@ -93,6 +181,8 @@ class DocumentController extends Controller
                 'queryCatCom' =>$queryCatCom, 
             ]);
     }
+
+
 
     /**
      * Displays a single Record model.

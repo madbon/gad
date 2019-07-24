@@ -42,8 +42,6 @@ class CategoryCommentController extends Controller
 
         $Record = \common\models\GadRecord::find()->where(['tuc' => $ruc])->one();
 
-
-
         $queryValues = (new \yii\db\Query())
         ->select([
             'IND.title as indicator_title',
@@ -52,10 +50,10 @@ class CategoryCommentController extends Controller
             'CAT.id as category_id',
             'REC.id as record_id'
         ])
-        ->from('bpls_values VAL')
+        ->from('gad_cms_values VAL')
         ->leftJoin(['REC' => 'gad_record'], 'REC.id = VAL.yearly_record_id')
-        ->leftJoin(['IND' => 'bpls_indicator'], 'IND.id = VAL.indicator_id')
-        ->leftJoin(['CAT' => 'bpls_category'], 'CAT.id = IND.category_id')
+        ->leftJoin(['IND' => 'gad_cms_indicator'], 'IND.id = VAL.indicator_id')
+        ->leftJoin(['CAT' => 'gad_cms_category'], 'CAT.id = IND.category_id')
         ->where(['REC.tuc' => $ruc]);
 
         $postquery = $queryValues->one();

@@ -58,7 +58,7 @@ class CommentController extends Controller
         ->leftJoin(['CTC' => 'tblcitymun'], 'CTC.citymun_c = GC.resp_citymun_c AND CTC.province_c = GC.resp_province_c')
         ->where(['REC.tuc' => $record_tuc])
         ->groupBy(['GC.id'])
-        ->orderBy(['GC.id' => SORT_DESC])
+        ->orderBy(['GC.id' => SORT_ASC])
         ->all();
         // ->createCommand()->rawSql;
         // $qry = GadComment::find()->select(["id","comment"])->where(["plan_budget_id" => $id, "attribute_name" => $attribute])->orderBy(["id" => SORT_DESC])->all();
@@ -212,6 +212,7 @@ class CommentController extends Controller
             'model' => $model,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'ruc' => $ruc
         ]);
     }
 
