@@ -47,10 +47,10 @@ class GadRecord extends \yii\db\ActiveRecord
             [['tuc','prepared_by','approved_by'], 'string', 'max' => 150],
             // [['year','total_lgu_budget','create_status_id'], 'required'],
             [['create_status_id'], 'required'],
-            [['for_revision_record_id'],'required','message' => 'Please select One(1) Returned Reports listed below '],
             [['prepared_by'], Yii::$app->controller->action->id == "update-pb-prepared-by" ? "required" : "safe"],
             [['approved_by'], Yii::$app->controller->action->id == "update-pb-approved-by" ? "required" : "safe"],
             [['footer_date'], Yii::$app->controller->action->id == "update-pb-footer-date" ? "required" : "safe"],
+            [['for_revision_record_id'], 'required','message' => 'Please select One(1) Returned Reports listed below ', 'when' => function ($model) { return $model->create_status_id != 1; }, 'whenClient' => "function (attribute, value) { return $('#gadrecord-create_status_id').val() != '1'; }"],
         ];
     }
 

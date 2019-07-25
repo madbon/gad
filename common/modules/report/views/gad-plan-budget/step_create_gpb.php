@@ -119,6 +119,8 @@ $this->title = 'Annual GAD Plan and Budget';
         'qryReportStatus' => $qryReportStatus,
         'model' => $model,
         'select_ActivityCategory' => $select_ActivityCategory,
+        'upload' => $upload,
+        'folder_type' => $folder_type
     ]) ?>
 
 </div>

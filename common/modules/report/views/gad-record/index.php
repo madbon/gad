@@ -167,6 +167,23 @@ $this->title = $index_title;
                                         return GadRecordController::GenerateRemarks($model["record_tuc"]);
                                     }
                                 ],
+                                [
+                                    'label' => 'Attached file(s) from the Reviewer',
+                                    'format' => 'raw',
+                                    'value' => function($model)
+                                    {
+                                        if(DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord") != 0)
+                                        {
+                                            $urluploadfile = '@web/report/gad-plan-budget/upload-form-endorsement-file?ruc='.$model["record_tuc"]."&onstep=to_create_gpb&tocreate=gad_plan_budget";
+                                            return Html::button('<span class="glyphicon glyphicon-file"> </span> ('.DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord").")", ['value'=>Url::to($urluploadfile),
+                            'class' => 'btn btn-primary btn-sm modalButton ','title' => 'Attached file(s) by the reviewer',]);
+                                        }
+                                        else
+                                        {
+                                            return "<i>No file(s) uploaded</i>";
+                                        }
+                                    }
+                                ],
 
                                 ['class' => 'yii\grid\ActionColumn',
                                     'template' => '{view} {delete}',
@@ -177,26 +194,26 @@ $this->title = $index_title;
                                                     'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                     'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                                 ], 
-                                                    ['class'=>'btn btn-default btn-sm btn-view-report']);
+                                                    ['class'=>'btn btn-info btn-xs btn-block']);
                                         },
                                         'delete'=>function ($url, $model) {
-                                            return Html::a('<i class="glyphicon glyphicon-trash"></i>', 
+                                            return Html::a('<i class="glyphicon glyphicon-trash"></i> Delete', 
                                             [
                                               '/report/gad-record/delete', 'id' => $model['record_id']
                                             ], 
                                             [
-                                              'class' => '',
+                                              'class' => 'btn btn-xs btn-danger btn-block',
                                               'data' => [
                                                   'confirm' => 'Are you sure you want to delete this item?',
                                                   'method' => 'post']
                                             ]);
-                                        }
+                                        },
                                     ],
                                 ],
                             ],
                         ]);
                     } 
-                    else if(Yii::$app->user->can("gad_lgu_province_permission") || Yii::$app->user->can("gad_province_permission"))
+                    else if(Yii::$app->user->can("gad_lgu_province_permission"))
                     {
                         echo GridView::widget([
                             'dataProvider' => $dataProvider,
@@ -254,9 +271,26 @@ $this->title = $index_title;
                                         return GadRecordController::GenerateRemarks($model["record_tuc"]);
                                     }
                                 ],
+                                [
+                                    'label' => 'Attached file(s) from the Reviewer',
+                                    'format' => 'raw',
+                                    'value' => function($model)
+                                    {
+                                        if(DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord") != 0)
+                                        {
+                                            $urluploadfile = '@web/report/gad-plan-budget/upload-form-endorsement-file?ruc='.$model["record_tuc"]."&onstep=to_create_gpb&tocreate=gad_plan_budget";
+                                            return Html::button('<span class="glyphicon glyphicon-file"> </span> ('.DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord").")", ['value'=>Url::to($urluploadfile),
+                            'class' => 'btn btn-primary btn-sm modalButton ','title' => 'Attached file(s) by the reviewer',]);
+                                        }
+                                        else
+                                        {
+                                            return "<i>No file(s) uploaded</i>";
+                                        }
+                                    }
+                                ],
 
                                 ['class' => 'yii\grid\ActionColumn',
-                                    'template' => '{view}',
+                                    'template' => Yii::$app->user->can("gad_delete_plan_budget") ? '{delete} {view}' : '{view}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
                                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
@@ -264,7 +298,19 @@ $this->title = $index_title;
                                                     'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                     'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                                 ], 
-                                                    ['class'=>'btn btn-default btn-sm btn-view-report']);
+                                                    ['class'=>'btn btn-info btn-xs btn-view-report btn-block']);
+                                        },
+                                        'delete'=>function ($url, $model) {
+                                            return Html::a('<i class="glyphicon glyphicon-trash"></i> Delete', 
+                                            [
+                                              '/report/gad-record/delete', 'id' => $model['record_id']
+                                            ], 
+                                            [
+                                              'class' => 'btn btn-xs btn-danger btn-block',
+                                              'data' => [
+                                                  'confirm' => 'Are you sure you want to delete this item?',
+                                                  'method' => 'post']
+                                            ]);
                                         },
                                     ],
                                 ],
@@ -335,6 +381,23 @@ $this->title = $index_title;
                                     'value' => function($model)
                                     {
                                         return GadRecordController::GenerateRemarks($model["record_tuc"]);
+                                    }
+                                ],
+                                [
+                                    'label' => 'Attached file(s) from the Reviewer',
+                                    'format' => 'raw',
+                                    'value' => function($model)
+                                    {
+                                        if(DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord") != 0)
+                                        {
+                                            $urluploadfile = '@web/report/gad-plan-budget/upload-form-endorsement-file?ruc='.$model["record_tuc"]."&onstep=to_create_gpb&tocreate=gad_plan_budget";
+                                            return Html::button('<span class="glyphicon glyphicon-file"> </span> ('.DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord").")", ['value'=>Url::to($urluploadfile),
+                            'class' => 'btn btn-primary btn-sm modalButton ','title' => 'Attached file(s) by the reviewer',]);
+                                        }
+                                        else
+                                        {
+                                            return "<i>No file(s) uploaded</i>";
+                                        }
                                     }
                                 ],
 
@@ -420,12 +483,29 @@ $this->title = $index_title;
                                         return GadRecordController::GenerateRemarks($model["record_tuc"]);
                                     }
                                 ],
+                                [
+                                    'label' => 'Attached file(s) from the Reviewer',
+                                    'format' => 'raw',
+                                    'value' => function($model)
+                                    {
+                                        if(DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord") != 0)
+                                        {
+                                            $urluploadfile = '@web/report/gad-plan-budget/upload-form-endorsement-file?ruc='.$model["record_tuc"]."&onstep=to_create_gpb&tocreate=gad_plan_budget";
+                                            return Html::button('<span class="glyphicon glyphicon-file"> </span> ('.DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord").")", ['value'=>Url::to($urluploadfile),
+                            'class' => 'btn btn-primary btn-sm modalButton ','title' => 'Attached file(s) by the reviewer',]);
+                                        }
+                                        else
+                                        {
+                                            return "<i>No file(s) uploaded</i>";
+                                        }
+                                    }
+                                ],
 
                                 ['class' => 'yii\grid\ActionColumn',
                                     'template' => '{view}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
-                                            if($model['record_status'] == 1 || $model['record_status'] == 2 || $model['record_status'] == 5)
+                                            if($model['record_status'] == 1 || $model['record_status'] == 2 || $model['record_status'] == 5 ||  $model['record_status'] == 4)
                                             {
                                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
                                                     'ruc' => $model['record_tuc'], 
@@ -505,6 +585,23 @@ $this->title = $index_title;
                                     'value' => function($model)
                                     {
                                         return GadRecordController::GenerateRemarks($model["record_tuc"]);
+                                    }
+                                ],
+                                [
+                                    'label' => 'Attached file(s) from the Reviewer',
+                                    'format' => 'raw',
+                                    'value' => function($model)
+                                    {
+                                        if(DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord") != 0)
+                                        {
+                                            $urluploadfile = '@web/report/gad-plan-budget/upload-form-endorsement-file?ruc='.$model["record_tuc"]."&onstep=to_create_gpb&tocreate=gad_plan_budget";
+                                            return Html::button('<span class="glyphicon glyphicon-file"> </span> ('.DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord").")", ['value'=>Url::to($urluploadfile),
+                            'class' => 'btn btn-primary btn-sm modalButton ','title' => 'Attached file(s) by the reviewer',]);
+                                        }
+                                        else
+                                        {
+                                            return "<i>No file(s) uploaded</i>";
+                                        }
                                     }
                                 ],
 
@@ -600,6 +697,23 @@ $this->title = $index_title;
                                     'value' => function($model)
                                     {
                                         return GadRecordController::GenerateRemarks($model["record_tuc"]);
+                                    }
+                                ],
+                                [
+                                    'label' => 'Attached file(s) from the Reviewer',
+                                    'format' => 'raw',
+                                    'value' => function($model)
+                                    {
+                                        if(DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord") != 0)
+                                        {
+                                            $urluploadfile = '@web/report/gad-plan-budget/upload-form-endorsement-file?ruc='.$model["record_tuc"]."&onstep=to_create_gpb&tocreate=gad_plan_budget";
+                                            return Html::button('<span class="glyphicon glyphicon-file"> </span> ('.DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord").")", ['value'=>Url::to($urluploadfile),
+                            'class' => 'btn btn-primary btn-sm modalButton ','title' => 'Attached file(s) by the reviewer',]);
+                                        }
+                                        else
+                                        {
+                                            return "<i>No file(s) uploaded</i>";
+                                        }
                                     }
                                 ],
 

@@ -325,13 +325,16 @@ nav.navbar-default div.navbar-header a
                         <?php } ?>
                         
                         <?php 
-                            if(Yii::$app->session["activelink"] == "created_document")
+                            if(Yii::$app->user->can("gad_document_menu"))
                             {
-                                echo "<li class='activelink'>".Html::a('<span class="fa fa-file"></span> Documents', ['/cms/document/created-document'])."</li>";
-                            }
-                            else
-                            {
-                                echo "<li>".Html::a('<span class="fa fa-file"></span> Documents', ['/cms/document/created-document'])."</li>";
+                                if(Yii::$app->session["activelink"] == "created_document")
+                                {
+                                    echo "<li class='activelink'>".Html::a('<span class="fa fa-file"></span> Documents', ['/cms/document/created-document'])."</li>";
+                                }
+                                else
+                                {
+                                    echo "<li>".Html::a('<span class="fa fa-file"></span> Documents', ['/cms/document/created-document'])."</li>";
+                                }
                             }
                         ?>
                         <li>

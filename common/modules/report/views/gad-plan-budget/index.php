@@ -161,6 +161,40 @@ $this->title = "Annual GAD Plan and Budget";
                     </tbody>
                 </table>
             </div>
+            <?php
+                $urluploadfile = '@web/report/gad-plan-budget/upload-form-endorsement-file?ruc='.$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
+                if(Yii::$app->user->can("gad_lgu_permission"))
+                {
+                    if(DefaultController::CountUploadedFile($ruc,"GadRecord") != 0)
+                    {
+                        echo Html::button('<span class="glyphicon glyphicon-file"> </span> View attached files from the reviewer ('.(DefaultController::CountUploadedFile($ruc,"GadRecord")).')', ['value'=>Url::to($urluploadfile),
+                        'class' => 'btn btn-primary btn-md modalButton ','title' => 'Upload Files',]);
+                    }
+                }
+                else if(Yii::$app->user->can("gad_lgu_province_permission"))
+                {
+                    if(DefaultController::CountUploadedFile($ruc,"GadRecord") != 0)
+                    {
+                        echo Html::button('<span class="glyphicon glyphicon-file"> </span> View attached files from the reviewer ('.(DefaultController::CountUploadedFile($ruc,"GadRecord")).')', ['value'=>Url::to($urluploadfile),
+                        'class' => 'btn btn-primary btn-md modalButton ','title' => 'Upload Files',]);
+                    }
+                }
+                else if(Yii::$app->user->can("gad_province_permission"))
+                {
+                    echo Html::button('<span class="glyphicon glyphicon-paperclip"> </span> Click this to attach document(s) needed by the LGU ('.(DefaultController::CountUploadedFile($ruc,"GadRecord")).')', ['value'=>Url::to($urluploadfile),
+                        'class' => 'btn btn-primary btn-md modalButton ','title' => 'Upload Files',]);
+                }
+                else if(Yii::$app->user->can("gad_region_permission"))
+                {
+                    echo Html::button('<span class="glyphicon glyphicon-paperclip"> </span> Click this to attach document(s) needed by the LGU ('.(DefaultController::CountUploadedFile($ruc,"GadRecord")).')', ['value'=>Url::to($urluploadfile),
+                        'class' => 'btn btn-primary btn-md modalButton ','title' => 'Upload Files',]);
+                }
+                else if(Yii::$app->user->can("gad_ppdo_permission"))
+                {
+                    echo Html::button('<span class="glyphicon glyphicon-paperclip"> </span> Click this to attach document(s) needed by the LGU ('.(DefaultController::CountUploadedFile($ruc,"GadRecord")).')', ['value'=>Url::to($urluploadfile),
+                        'class' => 'btn btn-primary btn-md modalButton ','title' => 'Upload Files',]);
+                }
+            ?>
         </div>
     </div>
 
@@ -197,25 +231,33 @@ $this->title = "Annual GAD Plan and Budget";
             <?php } ?>
 
             <?php 
-                echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Letter of Review / Endorsement',['/cms/document/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-primary pull-left','style' => 'margin-top:20px;']); 
+                if(Yii::$app->user->can("gad_create_letter_menu"))
+                {
+                    echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Letter of Review / Endorsement',['/cms/document/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-primary pull-left','style' => 'margin-top:20px;']); 
+                }
             ?>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-2">
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <br/>
             <?php
                 $t = '@web/report/gad-plan-budget/form-change-report-status?qryReportStatus='.$qryReportStatus."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."";
+                
 
                 if(Yii::$app->user->can("gad_lgu_permission"))
                 {
                     // show in encoding process || returned to LGU || encoding process huc || returned by region
                     if($qryReportStatus == 0 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 6)
                     {
-                        echo Html::a('<span class="glyphicon glyphicon-refresh"></span> Load Plan',['load-plan','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate],['class' => 'btn btn-success'])."&nbsp;";
-                        echo Html::a('<span class="glyphicon glyphicon-refresh"></span> Load Uploaded Files',['load-file','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate],['class' => 'btn btn-success']);
+                        if(DefaultController::CreatePlanStatusCode($ruc) != 1)
+                        {
+                            echo Html::a('<span class="glyphicon glyphicon-refresh"></span> Load Plan',['load-plan','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate],['class' => 'btn btn-success'])."&nbsp;";
+                            echo Html::a('<span class="glyphicon glyphicon-refresh"></span> Load Uploaded Files',['load-file','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate],['class' => 'btn btn-success']);
+                        }
                         echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
                         'class' => 'btn btn-info btn-md modalButton pull-right']);
+                        
                     }
                 }
                 else if(Yii::$app->user->can("gad_lgu_province_permission"))
@@ -223,6 +265,11 @@ $this->title = "Annual GAD Plan and Budget";
                     // encoding process || returned by dilg region 
                     if($qryReportStatus == 9 || $qryReportStatus == 6)
                     {
+                        if(DefaultController::CreatePlanStatusCode($ruc) != 1)
+                        {
+                            echo Html::a('<span class="glyphicon glyphicon-refresh"></span> Load Plan',['load-plan','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate],['class' => 'btn btn-success'])."&nbsp;";
+                            echo Html::a('<span class="glyphicon glyphicon-refresh"></span> Load Uploaded Files',['load-file','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate],['class' => 'btn btn-success']);
+                        }
                         echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
                         'class' => 'btn btn-info btn-md modalButton pull-right']);
                     }
@@ -430,7 +477,7 @@ $this->title = "Annual GAD Plan and Budget";
                                     <?php
                                         if(Yii::$app->user->can("gad_delete_rowplanbudget") && $plan["record_status"] != 1)
                                         {
-                                            echo Html::a("<span class='glyphicon glyphicon-trash'></span> Delete ",
+                                            echo Html::a("<span class='glyphicon glyphicon-trash'></span> ",
                                             [
                                                 'default/delete-plan-budget-gender-issue',
                                                 'id' => $plan['id'],
@@ -439,8 +486,9 @@ $this->title = "Annual GAD Plan and Budget";
                                                 'tocreate' => $tocreate
                                             ],
                                             [
-                                                'class' => 'btn btn-danger btn-xs btn-block',
+                                                'class' => 'btn btn-danger btn-xs',
                                                 'id'=>"submit_to",
+                                                'title' => 'Delete',
                                                 'style' => '',
                                                 'data' => [
                                                     'confirm' => 'Are you sure you want to perform this action?',
@@ -451,26 +499,26 @@ $this->title = "Annual GAD Plan and Budget";
                                         if(Yii::$app->user->can("gad_upload_files_row"))
                                         {
                                             $t = '@web/report/gad-plan-budget/update?id='.$plan['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
-                                            echo Html::button('<span class="glyphicon glyphicon-upload"></span> Upload', ['value'=>Url::to($t),
-                                            'class' => 'btn btn-default btn-xs modalButton btn-block']);
+                                            echo "&nbsp;".Html::button('<span class="glyphicon glyphicon-paperclip"></span> ', ['value'=>Url::to($t),
+                                            'class' => 'btn btn-default btn-xs modalButton','title' => 'Upload File(s)',]);
                                         }
 
                                         if(DefaultController::GetUploadStatus($plan["id"],"GadPlanBudget") == 1)
                                         { // if has uploaded files show button to view file
                                             $t = '@web/report/gad-plan-budget/view?row_id='.$plan['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadPlanBudget";
-                                            echo Html::button('<span class="glyphicon glyphicon-file"></span> View Uploaded File(s)', ['value'=>Url::to($t),
-                                            'class' => 'btn btn-info btn-xs modalButton btn-block']);
+                                            echo "&nbsp;".Html::button('<span class="glyphicon glyphicon-file"></span> ', ['value'=>Url::to($t),
+                                            'class' => 'btn btn-info btn-xs modalButton','title' => 'View Uploaded File(s)']);
                                         }
                                         else
                                         { // else no uploaded file yet
                                             if(DefaultController::PlanUploadStatus($plan['id']) == 0)
                                             { // the upload_status = 0 means no uploaded file or not upload later
                                                 echo "<button class='btn btn-default btn-xs btn-block' id='upload_later_".$plan['id']."'><span class='glyphicon glyphicon-time'></span> Upload Later</button>";
-                                                echo "<span class='label label-warning btn-block' id='label_nuf_".$plan['id']."'>No Uploaded File(s) </span>";
+                                                echo "<span class='label label-warning btn-block' id='label_nuf_noplan_".$plan['id']."'>No Uploaded File(s) </span>";
                                             }
                                             else if(DefaultController::PlanUploadStatus($plan['id']) == 1)
                                             {
-                                                echo "<span class='label label-warning btn-block' id='label_nuf_".$plan['id']."'>Upload later </span>";
+                                                echo "<span class='label label-warning btn-block' id='label_nufplan_".$plan['id']."'>Upload later </span>";
                                             }
                                             ?>
                                             <?php 
@@ -614,6 +662,8 @@ $this->title = "Annual GAD Plan and Budget";
                                                 'ruc' => $ruc,
                                                 'onstep' => $onstep,
                                                 'tocreate' => $tocreate,
+                                                'upload' => $upload,
+                                                'folder_type' => $folder_type
                                             ]);
                                         ?>
                                     </td>
@@ -651,7 +701,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'colspanValue' => '2',
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
-                                        'customStyle' => '',
+                                        'customStyle' => 'padding-top:13px;',
                                         'enableComment' => Yii::$app->user->can("gad_create_comment") && $dap["record_status"] != 1 ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can("gad_edit_cell") && $dap["record_status"] != 1  ? 'true' : 'false',
                                         'enableViewComment' => 'true',
@@ -668,31 +718,31 @@ $this->title = "Annual GAD Plan and Budget";
                                     $HgdgMessage = null;
                                     $HgdgWrongSign = "";
                                     
-                                    if($varHgdg < 4) // 0%
+                                    if((float)$varHgdg < 4) // 0%
                                     {
                                         // echo "GAD is invisible";
                                         $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0);
                                         $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
                                     }
-                                    else if($varHgdg >= 4 && $varHgdg <= 7.9) // 25%
+                                    else if((float)$varHgdg >= 4 && (float)$varHgdg <= 7.99) // 25%
                                     {
                                         // echo "Promising GAD prospects (conditional pass)";
                                         $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.25);
                                         $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
                                     }
-                                    else if($varHgdg >= 8 && $varHgdg <= 14.9) // 50%
+                                    else if((float)$varHgdg >= 8 && (float)$varHgdg <= 14.99) // 50%
                                     {
                                         // echo "Gender Sensetive";
                                         $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.50);
                                         $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
                                     }
-                                    else if($varHgdg >= 15 && $varHgdg <= 19.9) // 75%
+                                    else if((float)$varHgdg >= 15 && (float)$varHgdg <= 19.99) // 75%
                                     {
                                         // echo "Gender-responsive";
                                         $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.75);
                                         $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
                                     }
-                                    else if($varHgdg == 20) // 100%
+                                    else if((float)$varHgdg == 20) // 100%
                                     {
                                         // echo "Full gender-resposive";
                                         $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 1);
@@ -718,7 +768,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'colspanValue' => '1',
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
-                                        'customStyle' => 'text-align:center;',
+                                        'customStyle' => 'text-align:center; padding-top:13px;',
                                         'enableComment' => Yii::$app->user->can("gad_create_comment") && $dap["record_status"] != 1 ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can("gad_edit_cell") && $dap["record_status"] != 1  ? 'true' : 'false',
                                         'enableViewComment' => 'true',
@@ -762,28 +812,7 @@ $this->title = "Annual GAD Plan and Budget";
                                     //     'customStyle' => 'text-align:right;',
                                     // ])
                                 ?>
-                                
-                                <?php
-                                    echo $this->render('cell_reusable_form',[
-                                        'cell_value' => !empty($HgdgMessage) ? $HgdgMessage : $computeGadAttributedProBudget,
-                                        'display_value' =>  !empty($HgdgMessage) ? $HgdgMessage : number_format($computeGadAttributedProBudget,2),
-                                        'row_id' => $dap["id"],
-                                        'record_unique_code' => $dap["record_tuc"],
-                                        'attribute_name' => "attributed_pro_budget",
-                                        'data_type' => 'string',
-                                        'urlUpdateAttribute' => "",
-                                        'column_title' => 'GAD Attributed Program/Project Budget',
-                                        'colspanValue' => '3',
-                                        'controller_id' => $dap['controller_id'],
-                                        'form_id' => 'attributed-program',
-                                        'customStyle' => 'text-align:right; ',
-                                         'enableComment' => Yii::$app->user->can("gad_create_comment") && $dap["record_status"] != 1 ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can("gad_edit_cell") && $dap["record_status"] != 1  ? 'true' : 'false',
-                                        'enableViewComment' => 'true',
-                                        'countRow' => $countRowAttribute,
-                                        'columnNumber' => 4,
-                                    ])
-                                ?>
+                                <td colspan="3" style="text-align: right; padding-top: 25px;"><?= !empty($HgdgMessage) ? $HgdgMessage : number_format($computeGadAttributedProBudget,2) ?></td>
                                 <?php
                                     echo $this->render('cell_reusable_form',[
                                         'cell_value' => $dap["ap_lead_responsible_office"],
@@ -797,7 +826,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'colspanValue' => '',
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
-                                        'customStyle' => '',
+                                        'customStyle' => 'text-align:center; padding-top:13px;',
                                         'enableComment' => Yii::$app->user->can("gad_create_comment") && $dap["record_status"] != 1 ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can("gad_edit_cell") && $dap["record_status"] != 1  ? 'true' : 'false',
                                         'enableViewComment' => 'true',
@@ -809,22 +838,45 @@ $this->title = "Annual GAD Plan and Budget";
                                     <?php
                                         if(Yii::$app->user->can("gad_delete_plan_budget"))
                                         {
-                                            echo Html::a("<span class='glyphicon glyphicon-trash'></span> Delete",
+                                            echo Html::a("<span class='glyphicon glyphicon-trash'></span>",
                                             [
                                                 'default/delete-plan-budget-attrib',
                                                 'id' => $dap['id'],
                                                 'ruc' => $ruc,
                                                 'onstep' => $onstep,
-                                                'tocreate' => $tocreate
+                                                'tocreate' => $tocreate,
                                             ],
                                             [
                                                 'class' => 'btn btn-danger btn-xs',
                                                 'id'=>"submit_to",
+                                                'title' => 'Delete',
                                                 'style' => '',
                                                 'data' => [
                                                     'confirm' => 'Are you sure you want to perform this action?',
                                                     'method' => 'post']
                                             ]);
+                                        }
+                                    ?>
+                                    <?php
+                                        if(Yii::$app->user->can("gad_upload_files_row"))
+                                        {
+                                            $t = '@web/report/gad-plan-budget/update-upload-form-attributed-program?id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
+                                            echo Html::button('<span class="glyphicon glyphicon-paperclip"></span>', ['value'=>Url::to($t),
+                                            'class' => 'btn btn-default btn-xs modalButton ','title' => 'Upload Files',]);
+                                        }
+
+                                        if(DefaultController::GetUploadStatus($dap["id"],"GadAttributedProgram") == 1)
+                                        { // if has uploaded files show button to view file
+                                            $t = '@web/report/gad-plan-budget/view?row_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadAttributedProgram";
+                                            echo "&nbsp;".Html::button('<span class="glyphicon glyphicon-file"></span> ', ['value'=>Url::to($t),
+                                            'class' => 'btn btn-info btn-xs modalButton','title' => 'View Uploaded Files',]);
+                                        }
+                                        else
+                                        { // else no uploaded file yet
+                                            if(DefaultController::PlanUploadStatusAttrib($dap['id']) == 1)
+                                            {
+                                                echo "<span class='label label-warning btn-block' id='label_nuf_".$dap['id']."'>Upload later </span>";
+                                            }
                                         }
                                     ?>
                                 </td>

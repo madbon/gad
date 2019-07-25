@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use kartik\select2\Select2;
+use yii\widgets\ActiveForm;
 ?>
 
  <div class="row">
@@ -72,16 +73,6 @@ use kartik\select2\Select2;
                 'customStyle' => '',
             ]);
         ?>
-        <!-- <br/> -->
-        <?php
-            // echo $this->render('common_tools/textinput_suggest',[
-            //     'placeholder_title' => "GAD Attributed Program/Project Budget",
-            //     'attribute_name' => "attributed_pro_budget",
-            //     'urlLoadResult' => '/report/default/load-attributed-pro-budget',
-            //     'classValue' => 'form-control',
-            //     'customStyle' => '',
-            // ]);
-        ?>
 	</div>
 	<div class="col-sm-4">
 		<?php
@@ -94,25 +85,52 @@ use kartik\select2\Select2;
 		        'customStyle' => 'height:88px;',
 		    ]);
 		?>
-		<br/>
-		<button id="saveAttributedProgram" type="button" class="btn btn-primary btn-sm">
-			<span class="glyphicon glyphicon-floppy-disk"></span> Save
-		</button>
-		<?php
+        <br/>
+        <button id="saveAttributedProgram" type="button" class="btn btn-primary btn-sm">
+            <span class="glyphicon glyphicon-floppy-disk"></span> Save
+        </button>  
+        <button id="exitAttributedProgram" type="button" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-eye-close"></span> Hide
+        </button>
+
+        <div class="panel" style="margin-top: 5px; display: none;" id="panel_upload_attributed">
+            <div class="panel-body">
+                <div class="row" >
+                    <div class="col-sm-12">
+                        <?php
+                            $t = '@web/report/gad-plan-budget/upload-form-attributed-program?ruc='.$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
+                            echo Html::button('<span class="glyphicon glyphicon-upload"></span> Upload File(s) Now', ['value'=>yii\helpers\Url::to($t),
+                            'class' => 'btn btn-primary btn-sm modalButton','id'=>'saveAttributedProgram']);
+                        ?>
+                        <span style="color:black;">or</span>
+                        <?= Html::a('<span class="glyphicon glyphicon-time"></span> Upload File(s) Later',['update-upload-status-attributed-program','ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate],['class' => 'btn btn-sm btn-warning']) ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <?php  ?>
+        <?php
         $url = \yii\helpers\Url::to(['/report/default/create-pb-attributed-program']);
         $this->registerJs('
+            
+
             $("#saveAttributedProgram").click(function(){
-                var ruc         					= "'.$ruc.'";
-                var onstep 							= "'.$onstep.'";
-                var ppa_sectors 		            = $("#ppa_attributed_program_id").val();
+
+                var ruc                             = "'.$ruc.'";
+                var onstep                          = "'.$onstep.'";
+                var ppa_sectors                     = $("#ppa_attributed_program_id").val();
                 var ppa_attributed_program_id       = ppa_sectors.toString();
-                var lgu_program_project 			= $("#lgu_program_project").val();
-                var hgdg 							= $("#hgdg").val();
-                var total_annual_pro_budget 		= $("#total_annual_pro_budget").val();
-                var lead_responsible_office 		= $("#ap_lead_responsible_office").val();
-                var controller_id					= "'.(Yii::$app->controller->id).'";
+                var lgu_program_project             = $("#lgu_program_project").val();
+                var hgdg                            = $("#hgdg").val();
+                var total_annual_pro_budget         = $("#total_annual_pro_budget").val();
+                var lead_responsible_office         = $("#ap_lead_responsible_office").val();
+                var controller_id                   = "'.(Yii::$app->controller->id).'";
                 var tocreate                        = "'.$tocreate.'";
+                
                 $.ajax({
+                    type: "POST",
                     url: "'.$url.'",
                     data: { 
                             ruc:ruc,
@@ -127,6 +145,11 @@ use kartik\select2\Select2;
                         }
                     
                     }).done(function(result) {
+                        if(result == "true")
+                        {
+                            $("#panel_upload_attributed").slideDown(300);
+                            $("#saveAttributedProgram").hide();
+                        }
                         $.each(result, function( index, value ) {
                             
                             // error in select2
@@ -156,10 +179,8 @@ use kartik\select2\Select2;
                 });
           }); ');
         ?>
-		<button id="exitAttributedProgram" type="button" class="btn btn-warning btn-sm">
-			<span class="glyphicon glyphicon-eye-close"></span> Hide
-		</button>
-		<?php
+        
+        <?php
             $urlSetSession = \yii\helpers\Url::to(['default/session-encode']);
             $this->registerJs("
                 $('#exitAttributedProgram').click(function(){
@@ -181,5 +202,6 @@ use kartik\select2\Select2;
                 });
             ");
         ?>
+        
 	</div>
 </div>

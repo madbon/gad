@@ -24,6 +24,7 @@ use \common\models\GadFileAttached;
 use common\models\CreateStatus;
 use common\modules\report\controllers\GadPlanBudgetController;
 use common\modules\report\controllers\GadRecordController;
+use yii\web\UploadedFile;
 /**
  * Default controller for the `report` module
  */
@@ -96,6 +97,12 @@ class DefaultController extends Controller
         return $arr;
 
     }
+
+    public function CreatePlanStatusCode($ruc)
+    {
+        $record = GadRecord::find()->where(['tuc' => $ruc])->one();
+        return $record->create_status_id;
+    }
     public function CreatePlanStatus($ruc)
     {
         $record = GadRecord::find()->where(['tuc' => $ruc])->one();
@@ -108,6 +115,26 @@ class DefaultController extends Controller
         // 1 = upload later
         // 2 = has an uploaded file
         $qry = GadPlanBudget::find()->select(['upload_status','id'])->where(['id' => $row_id])->one();
+
+        return $qry->upload_status;
+    }
+    public function GetRecordIdByRuc($ruc)
+    {
+        $qry = GadRecord::find()->where(['tuc' => $ruc])->one();
+        return $qry->id;
+    }
+    public function CountUploadedFile($ruc,$model_name)
+    {
+        $record_id = DefaultController::GetRecordIdByRuc($ruc);
+        $qry = GadFileAttached::find()->where(['model_id' =>  $record_id,'model_name' => $model_name])->count();
+        return $qry;
+    }
+    public function PlanUploadStatusAttrib($row_id)
+    {
+        // 0 = no uploaded files
+        // 1 = upload later
+        // 2 = has an uploaded file
+        $qry = GadAttributedProgram::find()->select(['upload_status','id'])->where(['id' => $row_id])->one();
 
         return $qry->upload_status;
     }
@@ -1051,44 +1078,50 @@ class DefaultController extends Controller
         
         return $is_save;
     }
-    public  function actionCreatePbAttributedProgram($ruc,$onstep,$ppa_attributed_program_id,$lgu_program_project,$hgdg,$total_annual_pro_budget,$lead_responsible_office,$controller_id,$tocreate)
+    // public  function actionCreatePbAttributedProgram($ruc,$onstep,$ppa_attributed_program_id,$lgu_program_project,$hgdg,$total_annual_pro_budget,$lead_responsible_office,$controller_id,$tocreate,$file_upload,$folder_type)
+    public  function actionCreatePbAttributedProgram()
     {
-        // print_r($ppa_attributed_program_id); exit;
         $model = new GadAttributedProgram();
-        $model->record_tuc = $ruc;
-        $model->ppa_attributed_program_id = $ppa_attributed_program_id;
-        $model->lgu_program_project = $lgu_program_project;
-        $model->hgdg = $hgdg;
-        $model->total_annual_pro_budget = $total_annual_pro_budget;
-        $model->ap_lead_responsible_office = $lead_responsible_office;
+        $upload = new GadFileAttached();
+        $arrVal = Yii::$app->request->post();
+        $model->record_tuc = $arrVal["ruc"];
+        $model->ppa_attributed_program_id = $arrVal["ppa_attributed_program_id"];
+        $model->lgu_program_project = $arrVal["lgu_program_project"];
+        $model->hgdg = $arrVal["hgdg"];
+        $model->total_annual_pro_budget = $arrVal["total_annual_pro_budget"];
+        $model->ap_lead_responsible_office = $arrVal["lead_responsible_office"];
 
         date_default_timezone_set("Asia/Manila");
         $model->date_created = date('Y-m-d');
         $model->time_created = date("h:i:sa");
-        $model->controller_id = $controller_id;
+        $model->controller_id = $arrVal["controller_id"];
+
         if($model->save())
         {
-            return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate' => $tocreate]);
+            \Yii::$app->response->format = 'json';
+            return "true";
+            // return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate' => $tocreate]);
         }
         else
         {
             \Yii::$app->response->format = 'json';
             return $model->errors;
         }
+
     }
     public function actionLoadApLeadResponsibleOffice()
     {
         $qry = GadAttributedProgram::find()
-        ->select(["lead_responsible_office","id"])
-        ->where(['not', ['lead_responsible_office' => null]])
-        ->groupBy('lead_responsible_office')
+        ->select(["ap_lead_responsible_office","id"])
+        ->where(['not', ['ap_lead_responsible_office' => null]])
+        ->groupBy('ap_lead_responsible_office')
         ->all();
         $arr = [];
         $arr[] = ['id'=>'', 'title' => ''];
         foreach ($qry as  $item) {
             $arr[] = [
                         'id' => $item->id,
-                        'title' => $item->lead_responsible_office
+                        'title' => $item->ap_lead_responsible_office
                      ];
         }
         \Yii::$app->response->format = 'json';

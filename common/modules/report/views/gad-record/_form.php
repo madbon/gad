@@ -53,10 +53,14 @@ use common\modules\report\controllers\DefaultController;
                                 var thisvalue = this.value;
                                 if(thisvalue == 1)
                                 {
-
+                                    $("#table_records").hide();
+                                    $("#gadrecord-for_revision_record_id").val("");
                                 }
                                 else
                                 {
+                                    $("#table_records").show();
+                                    $("#gadrecord-for_revision_record_id").val("");
+
                                     $.ajax({
                                         url: "'.$urlLoadRecord.'",
                                         data: { 
@@ -82,6 +86,8 @@ use common\modules\report\controllers\DefaultController;
                                                 $("#table_records tbody").append(cols);
                                                 $("#"+btn_id).click(function(){
                                                     $("#gadrecord-for_revision_record_id").val(value.record_id);
+                                                    $("#gadrecord-total_lgu_budget").val(value.total_lgu_budget);
+                                                    $("#gadrecord-year").val(value.year);
                                                     $(".btnselect").text("Select");
                                                     $(this).text("Selected");
                                                     
@@ -114,8 +120,8 @@ use common\modules\report\controllers\DefaultController;
 
         </div>
         <div class="col-sm-8 table-responsive">
-            <?= $form->field($model, 'for_revision_record_id')->textInput(['maxlength' => 18]) ?>
-            <table class="table table-responsive table-hover"  id="table_records">
+            <?= $form->field($model, 'for_revision_record_id')->hiddenInput(['maxlength' => 18])->label(false) ?>
+            <table class="table table-responsive table-hover"  id="table_records" style="display: none;">
                 <thead>
                     <tr>
                         <th>Office</th>

@@ -131,7 +131,7 @@ use yii\helpers\Url;
                 $("#btn-edit-'.$attribute_name.'-'.$row_id.'").click(function(){
                     var attr_name = "'.$attribute_name.'";
                     var cell_value =  $("#content-"+attr_name+"-'.$row_id.' span.cell_span_value").text();
-                    console.log("'.$cell_value.'");
+                   
                     $(".div-tooltip-form").hide();
                     
                     $("#txt-edit-'.$attribute_name.'-'.$row_id.'").val(`'.$cell_value.'`);

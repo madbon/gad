@@ -563,7 +563,7 @@ HTML;
                             
                       }); ');
                 ?>
-                <button type="button" class="btn btn-warning btn-sm" title="Close" id="exit-gender-issue">
+                <button type="button" class="btn btn-default btn-sm" title="Close" id="exit-gender-issue">
                     <span class="glyphicon glyphicon-eye-close"></span> Hide
                 </button>
                 <?php

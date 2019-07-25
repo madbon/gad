@@ -20,6 +20,7 @@ use yii\helpers\ArrayHelper;
 use yii\base\Model;
 use yii\web\UploadedFile;
 use common\models\GadFileAttached;
+use common\models\GadAttributedProgram;
 
 
 
@@ -303,6 +304,8 @@ class GadPlanBudgetController extends Controller
     public function actionIndex($ruc,$onstep,$tocreate)
     {
         $model = new GadPlanBudget();
+        $folder_type = ArrayHelper::map(\common\models\GadFileFolderType::find()->all(), 'id', 'title');
+        $upload = new GadFileAttached();
         Yii::$app->session["activelink"] = $tocreate;
         $grand_total_pb = 0;
         $dataRecord = GadRecord::find()->where(['tuc' => $ruc, 'report_type_id' => 1])->all();
@@ -336,37 +339,33 @@ class GadPlanBudgetController extends Controller
             $HgdgMessage = null;
             $HgdgWrongSign = "";
             
-            if($varHgdg < 4) // 0%
+            if((float)$varHgdg < 4) // 0%
             {
                 $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0);
                 $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
             }
-            else if($varHgdg >= 4 && $varHgdg <= 7.9) // 25%
+            else if((float)$varHgdg >= 4 && (float)$varHgdg <= 7.99) // 25%
             {
                 $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.25);
                 $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
             }
-            else if($varHgdg >= 8 && $varHgdg <= 14.9) // 50%
+            else if((float)$varHgdg >= 8 && (float)$varHgdg <= 14.99) // 50%
             {
                 $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.50);
                 $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
             }
-            else if($varHgdg >= 15 && $varHgdg <= 19.9) // 75%
-            {
+            else if((float)$varHgdg >= 15 && (float)$varHgdg <= 19.99) // 75%
+            { 
                 $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.75);
                 $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
+                
             }
-            else if($varHgdg == 20) // 100%
+            else if((float)$varHgdg == 20) // 100%
             {
                 $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 1);
                 $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
             }
-            else
-            {
-                
-            }
-        }
-        
+        } 
 
         $qryRecord = (new \yii\db\Query())
         ->select([
@@ -501,6 +500,8 @@ class GadPlanBudgetController extends Controller
             'fivePercentTotalLguBudget' => $fivePercentTotalLguBudget,
             'qryReportStatus' => $qryReportStatus,
             'model' => $model,
+            'upload' => $upload,
+            'folder_type' => $folder_type
         ]);
     }
 
@@ -613,13 +614,183 @@ class GadPlanBudgetController extends Controller
     //     return $this->render('_upload_form', ['model' => $model]);
     // }
 
-    public function actionUpdate($id,$ruc,$onstep,$tocreate){
+    public function actionUploadFormEndorsementFile($ruc,$onstep,$tocreate){
+       $upload = new GadFileAttached();
+       $folder_type = ArrayHelper::map(\common\models\GadFileFolderType::find()->all(), 'id', 'title');
+       $record = GadRecord::find()->where(['tuc' => $ruc])->one();
 
+       if($upload->load(Yii::$app->request->post()))
+       {
+            $last_id = $record->id;
+            $upload->file_name = UploadedFile::getInstances($upload,'file_name');
+            if($upload->file_name)
+            {
+                $basepath = Yii::getAlias('@app');
+                $imagepath= $basepath.'/web/uploads/file_attached/';
+                
+                $countLoop = 0;
+                foreach ($upload->file_name as $image) {
+                    $modelName = "GadRecord";
+                    $countLoop += 1;
+                    $model = new GadFileAttached();
+                    $rand_name=rand(10,100);
+                    $model->file_name = $image;
+                    $model->model_id = $last_id;
+                    $model->model_name = $modelName;
+                    $miliseconds = round(microtime(true) * 1000);
+                    $hash =  md5(date('Y-m-d')."-".date("h-i-sa")."-".$miliseconds.$rand_name.$countLoop.$modelName.$last_id);
+                    $model->hash = $hash; 
+                    $model->extension = $image->extension;
+                    $model->file_folder_type_id = $upload->file_folder_type_id;
+
+
+                    if($model->save(false))
+                    {
+                        $image->saveAs($imagepath.$hash.".".$image->extension);
+                    }
+                }
+                
+                return $this->redirect(['index','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
+            }
+       }
+
+       $qry = (new \yii\db\Query())
+        ->select([
+            'FT.title as folder_title',
+            'FA.hash',
+            'FA.model_name',
+            'FA.model_id',
+            'FA.file_name',
+            'FA.extension',
+            'FT.id as folder_id'
+        ])
+        ->from('gad_file_attached FA')
+        ->leftJoin(['FT' => 'gad_file_folder_type'], 'FT.id = FA.file_folder_type_id')
+        ->groupBy(['FA.file_folder_type_id','FA.id'])
+        ->orderBy(['FA.file_folder_type_id' => SORT_ASC,'FA.id' => SORT_ASC])
+        ->where(['FA.model_id' => $record->id, 'FA.model_name' => 'GadRecord'])
+        ->all();
+        
+       return $this->renderAjax('_upload_form_endorsement',[
+            'upload'=>$upload,
+            'folder_type' => $folder_type,
+            'qry' => $qry,
+            'ruc' => $ruc,
+            'onstep' => $onstep,
+            'tocreate' => $tocreate
+        ]); 
+    }
+
+    public function actionUpdateUploadStatusAttributedProgram($ruc,$onstep,$tocreate)
+    {
+        $attributed = GadAttributedProgram::find()->where(['record_tuc' => $ruc])->orderBy(['id' => SORT_DESC])->one();
+
+        $last_id = $attributed->id;
+        GadAttributedProgram::updateAll(['upload_status' => 1],'id = '.$last_id.' ');
+
+        return $this->redirect(['index','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
+    }
+
+    public function actionUpdateUploadFormAttributedProgram($id,$ruc,$onstep,$tocreate){
+       $upload = new GadFileAttached();
+       $folder_type = ArrayHelper::map(\common\models\GadFileFolderType::find()->all(), 'id', 'title');
+       $attributed = GadAttributedProgram::find()->where(['record_tuc' => $ruc])->orderBy(['id' => SORT_DESC])->one();
+
+       if($upload->load(Yii::$app->request->post()))
+       {
+            $upload->file_name = UploadedFile::getInstances($upload,'file_name');
+            if($upload->file_name)
+            {
+                $basepath = Yii::getAlias('@app');
+                $imagepath= $basepath.'/web/uploads/file_attached/';
+                
+                $countLoop = 0;
+                foreach ($upload->file_name as $image) {
+                    $modelName = "GadAttributedProgram";
+                    $countLoop += 1;
+                    $model = new GadFileAttached();
+                    $rand_name=rand(10,100);
+                    $model->file_name = $image;
+                    $model->model_id = $id;
+                    $model->model_name = $modelName;
+                    $miliseconds = round(microtime(true) * 1000);
+                    $hash =  md5(date('Y-m-d')."-".date("h-i-sa")."-".$miliseconds.$rand_name.$countLoop.$modelName.$id);
+                    $model->hash = $hash; 
+                    $model->extension = $image->extension;
+                    $model->file_folder_type_id = $upload->file_folder_type_id;
+
+
+                    if($model->save(false))
+                    {
+                        $image->saveAs($imagepath.$hash.".".$image->extension);
+                    }
+                }
+                $qry = GadAttributedProgram::updateAll(['upload_status' => 2],'id = '.$id.' ');
+                return $this->redirect(['index','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
+            }
+       }
+        
+       return $this->renderAjax('_upload_form_attributed_program',[
+            'upload'=>$upload,
+            'folder_type' => $folder_type,
+        ]);
+    }
+
+    public function actionUploadFormAttributedProgram($ruc,$onstep,$tocreate){
+       $upload = new GadFileAttached();
+       $folder_type = ArrayHelper::map(\common\models\GadFileFolderType::find()->all(), 'id', 'title');
+       $attributed = GadAttributedProgram::find()->where(['record_tuc' => $ruc])->orderBy(['id' => SORT_DESC])->one();
+
+       if($upload->load(Yii::$app->request->post()))
+       {
+            $last_id = $attributed->id;
+            $upload->file_name = UploadedFile::getInstances($upload,'file_name');
+            if($upload->file_name)
+            {
+                $basepath = Yii::getAlias('@app');
+                $imagepath= $basepath.'/web/uploads/file_attached/';
+                
+                $countLoop = 0;
+                foreach ($upload->file_name as $image) {
+                    $modelName = "GadAttributedProgram";
+                    $countLoop += 1;
+                    $model = new GadFileAttached();
+                    $rand_name=rand(10,100);
+                    $model->file_name = $image;
+                    $model->model_id = $last_id;
+                    $model->model_name = $modelName;
+                    $miliseconds = round(microtime(true) * 1000);
+                    $hash =  md5(date('Y-m-d')."-".date("h-i-sa")."-".$miliseconds.$rand_name.$countLoop.$modelName.$last_id);
+                    $model->hash = $hash; 
+                    $model->extension = $image->extension;
+                    $model->file_folder_type_id = $upload->file_folder_type_id;
+
+
+                    if($model->save(false))
+                    {
+                        $image->saveAs($imagepath.$hash.".".$image->extension);
+                    }
+                }
+                $qry = GadAttributedProgram::updateAll(['upload_status' => 2],'id = '.$last_id.' ');
+                return $this->redirect(['index','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
+            }
+       }
+        
+       return $this->renderAjax('_upload_form_attributed_program',[
+            'upload'=>$upload,
+            'folder_type' => $folder_type,
+        ]);
+    }
+
+    
+    public function actionUpdate($id,$ruc,$onstep,$tocreate){
            $upload = new GadFileAttached();
            $folder_type = ArrayHelper::map(\common\models\GadFileFolderType::find()->all(), 'id', 'title');
 
            if($upload->load(Yii::$app->request->post()))
            {
+            // echo "<pre>"; 
+            // print_r($upload); exit;
                 $upload->file_name = UploadedFile::getInstances($upload,'file_name');
                 if($upload->file_name)
                 {
