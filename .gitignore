@@ -37,6 +37,7 @@ phpunit.phar
 /common/uploads/store
 /common/uploads/temp
 /frontend/web/uploads/file_attached
+/frontend/web/uploads/system_generated
 
 # ignore generated files
 /frontend/web/index.php

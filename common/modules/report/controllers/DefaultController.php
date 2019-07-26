@@ -177,7 +177,7 @@ class DefaultController extends Controller
     {
         $Record = GadRecord::find()->where(['tuc' => $ruc])->one();
 
-        if($Record->office_c == 2 || $Record->office_c == 3)
+        if($Record->office_c == 3 || $Record->office_c == 4)
         {
             $Query = Citymun::find()->where(['province_c' => $Record->province_c, 'citymun_c' => $Record->citymun_c])->one();
             return $Query->citymun_m;
