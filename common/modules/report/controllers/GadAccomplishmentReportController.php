@@ -277,7 +277,9 @@ class GadAccomplishmentReportController extends Controller
             'GC.id as gad_focused_id',
             'IC.id as inner_category_id',
             'AR.focused_id',
-            'REC.status as record_status'
+            'REC.status as record_status',
+            'AR.source as source_value',
+            'AR.gi_sup_data as sup_data'
         ])
         ->from('gad_accomplishment_report AR')
         // ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = AR.ppa_focused_id')
@@ -303,6 +305,7 @@ class GadAccomplishmentReportController extends Controller
         $select_GadFocused = ArrayHelper::map(\common\models\GadFocused::find()->all(), 'id', 'title');
         $select_GadInnerCategory = ArrayHelper::map(\common\models\GadInnerCategory::find()->all(), 'id', 'title');
         $select_PpaAttributedProgram = ArrayHelper::map(\common\models\GadPpaAttributedProgram::find()->all(), 'id', 'title');
+        $select_ActivityCategory = ArrayHelper::map(\common\models\GadActivityCategory::find()->all(), 'id', 'title');
 
         $reportStatus = 0;
         $modelRecord = GadRecord::find()->where(['tuc' => $ruc])->one();
@@ -337,7 +340,8 @@ class GadAccomplishmentReportController extends Controller
             'dataAttributedProgram' => $dataAttributedProgram,
             'grand_total_ar' => $grand_total_ar,
             'fivePercentTotalLguBudget' => $fivePercentTotalLguBudget,
-            'qryReportStatus' => $qryReportStatus
+            'qryReportStatus' => $qryReportStatus,
+            'select_ActivityCategory' => $select_ActivityCategory
         ]);
     }
 

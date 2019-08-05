@@ -889,7 +889,7 @@ class DefaultController extends Controller
         return $is_save;
     }
 
-    public function actionCreateAccomplishmentReport($focused_id,$ppa_focused_id,$cause_gender_issue,$objective,$relevant_lgu_ppa,$activity,$performance_indicator,$target,$actual_results,$total_approved_gad_budget,$actual_cost_expenditure,$variance_remarks,$ppa_value,$inner_category_id,$ruc,$onstep,$tocreate,$cliorg_ppa_attributed_program_id,$gi_sup_data)
+    public function actionCreateAccomplishmentReport($focused_id,$ppa_focused_id,$cause_gender_issue,$objective,$relevant_lgu_ppa,$activity,$performance_indicator,$target,$actual_results,$total_approved_gad_budget,$actual_cost_expenditure,$variance_remarks,$ppa_value,$inner_category_id,$ruc,$onstep,$tocreate,$cliorg_ppa_attributed_program_id,$gi_sup_data,$activity_category_id,$source)
     {
         $model = new \common\models\GadAccomplishmentReport();
         $model->focused_id = $focused_id;
@@ -909,6 +909,8 @@ class DefaultController extends Controller
         $model->record_tuc = $ruc;
         $model->cliorg_ppa_attributed_program_id = $cliorg_ppa_attributed_program_id;
         $model->gi_sup_data = $gi_sup_data;
+        $model->source = $source;
+        $model->activity_category_id = $activity_category_id;
 
 
         date_default_timezone_set("Asia/Manila");
@@ -1090,6 +1092,7 @@ class DefaultController extends Controller
         $model->hgdg = $arrVal["hgdg"];
         $model->total_annual_pro_budget = $arrVal["total_annual_pro_budget"];
         $model->ap_lead_responsible_office = $arrVal["lead_responsible_office"];
+        $model->checklist_id = $arrVal["checklist_id"];
 
         date_default_timezone_set("Asia/Manila");
         $model->date_created = date('Y-m-d');
@@ -1100,7 +1103,6 @@ class DefaultController extends Controller
         {
             \Yii::$app->response->format = 'json';
             return "true";
-            // return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate' => $tocreate]);
         }
         else
         {
@@ -1702,7 +1704,7 @@ class DefaultController extends Controller
 
     }
 
-    public function actionCreateGadPlanBudget($ppa_focused_id,$ppa_value,$issue,$obj,$relevant,$act,$performance_target,$ruc,$budget_mooe,$budget_ps,$budget_co,$lead_responsible_office,$focused_id,$inner_category_id,$onstep,$tocreate,$cliorg_ppa_attributed_program_id,$gi_sup_data,$date_implement_start,$date_implement_end,$activity_category_id)
+    public function actionCreateGadPlanBudget($ppa_focused_id,$ppa_value,$issue,$obj,$relevant,$act,$performance_target,$ruc,$budget_mooe,$budget_ps,$budget_co,$lead_responsible_office,$focused_id,$inner_category_id,$onstep,$tocreate,$cliorg_ppa_attributed_program_id,$gi_sup_data,$date_implement_start,$date_implement_end,$activity_category_id,$source)
     {
         $model = new \common\models\GadPlanBudget();
         $model->cause_gender_issue = $issue;
@@ -1729,6 +1731,7 @@ class DefaultController extends Controller
         $qryRecord = \common\models\GadRecord::find()->where(['tuc' => $ruc])->one();
         $qryRecordId = !empty($qryRecord->id) ? $qryRecord->id : null;
         $model->record_id = $qryRecordId;
+        $model->source = $source;
 
 
         date_default_timezone_set("Asia/Manila");
@@ -1936,15 +1939,52 @@ class DefaultController extends Controller
         return $is_save;
     }
 
-    public function actionUpdateGenderIssueSupData($uid,$upd8_value)
+    public function actionUpdateGenderIssueSupData($uid,$upd8_value,$controller_id)
     {
-        $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
+        if($controller_id == "gad-accomplishment-report")
+        {
+            $qry = \common\models\GadAccomplishmentReport::find()->where(['id' => $uid])->one();
+        }
+        else
+        {
+            $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
+        }
+        
+        
         $qry->gi_sup_data = $upd8_value;
 
         if($qry->save())
         {
             $is_save = $upd8_value;
         }else
+        {
+            $is_save = "";
+            foreach ($qry->errors as $key => $value) {
+                $is_save = $value[0];
+            }
+        }
+        
+        return $is_save;
+    }
+
+    public function actionUpdateSource($uid,$ta_edit_source,$controller_id)
+    {
+        if($controller_id == "gad-accomplishment-report")
+        {
+            $qry = \common\models\GadAccomplishmentReport::find()->where(['id' => $uid])->one();
+        }
+        else
+        {
+            $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
+        }
+        
+        $qry->source = $ta_edit_source;
+
+        if($qry->save())
+        {
+            $is_save = $ta_edit_source;
+        }
+        else
         {
             $is_save = "";
             foreach ($qry->errors as $key => $value) {

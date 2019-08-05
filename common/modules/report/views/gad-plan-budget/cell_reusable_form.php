@@ -488,54 +488,38 @@ use yii\helpers\Url;
             ?>
         </div>
 
-        <?php 
-            $recordStatus = 0;
-            // print_r($queryRecord->tuc."hello"); exit;
-            if(Yii::$app->controller->id == "gad-accomplishment-report")
-            {
-                $findOneQry =  \common\models\GadAccomplishmentReport::find()->where(['id' => $row_id, 'inner_category_id' => 1])->andWhere(['not', ['gi_sup_data' => null]]);
-                $planTuc = $findOneQry->one();
-                $recordQuery = \common\models\GadRecord::find()->where(['tuc' => $planTuc->record_tuc])->one();
-            }
-            else if(Yii::$app->controller->id == "gad-plan-budget")
-            {
-                $findOneQry =  \common\models\GadPlanBudget::find()->where(['id' => $row_id, 'inner_category_id' => 1])->andWhere(['not', ['gi_sup_data' => null]]);
-                $planTuc = $findOneQry->one();
-                $recordQuery = \common\models\GadRecord::find()->where(['tuc' => !empty($planTuc->record_tuc) ? $planTuc->record_tuc : ""])->one();
-            }
-        ?>
-        <?php if($findOneQry->exists() && $attribute_name == "ppa_value" && $recordQuery->status != 1){ ?>
+        <?php if($attribute_name == "ppa_value"){ ?>
             <button id="btn_view_gi_sup_data-<?= $row_id ?>" type="button" class="btn btn-warning btn-xs" title="Gender Issue Supporting Statistics Data">
                 <span class="glyphicon glyphicon-list"></span>
             </button>
-            <?php
-                if(Yii::$app->controller->id == "gad-accomplishment-report")
-                {
-                    $urlLoadSupData = \yii\helpers\Url::to(['/report/default/load-ar-gender-issue-sup-data']);
-                }
-                else if(Yii::$app->controller->id == "gad-plan-budget")
-                {
-                    $urlLoadSupData = \yii\helpers\Url::to(['/report/default/load-gender-issue-sup-data']);
-                }
-                
-                $this->registerJs("
-                    $('#btn_view_gi_sup_data-".$row_id."').click(function(){
-                        $('.div-tooltip-form').hide(); // hide all showing div
-                        $('#div_view_sup_data-".$row_id."').slideDown(300); // show current active div
-                        var record_id = ".$row_id.";
-                        $.ajax({
-                            url: '".$urlLoadSupData."',
-                            data: { 
-                                    record_id:record_id
-                                    }
-                            
-                            }).done(function(data) {
-                                $('#content_sup_data-".$row_id."').text(data);
-                        });
-                    });
-                ");
-            ?>
         <?php } ?>
+        <?php
+            if(Yii::$app->controller->id == "gad-accomplishment-report")
+            {
+                $urlLoadSupData = \yii\helpers\Url::to(['/report/default/load-ar-gender-issue-sup-data']);
+            }
+            else if(Yii::$app->controller->id == "gad-plan-budget")
+            {
+                $urlLoadSupData = \yii\helpers\Url::to(['/report/default/load-gender-issue-sup-data']);
+            }
+            
+            $this->registerJs("
+                $('#btn_view_gi_sup_data-".$row_id."').click(function(){
+                    $('.div-tooltip-form').hide(); // hide all showing div
+                    $('#div_view_sup_data-".$row_id."').slideDown(300); // show current active div
+                    var record_id = ".$row_id.";
+                    $.ajax({
+                        url: '".$urlLoadSupData."',
+                        data: { 
+                                record_id:record_id
+                                }
+                        
+                        }).done(function(data) {
+                            $('#content_sup_data-".$row_id."').text(data);
+                    });
+                });
+            ");
+        ?>
 
         <div id="div_view_sup_data-<?= $row_id ?>" class="bubble-view-supdata div-tooltip-form unik-div-tooltip-form-<?= $row_id ?>">
             <p class="confirm-message confirm-prmry" id="confirm_gi_sup_data-<?= $row_id ?>"></p>
@@ -546,6 +530,8 @@ use yii\helpers\Url;
                 </p>
             </div>
             <textarea id="ta_edit_supdata-<?= $row_id ?>" rows="3" class="form-control" style="display: none; width: 90%; margin-left: 5%; margin-right: auto; margin-top: 10px; background-color: skyblue; color:black; border-radius: 15px;">
+            </textarea>
+            <textarea id="ta_edit_source-<?= $row_id ?>" rows="1" class="form-control" style="display: none; width: 90%; margin-left: 5%; margin-right: auto; margin-top: 10px; background-color: skyblue; color:black; border-radius: 15px;">
             </textarea>
             <button id="ext_view_supdata-<?= $row_id ?>" type="button" class="btn btn-xs btn-danger comnt-textarea pull-right exit-button">
                     <span class="glyphicon glyphicon-remove"></span> Close
@@ -559,11 +545,16 @@ use yii\helpers\Url;
             
             <?php
                 $urlUpdateSupData = \yii\helpers\Url::to(['/report/default/update-gender-issue-sup-data']);
+                $urlUpdateSource = \yii\helpers\Url::to(['/report/default/update-source']);
+                $controller_id = Yii::$app->controller->id;
                 $this->registerJs("
                     $('#edit_supdata-".$row_id."').click(function(){
                         var value = $.trim($('#content_sup_data-".$row_id."').text());
-                        $('#ta_edit_supdata-".$row_id."').text(value);
+                        var source_value = $.trim($('#content_source".$row_id."').text());
+                        $('#ta_edit_supdata-".$row_id."').val(value);
                         $('#ta_edit_supdata-".$row_id."').slideDown(300);
+                        $('#ta_edit_source-".$row_id."').val(source_value);
+                        $('#ta_edit_source-".$row_id."').slideDown(300);
                         $('#update_supdata-".$row_id."').show();
                     });
 
@@ -573,12 +564,16 @@ use yii\helpers\Url;
 
                     $('#update_supdata-".$row_id."').click(function(){
                         var ta_supdata_value = $('#ta_edit_supdata-".$row_id."').val();
+                        var ta_edit_source = $('#ta_edit_source-".$row_id."').val();
                         var record_id = ".$row_id.";
+                        var controller_id = '".$controller_id."';
                         $.ajax({
                             url: '".$urlUpdateSupData."',
                             data: { 
                                     upd8_value:ta_supdata_value,
-                                    uid:record_id
+                                    ta_edit_source:ta_edit_source,
+                                    uid:record_id,
+                                    controller_id:controller_id
                                     }
                             
                             }).done(function(data) {
@@ -591,11 +586,28 @@ use yii\helpers\Url;
                                 }
                                 else
                                 {
-                                    $('#confirm_gi_sup_data-".$row_id."').text('Supporting Statistics Data has been updated.');
+                                    $('#confirm_gi_sup_data-".$row_id."').text('Supporting Statistics Data and Source has been updated.');
                                     $('#content_sup_data-".$row_id."').text(ta_supdata_value);
                                     $('#confirm_gi_sup_data-".$row_id."').slideDown(300);
                                     setTimeout(function(){ $('#confirm_gi_sup_data-".$row_id."').slideUp(300); }, 3000);
                                 }
+                        });
+                    });
+
+                    $('#update_supdata-".$row_id."').click(function(){
+                        var ta_edit_source = $('#ta_edit_source-".$row_id."').val();
+                        var record_id = ".$row_id.";
+                        var controller_id = '".$controller_id."';
+                        $.ajax({
+                            url: '".$urlUpdateSource."',
+                            data: { 
+                                    ta_edit_source:ta_edit_source,
+                                    uid:record_id,
+                                    controller_id:controller_id
+                                    }
+                            
+                            }).done(function(data) {
+                                $('#content_source".$row_id."').text(ta_edit_source);
                         });
                     });
                 ");

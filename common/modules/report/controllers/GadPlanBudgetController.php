@@ -416,7 +416,8 @@ class GadPlanBudgetController extends Controller
             'IC.id as inner_category_id',
             'PB.focused_id',
             'PB.gi_sup_data as sup_data',
-            'REC.status as record_status'
+            'REC.status as record_status',
+            'PB.source as source_value'
         ])
         ->from('gad_plan_budget PB')
         // ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = PB.ppa_focused_id')
@@ -459,6 +460,7 @@ class GadPlanBudgetController extends Controller
         $select_GadInnerCategory = ArrayHelper::map(\common\models\GadInnerCategory::find()->all(), 'id', 'title');
         $select_PpaAttributedProgram = ArrayHelper::map(\common\models\GadPpaAttributedProgram::find()->all(), 'id', 'title');
         $select_ActivityCategory = ArrayHelper::map(\common\models\GadActivityCategory::find()->all(), 'id', 'title');
+        $select_Checklist = ArrayHelper::map(\common\models\GadChecklist::find()->where(['report_type_id' => 1])->all(), 'id', 'title');
 
         $reportStatus = 0;
         $modelRecord = GadRecord::find()->where(['tuc' => $ruc])->one();
@@ -501,7 +503,8 @@ class GadPlanBudgetController extends Controller
             'qryReportStatus' => $qryReportStatus,
             'model' => $model,
             'upload' => $upload,
-            'folder_type' => $folder_type
+            'folder_type' => $folder_type,
+            'select_Checklist' => $select_Checklist,
         ]);
     }
 

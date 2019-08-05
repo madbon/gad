@@ -1,8 +1,21 @@
 
 <?php
+    $sup_data_value = "";
+    $source_value = "";
+    if(!empty($plan["sup_data"]))
+    {
+        $sup_data_value = "<br/><br/><span style=' font-style:italic; font-weight:bold;'>Supporting Statistics Data : </span><br/> <i style=''>".$plan["sup_data"]."</i>";
+    }
+
+    if(!empty($plan['source_value']))
+    {
+        $source_value = "<br/><br/><span  style=' font-style:italic; font-weight:bold;'>Source : </span><br/> <i id='content_source".$plan['id']."' style=''>".$plan["source_value"]."</i>";
+    }
+?>
+<?php
     echo $this->render('cell_reusable_form',[
         'cell_value' => $plan["ppa_value"],
-        'display_value' => "<span class='cell_span_value'>".$plan["ppa_value"]."</span>".(!empty($plan["sup_data"]) ? "<br/><br/><span style='text-decoration:underline; font-style:italic; font-weight:bold;'>Supporting Statistics Data : </span><br/> <i style=''>".$plan["sup_data"]."</i>" : ""),
+        'display_value' => "<span class='cell_span_value'>".$plan["ppa_value"]."</span>"." ".$sup_data_value." ".$source_value,
         'row_id' => $plan["id"],
         'record_unique_code' => $plan["record_uc"],
         'attribute_name' => "ppa_value",

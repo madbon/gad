@@ -60,7 +60,7 @@ $this->title = "Annual GAD Accomplishment Reports";
 
     <br/>
     <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-        <?php if($qryReportStatus == 1 || $qryReportStatus == 0 || $qryReportStatus == 5 || $qryReportStatus == 6){ ?>
+        <?php if($qryReportStatus == 8 || $qryReportStatus == 10 || $qryReportStatus == 6){ ?>
             <button type="button" class="btn btn-success" id="btn-encode" style="margin-bottom: 5px;">
                 <span class="glyphicon glyphicon-pencil"></span> Encode Gender Issue or GAD Mandate
             </button>
@@ -383,7 +383,7 @@ $this->title = "Annual GAD Accomplishment Reports";
     </div>
 
     <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-        <?php if($qryReportStatus == 1 || $qryReportStatus == 0 || $qryReportStatus == 5 || $qryReportStatus == 6){ ?>
+        <?php if($qryReportStatus == 8 || $qryReportStatus == 10 || $qryReportStatus == 6){ ?>
             <?php if(Yii::$app->session["encode_gender_ar"] == "open") {  ?>
                 <div class="cust-panel input-form" id="input-form-gender">
             <?php }else{ ?>
@@ -405,6 +405,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'ruc' => $ruc,
                                         'onstep' => $onstep,
                                         'tocreate' => $tocreate,
+                                        'select_ActivityCategory' => $select_ActivityCategory,
                                     ]);
                                 ?>
                             </div>
@@ -465,9 +466,11 @@ $this->title = "Annual GAD Accomplishment Reports";
                             $sum_actual_cost_expenditure = 0;
                             $total_b = 0;
                             $total_a = 0;
+                            $countRow = 0;
                         ?>
                         <?php foreach ($dataAR as $key => $ar) { ?>
                             <?php
+                                $countRow += 1;
                                 if($ar["focused_id"] == 1)
                                 {
                                     $countClient ++;
@@ -503,8 +506,22 @@ $this->title = "Annual GAD Accomplishment Reports";
                             <?php } ?>
                             <tr>
                                 <?php
+                                    $sup_data_value = "";
+                                    $source_value = "";
+                                    if(!empty($ar["sup_data"]))
+                                    {
+                                        $sup_data_value = "<br/><br/><span style=' font-style:italic; font-weight:bold;'>Supporting Statistics Data : </span><br/> <i style=''>".$ar["sup_data"]."</i>";
+                                    }
+
+                                    if(!empty($ar['source_value']))
+                                    {
+                                        $source_value = "<br/><br/><span  style=' font-style:italic; font-weight:bold;'>Source : </span><br/> <i id='content_source".$ar['id']."' style=''>".$ar["source_value"]."</i>";
+                                    }
+                                ?>
+                                <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
                                         'cell_value' => $ar["ppa_value"],
+                                        'display_value' => "<span class='cell_span_value'>".$ar["ppa_value"]."</span>"." ".$sup_data_value." ".$source_value,
                                         'row_id' => $ar["id"],
                                         'record_unique_code' => $ar["record_tuc"],
                                         'attribute_name' => "ppa_value",
@@ -518,7 +535,8 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $ar["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
-                                        'display_value' => $ar["ppa_value"],
+                                        'countRow' => $countRow,
+                                        'columnNumber' => 1,
                                     ])
                                 ?>
                                 <?php
@@ -538,6 +556,8 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $ar["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                         'display_value' => $ar["objective"],
+                                        'countRow' => $countRow,
+                                        'columnNumber' => 2,
                                     ])
                                 ?>
                                 <?php
@@ -557,6 +577,8 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $ar["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
+                                        'countRow' => $countRow,
+                                        'columnNumber' => 3,
                                     ])
                                 ?>
                                 <?php
@@ -576,6 +598,8 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $ar["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
+                                        'countRow' => $countRow,
+                                        'columnNumber' => 4,
                                     ])
                                 ?>
                                 <?php
@@ -595,6 +619,8 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $ar["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
+                                        'countRow' => $countRow,
+                                        'columnNumber' => 5,
                                     ])
                                 ?>
                                 <?php
@@ -631,6 +657,8 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $ar["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
+                                        'countRow' => $countRow,
+                                        'columnNumber' => 6,
                                     ])
                                 ?>
                                 <?php
@@ -650,6 +678,8 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $ar["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
+                                        'countRow' => $countRow,
+                                        'columnNumber' => 7,
                                     ])
                                 ?>
                                 <?php
@@ -669,6 +699,8 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $ar["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
+                                        'countRow' => $countRow,
+                                        'columnNumber' => 8,
                                     ])
                                 ?>
                                 <?php
@@ -688,6 +720,8 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $ar["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
+                                        'countRow' => $countRow,
+                                        'columnNumber' => 9,
                                     ])
                                 ?>
                                 <td>

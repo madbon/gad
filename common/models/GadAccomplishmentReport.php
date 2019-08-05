@@ -50,9 +50,10 @@ class GadAccomplishmentReport extends \yii\db\ActiveRecord
             [['user_id', 'record_id', 'focused_id', 'inner_category_id', 'ppa_focused_id'], 'integer'],
             [['ppa_value', 'objective', 'relevant_lgu_ppa', 'activity', 'performance_indicator', 'actual_results', 'variance_remarks','gi_sup_data','cliorg_ppa_attributed_program_id'], 'string'],
 
-            [['ppa_value','inner_category_id','focused_id', 'objective', 'relevant_lgu_ppa', 'activity', 'ppa_focused_id','performance_indicator', 'actual_results', 'variance_remarks','cliorg_ppa_attributed_program_id','total_approved_gad_budget','actual_cost_expenditure'], Yii::$app->controller->action->id == "create-accomplishment-report" ? 'required' : 'safe'],
+            [['ppa_value','inner_category_id','focused_id', 'objective', 'relevant_lgu_ppa', 'activity','performance_indicator', 'actual_results', 'variance_remarks','cliorg_ppa_attributed_program_id','total_approved_gad_budget','actual_cost_expenditure'], Yii::$app->controller->action->id == "create-accomplishment-report" ? 'required' : 'safe'],
             [['total_approved_gad_budget', 'actual_cost_expenditure'], 'number'],
             [['date_created', 'date_updated'], 'safe'],
+            [['activity_category_id'], 'required'],
             [['time_created', 'time_updated'], 'string', 'max' => 10],
             [['record_tuc', 'this_tuc'], 'string', 'max' => 150],
             [['ppa_value'],Yii::$app->controller->action->id == "update-ar-ppa-value" ? 'required' : 'safe'],
@@ -66,7 +67,7 @@ class GadAccomplishmentReport extends \yii\db\ActiveRecord
             [['gi_sup_data'],  
             Yii::$app->controller->action->id == "create-accomplishment-report" || 
             Yii::$app->controller->action->id == "update-ar-gender-issue-sup-data" ? 'required' : "safe", 'when' => function ($model) { return $model->inner_category_id == 1; }],
-            [['cause_gender_issue'], 'required', 'when' => function ($model) { return $model->ppa_focused_id == 0; }],
+            // [['cause_gender_issue'], 'required', 'when' => function ($model) { return $model->ppa_focused_id == 0; }],
         ];
     }
 
@@ -90,7 +91,7 @@ class GadAccomplishmentReport extends \yii\db\ActiveRecord
             'performance_indicator' => 'Performance Indicator and Target',
             'target' => 'Target',
             'actual_results' => 'Actual Results',
-            'total_approved_gad_budget' => 'Total Approved GAD Budget',
+            'total_approved_gad_budget' => 'Approved GAD Budget',
             'actual_cost_expenditure' => 'Actual Cost or Expenditure',
             'variance_remarks' => 'Variance Remarks',
             'date_created' => 'Date Created',
@@ -100,7 +101,8 @@ class GadAccomplishmentReport extends \yii\db\ActiveRecord
             'record_tuc' => 'Record Tuc',
             'this_tuc' => 'This Tuc',
             'cliorg_ppa_attributed_program_id' => 'PPA Sectors',
-            'gi_sup_data' => 'Gender Issue Supporting Statistics Data'
+            'gi_sup_data' => 'Gender Issue Supporting Statistics Data',
+            'activity_category_id' => 'Activity Category'
         ];
     }
 }

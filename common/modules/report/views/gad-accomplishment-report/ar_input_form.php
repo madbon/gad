@@ -61,29 +61,18 @@ use kartik\select2\Select2;
                             $("#messages2-inner_category_id").text("");
                             $("#inner_category_id").next("span").css({"border":"none"});
 
-                            if(this.value == "1")
-                            {
-                                $("#gi_sup_data").slideDown(300);
-                                $("#ppa_value").attr("placeholder","Title / Description of Gender Issue");
-                            }
-                            else
-                            {
-                                $("#gi_sup_data").slideUp(300);
-                                $("#ppa_value").attr("placeholder","Title / Description of GAD Mandate");
-                            }
+                            // if(this.value == "1")
+                            // {
+                            //     $("#gi_sup_data").slideDown(300);
+                            //     $("#ppa_value").attr("placeholder","Title / Description of Gender Issue");
+                            // }
+                            // else
+                            // {
+                            //     $("#gi_sup_data").slideUp(300);
+                            //     $("#ppa_value").attr("placeholder","Title / Description of GAD Mandate");
+                            // }
                         }',
                 ]     
-            ]);
-        ?>
-
-        <?php
-            echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
-                'placeholder_title' => "Gender Issue Supporting Statistics Data",
-                'attribute_name' => "gi_sup_data",
-                'urlLoadResult' => '#',
-                'rowsValue' => 3,
-                'classValue' => 'form-control',
-                'customStyle' => 'margin-top:5px; display:none;',
             ]);
         ?>
 
@@ -97,7 +86,19 @@ use kartik\select2\Select2;
                 'customStyle' => 'margin-top:5px;',
             ]);
         ?>
+        <?php
+            echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
+                'placeholder_title' => "Supporting Statistics Data",
+                'attribute_name' => "gi_sup_data",
+                'urlLoadResult' => '#',
+                'rowsValue' => 3,
+                'classValue' => 'form-control',
+                'customStyle' => 'margin-top:5px;',
+            ]);
+        ?>
+        <input type="input" class="form-control" placeholder="Source of Supporting Statistics Data" style="margin-top: 5px;" id="source">
         <br/>
+
         <?php
             echo Select2::widget([
                 'name' => 'ppa_attributed_program_id',
@@ -117,6 +118,9 @@ use kartik\select2\Select2;
             ]);
         ?>
 
+        
+    </div>
+    <div class="col-sm-4">
         <?php
             echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
                 'placeholder_title' => "GAD Objective",
@@ -124,11 +128,10 @@ use kartik\select2\Select2;
                 'urlLoadResult' => '/report/default/load-ar-objective',
                 'rowsValue' => 3,
                 'classValue' => 'form-control',
-                'customStyle' => 'margin-top:20px;',
+                'customStyle' => '',
             ]);
         ?>
-    </div>
-    <div class="col-sm-4">
+        <br/>
         <?php
             echo $this->render('/gad-plan-budget/common_tools/textarea_suggest',[
                 'placeholder_title' => "Relevant LGU PPA",
@@ -141,9 +144,29 @@ use kartik\select2\Select2;
         ?>
         <!-- Activity Category -->
         <br/>
+
+        <?php
+        // print_r($select_PpaAttributedProgram); exit;
+            echo Select2::widget([
+                'name' => 'activity_category_id',
+                'data' => $select_ActivityCategory,
+                'options' => [
+                    'placeholder' => 'Tag Activity Category',
+                    'id' => "activity_category_id",
+                    'multiple' => true,
+                ],
+                'pluginEvents'=>[
+                    'select2:select'=>'
+                        function(){
+                            $("#message-activity_category_id").text("");
+                            $("#select2-activity_category_id-container").parent(".select2-selection").css({"border":"1px solid #ccc"});
+                        }',
+                ]     
+            ]);
+        ?>
         <?php
             // Activity Category
-            echo Select2::widget([
+             Select2::widget([
                 'name' => 'ppa_focused_id',
                 'data' => [],
                 'options' => [
@@ -228,7 +251,7 @@ use kartik\select2\Select2;
         ?>
         <?php
             echo $this->render('/gad-plan-budget/common_tools/textinput_suggest',[
-                'placeholder_title' => "Total Approved GAD Budget",
+                'placeholder_title' => "Approved GAD Budget",
                 'attribute_name' => "total_approved_gad_budget",
                 'urlLoadResult' => '/report/default/load-ar-total-approved-gad-budget',
                 'classValue' => 'form-control',
@@ -283,6 +306,9 @@ use kartik\select2\Select2;
                     var ppa_sectors = $("#cliorg_ppa_attributed_program_id").val();
                     var cliorg_ppa_attributed_program_id = ppa_sectors.toString();
                     var gi_sup_data = $("#gi_sup_data").val();
+                    var arr_activity_category_id = $("#activity_category_id").val();
+                    var activity_category_id = arr_activity_category_id.toString();
+                    var source = $.trim($("#source").val());
 
                     $.ajax({
                         url: "'.$url.'",
@@ -305,7 +331,9 @@ use kartik\select2\Select2;
                                 onstep:onstep,
                                 tocreate:tocreate,
                                 cliorg_ppa_attributed_program_id:cliorg_ppa_attributed_program_id,
-                                gi_sup_data:gi_sup_data
+                                gi_sup_data:gi_sup_data,
+                                activity_category_id:activity_category_id,
+                                source:source
                             }
                         
                         }).done(function(result) {

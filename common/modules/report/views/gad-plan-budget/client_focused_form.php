@@ -92,31 +92,11 @@ HTML;
                                 function(){
                                     $("#messages2-inner_category_id").text("");
                                     $("#inner_category_id").next("span").css({"border":"none"});
-
-                                    if(this.value == "1")
-                                    {
-                                        $("#gi_sup_data").slideDown(300);
-                                        $("#ppa_value").attr("placeholder","Title / Description of Gender Issue");
-                                    }
-                                    else
-                                    {
-                                        $("#gi_sup_data").slideUp(300);
-                                        $("#ppa_value").attr("placeholder","Title / Description of GAD Mandate");
-                                    }
                                 }',
                         ]     
                     ]);
                 ?>
-                <?php
-                    echo $this->render('common_tools/textarea_suggest',[
-                        'placeholder_title' => "Gender Issue Supporting Statistics Data",
-                        'attribute_name' => "gi_sup_data",
-                        'urlLoadResult' => '',
-                        'rowsValue' => 3,
-                        'classValue' => 'form-control',
-                        'customStyle' => 'margin-top:5px; display:none;',
-                    ]);
-                ?>
+                
                 <?php
                     echo $this->render('common_tools/textarea_suggest',[
                         'placeholder_title' => "Title / Description of Gender Issue or GAD Mandate",
@@ -127,6 +107,21 @@ HTML;
                         'customStyle' => 'margin-top:5px;',
                     ]);
                 ?>
+
+                <?php
+                    // echo $this->render('common_tools/textarea_suggest',[
+                    //     'placeholder_title' => "Supporting Statistics Data",
+                    //     'attribute_name' => "gi_sup_data",
+                    //     'urlLoadResult' => '',
+                    //     'rowsValue' => 3,
+                    //     'classValue' => 'form-control',
+                    //     'customStyle' => 'margin-top:5px; ',
+                    // ]);
+                ?>
+
+                <textarea style="margin-top: 5px;" rows="3" id="gi_sup_data" placeholder="Supporting Statistics Data" class="form-control"></textarea>
+
+                <input type="input" class="form-control" placeholder="Source of Supporting Statistics Data" style="margin-top: 5px;" id="source">
                 <br/>
                 <?php
                 // print_r($select_PpaAttributedProgram); exit;
@@ -311,55 +306,100 @@ HTML;
                       });
                     });
 
+                    var grand_total_pb = "<?= $grand_total_pb ?>";
+                    var totalLguBudget = "<?= $recTotalLguBudget ?>";
+                    var resGrandTotalPb = parseFloat(grand_total_pb);
+                    var resTotalLguBudget = parseFloat(totalLguBudget.replace(/,/g, ""));
+                    var totalAmount = 0;
+
                     $("#budget_mooe").keyup(function(){
-                        var totalLguBudget = "<?= $recTotalLguBudget ?>";
                         var inputedMooe = $("#budget_mooe").val();
                         var inputedPs = $("#budget_ps").val();
                         var inputedCo = $("#budget_co").val();
-
-                        var resTotalLguBudget = parseFloat(totalLguBudget.replace(/,/g, ""));
                         var resMooe = parseFloat(inputedMooe.replace(/,/g, ""));
                         var resPs = parseFloat(inputedPs.replace(/,/g, ""));
                         var resCo = parseFloat(inputedCo.replace(/,/g, ""));
-                        var totalAmount = (resMooe+resPs+resCo)
-                        if(parseFloat(totalAmount) > parseFloat(resTotalLguBudget))
+                        var inputedTAPB = $("#total_annual_pro_budget").val();
+                        var resTAPB = parseFloat(inputedTAPB.replace(/,/g, ""));
+                        if(isNaN(resTAPB))
+                        {
+                            resTAPB = 0;
+                        }
+
+                        if(isNaN(resPs))
+                        {
+                            resPs = 0;
+                        }
+
+                        if(isNaN(resCo))
+                        {
+                            resCo = 0;
+                        }
+
+                        totalAmount = resMooe + resPs + resCo + resGrandTotalPb + resTAPB;
+                        console.log(totalAmount);
+                        if(totalAmount > resTotalLguBudget)
                         {
                             alert("Exceeding LGU budget appropriated. Please check budget or recheck previous PPAs");
-                            $(this).val("")
+                            $(this).val("");
                         }
                     });
                     $("#budget_co").keyup(function(){
-                        var totalLguBudget = "<?= $recTotalLguBudget ?>";
                         var inputedMooe = $("#budget_mooe").val();
                         var inputedPs = $("#budget_ps").val();
                         var inputedCo = $("#budget_co").val();
-
-                        var resTotalLguBudget = parseFloat(totalLguBudget.replace(/,/g, ""));
                         var resMooe = parseFloat(inputedMooe.replace(/,/g, ""));
                         var resPs = parseFloat(inputedPs.replace(/,/g, ""));
                         var resCo = parseFloat(inputedCo.replace(/,/g, ""));
-                        var totalAmount = (resMooe+resPs+resCo)
-                        if(parseFloat(totalAmount) > parseFloat(resTotalLguBudget))
+                        var inputedTAPB = $("#total_annual_pro_budget").val();
+                        var resTAPB = parseFloat(inputedTAPB.replace(/,/g, ""));
+                        if(isNaN(resTAPB))
+                        {
+                            resTAPB = 0;
+                        }
+                        if(isNaN(resMooe))
+                        {
+                            resMooe = 0;
+                        }
+                        if(isNaN(resPs))
+                        {
+                            resPs = 0;
+                        }
+                        totalAmount = resMooe + resPs + resCo + resGrandTotalPb + resTAPB;
+                        console.log(totalAmount);
+                        if(totalAmount > resTotalLguBudget)
                         {
                             alert("Exceeding LGU budget appropriated. Please check budget or recheck previous PPAs");
-                            $(this).val("")
+                            $(this).val("");
                         }
                     });
                     $("#budget_ps").keyup(function(){
-                        var totalLguBudget = "<?= $recTotalLguBudget ?>";
                         var inputedMooe = $("#budget_mooe").val();
                         var inputedPs = $("#budget_ps").val();
                         var inputedCo = $("#budget_co").val();
-
-                        var resTotalLguBudget = parseFloat(totalLguBudget.replace(/,/g, ""));
                         var resMooe = parseFloat(inputedMooe.replace(/,/g, ""));
                         var resPs = parseFloat(inputedPs.replace(/,/g, ""));
                         var resCo = parseFloat(inputedCo.replace(/,/g, ""));
-                        var totalAmount = (resMooe+resPs+resCo)
-                        if(parseFloat(totalAmount) > parseFloat(resTotalLguBudget))
+                        var inputedTAPB = $("#total_annual_pro_budget").val();
+                        var resTAPB = parseFloat(inputedTAPB.replace(/,/g, ""));
+                        if(isNaN(resTAPB))
+                        {
+                            resTAPB = 0;
+                        }
+                        if(isNaN(resCo))
+                        {
+                            resCo = 0;
+                        }
+                        if(isNaN(resMooe))
+                        {
+                            resMooe = 0;
+                        }
+                        totalAmount = resMooe + resPs + resCo + resGrandTotalPb + resTAPB;
+                        console.log(totalAmount);
+                        if(totalAmount > resTotalLguBudget)
                         {
                             alert("Exceeding LGU budget appropriated. Please check budget or recheck previous PPAs");
-                            $(this).val("")
+                            $(this).val("");
                         }
                     });
                 </script>
@@ -402,7 +442,7 @@ HTML;
                 <?php
                     $url = \yii\helpers\Url::to(['/report/default/create-gad-plan-budget']);
                     $this->registerJs('
-                        function SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data,date_implement_start,date_implement_end,activity_category_id)
+                        function SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data,date_implement_start,date_implement_end,activity_category_id,source)
                         {
                             $.ajax({
                                 url: "'.$url.'",
@@ -427,7 +467,8 @@ HTML;
                                         gi_sup_data:gi_sup_data,
                                         date_implement_start:date_implement_start,
                                         date_implement_end:date_implement_end,
-                                        activity_category_id:activity_category_id
+                                        activity_category_id:activity_category_id,
+                                        source:source
 
                                     }
                                 
@@ -542,14 +583,14 @@ HTML;
                             var date_implement_start = $.trim(date_implement.substr(0, date_implement.indexOf(" ")));
                             var arr_activity_category_id = $("#activity_category_id").val();
                             var activity_category_id = arr_activity_category_id.toString();
+                            var source = $.trim($("#source").val());
                             
-
                             console.log(date_implement_start);
                             if(budget_mooe == "" && budget_co == "" && budget_ps == "")
                             {
                                 if(confirm("are you sure there is no funding requirement?"))
                                 {
-                                    SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data,date_implement_start,date_implement_end,activity_category_id);
+                                    SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data,date_implement_start,date_implement_end,activity_category_id,source);
                                 }
                                 else
                                 {
@@ -558,7 +599,7 @@ HTML;
                             }
                             else
                             {
-                                SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data,date_implement_start,date_implement_end,activity_category_id);
+                                SaveGenderIssueAjax(issue,obj,relevant,act,performance_target,ruc,ppa_focused_id,ppa_value,budget_mooe,budget_ps,budget_co,lead_responsible_office,focused_id,inner_category_id,onstep,tocreate,cliorg_ppa_attributed_program_id,gi_sup_data,date_implement_start,date_implement_end,activity_category_id,source);
                             }
                             
                       }); ');

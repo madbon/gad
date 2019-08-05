@@ -2,9 +2,10 @@
 use yii\helpers\Html;
 use kartik\select2\Select2;
 use yii\widgets\ActiveForm;
+use richardfan\widget\JSRegister;
 ?>
 
- <div class="row">
+<div class="row">
     <div class="col-sm-4">
     	<?php
             $urlLoadPpaCategory = \yii\helpers\Url::to(['/report/default/load-ppa-category']);
@@ -24,11 +25,6 @@ use yii\widgets\ActiveForm;
                         }',
                 ]     
             ]);
-            // $this->registerJs('
-            // 	var newOption = $("<option>");
-            // 	newOption.attr("value","0").text("Others");
-            //     $("#ppa_attributed_program_id").append(newOption);
-            // ');
         ?>
         <!-- <div id="div-ppa_attributed_program_others" style="display:none;"> -->
 	        <?php
@@ -54,6 +50,24 @@ use yii\widgets\ActiveForm;
 		?>
     </div>
     <div class="col-sm-4">
+        <?php
+            echo Select2::widget([
+                'name' => 'checklist_id',
+                'data' => $select_Checklist,
+                'options' => [
+                    'placeholder' => 'Select Checklist',
+                    'id' => "checklist_id"
+                ],
+                'pluginEvents'=>[
+                    'select2:select'=>'
+                        function(){
+                            
+                        }',
+                ]     
+            ]);
+            
+        ?>
+        <br/>
 		<?php
             echo $this->render('common_tools/textinput_suggest',[
                 'placeholder_title' => "HGDG Design/ Funding Facility/ Gender Checklist Score",
@@ -69,7 +83,7 @@ use yii\widgets\ActiveForm;
                 'placeholder_title' => "Total Annual Program/ Project Budget",
                 'attribute_name' => "total_annual_pro_budget",
                 'urlLoadResult' => '/report/default/load-total-annual-pro-budget',
-                'classValue' => 'form-control',
+                'classValue' => 'form-control amountcomma',
                 'customStyle' => '',
             ]);
         ?>
@@ -114,8 +128,6 @@ use yii\widgets\ActiveForm;
         <?php
         $url = \yii\helpers\Url::to(['/report/default/create-pb-attributed-program']);
         $this->registerJs('
-            
-
             $("#saveAttributedProgram").click(function(){
 
                 var ruc                             = "'.$ruc.'";
@@ -124,10 +136,12 @@ use yii\widgets\ActiveForm;
                 var ppa_attributed_program_id       = ppa_sectors.toString();
                 var lgu_program_project             = $("#lgu_program_project").val();
                 var hgdg                            = $("#hgdg").val();
-                var total_annual_pro_budget         = $("#total_annual_pro_budget").val();
+                var gettotal_annual_pro_budget         = $.trim($("#total_annual_pro_budget").val());
                 var lead_responsible_office         = $("#ap_lead_responsible_office").val();
                 var controller_id                   = "'.(Yii::$app->controller->id).'";
                 var tocreate                        = "'.$tocreate.'";
+                var checklist_id                    = $("#checklist_id").val();
+                var total_annual_pro_budget         = gettotal_annual_pro_budget.replace(/,/g, "");
                 
                 $.ajax({
                     type: "POST",
@@ -141,7 +155,8 @@ use yii\widgets\ActiveForm;
                             total_annual_pro_budget:total_annual_pro_budget,
                             lead_responsible_office:lead_responsible_office,
                             controller_id:controller_id,
-                            tocreate:tocreate
+                            tocreate:tocreate,
+                            checklist_id:checklist_id
                         }
                     
                     }).done(function(result) {
@@ -154,16 +169,16 @@ use yii\widgets\ActiveForm;
                             
                             // error in select2
                             $("p#messages2-"+index+"").text("");
-                            $("#"+index+"").next("span").css({"border":"1px solid red","border-radius":"5px"});
-                            $("#"+index+"").next("span").after("<p id=messages2-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
+                            $("#"+index+"").next("span").css({"border":"1px solid #e79f9f","border-radius":"5px"});
+                            $("#"+index+"").next("span").after("<p id=messages2-"+index+" style=color:#e79f9f;font-style:italic;>"+value+"</p>");
                             // error in textarea
                             $("p#messageta-"+index+"").text("");
-                            $("textarea#"+index+"").css({"border":"1px solid red"});
-                            $("textarea#"+index+"").after("<p id=messageta-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
+                            $("textarea#"+index+"").css({"border":"1px solid #e79f9f"});
+                            $("textarea#"+index+"").after("<p id=messageta-"+index+" style=color:#e79f9f;font-style:italic;>"+value+"</p>");
                             // error in textbox
                             $("p#messagete-"+index+"").text("");
-                            $("input#"+index+"").css({"border":"1px solid red"});
-                            $("input#"+index+"").after("<p id=messagete-"+index+" style=color:red;font-style:italic;>"+value+"</p>");
+                            $("input#"+index+"").css({"border":"1px solid #e79f9f"});
+                            $("input#"+index+"").after("<p id=messagete-"+index+" style=color:#e79f9f;font-style:italic;>"+value+"</p>");
 
                             // keypress remove error message
                             $("textarea#"+index+"").keyup(function(){
@@ -202,6 +217,41 @@ use yii\widgets\ActiveForm;
                 });
             ");
         ?>
+
+        <?php JSRegister::begin(); ?>
+            <script>
+                $("#total_annual_pro_budget").keyup(function(){
+                    var inputedTAPB = $("#total_annual_pro_budget").val();
+                    var resTAPB = parseFloat(inputedTAPB.replace(/,/g, ""));
+                    var inputedMooe = $("#budget_mooe").val();
+                    var inputedPs = $("#budget_ps").val();
+                    var inputedCo = $("#budget_co").val();
+                    var resMooe = parseFloat(inputedMooe.replace(/,/g, ""));
+                    var resPs = parseFloat(inputedPs.replace(/,/g, ""));
+                    var resCo = parseFloat(inputedCo.replace(/,/g, ""));
+                    
+                    if(isNaN(resMooe))
+                    {
+                        resMooe = 0;
+                    }
+                    if(isNaN(resPs))
+                    {
+                        resPs = 0;
+                    }
+                    if(isNaN(resCo))
+                    {
+                        resCo = 0;
+                    }
+                    totalAmount = resMooe + resPs + resCo + resGrandTotalPb + resTAPB;
+                    console.log(totalAmount);
+                    if(totalAmount > resTotalLguBudget)
+                    {
+                        alert("Exceeding LGU budget appropriated. Please check budget or recheck previous PPAs");
+                        $(this).val("");
+                    }
+                });
+            </script>
+        <?php JSRegister::end(); ?>
         
 	</div>
 </div>

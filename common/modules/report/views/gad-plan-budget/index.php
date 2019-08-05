@@ -355,6 +355,7 @@ $this->title = "Annual GAD Plan and Budget";
                                 'model' => $model,
                                 'recTotalLguBudget' => $recTotalLguBudget,
                                 'select_ActivityCategory' => $select_ActivityCategory,
+                                'grand_total_pb' => $grand_total_pb,
                             ]);
                         ?>
                     </div>
@@ -663,7 +664,8 @@ $this->title = "Annual GAD Plan and Budget";
                                                 'onstep' => $onstep,
                                                 'tocreate' => $tocreate,
                                                 'upload' => $upload,
-                                                'folder_type' => $folder_type
+                                                'folder_type' => $folder_type,
+                                                'select_Checklist' => $select_Checklist,
                                             ]);
                                         ?>
                                     </td>

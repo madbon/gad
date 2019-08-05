@@ -120,7 +120,8 @@ $this->title = 'Annual GAD Plan and Budget';
         'model' => $model,
         'select_ActivityCategory' => $select_ActivityCategory,
         'upload' => $upload,
-        'folder_type' => $folder_type
+        'folder_type' => $folder_type,
+        'select_Checklist' => $select_Checklist
     ]) ?>
 
 </div>

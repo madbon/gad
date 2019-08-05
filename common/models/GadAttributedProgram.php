@@ -43,7 +43,7 @@ class GadAttributedProgram extends \yii\db\ActiveRecord
             [['date_created', 'date_updated'], 'safe'],
             [['record_tuc', 'ap_lead_responsible_office'], 'string', 'max' => 150],
             [['time_created', 'time_updated'], 'string', 'max' => 10],
-            [['lgu_program_project','ppa_attributed_program_id','hgdg','total_annual_pro_budget','ap_lead_responsible_office'],Yii::$app->controller->action->id == "create-pb-attributed-program" ? 'required' : 'safe'],
+            [['lgu_program_project','ppa_attributed_program_id','hgdg','total_annual_pro_budget','ap_lead_responsible_office','checklist_id'],Yii::$app->controller->action->id == "create-pb-attributed-program" ? 'required' : 'safe'],
 
             [['lgu_program_project'], Yii::$app->controller->action->id == "update-ap-lgu-program-project" ? "required" : "safe"],
 
@@ -77,6 +77,7 @@ class GadAttributedProgram extends \yii\db\ActiveRecord
             'time_created' => 'Time Created',
             'date_updated' => 'Date Updated',
             'time_updated' => 'Time Updated',
+            'checklist_id' => 'Checklist'
         ];
     }
 }
