@@ -31,15 +31,16 @@ class PlanController extends \yii\web\Controller
                     $cellIterator = $row->getCellIterator();
                     $cellIterator->setIterateOnlyExistingCells(FALSE);
                     foreach ($cellIterator as $key => $cell) {
-                        if($cell->getRow() >= 2){
-                            if($cell->getColumn() == 'B' || $cell->getColumn() == 'C'){
-                                $excelData[$cell->getRow()][] = \PhpOffice\PhpSpreadsheet\Style\NumberFormat::toFormattedString($cell->getValue(), 'YYYY-MM-DD');
-                                $excelDataForUploading[$cell->getRow()][] = \PhpOffice\PhpSpreadsheet\Style\NumberFormat::toFormattedString($cell->getValue(), 'YYYY-MM-DD');
-                            }
-                            else {
-                                $excelData[$cell->getRow()][] = $cell->getValue();
-                                $excelDataForUploading[$cell->getRow()][] = $cell->getValue();
-                            }
+                        if($cell->getRow() >= 3){
+                            // if($cell->getColumn() == 'B' || $cell->getColumn() == 'C'){
+                            //     $excelData[$cell->getRow()][] = \PhpOffice\PhpSpreadsheet\Style\NumberFormat::toFormattedString($cell->getValue(), 'YYYY-MM-DD');
+                            //     $excelDataForUploading[$cell->getRow()][] = \PhpOffice\PhpSpreadsheet\Style\NumberFormat::toFormattedString($cell->getValue(), 'YYYY-MM-DD');
+                            // }
+                            // else {
+                                
+                            // }
+                            $excelData[$cell->getRow()][] = $cell->getValue();
+                            $excelDataForUploading[$cell->getRow()][] = $cell->getValue();
                         }
                     }
                 }
