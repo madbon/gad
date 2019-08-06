@@ -24,4 +24,14 @@ use yii\helpers\Html;
 	}
 ?>
 
+<?= Html::a('<span class="glyphicon glyphicon-remove"></span> Cancel', ['training'], 
+          ['class' => 'btn btn-sm btn-danger pull-left',
+           'data' => ['confirm' => 'Are you sure you want to perform this action?','method' => 'post']
+        ])?>
+
+        <?= Html::a('<span class="glyphicon glyphicon-save"></span> Save', ['save-excel-data', 'hc' => $hris_id], 
+          ['class' => 'btn btn-sm btn-success pull-right',
+           'data' => ['confirm' => 'Are you sure you want to upload this data?','method' => 'post']
+        ])?>
+
 
