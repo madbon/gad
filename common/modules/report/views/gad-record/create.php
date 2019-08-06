@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </style>
 
 <div class="gad-record-create">
-	<ul class="nav nav-tabs" style="padding-top: 15px;">
+	<ul class="nav nav-tabs" >
 	  	<li class="active">
 	  		<a class="btn btn-success">Input Primary Information  &nbsp;<span class="glyphicon glyphicon-edit"></span> </a>
 	  	</li>

@@ -12,7 +12,7 @@ $this->title = 'Annual GAD Plan and Budget';
 <style>
 	
 </style>
-<h2>Annual GAD Plan and Budget FY <?= DefaultController::GetPlanYear($ruc) ?> <i style="text-decoration: underline; font-size: 25px;">(<?= DefaultController::CreatePlanStatus($ruc) ?>)</i></h2>
+<!-- <h2>Annual GAD Plan and Budget FY <?= DefaultController::GetPlanYear($ruc) ?> <i style="text-decoration: underline; font-size: 25px;">(<?= DefaultController::CreatePlanStatus($ruc) ?>)</i></h2> -->
 <div class="gad-record-create">
 <?php if(Yii::$app->user->can("gad_lgu_province_permission")){ ?>
     <ul class="nav nav-tabs">
@@ -56,7 +56,7 @@ $this->title = 'Annual GAD Plan and Budget';
                     'url' => '/report/gad-record/create'
                 ]);
                 echo $this->render('/common_tools/tabs/tab_encode',[
-                    'tabTitle' => 'Encode Annual GAD Plan and Budget',
+                    'tabTitle' => 'Annual GAD Plan and Budget FY '.DefaultController::GetPlanYear($ruc)." <i style='font-size:10px; text-transform:uppercase; font-weight:bold;'>( ".DefaultController::CreatePlanStatus($ruc)." ) </i>",
                     'liClass' => 'active',
                     'ruc' => $ruc,
                     'onstep' => $onstep,
