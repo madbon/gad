@@ -587,7 +587,7 @@ class DefaultController extends Controller
         
         return $is_save;
     }
-    public  function actionCreateArAttributedProgram($ruc,$onstep,$ppa_attributed_program_id,$ppa_attributed_program_others,$lgu_program_project,$hgdg_pimme,$total_annual_pro_cost,$ar_ap_variance_remarks,$controller_id,$tocreate)
+    public  function actionCreateArAttributedProgram($ruc,$onstep,$ppa_attributed_program_id,$ppa_attributed_program_others,$lgu_program_project,$hgdg_pimme,$total_annual_pro_cost,$ar_ap_variance_remarks,$controller_id,$tocreate,$checklist_id,$score_type)
     {
         // print_r($ppa_attributed_program_id); exit;
         $model = new GadArAttributedProgram();
@@ -603,6 +603,8 @@ class DefaultController extends Controller
         $model->date_created = date('Y-m-d');
         $model->time_created = date("h:i:sa");
         $model->controller_id = $controller_id;
+        $model->score_type = $score_type;
+        $model->checklist_id = $checklist_id;
         if($model->save())
         {
             return $this->redirect(['gad-accomplishment-report/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);

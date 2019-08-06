@@ -818,7 +818,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                         
                         <tr class="ar_attributed_program">
                             <td colspan="5">ATTRIBUTED PROGRAMS 
-                                <?php if($qryReportStatus == 1 || $qryReportStatus == 0  || $qryReportStatus == 5 || $qryReportStatus == 6){ ?>
+                                <?php if($qryReportStatus == 8 || $qryReportStatus == 10 || $qryReportStatus == 6){ ?>
                                     <button id="btnEncodeAP" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-pencil"></span> Encode
                                     </button>
                                 </td><?php } ?>
@@ -850,7 +850,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                             ");
                         ?>
 
-                        <?php if($qryReportStatus == 1 || $qryReportStatus == 0  || $qryReportStatus == 5 || $qryReportStatus == 6){ ?>
+                        <?php if($qryReportStatus == 8 || $qryReportStatus == 10 || $qryReportStatus == 6){ ?>
                             <?php if(Yii::$app->session["encode_attribute_ar"] == "open") {  ?>
                                 <tr class="attributed_program_form" id="attributed_program_anchor">
                             <?php }else{ ?>
@@ -863,6 +863,8 @@ $this->title = "Annual GAD Accomplishment Reports";
                                             'ruc' => $ruc,
                                             'onstep' => $onstep,
                                             'tocreate' => $tocreate,
+                                            'select_Checklist' => $select_Checklist,
+                                            'select_scoreType' => $select_scoreType,
                                         ]);
                                     ?>
                                 </td>
@@ -882,7 +884,10 @@ $this->title = "Annual GAD Accomplishment Reports";
                         $notnull_apPpaValue = null;
                         $total_c = 0;
                         $varTotalGadAttributedProBudget = 0;
-                        foreach ($dataAttributedProgram as $key => $dap) { ?>
+                        $count_rowAttributedProgram = 0;
+                        foreach ($dataAttributedProgram as $key => $dap) { 
+                            $count_rowAttributedProgram +=1;
+                        ?>
                             <tr class="attributed_program_td">
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
@@ -901,6 +906,8 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $dap["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
+                                        'countRow' => $count_rowAttributedProgram,
+                                        'columnNumber' => 1,
                                     ])
                                 ?>
                                 <!-- COMPUTATION OF GAD ATTRIBUTED PROGRAM/PROJECT BUDGET -->
@@ -911,31 +918,31 @@ $this->title = "Annual GAD Accomplishment Reports";
                                     $HgdgMessage = null;
                                     $HgdgWrongSign = "";
                                     
-                                    if($varHgdg < 4) // 0%
+                                    if((float)$varHgdg < 4) // 0%
                                     {
                                         // echo "GAD is invisible";
                                         $computeGadAttributedProCost = ($varTotalAnnualProCost * 0);
                                         $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
                                     }
-                                    else if($varHgdg >= 4 && $varHgdg <= 7.9) // 25%
+                                    else if((float)$varHgdg >= 4 && (float)$varHgdg <= 7.99) // 25%
                                     {
                                         // echo "Promising GAD prospects (conditional pass)";
                                         $computeGadAttributedProCost = ($varTotalAnnualProCost * 0.25);
                                         $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
                                     }
-                                    else if($varHgdg >= 8 && $varHgdg <= 14.9) // 50%
+                                    else if((float)$varHgdg >= 8 && (float)$varHgdg <= 14.99) // 50%
                                     {
                                         // echo "Gender Sensetive";
                                         $computeGadAttributedProCost = ($varTotalAnnualProCost * 0.50);
                                         $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
                                     }
-                                    else if($varHgdg >= 15 && $varHgdg <= 19.9) // 75%
+                                    else if((float)$varHgdg >= 15 && (float)$varHgdg <= 19.99) // 75%
                                     {
                                         // echo "Gender-responsive";
                                         $computeGadAttributedProCost = ($varTotalAnnualProCost * 0.75);
                                         $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
                                     }
-                                    else if($varHgdg == 20) // 100%
+                                    else if((float)$varHgdg == 20) // 100%
                                     {
                                         // echo "Full gender-resposive";
                                         $computeGadAttributedProCost = ($varTotalAnnualProCost * 1);
@@ -960,10 +967,12 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'colspanValue' => '',
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
-                                        'customStyle' => 'text-align:center;',
+                                        'customStyle' => 'text-align:center; margin-top:15px;',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $dap["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
+                                        'countRow' => $count_rowAttributedProgram,
+                                        'columnNumber' => 2,
                                     ])
                                 ?>
                                 <?php
@@ -979,31 +988,38 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'colspanValue' => '',
                                         'controller_id' => $dap['controller_id'],
                                         'form_id' => 'attributed-program',
-                                        'customStyle' => 'text-align:right;',
+                                        'customStyle' => 'text-align:right; margin-top:-5px;',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $dap["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
+                                        'countRow' => $count_rowAttributedProgram,
+                                        'columnNumber' => 3,
                                     ])
                                 ?>
                                 <?php
-                                    echo $this->render('/gad-plan-budget/cell_reusable_form',[
-                                        'cell_value' => $HgdgMessage,
-                                        'display_value' => !empty($HgdgMessage) ? $HgdgMessage : number_format($computeGadAttributedProCost,2),
-                                        'row_id' => $dap["id"],
-                                        'record_unique_code' => $dap["record_tuc"],
-                                        'attribute_name' => "gad_attributed_pro_cost",
-                                        'data_type' => 'string',
-                                        'urlUpdateAttribute' => "",
-                                        'column_title' => 'GAD Attributed Program/Project Cost or Expenditure',
-                                        'colspanValue' => '',
-                                        'controller_id' => $dap['controller_id'],
-                                        'form_id' => 'attributed-program',
-                                        'customStyle' => 'text-align:right;',
-                                        'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $dap["record_status"] != 1 ? 'true' : 'false',
-                                        'enableViewComment' => 'true',
-                                    ])
+                                    // echo $this->render('/gad-plan-budget/cell_reusable_form',[
+                                    //     'cell_value' => $HgdgMessage,
+                                    //     'display_value' => !empty($HgdgMessage) ? $HgdgMessage : number_format($computeGadAttributedProCost,2),
+                                    //     'row_id' => $dap["id"],
+                                    //     'record_unique_code' => $dap["record_tuc"],
+                                    //     'attribute_name' => "gad_attributed_pro_cost",
+                                    //     'data_type' => 'string',
+                                    //     'urlUpdateAttribute' => "",
+                                    //     'column_title' => 'GAD Attributed Program/Project Cost or Expenditure',
+                                    //     'colspanValue' => '',
+                                    //     'controller_id' => $dap['controller_id'],
+                                    //     'form_id' => 'attributed-program',
+                                    //     'customStyle' => 'text-align:right;',
+                                    //     'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
+                                    //     'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $dap["record_status"] != 1 ? 'true' : 'false',
+                                    //     'enableViewComment' => 'true',
+                                    //     'countRow' => $count_rowAttributedProgram,
+                                    //     'columnNumber' => 4,
+                                    // ])
                                 ?>
+                                <td style="text-align: right; padding-top: 25px;">
+                                    <?= !empty($HgdgMessage) ? $HgdgMessage : number_format($computeGadAttributedProCost,2) ?>
+                                </td>
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
                                         'cell_value' => $dap["ar_ap_variance_remarks"],
@@ -1021,6 +1037,8 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
                                         'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $dap["record_status"] != 1 ? 'true' : 'false',
                                         'enableViewComment' => 'true',
+                                        'countRow' => $count_rowAttributedProgram,
+                                        'columnNumber' => 5,
                                     ])
                                 ?>
                                 <td>

@@ -1,5 +1,6 @@
 <?php
-namespace app\models;
+namespace common\models;
+
 
 use yii\base\Model;
 use yii\web\UploadedFile;
@@ -14,7 +15,7 @@ class UploadForm extends Model
     public function rules()
     {
         return [
-            [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
+            [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'xlsx, xlsm, xls'],
         ];
     }
     
@@ -26,6 +27,13 @@ class UploadForm extends Model
         } else {
             return false;
         }
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'imageFile' => 'Excel File',
+        ];
     }
 }
 ?>

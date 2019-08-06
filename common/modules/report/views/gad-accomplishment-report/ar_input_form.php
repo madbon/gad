@@ -254,7 +254,7 @@ use kartik\select2\Select2;
                 'placeholder_title' => "Approved GAD Budget",
                 'attribute_name' => "total_approved_gad_budget",
                 'urlLoadResult' => '/report/default/load-ar-total-approved-gad-budget',
-                'classValue' => 'form-control',
+                'classValue' => 'form-control amountcomma',
                 'customStyle' => 'margin-top:20px;',
             ]);
         ?>
@@ -263,7 +263,7 @@ use kartik\select2\Select2;
                 'placeholder_title' => "Actual Cost or Expenditure",
                 'attribute_name' => "actual_cost_expenditure",
                 'urlLoadResult' => '/report/default/load-ar-actual-cost-expenditure',
-                'classValue' => 'form-control',
+                'classValue' => 'form-control amountcomma',
                 'customStyle' => 'margin-top:20px;',
             ]);
         ?>
@@ -295,8 +295,11 @@ use kartik\select2\Select2;
                     var performance_indicator       = $.trim($("#performance_indicator").val());
                     var target                      = $.trim($("#target").val());
                     var actual_results              = $.trim($("#actual_results").val());
-                    var total_approved_gad_budget   = $.trim($("#total_approved_gad_budget").val());
-                    var actual_cost_expenditure     = $.trim($("#actual_cost_expenditure").val());
+                    var com_total_approved_gad_budget   = $.trim($("#total_approved_gad_budget").val());
+                    var total_approved_gad_budget   =  parseFloat(com_total_approved_gad_budget.replace(/,/g, ""));
+                    var com_actual_cost_expenditure = $.trim($("#actual_cost_expenditure").val());
+                    var actual_cost_expenditure   =  parseFloat(com_actual_cost_expenditure.replace(/,/g, ""));
+
                     var variance_remarks            = $.trim($("#variance_remarks").val());
                     var ppa_value                   = $.trim($("#ppa_value").val());
                     var inner_category_id           = $.trim($("#inner_category_id").val());
@@ -309,6 +312,7 @@ use kartik\select2\Select2;
                     var arr_activity_category_id = $("#activity_category_id").val();
                     var activity_category_id = arr_activity_category_id.toString();
                     var source = $.trim($("#source").val());
+
 
                     $.ajax({
                         url: "'.$url.'",

@@ -4,13 +4,15 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\GadPpaAttributedProgram */
+/* @var $model common\models\GadScoreType */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="gad-ppa-attributed-program-form">
+<div class="gad-score-type-form">
 
     <?php $form = ActiveForm::begin(); ?>
+
+    <?= $form->field($model, 'code')->textInput() ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 

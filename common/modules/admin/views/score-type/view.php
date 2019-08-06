@@ -4,16 +4,16 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\GadPpaAttributedProgram */
+/* @var $model common\models\GadScoreType */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Gad Ppa Attributed Programs', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Score Types', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="gad-ppa-attributed-program-view">
+<div class="gad-score-type-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?php // Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
+            'code',
             'title',
         ],
     ]) ?>

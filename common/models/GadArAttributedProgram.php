@@ -47,7 +47,7 @@ class GadArAttributedProgram extends \yii\db\ActiveRecord
             [['record_tuc', 'controller_id'], 'string', 'max' => 150],
             [['hgdg_pimme', 'time_created', 'time_updated'], 'string', 'max' => 10],
 
-            [['ppa_attributed_program_id','lgu_program_project','hgdg_pimme','total_annual_pro_cost','ar_ap_variance_remarks'], Yii::$app->controller->action->id == "create-ar-attributed-program" ? 'required' : 'safe'],
+            [['ppa_attributed_program_id','lgu_program_project','hgdg_pimme','total_annual_pro_cost','ar_ap_variance_remarks','checklist_id','score_type'], Yii::$app->controller->action->id == "create-ar-attributed-program" ? 'required' : 'safe'],
 
             [['lgu_program_project'],Yii::$app->controller->action->id == "update-ar-ap-lgu-program-project" ? 'required' : 'safe'],
 
@@ -81,6 +81,7 @@ class GadArAttributedProgram extends \yii\db\ActiveRecord
             'time_created' => 'Time Created',
             'date_updated' => 'Date Updated',
             'time_updated' => 'Time Updated',
+            'checklist_id' => 'Checklist',
         ];
     }
 }

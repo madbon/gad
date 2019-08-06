@@ -155,27 +155,27 @@ class GadPlanBudgetController extends Controller
             $HgdgMessage = null;
             $HgdgWrongSign = "";
             
-            if($varHgdg < 4) // 0%
+            if((float)$varHgdg < 4) // 0%
             {
                 $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0);
                 $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
             }
-            else if($varHgdg >= 4 && $varHgdg <= 7.99) // 25%
+            else if((float)$varHgdg >= 4 && (float)$varHgdg <= 7.99) // 25%
             {
                 $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.25);
                 $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
             }
-            else if($varHgdg >= 8 && $varHgdg <= 14.99) // 50%
+            else if((float)$varHgdg >= 8 && (float)$varHgdg <= 14.99) // 50%
             {
                 $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.50);
                 $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
             }
-            else if($varHgdg <= 19.99 && $varHgdg >= 15) // 75%
+            else if((float)$varHgdg <= 19.99 && (float)$varHgdg >= 15) // 75%
             {
                 $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.75);
                 $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
             }
-            else if($varHgdg == 20) // 100%
+            else if((float)$varHgdg == 20) // 100%
             {
                 $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 1);
                 $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;

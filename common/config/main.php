@@ -56,6 +56,9 @@ return [
         'report' => [
             'class' => 'common\modules\report\Module',
         ],
+        'upload' => [
+            'class' => 'common\modules\upload\Module',
+        ],
     ],
 
 ];

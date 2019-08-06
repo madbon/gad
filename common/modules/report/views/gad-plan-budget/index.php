@@ -50,6 +50,7 @@ $this->title = "Annual GAD Plan and Budget";
                             <?php }else{ ?>
                                 <a class="btn btn-success btn-sm"><span class="glyphicon glyphicon-ok"></span> &nbsp;Reached the 5%</a>
                             <?php } ?>
+                            
                             <?php if(!empty($recordOne_attached_ar_record_id)){ ?>
                                 <a class="btn btn-success btn-sm" id="btn_attachar"><span class="glyphicon glyphicon-ok"></span> &nbsp;
                                      Attached the Accomplishment
@@ -227,6 +228,9 @@ $this->title = "Annual GAD Plan and Budget";
                     <button type="button" class="btn btn-success" id="btn-encode" style="margin-bottom: 5px;">
                         <span class="glyphicon glyphicon-pencil"></span> Encode Plan
                     </button>
+                    <?php 
+                        echo Html::a('<span class="glyphicon glyphicon-import"></span> Upload Plan (excel)',['/upload/plan/index'],['class'=>'btn btn-success btn-md','style' => 'margin-top:-5px;']);
+                    ?>
                 <?php } ?>
             <?php } ?>
 
@@ -243,7 +247,6 @@ $this->title = "Annual GAD Plan and Budget";
             <br/>
             <?php
                 $t = '@web/report/gad-plan-budget/form-change-report-status?qryReportStatus='.$qryReportStatus."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."";
-                
 
                 if(Yii::$app->user->can("gad_lgu_permission"))
                 {
@@ -257,7 +260,6 @@ $this->title = "Annual GAD Plan and Budget";
                         }
                         echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
                         'class' => 'btn btn-info btn-md modalButton pull-right']);
-                        
                     }
                 }
                 else if(Yii::$app->user->can("gad_lgu_province_permission"))

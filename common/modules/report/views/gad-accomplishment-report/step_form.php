@@ -111,6 +111,8 @@ $this->title = 'Annual GAD Accomplishment Report';
         'fivePercentTotalLguBudget' => $fivePercentTotalLguBudget,
         'qryReportStatus' => $qryReportStatus,
         'select_ActivityCategory' => $select_ActivityCategory,
+        'select_Checklist' => $select_Checklist,
+        'select_scoreType' => $select_scoreType,
     ]) ?>
 
 </div>

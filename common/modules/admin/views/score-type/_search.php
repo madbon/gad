@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\modules\admin\models\GadPpaAttributedProgramSearch */
+/* @var $model common\modules\admin\models\GadScoreTypeSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="gad-ppa-attributed-program-search">
+<div class="gad-score-type-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -16,6 +16,8 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
     <?= $form->field($model, 'id') ?>
+
+    <?= $form->field($model, 'code') ?>
 
     <?= $form->field($model, 'title') ?>
 

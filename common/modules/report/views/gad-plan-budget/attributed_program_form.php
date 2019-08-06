@@ -65,7 +65,6 @@ use richardfan\widget\JSRegister;
                         }',
                 ]     
             ]);
-            
         ?>
         <br/>
 		<?php

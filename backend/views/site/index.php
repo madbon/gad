@@ -26,5 +26,6 @@ $this->title = 'GAD Plan and Budget Monitoring System - ADMIN PANEL';
         <?= Html::a('<span class="glyphicon glyphicon-list"></span> File Types',['admin/file-folder-type'],['class' => 'btn btn-lg btn-primary']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-list"></span> Focus Types',['admin/gad-focused'],['class' => 'btn btn-lg btn-primary']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-list"></span> Inner Category After Focus',['admin/gad-inner-category'],['class' => 'btn btn-lg btn-primary']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-list"></span> HGDG Score Type',['admin/gad-inner-category'],['class' => 'btn btn-lg btn-primary']) ?>
     <?php } ?>
 </div>

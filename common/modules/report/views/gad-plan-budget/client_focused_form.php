@@ -292,20 +292,8 @@ HTML;
                 <input type="text" class="form-control amountcomma alertexceeding" id="budget_ps" placeholder="PS">
                 <br/>
                 <input type="text" class="form-control amountcomma alertexceeding" id="budget_co" placeholder="CO">
-                <?php JSRegister::begin(); ?>
+                <?php richardfan\widget\JSRegister::begin(); ?>
                 <script>
-                    $('input.amountcomma').keyup(function(event) {
-                      // skip for arrow keys
-                        if(event.which >= 37 && event.which <= 40) return;
-                      // format number
-                        $(this).val(function(index, value) {
-                        return value
-                        .replace(/\D/g, "")
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                        ;
-                      });
-                    });
-
                     var grand_total_pb = "<?= $grand_total_pb ?>";
                     var totalLguBudget = "<?= $recTotalLguBudget ?>";
                     var resGrandTotalPb = parseFloat(grand_total_pb);

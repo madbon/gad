@@ -52,6 +52,47 @@ use kartik\select2\Select2;
 		?>
     </div>
     <div class="col-sm-4">
+        <?php
+            echo Select2::widget([
+                'name' => 'checklist_id',
+                'data' => $select_Checklist,
+                'options' => [
+                    'placeholder' => 'Select Checklist',
+                    'id' => "checklist_id"
+                ],
+                'pluginEvents'=>[
+                    'select2:select'=>'
+                        function(){
+                            
+                        }',
+                ]     
+            ]);
+        ?>
+        <br/>
+        <?php
+            echo Select2::widget([
+                'name' => 'score_type',
+                'data' => $select_scoreType,
+                'options' => [
+                    'placeholder' => 'Select HGDG Score Type',
+                    'id' => "score_type"
+                ],
+                'pluginEvents'=>[
+                    'select2:select'=>'
+                        function(){
+                            if(this.value == 1)
+                            {
+                                $("#hgdg_pimme").attr("placeholder","HGDG PIMME Score");
+                            }
+                            else
+                            {
+                                $("#hgdg_pimme").attr("placeholder","HGDG FIMME Score");
+                            }
+                        }',
+                ]     
+            ]);
+        ?>
+        <br/>
 		<?php
             echo $this->render('/gad-plan-budget/common_tools/textinput_suggest',[
                 'placeholder_title' => "HGDG PIMME/ FIMME Score",
@@ -67,7 +108,7 @@ use kartik\select2\Select2;
                 'placeholder_title' => "Total Annual Program/ Project Cost or Expenditure",
                 'attribute_name' => "total_annual_pro_cost",
                 'urlLoadResult' => '/report/default/load-ar-total-annual-pro-cost',
-                'classValue' => 'form-control',
+                'classValue' => 'form-control amountcomma',
                 'customStyle' => '',
             ]);
         ?>
@@ -109,10 +150,14 @@ use kartik\select2\Select2;
                 var ppa_attributed_program_others 	= $("#ppa_attributed_program_others").val();
                 var lgu_program_project 			= $("#lgu_program_project").val();
                 var hgdg_pimme 					    = $("#hgdg_pimme").val();
-                var total_annual_pro_cost 		    = $("#total_annual_pro_cost").val();
-                var ar_ap_variance_remarks 		        = $("#ar_ap_variance_remarks").val();
+                var com_total_annual_pro_cost 		= $("#total_annual_pro_cost").val();
+                var total_annual_pro_cost           = parseFloat(com_total_annual_pro_cost.replace(/,/g, ""));
+                var ar_ap_variance_remarks 		    = $("#ar_ap_variance_remarks").val();
                 var controller_id					= "'.(Yii::$app->controller->id).'";
                 var tocreate                        = "'.$tocreate.'";
+                var checklist_id                    = $("#checklist_id").val();
+                var score_type                      = $("#score_type").val();
+                
                 $.ajax({
                     url: "'.$url.'",
                     data: { 
@@ -125,7 +170,9 @@ use kartik\select2\Select2;
                             total_annual_pro_cost:total_annual_pro_cost,
                             ar_ap_variance_remarks:ar_ap_variance_remarks,
                             controller_id:controller_id,
-                            tocreate:tocreate
+                            tocreate:tocreate,
+                            checklist_id:checklist_id,
+                            score_type:score_type
                         }
                     
                     }).done(function(result) {

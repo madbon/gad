@@ -62,31 +62,31 @@ class GadAccomplishmentReportController extends Controller
             $HgdgMessage = null;
             $HgdgWrongSign = "";
             
-            if($varHgdg < 4) // 0%
+            if((float)$varHgdg < 4) // 0%
             {
                 // echo "GAD is invisible";
                 $computeGadAttributedProCost = ($varTotalAnnualProCost * 0);
                 $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
             }
-            else if($varHgdg >= 4 && $varHgdg <= 7.9) // 25%
+            else if((float)$varHgdg >= 4 && (float)$varHgdg <= 7.99) // 25%
             {
                 // echo "Promising GAD prospects (conditional pass)";
                 $computeGadAttributedProCost = ($varTotalAnnualProCost * 0.25);
                 $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
             }
-            else if($varHgdg >= 8 && $varHgdg <= 14.9) // 50%
+            else if((float)$varHgdg >= 8 && (float)$varHgdg <= 14.99) // 50%
             {
                 // echo "Gender Sensetive";
                 $computeGadAttributedProCost = ($varTotalAnnualProCost * 0.50);
                 $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
             }
-            else if($varHgdg >= 15 && $varHgdg <= 19.9) // 75%
+            else if((float)$varHgdg >= 15 && (float)$varHgdg <= 19.99) // 75%
             {
                 // echo "Gender-responsive";
                 $computeGadAttributedProCost = ($varTotalAnnualProCost * 0.75);
                 $varTotalGadAttributedProBudget += $computeGadAttributedProCost;
             }
-            else if($varHgdg == 20) // 100%
+            else if((float)$varHgdg == 20) // 100%
             {
                 // echo "Full gender-resposive";
                 $computeGadAttributedProCost = ($varTotalAnnualProCost * 1);
@@ -306,7 +306,8 @@ class GadAccomplishmentReportController extends Controller
         $select_GadInnerCategory = ArrayHelper::map(\common\models\GadInnerCategory::find()->all(), 'id', 'title');
         $select_PpaAttributedProgram = ArrayHelper::map(\common\models\GadPpaAttributedProgram::find()->all(), 'id', 'title');
         $select_ActivityCategory = ArrayHelper::map(\common\models\GadActivityCategory::find()->all(), 'id', 'title');
-
+        $select_Checklist = ArrayHelper::map(\common\models\GadChecklist::find()->where(['report_type_id' => 2])->all(), 'id', 'title');
+        $select_scoreType = ArrayHelper::map(\common\models\GadScoreType::find()->all(), 'code', 'title');
         $reportStatus = 0;
         $modelRecord = GadRecord::find()->where(['tuc' => $ruc])->one();
         $qryReportStatus = $modelRecord->status;
@@ -341,7 +342,9 @@ class GadAccomplishmentReportController extends Controller
             'grand_total_ar' => $grand_total_ar,
             'fivePercentTotalLguBudget' => $fivePercentTotalLguBudget,
             'qryReportStatus' => $qryReportStatus,
-            'select_ActivityCategory' => $select_ActivityCategory
+            'select_ActivityCategory' => $select_ActivityCategory,
+            'select_Checklist' => $select_Checklist,
+            'select_scoreType' => $select_scoreType,
         ]);
     }
 
