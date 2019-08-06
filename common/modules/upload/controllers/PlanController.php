@@ -68,4 +68,54 @@ class PlanController extends \yii\web\Controller
         ]);
     }
 
+     public function actionSaveExcelData($hc)
+    {
+        $session = Yii::$app->session;
+        $arr = array_values($session['excelData']);
+
+        foreach ($arr as $key => $value) {
+        	// echo "<pre>";
+        	// print_r($value);
+            $model = new Training();
+            $model->hris_i_personal_info_id =  $hc;
+            $model->training_desc 			=  $value[0];
+            $model->inclusivedate_from 		=  $value[1];
+            $model->inclusivedate_to 		=  $value[2];
+            $model->numberofhours 			=  $value[3];
+            $model->condsponby 				=  $value[5];
+            
+            switch ($value[4]) {
+            	case 1:
+            		$model->hris_training_type_id = 1;
+            	break;
+            	case 2:
+            		$model->hris_training_type_id = 2;
+            	break;
+            	case 3:
+            		$model->hris_training_type_id = 3;
+            	break;
+            	
+            	default:
+            		$model->hris_training_type_id = 0;
+            		$model->typeoflearningdevelopment = $value[4];
+            	break;
+            }
+
+            
+            if($model->save()){
+
+            }
+            else{
+            	// print_r($model->errors); exit;
+                \Yii::$app->getSession()->setFlash('danger', 'Failed to upload. Check your excel it may have an invalid format of data or cell value. Kindly read the instructions carefully.');
+                return $this->redirect('@web/pds/upload/training');
+            }
+        }
+        $session['excelData'] = null;
+        unlink('uploads/'. $session['excelFile']);
+        $session['excelFile'] = null;
+        \Yii::$app->getSession()->setFlash('success', 'Excel data successfully uploaded.');
+        return $this->redirect('@web/pds/upload/training');
+    }
+
 }
