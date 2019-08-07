@@ -11,7 +11,6 @@ class UploadForm extends Model
      * @var UploadedFile
      */
     public $imageFile;
-
     public function rules()
     {
         return [
@@ -22,7 +21,7 @@ class UploadForm extends Model
     public function upload()
     {
         if ($this->validate()) {
-            $this->imageFile->saveAs('uploads/' . $this->imageFile->baseName . '.' . $this->imageFile->extension);
+            $this->imageFile->saveAs('uploads/' . $this->imageFile->baseName ."hello". '.' . $this->imageFile->extension);
             return true;
         } else {
             return false;

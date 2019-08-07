@@ -52,8 +52,8 @@ class PlanController extends \yii\web\Controller
                 $session['excelDataPlan'] = $excelDataForUploading;
                 $userinfo = Yii::$app->user->identity->id;
                 $fileName = $model->imageFile->baseName;
-                $ext = $model->imageFile->extension;
 
+                $ext = $model->imageFile->extension;
                 $session['excelFile'] = $fileName.'.'.$ext;
                 $excelFilename = $fileName.'.'.$ext;
                 Yii::$app->db->createCommand()->insert('gad_excel_attachments',
