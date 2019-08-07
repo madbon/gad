@@ -20,8 +20,10 @@ class UploadForm extends Model
     
     public function upload()
     {
+        $miliseconds = round(microtime(true) * 1000);
+        $hash =  md5(date('Y-m-d')."-".date("h-i-sa")."-".$miliseconds);
         if ($this->validate()) {
-            $this->imageFile->saveAs('uploads/' . $this->imageFile->baseName ."hello". '.' . $this->imageFile->extension);
+            $this->imageFile->saveAs('uploads/'.$hash."-".$this->imageFile->baseName.'.'.$this->imageFile->extension);
             return true;
         } else {
             return false;

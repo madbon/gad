@@ -22,11 +22,13 @@ class PlanController extends \yii\web\Controller
             $session            = Yii::$app->session;
             $model->imageFile   = UploadedFile::getInstance($model, 'imageFile');
             $data               = Yii::$app->request->post();
-
+            $miliseconds = round(microtime(true) * 1000);
+        	$hash =  md5(date('Y-m-d')."-".date("h-i-sa")."-".$miliseconds);
             if ($model->upload()) {
                 $reader         = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
                 $reader->setReadDataOnly(TRUE);
-                $spreadsheet    = $reader->load("uploads/".$model->imageFile->baseName.'.'.$model->imageFile->extension);
+                
+                $spreadsheet    = $reader->load("uploads/".$hash."-".$model->imageFile->baseName.'.'.$model->imageFile->extension);
                 $worksheet      = $spreadsheet->getActiveSheet();
                 foreach ($worksheet->getRowIterator() as $row) {
                     $cellIterator = $row->getCellIterator();
@@ -43,7 +45,6 @@ class PlanController extends \yii\web\Controller
 	                            	$excelData[$cell->getRow()][] = $cell->getValue();
                             		$excelDataForUploading[$cell->getRow()][] = $cell->getValue();
 	                            }
-                        	// }
                         }
                     } 
                 }
@@ -54,8 +55,8 @@ class PlanController extends \yii\web\Controller
                 $fileName = $model->imageFile->baseName;
 
                 $ext = $model->imageFile->extension;
-                $session['excelFile'] = $fileName.'.'.$ext;
-                $excelFilename = $fileName.'.'.$ext;
+                $session['excelFile'] = $hash."-".$fileName.'.'.$ext;
+                $excelFilename = $hash."-".$fileName.'.'.$ext;
                 Yii::$app->db->createCommand()->insert('gad_excel_attachments',
                     [
                         'user_id' => $userinfo,
