@@ -427,7 +427,7 @@ class GadPlanBudgetController extends Controller
         ->leftJoin(['REC' => 'gad_record'], 'REC.id = PB.record_id')
         ->where(['PB.record_tuc' => $ruc])
         ->orderBy(['PB.focused_id' => SORT_ASC,'PB.inner_category_id' => SORT_ASC,'PB.ppa_value' => SORT_ASC,'PB.id' => SORT_ASC])
-        ->groupBy(['PB.focused_id','PB.inner_category_id','PB.ppa_value','PB.objective','PB.relevant_lgu_program_project','PB.activity','PB.performance_target'])
+        ->groupBy(['PB.focused_id','PB.inner_category_id','PB.ppa_value','PB.objective','PB.relevant_lgu_program_project','PB.activity','PB.performance_target','PB.id'])
         ->all();
         // echo "<pre>";
         // print_r($dataPlanBudget); exit;

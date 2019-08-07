@@ -23,6 +23,6 @@ use yii\web\JsExpression;
         ],
     ]); ?>
     <hr style="border: 1px solid #d2d6de;margin-top: 10px;">
-    <button class="btn btn-sm btn-success pull-right"><i class="glyphicon glyphicon-upload"></i> Upload</button>
+    <button class="btn btn-md btn-success pull-right"><i class="glyphicon glyphicon-upload"></i> Upload</button>
     <br><br>
 <?php ActiveForm::end(); ?>

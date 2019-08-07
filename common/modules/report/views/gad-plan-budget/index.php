@@ -229,7 +229,7 @@ $this->title = "Annual GAD Plan and Budget";
                         <span class="glyphicon glyphicon-pencil"></span> Encode Plan
                     </button>
                     <?php 
-                        echo Html::a('<span class="glyphicon glyphicon-import"></span> Upload Plan (excel)',['/upload/plan/index'],['class'=>'btn btn-success btn-md','style' => 'margin-top:-5px;']);
+                        echo Html::a('<span class="glyphicon glyphicon-import"></span> Upload Plan (excel)',['/upload/plan/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'btn btn-success btn-md','style' => 'margin-top:-5px;']);
                     ?>
                 <?php } ?>
             <?php } ?>

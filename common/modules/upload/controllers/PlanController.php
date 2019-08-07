@@ -6,10 +6,11 @@ use Yii;
 use common\models\GadPlanBudget;
 use yii\web\UploadedFile;
 use common\models\UploadForm;
+use common\modules\report\controllers\DefaultController;
 
 class PlanController extends \yii\web\Controller
 {
-    public function actionIndex()
+    public function actionIndex($ruc,$onstep,$tocreate)
     {
         $model = new UploadForm();
         $excelFilename = null;
@@ -32,22 +33,25 @@ class PlanController extends \yii\web\Controller
                     $cellIterator->setIterateOnlyExistingCells(FALSE);
                     foreach ($cellIterator as $key => $cell) {
                         if($cell->getRow() >= 3){
-                            // if($cell->getColumn() == 'B' || $cell->getColumn() == 'C'){
-                            //     $excelData[$cell->getRow()][] = \PhpOffice\PhpSpreadsheet\Style\NumberFormat::toFormattedString($cell->getValue(), 'YYYY-MM-DD');
-                            //     $excelDataForUploading[$cell->getRow()][] = \PhpOffice\PhpSpreadsheet\Style\NumberFormat::toFormattedString($cell->getValue(), 'YYYY-MM-DD');
-                            // }
-                            // else {
-                                
-                            // }
-                            $excelData[$cell->getRow()][] = $cell->getValue();
-                            $excelDataForUploading[$cell->getRow()][] = $cell->getValue();
+                            // if(!empty($cell->getValue()))
+                            // {
+                            	if($cell->getColumn() == 'L' || $cell->getColumn() == 'M'){
+	                                $excelData[$cell->getRow()][] = \PhpOffice\PhpSpreadsheet\Style\NumberFormat::toFormattedString($cell->getValue(), 'YYYY-MM-DD');
+	                                $excelDataForUploading[$cell->getRow()][] = \PhpOffice\PhpSpreadsheet\Style\NumberFormat::toFormattedString($cell->getValue(), 'YYYY-MM-DD');
+	                            }
+	                            else{
+	                            	$excelData[$cell->getRow()][] = $cell->getValue();
+                            		$excelDataForUploading[$cell->getRow()][] = $cell->getValue();
+	                            }
+                        	// }
                         }
-                    }
+                    } 
                 }
 
-                $session['excelData'] = $excelDataForUploading;
+
+                $session['excelDataPlan'] = $excelDataForUploading;
                 $userinfo = Yii::$app->user->identity->id;
-                $fileName = Yii::$app->user->identity->id.'-'.date('mdY').'-'.$model->imageFile->baseName;
+                $fileName = $model->imageFile->baseName;
                 $ext = $model->imageFile->extension;
 
                 $session['excelFile'] = $fileName.'.'.$ext;
@@ -66,44 +70,45 @@ class PlanController extends \yii\web\Controller
             'model' => $model,
             'excelData' => $excelData,
             'excelFilename' => $excelFilename,
+            'ruc' => $ruc,
+            'onstep' => $onstep,
+            'tocreate' => $tocreate
         ]);
     }
 
-     public function actionSaveExcelData($hc)
+    public function actionSaveExcelData($ruc,$onstep,$tocreate)
     {
         $session = Yii::$app->session;
-        $arr = array_values($session['excelData']);
 
-        foreach ($arr as $key => $value) {
-        	// echo "<pre>";
-        	// print_r($value);
-            $model = new Training();
-            $model->hris_i_personal_info_id =  $hc;
-            $model->training_desc 			=  $value[0];
-            $model->inclusivedate_from 		=  $value[1];
-            $model->inclusivedate_to 		=  $value[2];
-            $model->numberofhours 			=  $value[3];
-            $model->condsponby 				=  $value[5];
-            
-            switch ($value[4]) {
-            	case 1:
-            		$model->hris_training_type_id = 1;
-            	break;
-            	case 2:
-            		$model->hris_training_type_id = 2;
-            	break;
-            	case 3:
-            		$model->hris_training_type_id = 3;
-            	break;
-            	
-            	default:
-            		$model->hris_training_type_id = 0;
-            		$model->typeoflearningdevelopment = $value[4];
-            	break;
-            }
+        $arr = $session['excelDataPlan'];
+        
+       	date_default_timezone_set("Asia/Manila");
+        foreach ($arr as $key => $val) {
+            $model = new GadPlanBudget();
+            $model->record_id = DefaultController::getRecordIdByRuc($ruc);
+            $model->record_tuc = $ruc;
+            $model->date_created = date("Y-m-d");
+            $model->time_created = date("h:i:sa");
 
-            
-            if($model->save()){
+            $model->focused_id = $val[0];
+            $model->inner_category_id = $val[1];
+            $model->gi_sup_data = $val[3];
+            $model->source = $val[4];
+            $model->ppa_value = $val[2];
+            $model->cliorg_ppa_attributed_program_id = $val[5];
+            $model->objective = $val[6];
+            $model->relevant_lgu_program_project = $val[7];
+            $model->activity_category_id = $val[8];
+            $model->activity = $val[9];
+            $model->performance_target = $val[10];
+            $model->date_implement_start = $val[11];
+            $model->date_implement_end = $val[12];
+            $model->budget_mooe = $val[13];
+            $model->budget_ps = $val[14];
+            $model->budget_co = $val[15];
+            $model->lead_responsible_office = $val[16];
+
+            if($model->save(false)){
 
             }
             else{
@@ -112,11 +117,23 @@ class PlanController extends \yii\web\Controller
                 return $this->redirect('@web/pds/upload/training');
             }
         }
-        $session['excelData'] = null;
+        $session['excelDataPlan'] = null;
         unlink('uploads/'. $session['excelFile']);
         $session['excelFile'] = null;
         \Yii::$app->getSession()->setFlash('success', 'Excel data successfully uploaded.');
-        return $this->redirect('@web/pds/upload/training');
+        return $this->redirect(['/report/gad-plan-budget/index', 'ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate]);
+    }
+
+    public function actionDownloadTemplate()
+    {
+        $path = Yii::getAlias('@webroot').'/uploads/template/excel/GAD-Plan-Budget-Template.xlsx';
+        if (file_exists($path)) {
+            return Yii::$app->response->sendFile($path);
+        }
+        else{
+            \Yii::$app->getSession()->setFlash('danger', '<strong>Unable to download the template of Service Record (excel)</strong>');
+            return $this->redirect(['upload-service-record']);
+        }
     }
 
 }
