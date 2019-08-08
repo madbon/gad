@@ -143,7 +143,7 @@ class GadPlanBudgetController extends Controller
         ->from('gad_attributed_program AP')
         ->leftJoin(['PAP' => 'gad_ppa_attributed_program'], 'PAP.id = AP.ppa_attributed_program_id')
         ->where(['AP.record_tuc' => $ruc])
-        ->groupBy(['AP.lgu_program_project'])
+        ->groupBy(['AP.lgu_program_project','AP.id'])
         ->orderBy(['AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
         ->all();
 
@@ -326,7 +326,7 @@ class GadPlanBudgetController extends Controller
         ->leftJoin(['PAP' => 'gad_ppa_attributed_program'], 'PAP.id = AP.ppa_attributed_program_id')
         ->leftJoin(['REC' => 'gad_record'], 'REC.tuc = AP.record_tuc')
         ->where(['AP.record_tuc' => $ruc])
-        ->groupBy(['AP.lgu_program_project'])
+        ->groupBy(['AP.lgu_program_project','AP.id'])
         ->orderBy(['AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
         ->all();
 

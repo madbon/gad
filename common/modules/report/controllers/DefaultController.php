@@ -209,12 +209,12 @@ class DefaultController extends Controller
         \Yii::$app->getSession()->setFlash('success', "Data has been deleted");
         return $this->redirect(['gad-accomplishment-report/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
     }
-    public function actionDeletePlanBudgetAttrib($id,$ruc,$onstep,$tocreate)
+    public function actionDeletePlanBudgetAttrib($attrib_id)
     {
-        $model = GadAttributedProgram::deleteAll(['id'=>$id]);
+        $model = GadAttributedProgram::deleteAll(['id'=>$attrib_id]);
 
-        \Yii::$app->getSession()->setFlash('success', "Data has been deleted");
-        return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
+        // \Yii::$app->getSession()->setFlash('success', "Data has been deleted");
+        // return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
     }
 
     public function actionDeletePlanBudgetGenderIssue($id,$ruc,$onstep,$tocreate)

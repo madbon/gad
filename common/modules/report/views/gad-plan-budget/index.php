@@ -221,7 +221,7 @@ $this->title = "Annual GAD Plan and Budget";
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-5">
             <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
                 <br/>
                 <?php if($qryReportStatus == 0 || $qryReportStatus == 5 || $qryReportStatus == 6 || $qryReportStatus == 7 || $qryReportStatus == 9 || $qryReportStatus == 8){ ?>
@@ -229,7 +229,10 @@ $this->title = "Annual GAD Plan and Budget";
                         <span class="glyphicon glyphicon-pencil"></span> Encode Plan
                     </button>
                     <?php 
-                        echo Html::a('<span class="glyphicon glyphicon-import"></span> Upload Plan (excel)',['/upload/plan/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'btn btn-success btn-md','style' => 'margin-top:-5px;']);
+                        echo Html::a('<span class="glyphicon glyphicon-cloud-upload"></span> Upload Plan & Budget (excel)',['/upload/plan/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'btn btn-success btn-md','style' => 'margin-top:-5px;']);
+                    ?>
+                    <?php 
+                        echo Html::a('<span class="glyphicon glyphicon-cloud-upload"></span> Upload Attrbiuted Programs (excel)',['/upload/plan-attributed/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'btn btn-success btn-md','style' => 'margin-top:-5px;']);
                     ?>
                 <?php } ?>
             <?php } ?>
@@ -241,7 +244,7 @@ $this->title = "Annual GAD Plan and Budget";
                 }
             ?>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-1">
         </div>
         <div class="col-sm-6">
             <br/>
@@ -691,7 +694,7 @@ $this->title = "Annual GAD Plan and Budget";
                             $countRowAttribute += 1;
                             ?>
 
-                            <tr class="attributed_program_td">
+                            <tr class="attributed_program_td" id="attributed_tr_<?= $dap['id'] ?>">
                                 <?php
                                     echo $this->render('cell_reusable_form',[
                                         'cell_value' => $dap["lgu_program_project"],
@@ -842,25 +845,50 @@ $this->title = "Annual GAD Plan and Budget";
                                     <?php
                                         if(Yii::$app->user->can("gad_delete_plan_budget"))
                                         {
-                                            echo Html::a("<span class='glyphicon glyphicon-trash'></span>",
-                                            [
-                                                'default/delete-plan-budget-attrib',
-                                                'id' => $dap['id'],
-                                                'ruc' => $ruc,
-                                                'onstep' => $onstep,
-                                                'tocreate' => $tocreate,
-                                            ],
-                                            [
-                                                'class' => 'btn btn-danger btn-xs',
-                                                'id'=>"submit_to",
-                                                'title' => 'Delete',
-                                                'style' => '',
-                                                'data' => [
-                                                    'confirm' => 'Are you sure you want to perform this action?',
-                                                    'method' => 'post']
-                                            ]);
+                                            // echo Html::a("<span class='glyphicon glyphicon-trash'></span>",
+                                            // [
+                                            //     'default/delete-plan-budget-attrib',
+                                            //     'id' => $dap['id'],
+                                            //     'ruc' => $ruc,
+                                            //     'onstep' => $onstep,
+                                            //     'tocreate' => $tocreate,
+                                            // ],
+                                            // [
+                                            //     'class' => 'btn btn-danger btn-xs',
+                                            //     'id'=>"submit_to",
+                                            //     'title' => 'Delete',
+                                            //     'style' => '',
+                                            //     'data' => [
+                                            //         'confirm' => 'Are you sure you want to perform this action?',
+                                            //         'method' => 'post']
+                                            // ]);
+                                            echo "<button class='btn btn-danger btn-xs' title='Delete' id='delete_ap_".$dap['id']."'><span class='glyphicon glyphicon-trash'></span></button>";
                                         }
                                     ?>
+                                    <?php JSRegister::begin() ?>
+                                    <?php $url_deletePlanAttributedProgram = \yii\helpers\Url::to(['default/delete-plan-budget-attrib']); ?>
+                                    <script>
+                                        $("#delete_ap_<?= $dap['id']?>").click(function(){
+                                            var attrib_id = "<?= $dap['id']?>";
+                                            if(confirm("Are you sure you want to delete this row?"))
+                                            {
+                                                $.ajax({
+                                                    url: "<?= $url_deletePlanAttributedProgram ?>",
+                                                    data: { 
+                                                            attrib_id:attrib_id
+                                                            }
+                                                    
+                                                    }).done(function(result) {
+                                                        $("#attributed_tr_<?= $dap['id'] ?>").slideUp(300);
+                                                });
+                                            }
+                                            else
+                                            {
+
+                                            }
+                                        });
+                                    </script>
+                                    <?php JSRegister::end() ?>
                                     <?php
                                         if(Yii::$app->user->can("gad_upload_files_row"))
                                         {
