@@ -1,12 +1,12 @@
 <?php
 
 use yii\helpers\Html;
-
+use \common\modules\report\controllers\DefaultController;
 /* @var $this yii\web\View */
 /* @var $model common\models\GadRecord */
 
 $this->title = 'Annual GAD Accomplishment Report';
-// $this->params['breadcrumbs'][] = ['label' => 'Step 1. Input Primary Information', 'url' => ['gad-record/create', 'ruc' => $ruc,'onstep' => $onstep], ['class' => 'btn btn-success']];
+// $this->params['breadcrumbs'][] = ['label' => 'Step 1. Primary Information', 'url' => ['gad-record/create', 'ruc' => $ruc,'onstep' => $onstep], ['class' => 'btn btn-success']];
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style>
@@ -18,7 +18,7 @@ $this->title = 'Annual GAD Accomplishment Report';
             <?php if($qryReportStatus == 9) // if report status is under encoding tab
                 {
                     echo $this->render('/common_tools/tabs/tab_input',[
-                        'tabTitle' => 'Step 1. Input Primary Information',
+                        'tabTitle' => 'Primary Information',
                         'liClass' => '',
                         'ruc' => $ruc,
                         'onstep' => $onstep,
@@ -27,7 +27,7 @@ $this->title = 'Annual GAD Accomplishment Report';
                         'url' => '/report/gad-record/create'
                     ]);
                     echo $this->render('/common_tools/tabs/tab_encode',[
-                        'tabTitle' => 'Step 2. Encode Annual Accomplishment Report',
+                        'tabTitle' => 'GAD Accomplishment Report FY '.DefaultController::GetPlanYear($ruc),
                         'liClass' => 'active',
                         'ruc' => $ruc,
                         'onstep' => $onstep,
@@ -44,7 +44,7 @@ $this->title = 'Annual GAD Accomplishment Report';
             <?php if($qryReportStatus == 8 ) // if report status is under encoding tab
                 {
                     echo $this->render('/common_tools/tabs/tab_input',[
-                        'tabTitle' => 'Step 1. Input Primary Information',
+                        'tabTitle' => 'Primary Information',
                         'liClass' => '',
                         'ruc' => $ruc,
                         'onstep' => $onstep,
@@ -53,7 +53,7 @@ $this->title = 'Annual GAD Accomplishment Report';
                         'url' => '/report/gad-record/create'
                     ]);
                     echo $this->render('/common_tools/tabs/tab_encode',[
-                        'tabTitle' => 'Step 2. Encode Annual Accomplishment Report',
+                        'tabTitle' => 'GAD Accomplishment Report FY '.DefaultController::GetPlanYear($ruc),
                         'liClass' => 'active',
                         'ruc' => $ruc,
                         'onstep' => $onstep,
@@ -69,7 +69,7 @@ $this->title = 'Annual GAD Accomplishment Report';
             <?php if($qryReportStatus == 0) // if report status is under encoding tab
                 {
                     echo $this->render('/common_tools/tabs/tab_input',[
-                        'tabTitle' => 'Step 1. Input Primary Information',
+                        'tabTitle' => 'Primary Information',
                         'liClass' => '',
                         'ruc' => $ruc,
                         'onstep' => $onstep,
@@ -78,7 +78,7 @@ $this->title = 'Annual GAD Accomplishment Report';
                         'url' => '/report/gad-record/create'
                     ]);
                     echo $this->render('/common_tools/tabs/tab_encode',[
-                        'tabTitle' => 'Step 2. Encode Annual Accomplishment Report',
+                        'tabTitle' => 'GAD Accomplishment Report FY '.DefaultController::GetPlanYear($ruc),
                         'liClass' => 'active',
                         'ruc' => $ruc,
                         'onstep' => $onstep,

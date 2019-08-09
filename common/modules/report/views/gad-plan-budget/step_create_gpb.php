@@ -6,7 +6,7 @@ use \common\modules\report\controllers\DefaultController;
 /* @var $model common\models\GadRecord */
 
 $this->title = 'Annual GAD Plan and Budget';
-// $this->params['breadcrumbs'][] = ['label' => ' Input Primary Information', 'url' => ['gad-record/create', 'ruc' => $ruc,'onstep' => $onstep], ['class' => 'btn btn-success']];
+// $this->params['breadcrumbs'][] = ['label' => ' Primary Information', 'url' => ['gad-record/create', 'ruc' => $ruc,'onstep' => $onstep], ['class' => 'btn btn-success']];
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style>
@@ -19,7 +19,7 @@ $this->title = 'Annual GAD Plan and Budget';
         <?php if($qryReportStatus == 9) // if report status is under encoding tab
             {
                 echo $this->render('/common_tools/tabs/tab_input',[
-                    'tabTitle' => ' Input Primary Information',
+                    'tabTitle' => ' Primary Information',
                     'liClass' => '',
                     'ruc' => $ruc,
                     'onstep' => $onstep,
@@ -28,7 +28,7 @@ $this->title = 'Annual GAD Plan and Budget';
                     'url' => '/report/gad-record/create'
                 ]);
                 echo $this->render('/common_tools/tabs/tab_encode',[
-                    'tabTitle' => 'Encode Annual GAD Plan and Budget',
+                    'tabTitle' => 'GAD Plan and Budget FY '.DefaultController::GetPlanYear($ruc)." <i style='font-size:10px; text-transform:uppercase; font-weight:bold;'>( ".DefaultController::CreatePlanStatus($ruc)." ) </i>",
                     'liClass' => 'active',
                     'ruc' => $ruc,
                     'onstep' => $onstep,
@@ -47,7 +47,7 @@ $this->title = 'Annual GAD Plan and Budget';
         <?php if($qryReportStatus == 0 || $qryReportStatus == 8) // if report status is under encoding tab
             {
                 echo $this->render('/common_tools/tabs/tab_input',[
-                    'tabTitle' => 'Input Primary Information',
+                    'tabTitle' => 'Primary Information',
                     'liClass' => '',
                     'ruc' => $ruc,
                     'onstep' => $onstep,
@@ -56,7 +56,7 @@ $this->title = 'Annual GAD Plan and Budget';
                     'url' => '/report/gad-record/create'
                 ]);
                 echo $this->render('/common_tools/tabs/tab_encode',[
-                    'tabTitle' => 'Annual GAD Plan and Budget FY '.DefaultController::GetPlanYear($ruc)." <i style='font-size:10px; text-transform:uppercase; font-weight:bold;'>( ".DefaultController::CreatePlanStatus($ruc)." ) </i>",
+                    'tabTitle' => 'GAD Plan and Budget FY '.DefaultController::GetPlanYear($ruc)." <i style='font-size:10px; text-transform:uppercase; font-weight:bold;'>( ".DefaultController::CreatePlanStatus($ruc)." ) </i>",
                     'liClass' => 'active',
                     'ruc' => $ruc,
                     'onstep' => $onstep,
@@ -71,7 +71,7 @@ $this->title = 'Annual GAD Plan and Budget';
         <?php if($qryReportStatus == 0) // if report status is under encoding tab
             {
                 echo $this->render('/common_tools/tabs/tab_input',[
-                    'tabTitle' => ' Input Primary Information',
+                    'tabTitle' => ' Primary Information',
                     'liClass' => '',
                     'ruc' => $ruc,
                     'onstep' => $onstep,
@@ -80,7 +80,7 @@ $this->title = 'Annual GAD Plan and Budget';
                     'url' => '/report/gad-record/create'
                 ]);
                 echo $this->render('/common_tools/tabs/tab_encode',[
-                    'tabTitle' => 'Encode Annual GAD Plan and Budget',
+                    'tabTitle' => 'GAD Plan and Budget FY '.DefaultController::GetPlanYear($ruc)." <i style='font-size:10px; text-transform:uppercase; font-weight:bold;'>( ".DefaultController::CreatePlanStatus($ruc)." ) </i>",
                     'liClass' => 'active',
                     'ruc' => $ruc,
                     'onstep' => $onstep,

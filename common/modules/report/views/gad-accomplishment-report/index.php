@@ -62,8 +62,14 @@ $this->title = "Annual GAD Accomplishment Reports";
     <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
         <?php if($qryReportStatus == 8 || $qryReportStatus == 10 || $qryReportStatus == 6){ ?>
             <button type="button" class="btn btn-success" id="btn-encode" style="margin-bottom: 5px;">
-                <span class="glyphicon glyphicon-pencil"></span> Encode Gender Issue or GAD Mandate
+                <span class="glyphicon glyphicon-pencil"></span> Encode Accomplishment Report
             </button>
+            <?php 
+                echo Html::a('<span class="glyphicon glyphicon-cloud-upload"></span> Upload Accomplishment Report (excel)',['/upload/accomplishment/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'btn btn-success btn-md','style' => 'margin-top:-5px;']);
+            ?>
+            <?php 
+                echo Html::a('<span class="glyphicon glyphicon-cloud-upload"></span> Upload Attrbiuted Programs (excel)',['/upload/plan-attributed/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'btn btn-success btn-md','style' => 'margin-top:-5px;']);
+            ?>
         <?php } ?>
     <?php } ?>
 

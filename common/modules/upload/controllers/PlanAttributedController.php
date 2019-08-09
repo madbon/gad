@@ -113,7 +113,7 @@ class PlanAttributedController extends \yii\web\Controller
 
     public function actionDownloadTemplate()
     {
-        $path = Yii::getAlias('@webroot').'/uploads/template/excel/GAD-Plan-Budget-Attributed-Programs-Template.xlsx';
+        $path = Yii::getAlias('@webroot').'/uploads/template/excel/Attributed-Programs-GPB-Template.xlsx';
         if (file_exists($path)) {
             return Yii::$app->response->sendFile($path);
         }
