@@ -9,7 +9,6 @@ table.data_preview thead tr th
 }
 </style>
 
-
 <div class="panel panel-primary">
 	<div class="panel-heading">
 		<?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Back to GAD Plan and Budget', ['/report/gad-plan-budget/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class' => 'btn btn-default btn-md', 'style' => '']); ?>

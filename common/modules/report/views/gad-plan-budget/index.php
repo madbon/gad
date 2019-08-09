@@ -472,7 +472,7 @@ $this->title = "Annual GAD Plan and Budget";
                                 </tr>
                             <?php } ?>
 
-                            <tr>
+                            <tr id="plan_tr_<?= $plan['id'] ?>">
                                 <?php
                                     echo $this->render('cliorg_tabular_form',[
                                         'plan' => $plan,
@@ -481,27 +481,44 @@ $this->title = "Annual GAD Plan and Budget";
                                 ?>
                                 <td style="border-bottom: none;">
                                     <?php
-                                        if(Yii::$app->user->can("gad_delete_rowplanbudget") && $plan["record_status"] != 1)
+                                        if(Yii::$app->user->can("gad_delete_rowplanbudget"))
                                         {
-                                            echo Html::a("<span class='glyphicon glyphicon-trash'></span> ",
-                                            [
-                                                'default/delete-plan-budget-gender-issue',
-                                                'id' => $plan['id'],
-                                                'ruc' => $ruc,
-                                                'onstep' => $onstep,
-                                                'tocreate' => $tocreate
-                                            ],
-                                            [
-                                                'class' => 'btn btn-danger btn-xs',
-                                                'id'=>"submit_to",
-                                                'title' => 'Delete',
-                                                'style' => '',
-                                                'data' => [
-                                                    'confirm' => 'Are you sure you want to perform this action?',
-                                                    'method' => 'post']
-                                            ]);
+                                            echo "<button class='btn btn-danger btn-xs' title='Delete' id='delete_plan_".$plan['id']."'><span class='glyphicon glyphicon-trash'></span></button>";
                                         }
+                                    ?>
+                                    <?php JSRegister::begin() ?>
+                                    <?php $url_deletePlanRow = \yii\helpers\Url::to(['default/delete-plan-budget-gender-issue']); ?>
+                                    <script>
+                                        $("#delete_plan_<?= $plan['id']?>").click(function(){
+                                            var plan_id = "<?= $plan['id']?>";
+                                            if(confirm("Are you sure you want to delete this row?"))
+                                            {
+                                                $.ajax({
+                                                    url: "<?= $url_deletePlanRow ?>",
+                                                    data: { 
+                                                            plan_id:plan_id
+                                                            }
+                                                    
+                                                    }).done(function(result) {
+                                                        if(result == 1)
+                                                        {
+                                                            $("#plan_tr_<?= $plan['id'] ?>").slideUp(300);
+                                                        }
+                                                        else
+                                                        {
+                                                            alert("Can't process your request. Something went wrong.");
+                                                        }
+                                                });
+                                            }
+                                            else
+                                            {
 
+                                            }
+                                        });
+                                    </script>
+                                    <?php JSRegister::end() ?>
+
+                                    <?php
                                         if(Yii::$app->user->can("gad_upload_files_row"))
                                         {
                                             $t = '@web/report/gad-plan-budget/update?id='.$plan['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
