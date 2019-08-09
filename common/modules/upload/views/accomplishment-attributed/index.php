@@ -12,8 +12,8 @@ table.data_preview thead tr th
 
 <div class="panel panel-primary">
 	<div class="panel-heading">
-		<?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Back to GAD Plan and Budget', ['/report/gad-plan-budget/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class' => 'btn btn-default btn-md', 'style' => '']); ?>
-		<h4>Upload Excel File for Attributed Programs (plan and budget)</h4>
+		<?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Back to Accomplishment Report', ['/report/gad-accomplishment-report/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class' => 'btn btn-default btn-md', 'style' => '']); ?>
+		<h4>Upload Excel File for Attributed Programs (accomplishment report)</h4>
 		<?= Html::a('<span class="glyphicon glyphicon-export"></span> Download Excel Template', ['download-template'],['class' => 'btn btn-success btn-md pull-right', 'style' => 'margin-top:-35px;']); ?>
 	</div>
 	<div class="panel-body">
@@ -52,9 +52,10 @@ table.data_preview thead tr th
 							<th style="background-color: yellow;">PPA Sectors</th>
 							<th style="background-color: #7e57b1; color: white;">Title of LGU Program or Project</th>
 							<th style="background-color: yellow;">Checklist</th>
-							<th style="background-color: #7e57b1; color: white;">HGDG Design/ Funding Facility/ Generic Checklist Score</th>
-							<th style="background-color: #7e57b1; color: white;">Total Annual Program/ Project Budget</th>
-							<th style="background-color: #7e57b1; color: white;">Lead or Responsible Office</th>
+							<th style="background-color: yellow;">HGDG Score Type</th>
+							<th style="background-color: #7e57b1; color: white;">HGDG PIMME/FIMME Score</th>
+							<th style="background-color: #7e57b1; color: white;">Total Annual Program/ Project Cost or Expenditure</th>
+							<th style="background-color: #7e57b1; color: white;">Variance or Remarks</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -62,11 +63,12 @@ table.data_preview thead tr th
 							foreach ($excelData as $row) {
 								echo '<tr>';
 							  	echo 	'<td style="text-align:center;">' . $row[0] . '</td>';
-							  	echo 	'<td>' . $row[1] . '</td>';
+							  	echo 	'<td style="white-space:pre-line;">' . $row[1] . '</td>';
 							  	echo 	'<td style="text-align:center;">' . $row[2] . '</td>';
 							  	echo 	'<td style="text-align:center;">' . $row[3] . '</td>';
-							  	echo 	'<td style="text-align:right;">' . number_format($row[4],2) . '</td>';
-							  	echo 	'<td style="text-align:center;">' . $row[5] . '</td>';
+							  	echo 	'<td style="text-align:center;">' . $row[4] . '</td>';
+							  	echo 	'<td style="text-align:right;">' . (number_format($row[5],2)) . '</td>';
+							  	echo 	'<td style="white-space:pre-line;">' . $row[6] . '</td>';
 							  	echo '</tr>';
 							}
 						?>

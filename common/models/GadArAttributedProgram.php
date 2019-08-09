@@ -45,7 +45,7 @@ class GadArAttributedProgram extends \yii\db\ActiveRecord
             [['total_annual_pro_cost', 'gad_attributed_pro_cost','hgdg_pimme'], 'number'],
             [['date_created', 'date_updated'], 'safe'],
             [['record_tuc', 'controller_id'], 'string', 'max' => 150],
-            [['hgdg_pimme', 'time_created', 'time_updated'], 'string', 'max' => 10],
+            [['time_created', 'time_updated'], 'string', 'max' => 10],
 
             [['ppa_attributed_program_id','lgu_program_project','hgdg_pimme','total_annual_pro_cost','ar_ap_variance_remarks','checklist_id','score_type'], Yii::$app->controller->action->id == "create-ar-attributed-program" ? 'required' : 'safe'],
 

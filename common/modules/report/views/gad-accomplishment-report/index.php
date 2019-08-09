@@ -68,7 +68,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                 echo Html::a('<span class="glyphicon glyphicon-cloud-upload"></span> Upload Accomplishment Report (excel)',['/upload/accomplishment/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'btn btn-success btn-md','style' => 'margin-top:-5px;']);
             ?>
             <?php 
-                echo Html::a('<span class="glyphicon glyphicon-cloud-upload"></span> Upload Attrbiuted Programs (excel)',['/upload/plan-attributed/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'btn btn-success btn-md','style' => 'margin-top:-5px;']);
+                echo Html::a('<span class="glyphicon glyphicon-cloud-upload"></span> Upload Attrbiuted Programs (excel)',['/upload/accomplishment-attributed/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'btn btn-success btn-md','style' => 'margin-top:-5px;']);
             ?>
         <?php } ?>
     <?php } ?>
