@@ -23,7 +23,6 @@ use yii\web\JsExpression;
         ],
     ]); ?>
     <hr style="border: 1px solid #d2d6de;margin-top: 10px;">
-    <?= Html::a('<span class="glyphicon glyphicon-refresh"></span> Refresh', ['index', 'ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class' => 'btn btn-default btn-md', 'style' => '']); ?>
-    <button class="btn btn-md btn-success pull-right"><i class="glyphicon glyphicon-upload"></i> Preview</button>
+    <button class="btn btn-md btn-info pull-right"><i class="glyphicon glyphicon-eye-open"></i> Preview</button>
     <br><br>
 <?php ActiveForm::end(); ?>

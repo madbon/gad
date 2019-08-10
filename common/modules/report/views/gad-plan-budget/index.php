@@ -377,7 +377,14 @@ $this->title = "Annual GAD Plan and Budget";
         </div>
         <div class="cust-panel-body table-responsive">
             <div class="cust-panel-title">
-                <p class="sub-title"><span class="glyphicon glyphicon-th"></span> Tabular Report</p>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="sub-title"><span class="glyphicon glyphicon-th"></span> Tabular Report</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Print Preview',['print/gad-plan-budget'],['class'=>'btn btn-md btn-default pull-right','target'=>'_blank']);  ?>
+                    </div>
+                </div>
             </div>
             <div class="cust-panel-inner-body">
                 <table class="table table-responsive table-bordered gad-plan-budget table-hover">

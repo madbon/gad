@@ -309,6 +309,7 @@ class GadPlanBudgetController extends Controller
         Yii::$app->session["activelink"] = $tocreate;
         $grand_total_pb = 0;
         $dataRecord = GadRecord::find()->where(['tuc' => $ruc, 'report_type_id' => 1])->all();
+        Yii::$app->session['session_dataPlanRecord'] = $dataRecord;
         $dataAttributedProgram = (new \yii\db\Query())
         ->select([
             'AP.id',
@@ -329,6 +330,7 @@ class GadPlanBudgetController extends Controller
         ->groupBy(['AP.lgu_program_project','AP.id'])
         ->orderBy(['AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
         ->all();
+        Yii::$app->session['session_dataPlanAttributedProgram'] = $dataAttributedProgram;
 
         $sum_ap_apb = 0;
         $varTotalGadAttributedProBudget = 0;
@@ -429,6 +431,7 @@ class GadPlanBudgetController extends Controller
         ->orderBy(['PB.focused_id' => SORT_ASC,'PB.inner_category_id' => SORT_ASC,'PB.ppa_value' => SORT_ASC,'PB.id' => SORT_ASC])
         ->groupBy(['PB.focused_id','PB.inner_category_id','PB.ppa_value','PB.objective','PB.relevant_lgu_program_project','PB.activity','PB.performance_target','PB.id'])
         ->all();
+        Yii::$app->session['session_dataPlanBudget'] = $dataPlanBudget;
         // echo "<pre>";
         // print_r($dataPlanBudget); exit;
 

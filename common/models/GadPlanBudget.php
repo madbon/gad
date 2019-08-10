@@ -69,9 +69,8 @@ class GadPlanBudget extends \yii\db\ActiveRecord
             [['budget_ps'], Yii::$app->controller->action->id == "update-budget-ps" ? "required" : "safe"],
             [['budget_co'], Yii::$app->controller->action->id == "update-budget-co" ? "required" : "safe"],
 
-            [['inner_category_id','focused_id','cliorg_ppa_attributed_program_id'], Yii::$app->controller->action->id == "create-gad-plan-budget" ? 'required' : 'safe'],
-
-            [['date_implement_start', 'date_implement_end'], 'required'],
+            [['inner_category_id','focused_id','cliorg_ppa_attributed_program_id','date_implement_start'], Yii::$app->controller->id == "plan" || Yii::$app->controller->action->id == "create-gad-plan-budget" ? 'required' : 'safe'],
+            [['date_implement_end'], Yii::$app->controller->id == "plan" ? 'required' : 'safe'],
             [['date_created', 'date_updated','date_implementation','old_plan_id'], 'safe'],
             [['time_created', 'time_updated'], 'string', 'max' => 10],
             [['record_tuc','tuc'], 'string', 'max' => 150],
@@ -79,6 +78,7 @@ class GadPlanBudget extends \yii\db\ActiveRecord
             // [['cause_gender_issue'], 'required', 'when' => function ($model) { return $model->ppa_focused_id == 0; }],
             // [['budget_mooe','budget_ps','budget_co'],Yii::$app->controller->action->id == "create-gad-plan-budget" ? 'required' : 'safe',  'when' => function ($model) { return $model->budget_mooe == null && $model->budget_ps == null && $model->budget_co == null; }, 'message' => 'Please fill up atleast 1 from MOOE, PS, & CO '],
             [['gi_sup_data'],  
+            Yii::$app->controller->id == "plan" || 
             Yii::$app->controller->action->id == "create-gad-plan-budget" || 
             Yii::$app->controller->action->id == "update-gender-issue-sup-data" ? 'required' : "safe", 'when' => function ($model) { return $model->inner_category_id == 1; }],
             // [['ppa_value'], 'required'],

@@ -9,11 +9,20 @@ table.data_preview thead tr th
 }
 </style>
 
-<div class="panel panel-primary">
+<div class="panel panel-default">
 	<div class="panel-heading">
-		<?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Back to GAD Plan and Budget', ['/report/gad-plan-budget/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class' => 'btn btn-default btn-md', 'style' => '']); ?>
-		<h4>Upload Excel File for Attributed Programs (plan and budget)</h4>
-		<?= Html::a('<span class="glyphicon glyphicon-export"></span> Download Excel Template', ['download-template'],['class' => 'btn btn-success btn-md pull-right', 'style' => 'margin-top:-35px;']); ?>
+		<div class="row">
+			<div class="col-sm-6">
+				<h4>Upload Excel Data of GAD Plan and Budget <b>(ATTRIBUTED PROGRAMS)</b></h4>
+			</div>
+			<div class="col-sm-6">
+				<div class="btn-group pull-right">
+					<?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Back to GAD Plan and Budget', ['/report/gad-plan-budget/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class' => 'btn btn-default btn-md', 'style' => '']); ?>
+					<?= Html::a('<span class="glyphicon glyphicon-save"></span> Download Excel Template', ['download-template'],['class' => 'btn btn-success btn-md', 'style' => '']); ?>
+					<?= Html::a('<span class="glyphicon glyphicon-refresh"></span> Reset', ['index', 'ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class' => 'btn btn-default btn-md', 'style' => '']); ?>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="panel-body">
 		<?= $this->render('_upload_form', [
@@ -28,16 +37,16 @@ table.data_preview thead tr th
 <?php if(!empty($excelData)){ 
 	// print_r($excelData); exit;
 	?>
-	<div class="panel panel-success">
+	<div class="panel panel-info">
 		<div class="panel-heading">
 			<h4>Data Preview</h4>
 			<?php
-				echo Html::a('<span class="glyphicon glyphicon-save"></span> Save Excel Data', 
+				echo Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Save Excel Data', 
 					[
 						'save-excel-data', 'ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate
 					], 
 	           		[
-	           			'class' => 'btn btn-md btn-success pull-right', 
+	           			'class' => 'btn btn-md btn-primary pull-right', 
 	           			'style' => 'margin-top:-35px;',
 	           			'data' => ['confirm' => 'Are you sure you want to save this data?','method' => 'post']
 		         	]);

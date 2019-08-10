@@ -195,19 +195,28 @@ class DefaultController extends Controller
         return !empty($Query->year) ? $Query->year : "No set Year";
     }
 
-    public function actionDeleteAccomplishmentAttrib($id,$ruc,$onstep,$tocreate)
+    public function actionDeleteAccomplishmentAttrib($ar_attrib_id)
     {
-        $model = GadArAttributedProgram::deleteAll(['id'=>$id]);
-
-        \Yii::$app->getSession()->setFlash('success', "Data has been deleted");
-        return $this->redirect(['gad-accomplishment-report/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
+        if(GadArAttributedProgram::deleteAll(['id'=>$ar_attrib_id]))
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
     }
-    public function actionDeleteAccomplishment($id,$ruc,$onstep,$tocreate)
+    public function actionDeleteAccomplishment($ar_id)
     {
-        $model = GadAccomplishmentReport::deleteAll(['id'=>$id]);
-
-        \Yii::$app->getSession()->setFlash('success', "Data has been deleted");
-        return $this->redirect(['gad-accomplishment-report/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
+        if(GadAccomplishmentReport::deleteAll(['id'=>$ar_id]))
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+        
     }
     public function actionDeletePlanBudgetAttrib($attrib_id)
     {

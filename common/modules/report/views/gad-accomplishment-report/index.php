@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use common\modules\report\controllers\DefaultController;
+use richardfan\widget\JSRegister;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\modules\report\models\GadAccomplishmentReportSearch */
@@ -510,7 +511,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                                     <td></td>
                                 </tr>
                             <?php } ?>
-                            <tr>
+                            <tr id="ar_tr_id_<?= $ar['id'] ?>">
                                 <?php
                                     $sup_data_value = "";
                                     $source_value = "";
@@ -732,27 +733,44 @@ $this->title = "Annual GAD Accomplishment Reports";
                                 ?>
                                 <td>
                                     <?php
-                                        if(Yii::$app->user->can("gad_delete_rowaccomplishment") && $ar["record_status"] != 1)
+                                        if(Yii::$app->user->can("gad_delete_rowaccomplishment"))
                                         {
-                                            echo Html::a("<span class='glyphicon glyphicon-trash'></span> Delete",
-                                            [
-                                                'default/delete-accomplishment',
-                                                'id' => $ar['id'],
-                                                'ruc' => $ruc,
-                                                'onstep' => $onstep,
-                                                'tocreate' => $tocreate
-                                            ],
-                                            [
-                                                'class' => 'btn btn-danger btn-xs',
-                                                'id'=>"submit_to",
-                                                'style' => '',
-                                                'data' => [
-                                                    'confirm' => 'Are you sure you want to perform this action?',
-                                                    'method' => 'post']
-                                            ]);
+                                            echo "<button class='btn btn-danger btn-xs' title='Delete' id='delete_ar_".$ar['id']."'><span class='glyphicon glyphicon-trash'></span></button>";
                                         }
                                     ?>
+                                    <?php JSRegister::begin() ?>
+                                    <?php $url_deleteAccompRow = \yii\helpers\Url::to(['default/delete-accomplishment']); ?>
+                                    <script>
+                                        $("#delete_ar_<?= $ar['id']?>").click(function(){
+                                            var ar_id = "<?= $ar['id']?>";
+                                            if(confirm("Are you sure you want to delete this row?"))
+                                            {
+                                                $.ajax({
+                                                    url: "<?= $url_deleteAccompRow ?>",
+                                                    data: { 
+                                                            ar_id:ar_id
+                                                            }
+                                                    
+                                                    }).done(function(result) {
+                                                        if(result == 1)
+                                                        {
+                                                            $("#ar_tr_id_<?= $ar['id'] ?>").slideUp(300);
+                                                        }
+                                                        else
+                                                        {
+                                                            alert("Can't process your request. Something went wrong.");
+                                                        }
+                                                });
+                                            }
+                                            else
+                                            {
+
+                                            }
+                                        });
+                                    </script>
+                                    <?php JSRegister::end() ?>
                                 </td>
+
                             </tr>
                         <?php 
                             if($ar["focused_id"] == 1) // client-focused
@@ -894,7 +912,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                         foreach ($dataAttributedProgram as $key => $dap) { 
                             $count_rowAttributedProgram +=1;
                         ?>
-                            <tr class="attributed_program_td">
+                            <tr class="attributed_program_td" id="ar_attrib_tr_id_<?= $dap['id'] ?>">
                                 <?php
                                     echo $this->render('/gad-plan-budget/cell_reusable_form',[
                                         'cell_value' => $dap["lgu_program_project"],
@@ -1049,26 +1067,42 @@ $this->title = "Annual GAD Accomplishment Reports";
                                 ?>
                                 <td>
                                     <?php
-                                        if(Yii::$app->user->can("gad_delete_accomplishment_report") && $dap["record_status"] != 1 )
+                                        if(Yii::$app->user->can("gad_delete_accomplishment_report"))
                                         {
-                                            echo Html::a("<span class='glyphicon glyphicon-trash'></span> Delete",
-                                            [
-                                                'default/delete-accomplishment-attrib',
-                                                'id' => $dap['id'],
-                                                'ruc' => $ruc,
-                                                'onstep' => $onstep,
-                                                'tocreate' => $tocreate
-                                            ],
-                                            [
-                                                'class' => 'btn btn-danger btn-xs',
-                                                'id'=>"submit_to",
-                                                'style' => '',
-                                                'data' => [
-                                                    'confirm' => 'Are you sure you want to perform this action?',
-                                                    'method' => 'post']
-                                            ]);
+                                            echo "<button class='btn btn-danger btn-xs' title='Delete' id='delete_ar_attrib_".$dap['id']."'><span class='glyphicon glyphicon-trash'></span></button>";
                                         }
                                     ?>
+                                    <?php JSRegister::begin() ?>
+                                    <?php $url_deleteAccompAttribRow = \yii\helpers\Url::to(['default/delete-accomplishment-attrib']); ?>
+                                    <script>
+                                        $("#delete_ar_attrib_<?= $dap['id']?>").click(function(){
+                                            var ar_attrib_id = "<?= $dap['id']?>";
+                                            if(confirm("Are you sure you want to delete this row?"))
+                                            {
+                                                $.ajax({
+                                                    url: "<?= $url_deleteAccompAttribRow ?>",
+                                                    data: { 
+                                                            ar_attrib_id:ar_attrib_id
+                                                            }
+                                                    
+                                                    }).done(function(result) {
+                                                        if(result == 1)
+                                                        {
+                                                            $("#ar_attrib_tr_id_<?= $dap['id'] ?>").slideUp(300);
+                                                        }
+                                                        else
+                                                        {
+                                                            alert("Can't process your request. Something went wrong.");
+                                                        }
+                                                });
+                                            }
+                                            else
+                                            {
+
+                                            }
+                                        });
+                                    </script>
+                                    <?php JSRegister::end() ?>
                                 </td>
                             </tr>
                         <?php 
