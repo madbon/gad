@@ -21,6 +21,7 @@ use yii\base\Model;
 use yii\web\UploadedFile;
 use common\models\GadFileAttached;
 use common\models\GadAttributedProgram;
+use yii\db\Expression;
 
 
 
@@ -303,6 +304,9 @@ class GadPlanBudgetController extends Controller
      */
     public function actionIndex($ruc,$onstep,$tocreate)
     {
+        Yii::$app->session["record_tuc"] = $ruc;
+        $searchModel = new GadPlanBudgetSearch();
+
         $model = new GadPlanBudget();
         $folder_type = ArrayHelper::map(\common\models\GadFileFolderType::find()->all(), 'id', 'title');
         $upload = new GadFileAttached();
@@ -394,44 +398,7 @@ class GadPlanBudgetController extends Controller
         $fivePercentTotalLguBudget = ($recTotalLguBudget * 0.05);
 
 
-        $dataPlanBudget = (new \yii\db\Query())
-        ->select([
-            'PB.id',
-            'PB.ppa_value',
-            // 'IF(PB.ppa_focused_id = 0, PB.cause_gender_issue,CF.title) as activity_category',
-            'PB.cause_gender_issue as other_activity_category',
-            'PB.objective',
-            'PB.relevant_lgu_program_project',
-            'PB.activity',
-            'PB.performance_target',
-            'PB.performance_indicator',
-            'PB.budget_mooe',
-            'PB.budget_ps',
-            'PB.budget_co',
-            'PB.lead_responsible_office',
-            'COUNT(GC.plan_budget_id) as count_comment',
-            'GC.attribute_name as attr_name',
-            'PB.record_tuc as record_uc',
-            'GF.title as gad_focused_title',
-            'IC.title as inner_category_title',
-            'GC.id as gad_focused_id',
-            'IC.id as inner_category_id',
-            'PB.focused_id',
-            'PB.gi_sup_data as sup_data',
-            'REC.status as record_status',
-            'PB.source as source_value'
-        ])
-        ->from('gad_plan_budget PB')
-        // ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = PB.ppa_focused_id')
-        ->leftJoin(['GC' => 'gad_comment'], 'GC.plan_budget_id = PB.id')
-        ->leftJoin(['GF' => 'gad_focused'], 'GF.id = PB.focused_id')
-        ->leftJoin(['IC' => 'gad_inner_category'], 'IC.id = PB.inner_category_id')
-        ->leftJoin(['REC' => 'gad_record'], 'REC.id = PB.record_id')
-        ->where(['PB.record_tuc' => $ruc])
-        ->orderBy(['PB.focused_id' => SORT_ASC,'PB.inner_category_id' => SORT_ASC,'PB.ppa_value' => SORT_ASC,'PB.id' => SORT_ASC])
-        ->groupBy(['PB.focused_id','PB.inner_category_id','PB.ppa_value','PB.objective','PB.relevant_lgu_program_project','PB.activity','PB.performance_target','PB.id'])
-        ->all();
-        Yii::$app->session['session_dataPlanBudget'] = $dataPlanBudget;
+        $dataPlanBudget = $searchModel->search(Yii::$app->request->queryParams);
         // echo "<pre>";
         // print_r($dataPlanBudget); exit;
 
@@ -466,6 +433,7 @@ class GadPlanBudgetController extends Controller
         $select_Checklist = ArrayHelper::map(\common\models\GadChecklist::find()->where(['report_type_id' => 1])->all(), 'id', 'title');
 
         $reportStatus = 0;
+        // print_r($ruc); exit;
         $modelRecord = GadRecord::find()->where(['tuc' => $ruc])->one();
         $qryReportStatus = $modelRecord->status;
 
@@ -510,6 +478,7 @@ class GadPlanBudgetController extends Controller
             'select_Checklist' => $select_Checklist,
         ]);
     }
+    
 
     /**
      * Displays a single GadPlanBudget model.
@@ -542,6 +511,75 @@ class GadPlanBudgetController extends Controller
             'ruc' => $ruc,
             'onstep' => $onstep,
             'tocreate' => $tocreate
+        ]);
+    }
+
+    public function actionViewOtherDetailsPlan($model_id,$ruc,$onstep,$tocreate)
+    {
+        $model = GadPlanBudget::find()->where(['record_tuc' => $ruc,'id' => $model_id])->all();
+
+        $modelUpdate = $this->findModel($model_id);
+        $tags_ppaSectors = ArrayHelper::map(\common\models\GadPpaAttributedProgram::find()->all(), 'id', 'title');
+        $tags_activityCategory = ArrayHelper::map(\common\models\GadActivityCategory::find()->all(), 'id', 'title');
+
+        $modelUpdate->cliorg_ppa_attributed_program_id = explode(",",$modelUpdate->cliorg_ppa_attributed_program_id);
+        $modelUpdate->activity_category_id = explode(",",$modelUpdate->activity_category_id);
+
+        if ($modelUpdate->load(Yii::$app->request->post())) {
+            $modelUpdate->cliorg_ppa_attributed_program_id = implode(",",$modelUpdate->cliorg_ppa_attributed_program_id);
+            $modelUpdate->activity_category_id = implode(",",$modelUpdate->activity_category_id);
+            if($modelUpdate->save(false))
+            {
+                return $this->redirect(['index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate]);
+            }
+        }
+
+        return $this->renderAjax('_view_other_details_plan',[
+            'model' => $model,
+            'modelUpdate' => $modelUpdate,
+            'tags_ppaSectors' => $tags_ppaSectors,
+            'tags_activityCategory' => $tags_activityCategory,
+        ]);
+    }
+
+    public function actionViewOtherDetailsAttributed($model_id,$ruc,$onstep,$tocreate)
+    {
+        $model = GadAttributedProgram::find()->where(['record_tuc' => $ruc,'id' => $model_id])->all();
+
+        $modelUpdate = $this->findModelAttributed($model_id);
+        $tags_ppaSectors = ArrayHelper::map(\common\models\GadPpaAttributedProgram::find()->all(), 'id', 'title');
+        $tags_checkList = ArrayHelper::map(\common\models\GadChecklist::find()->where(['report_type_id' => 1])->all(), 'id', 'title');
+
+        $modelUpdate->ppa_attributed_program_id = explode(",",$modelUpdate->ppa_attributed_program_id);
+
+        if ($modelUpdate->load(Yii::$app->request->post())) {
+            $modelUpdate->ppa_attributed_program_id = implode(",",$modelUpdate->ppa_attributed_program_id);
+            if($modelUpdate->save(false))
+            {
+                return $this->redirect(['index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate]);
+            }
+        }
+
+        return $this->renderAjax('_view_other_details_attributed',[
+            'model' => $model,
+            'modelUpdate' => $modelUpdate,
+            'tags_ppaSectors' => $tags_ppaSectors,
+            'tags_checkList' => $tags_checkList,
+        ]);
+    }
+
+    public function actionSearchPlan($ruc,$onstep,$tocreate)
+    {
+        $model = new GadPlanBudgetSearch();
+        $select_GadFocused = ArrayHelper::map(\common\models\GadFocused::find()->all(), 'id', 'title');
+        $select_gadMandateGenderIssue = ArrayHelper::map(\common\models\GadInnerCategory::find()->all(), 'id', 'title');
+        return $this->renderAjax('_search', [
+            'model' => $model,
+            'select_GadFocused' => $select_GadFocused,
+            'ruc' => $ruc,
+            'tocreate' => $tocreate,
+            'onstep' => $onstep,
+            'select_gadMandateGenderIssue' => $select_gadMandateGenderIssue,
         ]);
     }
 
@@ -861,6 +899,22 @@ class GadPlanBudgetController extends Controller
     protected function findModel($id)
     {
         if (($model = GadPlanBudget::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * Finds the GadPlanBudget model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return GadPlanBudget the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModelAttributed($id)
+    {
+        if (($model = GadAttributedProgram::findOne($id)) !== null) {
             return $model;
         }
 

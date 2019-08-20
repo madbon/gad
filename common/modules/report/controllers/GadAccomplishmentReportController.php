@@ -4,6 +4,7 @@ namespace common\modules\report\controllers;
 
 use Yii;
 use common\models\GadAccomplishmentReport;
+use common\models\GadArAttributedProgram;
 use common\modules\report\models\GadAccomplishmentReportSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -29,6 +30,62 @@ class GadAccomplishmentReportController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function actionViewOtherDetailsAttributed($model_id,$ruc,$onstep,$tocreate)
+    {
+        $model = GadArAttributedProgram::find()->where(['record_tuc' => $ruc,'id' => $model_id])->all();
+
+        $modelUpdate = $this->findModelAttributed($model_id);
+        $tags_ppaSectors = ArrayHelper::map(\common\models\GadPpaAttributedProgram::find()->all(), 'id', 'title');
+        $tags_checkList = ArrayHelper::map(\common\models\GadChecklist::find()->where(['report_type_id' => 2])->all(), 'id', 'title');
+        $select_scoreType = ArrayHelper::map(\common\models\GadScoreType::find()->all(), 'code', 'title');
+
+        $modelUpdate->ppa_attributed_program_id = explode(",",$modelUpdate->ppa_attributed_program_id);
+
+        if ($modelUpdate->load(Yii::$app->request->post())) {
+            $modelUpdate->ppa_attributed_program_id = implode(",",$modelUpdate->ppa_attributed_program_id);
+            if($modelUpdate->save(false))
+            {
+                return $this->redirect(['index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate]);
+            }
+        }
+
+        return $this->renderAjax('_view_other_details_attributed',[
+            'model' => $model,
+            'modelUpdate' => $modelUpdate,
+            'tags_ppaSectors' => $tags_ppaSectors,
+            'tags_checkList' => $tags_checkList,
+            'select_scoreType' => $select_scoreType,
+        ]);
+    }
+
+    public function actionViewOtherDetails($model_id,$ruc,$onstep,$tocreate)
+    {
+        $model = GadAccomplishmentReport::find()->where(['record_tuc' => $ruc,'id' => $model_id])->all();
+
+        $modelUpdate = $this->findModel($model_id);
+        $tags_ppaSectors = ArrayHelper::map(\common\models\GadPpaAttributedProgram::find()->all(), 'id', 'title');
+        $tags_activityCategory = ArrayHelper::map(\common\models\GadActivityCategory::find()->all(), 'id', 'title');
+
+        $modelUpdate->cliorg_ppa_attributed_program_id = explode(",",$modelUpdate->cliorg_ppa_attributed_program_id);
+        $modelUpdate->activity_category_id = explode(",",$modelUpdate->activity_category_id);
+
+        if ($modelUpdate->load(Yii::$app->request->post())) {
+            $modelUpdate->cliorg_ppa_attributed_program_id = implode(",",$modelUpdate->cliorg_ppa_attributed_program_id);
+            $modelUpdate->activity_category_id = implode(",",$modelUpdate->activity_category_id);
+            if($modelUpdate->save(false))
+            {
+                return $this->redirect(['index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate]);
+            }
+        }
+
+        return $this->renderAjax('_view_other_details_accomplishment',[
+            'model' => $model,
+            'modelUpdate' => $modelUpdate,
+            'tags_ppaSectors' => $tags_ppaSectors,
+            'tags_activityCategory' => $tags_activityCategory,
+        ]);
     }
 
     public function ComputeAccomplishment($ruc)
@@ -164,6 +221,7 @@ class GadAccomplishmentReportController extends Controller
         Yii::$app->session["activelink"] = $tocreate;
         $grand_total_ar = 0;
         $dataRecord = GadRecord::find()->where(['tuc' => $ruc, 'report_type_id' => 2])->all();
+        Yii::$app->session["session_arDataRecord"] = $dataRecord;
         $dataAttributedProgram = (new \yii\db\Query())
         ->select([
             'AP.id',
@@ -184,6 +242,7 @@ class GadAccomplishmentReportController extends Controller
         ->groupBy(['AP.lgu_program_project','AP.id'])
         ->orderBy(['AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
         ->all();
+        Yii::$app->session['session_arDataAttributedProgram'] = $dataAttributedProgram;
 
         $sum_ap_apc = 0;
         $varTotalGadAttributedProBudget = 0;
@@ -254,6 +313,8 @@ class GadAccomplishmentReportController extends Controller
         $recTotalLguBudget = !empty($qryRecord['total_lgu_budget']) ? $qryRecord['total_lgu_budget'] : "";
         $recTotalGadBudget = !empty($qryRecord['total_gad_budget']) ? $qryRecord['total_gad_budget'] : "";
 
+        
+
         $fivePercentTotalLguBudget = ($recTotalLguBudget * 0.05);
 
         $dataAR = (new \yii\db\Query())
@@ -291,6 +352,8 @@ class GadAccomplishmentReportController extends Controller
         ->orderBy(['AR.focused_id' => SORT_ASC,'AR.inner_category_id' => SORT_ASC,'AR.ppa_value' => SORT_ASC,'AR.id' => SORT_ASC])
         ->groupBy(['AR.focused_id','AR.inner_category_id','AR.ppa_value','AR.cause_gender_issue','AR.objective','AR.relevant_lgu_ppa','AR.activity','AR.performance_indicator','AR.target','AR.actual_results','AR.id'])
         ->all();
+
+        Yii::$app->session["session_arDataAccomplishment"] = $dataAR;
         // ->createCommand()->rawSql;
         // echo "<pre>";
         // print_r($dataAR); exit;
@@ -423,6 +486,22 @@ class GadAccomplishmentReportController extends Controller
     protected function findModel($id)
     {
         if (($model = GadAccomplishmentReport::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * Finds the GadAccomplishmentReport model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return GadAccomplishmentReport the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModelAttributed($id)
+    {
+        if (($model = GadArAttributedProgram::findOne($id)) !== null) {
             return $model;
         }
 

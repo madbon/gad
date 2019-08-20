@@ -119,7 +119,7 @@ class DocumentController extends Controller
         ->orderBy(['GC.id' => SORT_ASC])
         ->all();
 
-        return $this->render('word_document/specific_observation',
+        return $this->render('word_document/letter_of_review_from_ppdo',
         [
             'phpWord' => $phpWord,
             'generated_date' => $generated_date,
@@ -131,6 +131,11 @@ class DocumentController extends Controller
             'qryComment' => $qryComment,
         ]);
         
+    }
+
+    public function WrapText($value)
+    {
+        return preg_replace('~\R~u', '</w:t><w:br/><w:t>', $value);
     }
 
     public function actionDownloadWord($ruc,$category_id)

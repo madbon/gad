@@ -9,9 +9,9 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        'request' => [
-            'enableCsrfValidation' => false,
-        ],
+        // 'request' => [
+        //     'enableCsrfValidation' => false,
+        // ],
     ],
     'modules' => [
         'user' => [
@@ -47,9 +47,6 @@ return [
                 'maxSize' => 1024 * 1024 * 4
             ],
         ],
-        'utility' => [
-                'class' => 'c006\utility\migration\Module',
-        ],
         'admin' => [
             'class' => 'common\modules\admin\Module',
         ],
@@ -58,6 +55,9 @@ return [
         ],
         'upload' => [
             'class' => 'common\modules\upload\Module',
+        ],
+        'utility' => [
+                'class' => 'c006\utility\migration\Module',
         ],
     ],
 

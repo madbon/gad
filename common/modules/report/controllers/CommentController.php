@@ -56,7 +56,7 @@ class CommentController extends Controller
         ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = GC.resp_region_c')
         ->leftJoin(['PRV' => 'tblprovince'], 'PRV.province_c = GC.resp_province_c')
         ->leftJoin(['CTC' => 'tblcitymun'], 'CTC.citymun_c = GC.resp_citymun_c AND CTC.province_c = GC.resp_province_c')
-        ->where(['REC.tuc' => $record_tuc])
+        ->where(['REC.tuc' => $record_tuc, 'GC.resp_user_id' => Yii::$app->user->identity->id])
         ->groupBy(['GC.id'])
         ->orderBy(['GC.id' => SORT_ASC])
         ->all();

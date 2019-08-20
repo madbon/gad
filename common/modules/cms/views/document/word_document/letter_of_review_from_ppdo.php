@@ -1,4 +1,5 @@
 <?php
+use common\modules\cms\controllers\DocumentController;
 	/* Note: any element you append to a document must reside inside of a Section. */
         // Adding an empty Section to the document...
         $section = $phpWord->createSection();
@@ -76,16 +77,17 @@
         $fancyTableCellBtlrStyle = array('valign' => 'center', 'textDirection' => \PhpOffice\PhpWord\Style\Cell::TEXT_DIR_BTLR);
         $fancyTableFontStyle = array('bold' => true);
         $phpWord->addTableStyle($fancyTableStyleName, $fancyTableStyle, $fancyTableFirstRowStyle);
-        $table = $section->addTable($fancyTableStyleName);
+        $table = $section->addTable($fancyTableStyleName,array('wrappingStyle' => 'behind', 'positioning' => 'absolute'));
         $table->addRow(900);
         $table->addCell(3000, $fancyTableCellStyle)->addText('City/Municipal PPAs', $fancyTableFontStyle,$cellstyle);
         $table->addCell(6000, $fancyTableCellStyle)->addText('Inconsistent/not aligned with the Provincial PPAs', $fancyTableFontStyle,$cellstyle);
 
         // $count_table_row = 0;
+
         foreach ($qryComment as $key => $row) {
             $table->addRow();
-            $table->addCell(3000)->addText("{$row['row_value']}");
-            $table->addCell(6000)->addText("{$row['comment_value']}");
+            $table->addCell(3000)->addText($row["column_title"]."<w:br/>".DocumentController::WrapText($row['column_value']));
+            $table->addCell(6000)->addText(DocumentController::WrapText($row['comment_value']));
         }
         // --------------------- Table End
 
@@ -123,6 +125,6 @@
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
         $objWriter->save('Letter1.docx');
         $path = Yii::getAlias('@webroot').'/Letter1.docx';
-        $name = 'Specific Observations and Recommendations.docx';
+        $name = 'Letter of Review for PPDO.docx';
         return Yii::$app->response->sendFile($path, $name);
 ?>

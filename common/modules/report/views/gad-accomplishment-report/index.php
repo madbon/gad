@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use common\modules\report\controllers\DefaultController;
 use richardfan\widget\JSRegister;
-
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel common\modules\report\models\GadAccomplishmentReportSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -428,7 +428,18 @@ $this->title = "Annual GAD Accomplishment Reports";
         </div>
         <div class="cust-panel-body table-responsive">
             <div class="cust-panel-title">
-                <p class="sub-title"><span class="glyphicon glyphicon-th"></span> Tabular Report</p>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="sub-title"><span class="glyphicon glyphicon-th"></span> Tabular Report</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="btn-group pull-right">
+                            <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Preview Client / Org. Focused',['print/ar-client-organization-focused','region' => $recRegion,'province' => $recProvince, 'citymun' => $recCitymun, 'grand_total' => $grand_total_ar, 'total_lgu_budget' => $recTotalLguBudget,'ruc' => $ruc],['class'=>'btn btn-md btn-default','target'=>'_blank']);  ?>
+                            <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Preview Attributed Programs',['print/ar-attributed-program'],['class'=>'btn btn-md btn-default','target'=>'_blank']);  ?>
+                            <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Preview Accomplishment Report',['print/accomplishment-report','region' => $recRegion,'province' => $recProvince, 'citymun' => $recCitymun, 'grand_total' => $grand_total_ar, 'total_lgu_budget' => $recTotalLguBudget,'ruc' => $ruc],['class'=>'btn btn-md btn-default','target'=>'_blank']);  ?>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="cust-panel-inner-body">
                 <table class="table ar table-responsive table-bordered" style="border: 2px solid black;">
@@ -769,6 +780,11 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         });
                                     </script>
                                     <?php JSRegister::end() ?>
+                                    <?php
+                                        $url_viewDetails = '@web/report/gad-accomplishment-report/view-other-details?model_id='.$ar['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
+                                            echo "&nbsp;".Html::button('<span class="glyphicon glyphicon-info-sign"></span> Other details', ['value'=>Url::to($url_viewDetails),
+                                            'class' => 'btn btn-default btn-xs modalButton','title' => 'View other details',]);
+                                    ?>
                                 </td>
 
                             </tr>
@@ -1103,6 +1119,11 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         });
                                     </script>
                                     <?php JSRegister::end() ?>
+                                    <?php
+                                        $url_viewDetailsAttributed = '@web/report/gad-accomplishment-report/view-other-details-attributed?model_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
+                                            echo "&nbsp;".Html::button('<span class="glyphicon glyphicon-info-sign"></span> Other details', ['value'=>Url::to($url_viewDetailsAttributed),
+                                            'class' => 'btn btn-default btn-xs modalButton','title' => 'View other details',]);
+                                    ?>
                                 </td>
                             </tr>
                         <?php 

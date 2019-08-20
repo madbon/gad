@@ -53,10 +53,10 @@ class GadPlanBudget extends \yii\db\ActiveRecord
     {
         return [
             [['focused_id','inner_category_id','user_id','ppa_focused_id'], 'integer'],
-            [['cause_gender_issue', 'objective', 'relevant_lgu_program_project', 'activity', 'performance_target','performance_indicator','cliorg_ppa_attributed_program_id','gi_sup_data','activity_category_id'], 'string'],
+            [['cause_gender_issue', 'objective', 'relevant_lgu_program_project', 'activity', 'performance_target','performance_indicator','gi_sup_data','source'], 'string'],
             [['budget_mooe', 'budget_ps', 'budget_co', 'sort'], 'number'],
             // [['cause_gender_issue','ppa_value','objective','relevant_lgu_program_project','activity','performance_target'], 'required'],
-            [['ppa_value','relevant_lgu_program_project','objective','activity','performance_target','lead_responsible_office'],'required'],
+            [['ppa_value','relevant_lgu_program_project','objective','activity','performance_target','lead_responsible_office','activity_category_id'],'required'],
             [['ppa_value'], Yii::$app->controller->action->id == "update-ppa-value" ? "required" : "safe"],
             [['relevant_lgu_program_project'], Yii::$app->controller->action->id == "update-relevant-lgu-program-project"  ? "required" : "safe"],
             [['objective'], Yii::$app->controller->action->id == "update-objective" ? "required" : "safe"],

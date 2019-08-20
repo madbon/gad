@@ -48,7 +48,7 @@ class GadAccomplishmentReport extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'record_id', 'focused_id', 'inner_category_id', 'ppa_focused_id'], 'integer'],
-            [['ppa_value', 'objective', 'relevant_lgu_ppa', 'activity', 'performance_indicator', 'actual_results', 'variance_remarks','gi_sup_data','cliorg_ppa_attributed_program_id'], 'string'],
+            [['ppa_value', 'objective', 'relevant_lgu_ppa', 'activity', 'performance_indicator', 'actual_results', 'variance_remarks','gi_sup_data','source'], 'string'],
 
             [['ppa_value','inner_category_id','focused_id', 'objective', 'relevant_lgu_ppa', 'activity','performance_indicator', 'actual_results', 'variance_remarks','cliorg_ppa_attributed_program_id','total_approved_gad_budget','actual_cost_expenditure'], Yii::$app->controller->action->id == "create-accomplishment-report" || Yii::$app->controller->id == "accomplishment" ? 'required' : 'safe'],
             [['total_approved_gad_budget', 'actual_cost_expenditure'], 'number'],

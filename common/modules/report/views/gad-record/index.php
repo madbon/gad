@@ -149,15 +149,15 @@ $this->title = $index_title;
                                         return DefaultController::DisplayStatus($model["record_status"]);
                                     }
                                 ],
-                                [
-                                    'label' => 'Plan Category',
-                                    'attribute' => 'create_status_id',
-                                    'format' => 'raw',
-                                    'value' => function($model)
-                                    {
-                                        return DefaultController::CreatePlanStatus($model["record_tuc"]);
-                                    }
-                                ],
+                                // [
+                                //     'label' => 'Plan Category',
+                                //     'attribute' => 'create_status_id',
+                                //     'format' => 'raw',
+                                //     'value' => function($model)
+                                //     {
+                                //         return DefaultController::CreatePlanStatus($model["record_tuc"]);
+                                //     }
+                                // ],
                                 
                                 [
                                     'label' => 'Remarks',

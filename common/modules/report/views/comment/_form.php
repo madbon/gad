@@ -66,21 +66,59 @@ use richardfan\widget\JSRegister;
 
     <div class="row" style="margin-top: -45px;">
         <div class="col-sm-4">
-            <h3>SECTION</h3>
+            <h3>
+                <?php
+                    if(Yii::$app->user->can("gad_letter_endorsement_ppdo"))
+                    {
+                        echo "City/Municipality PPAs";
+                    }
+                    else
+                    {
+                        echo "SECTION";
+                    }
+                ?>
+                
+            </h3>
             <?= $form->field($model, 'row_no')->textInput() ?>
             <?= $form->field($model, 'row_value')->textarea(['rows' => 3]) ?>
-            <?= Html::a('<span class="fa fa-download"> Download Letter of Review.docx</span>',
-            [
-                '/cms/document/download-specific-observation',
-                'ruc' => $ruc
-            ],
-            [
-                'class' => 'btn btn-md btn-primary',
-                'title' => 'Download Letter/Certificate'
-            ])  ?>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Downloadable(s)
+                </div>
+                <div class="panel-body">
+
+                    <?php 
+                        if(Yii::$app->user->can("gad_letter_endorsement_ppdo"))
+                        {
+                            echo Html::a('<span class="glyphicon glyphicon-download"></span> Letter of Review for PPDO (.docx)',
+                            [
+                                '/cms/document/download-specific-observation',
+                                'ruc' => $ruc
+                            ],
+                            [
+                                'class' => 'btn-link',
+                                'title' => 'Download Letter/Certificate'
+                            ]);  
+                        }
+                    
+                    ?>
+                </div>
+            </div>
+            
         </div>
         <div class="col-sm-8">
-            <h3>SPECIFIC OBSERVATION & RECOMMENDATION</h3>
+            <h3>
+                <?php
+                    if(Yii::$app->user->can("gad_letter_endorsement_ppdo"))
+                    {
+                        echo "Inconsistent/not aligned with the Provincial PPAs";
+                    }
+                    else
+                    {
+                        echo "SPECIFIC OBSERVATION & RECOMMENDATION";
+                    }
+                ?>
+            </h3>
             <div class="row">
                 <div class="col-sm-6">
                     <?= $form->field($model, 'column_no')->textInput() ?>
@@ -322,8 +360,30 @@ use richardfan\widget\JSRegister;
 <table class="table table-responsive table-hover" id="comment_list">
     <thead>
         <tr>
-            <th style="text-align: center;">SECTION</th>
-            <th style="text-align: center;">OBSERVATION & RECOMMENDATION</th>
+            <th style="text-align: center;">
+                <?php
+                    if(Yii::$app->user->can("gad_letter_endorsement_ppdo"))
+                    {
+                        echo "City/Municipality PPAs";
+                    }
+                    else
+                    {
+                        echo "SECTION";
+                    }
+                ?>
+            </th>
+            <th style="text-align: center;">
+                <?php
+                    if(Yii::$app->user->can("gad_letter_endorsement_ppdo"))
+                    {
+                        echo "Inconsistent/not aligned with the Provincial PPAs";
+                    }
+                    else
+                    {
+                        echo "OBSERVATION & RECOMMENDATION";
+                    }
+                ?>
+            </th>
         </tr>
     </thead>
     <tbody>

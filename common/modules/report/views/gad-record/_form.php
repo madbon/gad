@@ -39,67 +39,67 @@ use common\modules\report\controllers\DefaultController;
         <div class="col-sm-4">
             <?php 
                 
-                $urlLoadRecord = yii\helpers\Url::to(['/report/default/load-record-by-status']);
-                echo $form->field($model, 'create_status_id')->widget(Select2::classname(), [
-                'data' =>  $create_plan_status,
-                'options' => ['placeholder' => 'Nothing Selected'],
-                'pluginOptions' => [
-                    'allowClear' => true,
-                ],
-                'pluginEvents'=>[
-                        'select2:select'=>'
-                            function(){
-                                var status = 0;
-                                var thisvalue = this.value;
-                                if(thisvalue == 1)
-                                {
-                                    $("#table_records").hide();
-                                    $("#gadrecord-for_revision_record_id").val("");
-                                }
-                                else
-                                {
-                                    $("#table_records").show();
-                                    $("#gadrecord-for_revision_record_id").val("");
+            //     $urlLoadRecord = yii\helpers\Url::to(['/report/default/load-record-by-status']);
+            //     echo $form->field($model, 'create_status_id')->widget(Select2::classname(), [
+            //     'data' =>  $create_plan_status,
+            //     'options' => ['placeholder' => 'Nothing Selected'],
+            //     'pluginOptions' => [
+            //         'allowClear' => true,
+            //     ],
+            //     'pluginEvents'=>[
+            //             'select2:select'=>'
+            //                 function(){
+            //                     var status = 0;
+            //                     var thisvalue = this.value;
+            //                     if(thisvalue == 1)
+            //                     {
+            //                         $("#table_records").hide();
+            //                         $("#gadrecord-for_revision_record_id").val("");
+            //                     }
+            //                     else
+            //                     {
+            //                         $("#table_records").show();
+            //                         $("#gadrecord-for_revision_record_id").val("");
 
-                                    $.ajax({
-                                        url: "'.$urlLoadRecord.'",
-                                        data: { 
-                                                status:thisvalue
-                                                }
+            //                         $.ajax({
+            //                             url: "'.$urlLoadRecord.'",
+            //                             data: { 
+            //                                     status:thisvalue
+            //                                     }
                                         
-                                        }).done(function(data) {
-                                            $("#table_records tbody").html("");
-                                            $.each(data, function(key, value){
-                                                var ruc_value = value.ruc;
-                                                var cols = "";
-                                                var btn_id = "btnselect"+value.record_id;
-                                                cols += "<tr>";
-                                                cols +=     "<td>"+value.office_name+"</td>";
-                                                cols +=     "<td>"+value.citymun_name+"</td>";
-                                                cols +=     "<td>"+value.year+"</td>";
-                                                cols +=     "<td>"+value.total_lgu_budget+"</td>";
-                                                cols +=     "<td>"+value.total_gad_budget+"</td>";
-                                                cols +=     "<td>"+value.status_name+"</td>";
-                                                cols +=     "<td>"+value.remarks+"</td>";
-                                                cols +=     "<td><button class=btnselect type=button id="+btn_id+">Select</button></td>";
-                                                cols += "</tr>";
-                                                $("#table_records tbody").append(cols);
-                                                $("#"+btn_id).click(function(){
-                                                    $("#gadrecord-for_revision_record_id").val(value.record_id);
-                                                    $("#gadrecord-total_lgu_budget").val(value.total_lgu_budget);
-                                                    $("#gadrecord-year").val(value.year);
-                                                    $(".btnselect").text("Select");
-                                                    $(this).text("Selected");
+            //                             }).done(function(data) {
+            //                                 $("#table_records tbody").html("");
+            //                                 $.each(data, function(key, value){
+            //                                     var ruc_value = value.ruc;
+            //                                     var cols = "";
+            //                                     var btn_id = "btnselect"+value.record_id;
+            //                                     cols += "<tr>";
+            //                                     cols +=     "<td>"+value.office_name+"</td>";
+            //                                     cols +=     "<td>"+value.citymun_name+"</td>";
+            //                                     cols +=     "<td>"+value.year+"</td>";
+            //                                     cols +=     "<td>"+value.total_lgu_budget+"</td>";
+            //                                     cols +=     "<td>"+value.total_gad_budget+"</td>";
+            //                                     cols +=     "<td>"+value.status_name+"</td>";
+            //                                     cols +=     "<td>"+value.remarks+"</td>";
+            //                                     cols +=     "<td><button class=btnselect type=button id="+btn_id+">Select</button></td>";
+            //                                     cols += "</tr>";
+            //                                     $("#table_records tbody").append(cols);
+            //                                     $("#"+btn_id).click(function(){
+            //                                         $("#gadrecord-for_revision_record_id").val(value.record_id);
+            //                                         $("#gadrecord-total_lgu_budget").val(value.total_lgu_budget);
+            //                                         $("#gadrecord-year").val(value.year);
+            //                                         $(".btnselect").text("Select");
+            //                                         $(this).text("Selected");
                                                     
-                                                });
+            //                                     });
                                                 
-                                        });
-                                    });
-                                }
-                            }
-                        ',
-                ]
-            ])->label("Plan Category");
+            //                             });
+            //                         });
+            //                     }
+            //                 }
+            //             ',
+            //     ]
+            // ])->label("Plan Category");
             ?>
             <?= $form->field($model, 'total_lgu_budget')->textInput(['maxlength' => 18]) ?>
 
@@ -120,8 +120,8 @@ use common\modules\report\controllers\DefaultController;
 
         </div>
         <div class="col-sm-8 table-responsive">
-            <?= $form->field($model, 'for_revision_record_id')->hiddenInput(['maxlength' => 18])->label(false) ?>
-            <table class="table table-responsive table-hover"  id="table_records" style="display: none;">
+            <?php // $form->field($model, 'for_revision_record_id')->hiddenInput(['maxlength' => 18])->label(false) ?>
+            <!-- <table class="table table-responsive table-hover"  id="table_records" style="display: none;">
                 <thead>
                     <tr>
                         <th>Office</th>
@@ -136,7 +136,7 @@ use common\modules\report\controllers\DefaultController;
                 </thead>
                 <tbody>
                 </tbody>
-            </table>
+            </table> -->
         </div>
     </div>
 

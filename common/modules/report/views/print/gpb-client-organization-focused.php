@@ -1,8 +1,16 @@
 <?php
 /* @var $this yii\web\View */
 ?>
-<table class="table table-responsive table-bordered gad-plan-budget">
+
+<p style="text-align: center; font-weight: bold;">ANNUAL GENDER AND DEVELOPMENT (GAD) PLAN AND BUDGET FY <?= $year ?></p>
+<table class="table table-responsive table-bordered gad-plan-budget" style="border: none;">
     <thead>
+        <tr>
+            <th style="border:none; text-align: left; font-size:12px; font-weight: normal;">Region <br/> Province : <br/> City / Municipality : </th>
+            <th style="border:none; text-align: left; font-size:12px; font-weight: bold;" colspan="3"><?= $region ?> <br/> <?= $province ?> <br/> <?= $citymun ?></th>
+            <th style="border:none; text-align: left; font-size:12px; font-weight: normal;">Total LGU Budget : <br/> Total GAD Budget <br/><br/></th>
+            <th style="border:none; text-align: left; font-size:12px; font-weight: bold;" colspan="4">Php <?= number_format($total_lgu_budget,2) ?> <br/> Php <?= number_format($grand_total,2) ?> <br/><br/></th>
+        </tr>
         <tr>
             <th style="border-bottom: none;">Gender Issue or GAD Mandate </th>
             <!-- <th>Cause of the Gender Issue</th> -->
@@ -161,106 +169,6 @@
             $not_InnerCategoryId = $plan["inner_category_title"];
         } //End of dataClient ?>
 
-        <!-- Start of Attributed Program -->
-
-        <tr class="attributed_program_title" style="border-top: none;">
-            <td colspan="5">
-                <b>ATTRIBUTED PROGRAMS</b> 
-            </td>
-            <td colspan="3"></td>
-            <td style="border-top: none;"></td>
-        </tr>
-        
-        <tr class="attributed_program_thead">
-            <td colspan="2"><b>Title of LGU Program or Project</b></td>
-            <td colspan="1"><b>HGDG Design/ Funding Facility/ Generic Checklist Score</b></td>
-            <td colspan="2"><b>Total Annual Program/ Project Budget</b></td>
-            <td colspan="3"><b>GAD Attributed Program/Project Budget</b></td>
-            <td><b>Lead or Responsible Office</b></td>
-        </tr>
-        <?php 
-        $notnull_apPpaValue = null;
-        // $total_c = 0;
-        $varTotalGadAttributedProBudget = 0;
-
-        foreach ($dataAttributedProgram as $key => $dap) 
-        { 
-            
-            ?>
-
-            <tr class="attributed_program_td" id="attributed_tr_<?= $dap['id'] ?>">
-            	<td colspan="2" style="white-space: pre-line;"><?= $dap["lgu_program_project"] ?></td>
-                <!-- COMPUTATION OF GAD ATTRIBUTED PROGRAM/PROJECT BUDGET -->
-                <?php
-                    $varHgdg = $dap["hgdg"];
-                    $varTotalAnnualProBudget = $dap["total_annual_pro_budget"];
-                    $computeGadAttributedProBudget = 0;
-                    $HgdgMessage = null;
-                    $HgdgWrongSign = "";
-                    
-                    if((float)$varHgdg < 4) // 0%
-                    {
-                        // echo "GAD is invisible";
-                        $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0);
-                        $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
-                    }
-                    else if((float)$varHgdg >= 4 && (float)$varHgdg <= 7.99) // 25%
-                    {
-                        // echo "Promising GAD prospects (conditional pass)";
-                        $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.25);
-                        $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
-                    }
-                    else if((float)$varHgdg >= 8 && (float)$varHgdg <= 14.99) // 50%
-                    {
-                        // echo "Gender Sensetive";
-                        $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.50);
-                        $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
-                    }
-                    else if((float)$varHgdg >= 15 && (float)$varHgdg <= 19.99) // 75%
-                    {
-                        // echo "Gender-responsive";
-                        $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.75);
-                        $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
-                    }
-                    else if((float)$varHgdg == 20) // 100%
-                    {
-                        // echo "Full gender-resposive";
-                        $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 1);
-                        $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
-                    }
-                    else
-                    {
-                        $HgdgMessage = Yii::$app->user->can("gad_hgdg_score_standard") ? "Unable to compute (undefined HGDG Score)." : "";
-                        $HgdgWrongSign = Yii::$app->user->can("gad_hgdg_score_standard") ? "<span class='glyphicon glyphicon-alert' style='color:red;' title='Not HGDG Score Standard'></span>" : "";
-                    }
-                ?>
-                <td style="text-align: center;"><?= $dap["hgdg"] ?></td>
-               	<td style="text-align: right;" colspan="2"><?= number_format($dap["total_annual_pro_budget"],2) ?></td>
-                <td colspan="3" style="text-align: right;"><?= !empty($HgdgMessage) ? $HgdgMessage : number_format($computeGadAttributedProBudget,2) ?>
-                </td>
-                <td><?= $dap["ap_lead_responsible_office"] ?></td>
-            </tr>
-        	<?php 
-        	$total_c = $varTotalGadAttributedProBudget;
-        } 
-        ?>
-        <tr class="total_c">
-            <td><b>Total C</b></td>
-            <td colspan="4"></td>
-            <td colspan="3"><?= number_format($total_c,2) ?></td>
-            <td style="border-bottom: none;"></td>
-        </tr>
-        <tr class="grand_total">
-            <td colspan="2"><b>GRAND TOTAL (A+B+C</b></td>
-            <td colspan="3"></td>
-            <td colspan="3">
-                <?php
-                    $grand_total = ($total_a + $total_b + $total_c);
-                    echo number_format($grand_total,2);
-                ?>
-            </td>
-            <td style="border-top: none;"></td>
-        </tr>
         <tr class="signatory_label">
             <td colspan="2"><b>Prepared by:</b></td>
             <td colspan="3"><b>Approved by:</b></td>

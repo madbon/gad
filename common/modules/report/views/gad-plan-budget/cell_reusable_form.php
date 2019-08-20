@@ -489,7 +489,7 @@ use yii\helpers\Url;
         </div>
 
         <?php if($attribute_name == "ppa_value"){ ?>
-            <button id="btn_view_gi_sup_data-<?= $row_id ?>" type="button" class="btn btn-warning btn-xs" title="Gender Issue Supporting Statistics Data">
+            <button id="btn_view_gi_sup_data-<?= $row_id ?>" type="button" class="btn btn-warning btn-xs" title="Gender Issue Supporting Statistics Data" style="display: none;">
                 <span class="glyphicon glyphicon-list"></span>
             </button>
         <?php } ?>

@@ -30,6 +30,60 @@ use yii\web\UploadedFile;
  */
 class DefaultController extends Controller
 {
+    public function ScoreTypeTitle($id)
+    {
+        $query = \common\models\GadScoreType::find()->select(['title'])->where(['id' => $id])->one();
+
+       
+        return !empty($query->title) ? $query->title : "";
+    }
+
+    public function ChecklistViewAccomplishment($id)
+    {
+        $query = \common\models\GadChecklist::find()->select(['title'])->where(['id' => $id])
+        ->where(['report_type_id' => 2])->one();
+
+       
+        return !empty($query->title) ? $query->title : "";
+    }
+
+    public function ChecklistViewPlan($id)
+    {
+        $query = \common\models\GadChecklist::find()->select(['title'])->where(['id' => $id])
+        ->where(['report_type_id' => 1])->one();
+
+       
+        return !empty($query->title) ? $query->title : "";
+    }
+
+    public function ActivityCategoryIdView($tags)
+    {
+        $query = \common\models\GadActivityCategory::find()->select(['title'])->where(new Expression('id IN ('.$tags.')'))
+        ->all();
+
+        $arr_value = [];
+        foreach ($query as $key => $row) {
+            $arr_value[] = "<span class='label label-info'>".$row['title']."</span>";
+        }
+
+        $tags = implode(", ", $arr_value);
+        return $tags;
+    }
+
+    public function PpaSectorsTagView($tags)
+    {
+        $query = \common\models\GadPpaAttributedProgram::find()->select(['title'])->where(new Expression('id IN ('.$tags.')'))
+        ->all();
+
+        $arr_value = [];
+        foreach ($query as $key => $row) {
+            $arr_value[] = "<span class='label label-info'>".$row['title']."</span>";
+        }
+
+        $tags = implode(", ", $arr_value);
+        return $tags;
+    }
+
     public function actionLoadRecordByStatus($status)
     {
         $andFilterValue = [];
@@ -103,12 +157,12 @@ class DefaultController extends Controller
         $record = GadRecord::find()->where(['tuc' => $ruc])->one();
         return $record->create_status_id;
     }
-    public function CreatePlanStatus($ruc)
-    {
-        $record = GadRecord::find()->where(['tuc' => $ruc])->one();
-        $qry = CreateStatus::find()->where(['code' => $record->create_status_id])->one();
-        return !empty($qry->title) ? $qry->title : "unknown status";
-    }
+    // public function CreatePlanStatus($ruc)
+    // {
+    //     $record = GadRecord::find()->where(['tuc' => $ruc])->one();
+    //     $qry = CreateStatus::find()->where(['code' => $record->create_status_id])->one();
+    //     return !empty($qry->title) ? $qry->title : "unknown status";
+    // }
     public function PlanUploadStatus($row_id)
     {
         // 0 = no uploaded files
