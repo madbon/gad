@@ -61,9 +61,8 @@ class DocumentController extends Controller
         return $value;
     }
 
-
     
-    public function actionDownloadSpecificObservation($ruc)
+    public function actionDownloadSpecificObservation($ruc,$type)
     {
         $phpWord = new \PhpOffice\PhpWord\PhpWord();
         $office_c = "";
@@ -113,13 +112,34 @@ class DocumentController extends Controller
         ->leftJoin(['OFC' => 'tbloffice'], 'OFC.OFFICE_C = GC.resp_office_c')
         ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = GC.resp_region_c')
         ->leftJoin(['PRV' => 'tblprovince'], 'PRV.province_c = GC.resp_province_c')
-        ->leftJoin(['CTC' => 'tblcitymun'], 'CTC.citymun_c = GC.resp_citymun_c AND CTC.province_c = GC.resp_province_c')
-        ->where(['REC.tuc' => $ruc])
+        ->leftJoin(['CTC' => 'tblcitymun'], 'CTC.citymun_c = GC.resp_citymun_c AND CTC.province_c = GC.resp_province_c');
+        
+
+        $qryCommentGadPlan = $qryComment->where(['REC.tuc' => $ruc,'GC.resp_user_id' => Yii::$app->user->identity->id])
+        ->andWhere(['GC.model_name' => 'GadPlanBudget'])
         ->groupBy(['GC.id'])
         ->orderBy(['GC.id' => SORT_ASC])
         ->all();
 
-        return $this->render('word_document/letter_of_review_from_ppdo',
+        $qryCommentAttributed = $qryComment->where(['REC.tuc' => $ruc,'GC.resp_user_id' => Yii::$app->user->identity->id])
+        ->andWhere(['GC.model_name' => 'GadAttributedProgram'])
+        ->groupBy(['GC.id'])
+        ->orderBy(['GC.id' => SORT_ASC])
+        ->all();
+        // echo "<pre>";
+        // print_r($qryCommentAttributed); exit;
+
+        $word_document_file = "";
+        if($type == "ppdo_letter")
+        {
+            $word_document_file = "word_document/letter_of_review_from_ppdo";
+        }
+        else if($type == "specific_observation")
+        {
+            $word_document_file = "word_document/specific_observation";
+        }
+
+        return $this->render($word_document_file,
         [
             'phpWord' => $phpWord,
             'generated_date' => $generated_date,
@@ -128,9 +148,18 @@ class DocumentController extends Controller
             'fy' => $fy,
             'name_lgu' => ucwords($name_lgu),
             'prepared_by' => $prepared_by,
-            'qryComment' => $qryComment,
+            'qryCommentGadPlan' => $qryCommentGadPlan,
+            'qryCommentAttributed' => $qryCommentAttributed,
         ]);
         
+    }
+
+    public function ChangeAmpersand($string)
+    {
+        $find = array(" ", "&");
+        $replace = array(" ", "and");
+
+        return str_replace($find, $replace, $string);
     }
 
     public function WrapText($value)

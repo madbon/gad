@@ -1,5 +1,5 @@
 <?php
-	/* Note: any element you append to a document must reside inside of a Section. */
+    /* Note: any element you append to a document must reside inside of a Section. */
 
         // Adding an empty Section to the document...
         $section = $phpWord->createSection();

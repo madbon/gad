@@ -496,7 +496,9 @@ class GadPlanBudgetController extends Controller
             'FA.model_id',
             'FA.file_name',
             'FA.extension',
-            'FT.id as folder_id'
+            'FT.id as folder_id',
+            'FA.remarks',
+            'FA.user_id'
         ])
         ->from('gad_file_attached FA')
         ->leftJoin(['FT' => 'gad_file_folder_type'], 'FT.id = FA.file_folder_type_id')
@@ -677,6 +679,8 @@ class GadPlanBudgetController extends Controller
                     $modelName = "GadRecord";
                     $countLoop += 1;
                     $model = new GadFileAttached();
+                    $model->user_id = Yii::$app->user->identity->id;
+                    $model->remarks = $upload->remarks;
                     $rand_name=rand(10,100);
                     $model->file_name = $image;
                     $model->model_id = $last_id;
@@ -706,7 +710,9 @@ class GadPlanBudgetController extends Controller
             'FA.model_id',
             'FA.file_name',
             'FA.extension',
-            'FT.id as folder_id'
+            'FT.id as folder_id',
+            'FA.user_id',
+            'FA.remarks'
         ])
         ->from('gad_file_attached FA')
         ->leftJoin(['FT' => 'gad_file_folder_type'], 'FT.id = FA.file_folder_type_id')
@@ -753,6 +759,8 @@ class GadPlanBudgetController extends Controller
                     $modelName = "GadAttributedProgram";
                     $countLoop += 1;
                     $model = new GadFileAttached();
+                    $model->user_id = Yii::$app->user->identity->id;
+                    $model->remarks = $upload->remarks;
                     $rand_name=rand(10,100);
                     $model->file_name = $image;
                     $model->model_id = $id;
@@ -831,6 +839,7 @@ class GadPlanBudgetController extends Controller
            $upload = new GadFileAttached();
            $folder_type = ArrayHelper::map(\common\models\GadFileFolderType::find()->all(), 'id', 'title');
 
+
            if($upload->load(Yii::$app->request->post()))
            {
             // echo "<pre>"; 
@@ -846,6 +855,7 @@ class GadPlanBudgetController extends Controller
                         $modelName = "GadPlanBudget";
                         $countLoop += 1;
                         $model = new GadFileAttached();
+                        $model->user_id = Yii::$app->user->identity->id;
                         $rand_name=rand(10,100);
                         $model->file_name = $image;
                         $model->model_id = $id;
@@ -855,6 +865,7 @@ class GadPlanBudgetController extends Controller
                         $model->hash = $hash; 
                         $model->extension = $image->extension;
                         $model->file_folder_type_id = $upload->file_folder_type_id;
+                        $model->remarks = $upload->remarks;
 
 
                         if($model->save(false))

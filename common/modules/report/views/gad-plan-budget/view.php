@@ -16,7 +16,7 @@ use yii\helpers\Url;
  <table class="table table-responsive table-hover table-striped" style="border:1px solid #7e57b1;">
     <thead>
         <tr>
-            <th style="font-size: 18px; background-color: #7e57b1; color:white;" colspan="2">Uploaded File(s)</th>
+            <th style="font-size: 18px; background-color: #7e57b1; color:white;" colspan="3">Uploaded File(s)</th>
         </tr>
     </thead>
     <tbody>
@@ -30,6 +30,7 @@ use yii\helpers\Url;
                     "<tr>
                         <td style='font-size:18px; font-weight:bold;'>".$row['folder_title']."</td>
                         <td></td>
+                        <td></td>
                     ";
                 }
 
@@ -38,9 +39,10 @@ use yii\helpers\Url;
                     echo 
                     "<tr>
                         <td>".$row['file_name']."</td>
+                        <td style='white-space:pre-line;'> ".(!empty($row['remarks']) ? "Remarks : ".$row['remarks'] : "")."</td>
                         <td>".(Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', ['view-uploaded-file', 'hash' => $row['hash'], 'extension' => $row['extension']], ['target' => '_blank','class'=>'btn btn-info btn-xs']))." ".
                         (Html::a('<span class="glyphicon glyphicon-download"></span> Download', ['download-uploaded-file', 'hash' => $row['hash'], 'extension' => $row['extension']], ['target' => '_blank','class'=>'btn btn-primary btn-xs']))." ".
-                        (!Yii::$app->user->can("gad_delete_attachment") ? "" : (Html::a('<span class="glyphicon glyphicon-trash"></span> Delete', 
+                        ($row["user_id"] == Yii::$app->user->identity->id ? (Html::a('<span class="glyphicon glyphicon-trash"></span> Delete', 
                             [
                                 'delete-uploaded-file', 
                                 'hash' => $row['hash'], 
@@ -55,30 +57,16 @@ use yii\helpers\Url;
                                 'confirm' => 'Are you sure you want to delete this file?',
                                 'method' => 'post',
                             ],
-                        ])))." ".(!Yii::$app->user->can("gad_delete_uploaded_files_endorsing") ? "" : (Html::a('<span class="glyphicon glyphicon-trash"></span> Delete', 
-                            [
-                                'delete-uploaded-file', 
-                                'hash' => $row['hash'], 
-                                'extension' => $row['extension'],
-                                'ruc' => $ruc,
-                                'onstep' => $onstep,
-                                'tocreate' => $tocreate
-                            ], 
-                            [
-                            'class'=>'btn btn-danger btn-xs',
-                            'data' => [
-                                'confirm' => 'Are you sure you want to delete this file?',
-                                'method' => 'post',
-                            ],
-                        ])))."</td>";
+                        ])) : "")."</td>";
                 }
                 else
                 {
                     echo 
                     "<tr>
                         <td>".$row['file_name']."</td>
+                        <td style='white-space:pre-line;'> ".(!empty($row['remarks']) ? "Remarks : ".$row['remarks'] : "")."</td>
                         <td>".(Html::a('<span class="glyphicon glyphicon-download"></span> Download', ['download-uploaded-file', 'hash' => $row['hash'], 'extension' => $row['extension']], ['target' => '_blank','class'=>'btn btn-primary btn-xs']))." ".
-                        (!Yii::$app->user->can("gad_delete_attachment") ? "" : (Html::a('<span class="glyphicon glyphicon-trash"></span> Delete', 
+                        ($row["user_id"] == Yii::$app->user->identity->id ? (Html::a('<span class="glyphicon glyphicon-trash"></span> Delete', 
                             [
                                 'delete-uploaded-file', 
                                 'hash' => $row['hash'], 
@@ -93,22 +81,7 @@ use yii\helpers\Url;
                                 'confirm' => 'Are you sure you want to delete this file?',
                                 'method' => 'post',
                             ],
-                        ])))." ".(!Yii::$app->user->can("gad_delete_uploaded_files_endorsing") ? "" : (Html::a('<span class="glyphicon glyphicon-trash"></span> Delete', 
-                            [
-                                'delete-uploaded-file', 
-                                'hash' => $row['hash'], 
-                                'extension' => $row['extension'],
-                                'ruc' => $ruc,
-                                'onstep' => $onstep,
-                                'tocreate' => $tocreate
-                            ], 
-                            [
-                            'class'=>'btn btn-danger btn-xs',
-                            'data' => [
-                                'confirm' => 'Are you sure you want to delete this file?',
-                                'method' => 'post',
-                            ],
-                        ])))."</td>";
+                        ])) : "")."</td>";
                 }
                 
 

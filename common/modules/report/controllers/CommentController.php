@@ -8,7 +8,7 @@ use common\modules\report\models\GadCommentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use common\modules\report\controllers\DefaultController;
 /**
  * CommentController implements the CRUD actions for GadComment model.
  */
@@ -159,6 +159,11 @@ class CommentController extends Controller
         $qry = \common\models\GadPlanBudget::find()->where(['id' => $plan_id])->one();
         $project_title = !empty($qry->ppa_value) ? $qry->ppa_value : "";
 
+        $qryAttributed = \common\models\GadAttributedProgram::find()->where(['id' => $plan_id])->one();
+        if($project_title == "")
+        {
+            $project_title = !empty($qryAttributed->lgu_program_project) ? $qryAttributed->lgu_program_project : "";
+        }
         // print_r($attribute_name); exit;
         if($attribute_name == "ppa_value")
         {
@@ -196,6 +201,22 @@ class CommentController extends Controller
         {
             $row_value = !empty($qry->lead_responsible_office) ? $qry->lead_responsible_office : "";
         }
+        else if($attribute_name == "lgu_program_project")
+        {
+            $row_value = !empty($qryAttributed->lgu_program_project) ? $qryAttributed->lgu_program_project : "";
+        }
+        else if($attribute_name == "hgdg")
+        {
+            $row_value = !empty($qryAttributed->hgdg) ? $qryAttributed->hgdg : "";
+        }
+        else if($attribute_name == "total_annual_pro_budget")
+        {
+            $row_value = !empty($qryAttributed->total_annual_pro_budget) ? $qryAttributed->total_annual_pro_budget : "";
+        }
+        else if($attribute_name == "ap_lead_responsible_office")
+        {
+            $row_value = !empty($qryAttributed->ap_lead_responsible_office) ? $qryAttributed->ap_lead_responsible_office : "";
+        }
         else
         {
             $row_value = "";
@@ -227,6 +248,7 @@ class CommentController extends Controller
         $model = new GadComment();
 
         $arrVal = Yii::$app->request->post();
+
         $row_no = $arrVal["row_no"];
         $row_value = $arrVal["row_value"];
         $column_no = $arrVal["column_no"];
@@ -235,6 +257,7 @@ class CommentController extends Controller
         $comment = $arrVal["comment"];
         $plan_budget_id = $arrVal["plan_budget_id"];
         $column_title = $arrVal["column_title"];
+        $ruc = $arrVal["ruc"];
 
         $model->row_no = $row_no;
         $model->column_no = $column_no;
@@ -250,22 +273,29 @@ class CommentController extends Controller
         $qry = \common\models\GadPlanBudget::find()->where(['id' => $plan_budget_id])->one();
 
         $project_title = !empty($qry->ppa_value) ? $qry->ppa_value : "";
+
+        $qryAttributed = \common\models\GadAttributedProgram::find()->where(['id' => $plan_budget_id])->one();
+        if($project_title == "")
+        {
+            $project_title = !empty($qryAttributed->lgu_program_project) ? $qryAttributed->lgu_program_project : "";
+        }
+
         $model->row_value = $project_title;
         $model->column_value = $column_value;
 
-        $model->record_id = $qry->record_id;
+        $model->record_id = DefaultController::GetRecordIdByRuc($ruc);
         $model->resp_user_id = Yii::$app->user->identity->id;
         $model->resp_office_c = !empty(Yii::$app->user->identity->userinfo->OFFICE_C) ? Yii::$app->user->identity->userinfo->OFFICE_C : "";
         $model->resp_region_c = !empty(Yii::$app->user->identity->userinfo->REGION_C) ? Yii::$app->user->identity->userinfo->REGION_C : "";
         $model->resp_province_c = !empty(Yii::$app->user->identity->userinfo->PROVINCE_C) ? Yii::$app->user->identity->userinfo->PROVINCE_C : "";
         $model->resp_citymun_c = !empty(Yii::$app->user->identity->userinfo->CITYMUN_C) ? Yii::$app->user->identity->userinfo->CITYMUN_C : "";
-        $model->focused_id = $qry->focused_id;
-        $model->inner_category_id = $qry->inner_category_id;
-        $model->model_name = "GadPlanBudget";
+
+        
+        $model->model_name = "GadAttributedProgram";
 
         if(!$model->save())
         {
-            print_r($model->errors); exit;
+            print_r($model->error); exit;
         }
 
         

@@ -36,6 +36,7 @@ class GadFileAttached extends \yii\db\ActiveRecord
             [['model_id', 'file_folder_type_id'], 'integer'],
             // [['file_name'], 'string', 'max' => 250],
             [['model_name', 'hash'], 'string', 'max' => 150],
+            [['remarks'], 'string', 'max' => 250],
             [['extension'], 'string', 'max' => 10],
             [['file_name'], 'file', 'extensions' => ['jpg','jpeg','png','pdf','xlsx','xlsm','xlsb','xls','xlt','xltx','xltm','csv','doc','docx'],'maxFiles'=>0,'skipOnEmpty'=>false],
         ];
@@ -54,6 +55,7 @@ class GadFileAttached extends \yii\db\ActiveRecord
             'hash' => 'Hash',
             'extension' => 'Extension',
             'file_folder_type_id' => 'Attachement(s) Category',
+            'remarks' => 'Remarks'
         ];
     }
 }

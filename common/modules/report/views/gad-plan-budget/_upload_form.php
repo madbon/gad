@@ -25,7 +25,10 @@ use kartik\select2\Select2;
 				]);
 		    ?>
 		    <br/>
-		    <?= $form->field($upload, 'file_name[]')->fileInput(['multiple'=>true, 'accept' => 'image/*']) ?>
+		    <?= $form->field($upload, 'file_name[]')->fileInput(['multiple'=>true, 'accept' => '*']) ?>
+
+		    <?= $form->field($upload, 'remarks')->textInput() ?>
+
 		    <?= Html::submitButton('Upload', ['class' => 'btn btn-primary']) ?>
 		<?php ActiveForm::end() ?>
 	</div>

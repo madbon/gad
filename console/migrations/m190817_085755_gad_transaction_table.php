@@ -167,7 +167,7 @@ if ($dbType == "mysql") {
         'file_name' => 'VARCHAR(250) NULL',
         'model_id' => 'INT(11) NOT NULL',
         'model_name' => 'VARCHAR(150) NOT NULL',
-        'hash' => 'VARCHAR(150) NULL',
+        'remarks' => 'VARCHAR(250) NULL',
         'extension' => 'VARCHAR(10) NULL',
         'file_folder_type_id' => 'INT(11) NOT NULL',
     ], $tableOptions_mysql);

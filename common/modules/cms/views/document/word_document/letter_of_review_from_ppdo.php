@@ -1,6 +1,6 @@
 <?php
 use common\modules\cms\controllers\DocumentController;
-	/* Note: any element you append to a document must reside inside of a Section. */
+    /* Note: any element you append to a document must reside inside of a Section. */
         // Adding an empty Section to the document...
         $section = $phpWord->createSection();
         // Adding Text element with font customized using named font style...
