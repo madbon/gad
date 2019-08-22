@@ -22,6 +22,7 @@ use yii\web\UploadedFile;
 use common\models\GadFileAttached;
 use common\models\GadAttributedProgram;
 use yii\db\Expression;
+use common\modules\report\controllers\DefaultController;
 
 
 
@@ -543,6 +544,7 @@ class GadPlanBudgetController extends Controller
             'modelUpdate' => $modelUpdate,
             'tags_ppaSectors' => $tags_ppaSectors,
             'tags_activityCategory' => $tags_activityCategory,
+            'status' => DefaultController::GetStatusByRuc($ruc)
         ]);
     }
 
@@ -569,6 +571,7 @@ class GadPlanBudgetController extends Controller
             'modelUpdate' => $modelUpdate,
             'tags_ppaSectors' => $tags_ppaSectors,
             'tags_checkList' => $tags_checkList,
+            'status' => DefaultController::GetStatusByRuc($ruc)
         ]);
     }
 
@@ -844,8 +847,6 @@ class GadPlanBudgetController extends Controller
 
            if($upload->load(Yii::$app->request->post()))
            {
-            // echo "<pre>"; 
-            // print_r($upload); exit;
                 $upload->file_name = UploadedFile::getInstances($upload,'file_name');
                 if($upload->file_name)
                 {
@@ -868,7 +869,6 @@ class GadPlanBudgetController extends Controller
                         $model->extension = $image->extension;
                         $model->file_folder_type_id = $upload->file_folder_type_id;
                         $model->remarks = $upload->remarks;
-
 
                         if($model->save(false))
                         {

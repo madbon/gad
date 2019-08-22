@@ -280,6 +280,15 @@ class DefaultController extends Controller
         // return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
     }
 
+    public function GetStatusByRuc($ruc)
+    {
+        $model = GadRecord::find()->where(['tuc' => $ruc])->one();
+        return !empty($model->status) ? $model->status : "";
+
+        // \Yii::$app->getSession()->setFlash('success', "Data has been deleted");
+        // return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
+    }
+
     public function actionDeletePlanBudgetGenderIssue($plan_id)
     {
        if(GadPlanBudget::deleteAll(['id'=>$plan_id]))

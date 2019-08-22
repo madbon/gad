@@ -148,6 +148,7 @@ class GadAccomplishmentReportController extends Controller
             'tags_ppaSectors' => $tags_ppaSectors,
             'tags_checkList' => $tags_checkList,
             'select_scoreType' => $select_scoreType,
+            'status' => DefaultController::GetStatusByRuc($ruc),
         ]);
     }
 
@@ -176,6 +177,7 @@ class GadAccomplishmentReportController extends Controller
             'modelUpdate' => $modelUpdate,
             'tags_ppaSectors' => $tags_ppaSectors,
             'tags_activityCategory' => $tags_activityCategory,
+            'status' => DefaultController::GetStatusByRuc($ruc)
         ]);
     }
 

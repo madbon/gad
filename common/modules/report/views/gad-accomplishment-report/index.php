@@ -36,7 +36,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                         <tr>
                             <td>PROVINCE </td>
                             <td> : <?= $recProvince ?></td>
-                            <td>TOTAL GAD BUDGET</td>
+                            <td>TOTAL GAD EXPENDITURE</td>
                             <?php
                                 if($grand_total_ar < $fivePercentTotalLguBudget)
                                 {
