@@ -37,6 +37,8 @@ return [
             'console/runtime',
             'frontend/runtime',
             'frontend/web/assets',
+			'common/uploads',
+			'common/uploads/file_attached',
         ],
         'setExecutable' => [
             'yii',
@@ -56,6 +58,48 @@ return [
             'console/runtime',
             'frontend/runtime',
             'frontend/web/assets',
+			'common/uploads',
+			'common/uploads/file_attached',
+        ],
+        'setExecutable' => [
+            'yii',
+        ],
+        'setCookieValidationKey' => [
+            'backend/config/main-local.php',
+            'frontend/config/main-local.php',
+        ],
+    ],
+    'Development (192.168.13.12)' => [
+        'path' => 'dev_s',
+        'setWritable' => [
+            'backend/runtime',
+            'backend/web/assets',
+            'console/runtime',
+            'frontend/runtime',
+            'frontend/web/assets',
+			'common/uploads',
+			'common/uploads/file_attached',
+        ],
+        'setExecutable' => [
+            'yii',
+            'yii_test',
+        ],
+        'setCookieValidationKey' => [
+            'backend/config/main-local.php',
+            'common/config/codeception-local.php',
+            'frontend/config/main-local.php',
+        ],
+    ],
+    'Production (192.168.13.12)' => [
+        'path' => 'prod_s',
+        'setWritable' => [
+            'backend/runtime',
+            'backend/web/assets',
+            'console/runtime',
+            'frontend/runtime',
+            'frontend/web/assets',
+			'common/uploads',
+			'common/uploads/file_attached',
         ],
         'setExecutable' => [
             'yii',
