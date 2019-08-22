@@ -37,6 +37,11 @@ return [
             'console/runtime',
             'frontend/runtime',
             'frontend/web/assets',
+			'frontend/web',
+			'frontend/web/uploads',
+			'frontend/web/uploads/file_attached',
+			'frontend/web/uploads/systemgenerated',
+			'frontend/web/uploads/template/excel',
         ],
         'setExecutable' => [
             'yii',
@@ -56,6 +61,11 @@ return [
             'console/runtime',
             'frontend/runtime',
             'frontend/web/assets',
+			'frontend/web',
+			'frontend/web/uploads',
+			'frontend/web/uploads/file_attached',
+			'frontend/web/uploads/systemgenerated',
+			'frontend/web/uploads/template/excel'
         ],
         'setExecutable' => [
             'yii',

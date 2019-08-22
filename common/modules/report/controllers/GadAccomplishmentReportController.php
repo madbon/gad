@@ -4,13 +4,17 @@ namespace common\modules\report\controllers;
 
 use Yii;
 use common\models\GadAccomplishmentReport;
+use common\models\GadPlanBudget;
 use common\models\GadArAttributedProgram;
+use common\models\GadAttributedProgram;
+use common\modules\report\controllers\DefaultController;
 use common\modules\report\models\GadAccomplishmentReportSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\GadRecord;
 use yii\helpers\ArrayHelper;
+use yii\db\Query;
 
 /**
  * GadAccomplishmentReportController implements the CRUD actions for GadAccomplishmentReport model.
@@ -30,6 +34,93 @@ class GadAccomplishmentReportController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function actionCopyInsertPlan($ruc,$onstep,$tocreate,$selected_plan_ruc)
+    {
+        $query = GadPlanBudget::find()->where(['record_tuc' => $selected_plan_ruc])->groupBy(['id'])->all();
+
+        foreach ($query as $key => $plan) {
+            $ar = new GadAccomplishmentReport();
+            $ar->plan_budget_id = $plan['id'];
+            $ar->record_id = DefaultController::GetRecordIdByRuc($ruc);
+            $ar->focused_id = $plan['focused_id'];
+            $ar->inner_category_id = $plan['inner_category_id'];
+            $ar->gi_sup_data = $plan['gi_sup_data'];
+            $ar->source = $plan['source'];
+            $ar->cliorg_ppa_attributed_program_id = $plan['cliorg_ppa_attributed_program_id'];
+            $ar->ppa_value = $plan['ppa_value'];
+            $ar->objective = $plan['objective'];
+            $ar->relevant_lgu_ppa = $plan['relevant_lgu_program_project'];
+            $ar->activity_category_id = $plan['activity_category_id'];
+            $ar->activity = $plan['activity'];
+            $ar->performance_indicator = $plan['performance_target'];
+            $gad_budget = ($plan['budget_mooe'] + $plan['budget_ps'] + $plan['budget_co']);
+            $ar->total_approved_gad_budget = $gad_budget;
+            $ar->record_tuc = $ruc;
+            $ar->save(false);
+        }
+
+        $attribQuery = GadAttributedProgram::find()->where(['record_tuc' => $selected_plan_ruc])->groupBy(['id'])->all();
+
+        foreach ($attribQuery as $key2 => $attrib) {
+            $ar_attrib = new GadArAttributedProgram();
+            $ar_attrib->record_tuc = $ruc;
+            $ar_attrib->controller_id = "gad-accomplishment-report";
+            $ar_attrib->ppa_attributed_program_id = $attrib['ppa_attributed_program_id'];
+            $ar_attrib->lgu_program_project = $attrib['lgu_program_project'];
+            $ar_attrib->checklist_id = $attrib['checklist_id'];
+            $ar_attrib->hgdg_pimme = $attrib['hgdg'];
+            $ar_attrib->total_annual_pro_cost = $attrib['total_annual_pro_budget'];
+            $ar_attrib->save(false);
+
+        }
+
+        return $this->redirect(['index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate]);
+    }
+
+    public function actionCopyPlan($ruc,$onstep,$tocreate)
+    {
+        $filter = [];
+        if(Yii::$app->user->can('gad_lgu_permission'))
+        {
+            $filter = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C, 'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C];
+        }
+        else if(Yii::$app->user->can('gad_lgu_province_permission'))
+        {
+            $filter = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C];
+        }
+
+        $query = (new Query())
+        ->select([
+            'PROV.province_m',
+            'CTY.citymun_m',
+            'GR.id as record_id',
+            'GR.tuc as ruc',
+            'GR.total_lgu_budget',
+            'GR.year',
+            'GR.prepared_by',
+            'GR.approved_by',
+            'GR.footer_date',
+            'GR.status'
+        ])
+        ->from('gad_record GR')
+        ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = GR.region_c')
+        ->leftJoin(['PROV' => 'tblprovince'], 'PROV.province_c = GR.province_c')
+        ->leftJoin(['CTY' => 'tblcitymun'], 'CTY.citymun_c = GR.citymun_c and CTY.province_c = GR.province_c')
+        ->leftJoin(['OFC' => 'tbloffice'], 'OFC.OFFICE_C = GR.office_c')
+        ->andWhere(['GR.report_type_id' => 1])
+        ->andFilterWhere($filter)
+        ->groupBy(['GR.id'])
+        ->orderBy(['GR.id' => SORT_DESC])
+        ->all();
+
+        return $this->renderAjax('_copy_plan', [
+            'query' => $query,
+            'ruc' => $ruc,
+            'onstep' => $onstep,
+            'tocreate' => $tocreate
+        ]);
     }
 
     public function actionViewOtherDetailsAttributed($model_id,$ruc,$onstep,$tocreate)

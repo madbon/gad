@@ -45,6 +45,8 @@ class GadPlanBudgetController extends Controller
         ];
     }
 
+    
+
     public function actionLoadPlan($ruc,$onstep,$tocreate)
     {
         $query_record = GadRecord::find()->where(['tuc' => $ruc])->one();
