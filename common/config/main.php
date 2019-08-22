@@ -59,6 +59,13 @@ return [
         'utility' => [
                 'class' => 'c006\utility\migration\Module',
         ],
+        'ddm' => [
+            'class' => 'akesandiego\ddm\Module',
+			'intranet_url' => 'https://intranet.dilg.gov.ph'
+        ],
+        'monitoring' => [
+            'class' => 'akesandiego\monitoring\Module',
+        ]
     ],
 
 ];
