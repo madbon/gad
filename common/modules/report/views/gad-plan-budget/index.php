@@ -53,81 +53,19 @@ $this->title = "Annual GAD Plan and Budget";
                             <?php } ?>
                             
                             <?php if(!empty($recordOne_attached_ar_record_id)){ ?>
-                                <a class="btn btn-success btn-sm" id="btn_attachar"><span class="glyphicon glyphicon-ok"></span> &nbsp;
-                                     Attached the Accomplishment
-                                </a>
+                                <?php
+                                    $url_load_ar = '@web/report/gad-plan-budget/load-ar?ruc='.$ruc.'&recordOne_attached_ar_record_id='.$recordOne_attached_ar_record_id;
+                                        echo Html::button('<span class="glyphicon glyphicon-ok"></span> AR Attached', ['value'=>Url::to($url_load_ar),
+                                'class' => 'btn btn-success btn-sm modalButton ','style' => '']);
+                                ?>
                             <?php }else{ ?>
-                                <a class="btn btn-dafault btn-sm" id="btn_attachar" style="background-color: gray; color:white;"><span class="glyphicon glyphicon-remove"></span> &nbsp;
-                                     Attached the Accomplishment
-                                </a>
+                                <?php
+                                    $url_load_ar = '@web/report/gad-plan-budget/load-ar?ruc='.$ruc.'&recordOne_attached_ar_record_id='.$recordOne_attached_ar_record_id;
+                                        echo Html::button('<span class="glyphicon glyphicon-remove"></span> Click me to attach AR', ['value'=>Url::to($url_load_ar),
+                                'class' => 'btn btn-default btn-sm modalButton ','style' => '']);
+                                    ?>
                             <?php } ?>
 
-                            
-                            <?php JSRegister::begin(); ?>
-                            <script>
-                                $("#btn_attachar").click(function(){
-                                    var params = "<?= $ruc ?>";
-                                    var recordOne_attached_ar_record_id = "<?= $recordOne_attached_ar_record_id ?>";
-                                    var permission_to_attach_ar = "<?= $permission_to_attach_ar ?>";
-                                    $("table#result_ar tbody").html("");
-                                    $.ajax({
-                                        url: "<?= $urlLoadAr ?>",
-                                        data: { 
-                                            params:params,
-                                        }
-                                        
-                                        }).done(function(data) {
-                                            $("#select_ar").slideDown(300);
-                                            $.each(data, function(key, value){
-                                                var cols = "";
-                                                cols += "<tr id=list_ar-"+value.record_id+">";
-                                                cols +=     "<td>"+value.province_name+"</td>";
-                                                cols +=     "<td>"+value.citymun_name+"</td>";
-                                                cols +=     "<td>"+value.year+"</td>";
-                                                cols +=     "<td>"+value.total_lgu_budget+"</td>";
-                                                cols +=     "<td>"+value.prepared_by+"</td>";
-                                                cols +=     "<td>"+value.approved_by+"</td>";
-                                                
-                                                if(recordOne_attached_ar_record_id == value.record_id)
-                                                {
-                                                    cols += "<td><span class='label label-success'>Attached to GPB</span></td>";
-                                                }
-                                                else
-                                                {
-                                                    if(permission_to_attach_ar == 1)
-                                                    {
-                                                        cols +=     "<td><button type='button' id='attach_id-"+value.record_id+"' class='btn btn-success btn-xs'>Attach to GPB</button></td>";
-                                                    }
-                                                }
-                                                
-                                                
-                                                cols += "</tr>";
-                                                $("table#result_ar tbody").append(cols);
-
-                                                $("#attach_id-"+value.record_id+"").click(function(){
-                                                    var record_id = value.record_id;
-                                                    var ruc = "<?= $ruc ?>";
-                                                    var onstep = "<?= $onstep ?>";
-                                                    var tocreate  = "<?= $tocreate ?>";
-
-                                                    $.ajax({
-                                                        url: "<?= $urlUpdateAttachedAr ?>",
-                                                        data: { 
-                                                            record_id:record_id,
-                                                            ruc:ruc,
-                                                            onstep:onstep,
-                                                            tocreate:tocreate,
-                                                        }
-                                                        }).done(function(data) {
-
-                                                    });
-                                                });
-                                            });
-                                        });
-                                });
-                            </script>
-
-                            <?php JSRegister::end(); ?>
 
                         </div>
                     </div>

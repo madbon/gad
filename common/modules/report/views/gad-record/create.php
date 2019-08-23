@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-
+use common\modules\report\controllers\DefaultController;
 /* @var $this yii\web\View */
 /* @var $model common\models\GadRecord */
 
@@ -24,16 +24,28 @@ $this->params['breadcrumbs'][] = $this->title;
 <style>
 	
 </style>
-
+<?php if($tocreate == "gad_plan_budget"){ ?>
+	<h3 style="text-align: center; font-weight: bold; padding-top: 0; margin-top: 0;">GAD Plan and Budget
+		<?php if($ruc != "empty"){ ?>
+			 FY <?= DefaultController::GetPlanYear($ruc) ?>
+		<?php } ?>
+	</h3>
+<?php }else{ ?>
+	<h3 style="text-align: center; font-weight: bold; padding-top: 0; margin-top: 0;">GAD Accomplishment Report 
+		<?php if($ruc != "empty"){ ?>
+			 FY <?= DefaultController::GetPlanYear($ruc) ?>
+		<?php } ?>
+	</h3>
+<?php } ?>
 <div class="gad-record-create">
 	<ul class="nav nav-tabs" >
 	  	<li class="active">
-	  		<a class="btn btn-success">Input Primary Information  &nbsp;<span class="glyphicon glyphicon-edit"></span> </a>
+	  		<a class="btn btn-success">Primary Information  &nbsp;<span class="glyphicon glyphicon-edit"></span> </a>
 	  	</li>
 	  	
 		  	<?php if($onstep == 'to_create_gpb'){ ?>
 			  	<?= $this->render('/common_tools/tabs/tab_encode',[
-			  			'tabTitle' => 'Encode Annual GAD Plan and Budget',
+			  			'tabTitle' => 'Annual GAD Plan and Budget',
 			  			'liClass' => '',
 			  			'ruc' => $ruc,
 			  			'onstep' => $onstep,
@@ -51,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		  	<?php }else if($onstep == 'to_create_ar'){ ?>
 
 			  	<?= $this->render('/common_tools/tabs/tab_encode',[
-			  			'tabTitle' => 'Encode Annual Accomplishment Report',
+			  			'tabTitle' => 'Annual Accomplishment Report',
 			  			'liClass' => '',
 			  			'ruc' => $ruc,
 			  			'onstep' => $onstep,
@@ -68,7 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		  	<?php }else{  //onstep=create_new ?>
 		  		<?php if($tocreate == "gad_plan_budget"){ //-----------------------tocreate=gad_plan_budget (GAD Plan and Budget) ?> 
 					<?= $this->render('/common_tools/tabs/tab_encode',[
-				  			'tabTitle' => 'Encode Annual GAD Plan and Budget',
+				  			'tabTitle' => 'Annual GAD Plan and Budget',
 				  			'liClass' => 'disabled',
 				  			'ruc' => $ruc,
 				  			'onstep' => $onstep,
@@ -88,7 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				  	<?php } ?>
 				<?php }else{ //------------------------------------------------tocreate=accomp_report (Accomplishment Report)?>
 					<?= $this->render('/common_tools/tabs/tab_encode',[
-				  			'tabTitle' => 'Encode Annual Accomplishment Report',
+				  			'tabTitle' => 'Annual Accomplishment Report',
 				  			'liClass' => 'disabled',
 				  			'ruc' => $ruc,
 				  			'onstep' => $onstep,

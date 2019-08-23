@@ -9,9 +9,8 @@ $this->title = 'Annual GAD Accomplishment Report';
 // $this->params['breadcrumbs'][] = ['label' => 'Step 1. Primary Information', 'url' => ['gad-record/create', 'ruc' => $ruc,'onstep' => $onstep], ['class' => 'btn btn-success']];
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
-<style>
-	
-</style>
+<h3 style="text-align: center; font-weight: bold; padding-top: 0; margin-top: 0;">GAD Accomplishment Report FY <?= DefaultController::GetPlanYear($ruc) ?></h3>  <?= DefaultController::HasBeenAttachedToGpb($ruc) ?>
+
 <div class="gad-record-create">
 <?php if(Yii::$app->user->can("gad_lgu_province_permission")){ ?>
     <ul class="nav nav-tabs">
