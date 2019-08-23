@@ -821,6 +821,8 @@ class GadPlanBudgetController extends Controller
                     $model->hash = $hash; 
                     $model->extension = $image->extension;
                     $model->file_folder_type_id = $upload->file_folder_type_id;
+                    $model->user_id = Yii::$app->user->identity->id;
+                    $model->remarks = $upload->remarks;
 
 
                     if($model->save(false))

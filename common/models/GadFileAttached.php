@@ -33,7 +33,7 @@ class GadFileAttached extends \yii\db\ActiveRecord
     {
         return [
             [['file_folder_type_id','model_name'], 'required'],
-            [['model_id', 'file_folder_type_id'], 'integer'],
+            [['model_id', 'file_folder_type_id','user_id'], 'integer'],
             // [['file_name'], 'string', 'max' => 250],
             [['model_name', 'hash'], 'string', 'max' => 150],
             [['remarks'], 'string', 'max' => 250],
