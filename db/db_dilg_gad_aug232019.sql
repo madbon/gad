@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 08, 2019 at 10:04 AM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 5.6.40
+-- Generation Time: Aug 23, 2019 at 09:30 AM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.1.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,6 +25,317 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `audit_trail`
+--
+
+CREATE TABLE `audit_trail` (
+  `activity_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `datetime` datetime NOT NULL,
+  `module` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `controller` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `action` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `route` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `params` text COLLATE utf8_unicode_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `audit_trail`
+--
+
+INSERT INTO `audit_trail` (`activity_id`, `user_id`, `datetime`, `module`, `controller`, `action`, `route`, `params`) VALUES
+(3914, 1, '2019-06-21 08:49:48', 'cms', 'category', 'index', 'cms/category', ''),
+(3915, 1, '2019-06-21 08:50:15', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(3916, 1, '2019-06-21 09:01:27', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(3917, 1, '2019-06-21 09:02:44', 'cms', 'indicator', 'index', 'cms/indicator/index', ''),
+(3918, 1, '2019-06-21 09:02:53', 'cms', 'category', 'index', 'cms/category', ''),
+(3919, 1, '2019-06-21 09:02:55', 'cms', 'category', 'create', 'cms/category/create', ''),
+(3920, 1, '2019-06-21 09:11:23', 'cms', 'category', 'create', 'cms/category/create', ''),
+(3921, 1, '2019-06-21 09:11:43', 'cms', 'category', 'index', 'cms/category/index', ''),
+(3922, 1, '2019-06-21 09:11:45', 'cms', 'category', 'create', 'cms/category/create', ''),
+(3923, 1, '2019-06-21 09:12:36', 'cms', 'category', 'create', 'cms/category/create', ''),
+(3924, 1, '2019-06-21 09:14:12', 'cms', 'category', 'create', 'cms/category/create', ''),
+(3925, 1, '2019-06-21 09:14:56', 'cms', 'category', 'create', 'cms/category/create', ''),
+(3926, 1, '2019-06-21 09:14:56', 'cms', 'category', 'view', 'cms/category/view', 'id=7'),
+(3927, 1, '2019-06-21 09:15:12', 'cms', 'category', 'view', 'cms/category/view', 'id=7'),
+(3928, 1, '2019-06-21 09:15:21', 'cms', 'category', 'view', 'cms/category/view', 'id=7'),
+(3929, 1, '2019-06-21 09:15:26', 'cms', 'category', 'view', 'cms/category/view', 'id=7'),
+(3930, 1, '2019-06-21 09:15:45', 'cms', 'category', 'view', 'cms/category/view', 'id=7'),
+(3931, 1, '2019-06-21 09:15:50', 'cms', 'category', 'view', 'cms/category/view', 'id=7'),
+(3932, 1, '2019-06-21 09:15:53', 'cms', 'category', 'index', 'cms/category/index', ''),
+(3933, 1, '2019-06-21 09:15:58', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(3934, 1, '2019-06-21 09:16:03', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(3935, 1, '2019-06-21 09:16:03', 'cms', 'category', 'view', 'cms/category/view', 'id=7'),
+(3936, 1, '2019-06-21 09:16:05', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(3937, 1, '2019-06-21 09:16:09', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(3938, 1, '2019-06-21 09:16:09', 'cms', 'category', 'view', 'cms/category/view', 'id=7'),
+(3939, 1, '2019-06-21 09:16:10', 'cms', 'category', 'index', 'cms/category/index', ''),
+(3940, 1, '2019-06-21 09:16:12', 'cms', 'category', 'create', 'cms/category/create', ''),
+(3941, 1, '2019-06-21 09:17:00', 'cms', 'category', 'create', 'cms/category/create', ''),
+(3942, 1, '2019-06-21 09:17:01', 'cms', 'category', 'view', 'cms/category/view', 'id=8'),
+(3943, 1, '2019-06-21 09:17:03', 'cms', 'category', 'index', 'cms/category/index', ''),
+(3944, 1, '2019-06-21 09:17:04', 'cms', 'category', 'create', 'cms/category/create', ''),
+(3945, 1, '2019-06-21 09:17:56', 'cms', 'category', 'index', 'cms/category/index', ''),
+(3946, 1, '2019-06-21 09:18:09', 'cms', 'category', 'index', 'cms/category/index', ''),
+(3947, 1, '2019-06-21 09:18:14', 'cms', 'category', 'index', 'cms/category/index', ''),
+(3948, 1, '2019-06-21 09:18:17', 'cms', 'category', 'create', 'cms/category/create', ''),
+(3949, 1, '2019-06-21 09:18:43', 'cms', 'category', 'create', 'cms/category/create', ''),
+(3950, 1, '2019-06-21 09:18:43', 'cms', 'category', 'view', 'cms/category/view', 'id=9'),
+(3951, 1, '2019-06-21 09:18:45', 'cms', 'category', 'index', 'cms/category/index', ''),
+(3952, 1, '2019-06-21 09:19:17', 'cms', 'category', 'create', 'cms/category/create', ''),
+(3953, 1, '2019-06-21 09:19:45', 'cms', 'category', 'create', 'cms/category/create', ''),
+(3954, 1, '2019-06-21 09:19:45', 'cms', 'category', 'view', 'cms/category/view', 'id=10'),
+(3955, 1, '2019-06-21 09:19:49', 'cms', 'category', 'index', 'cms/category/index', ''),
+(3956, 1, '2019-06-21 09:20:04', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(3957, 1, '2019-06-21 09:20:05', 'cms', 'category', 'index', 'cms/category/index', ''),
+(3958, 1, '2019-06-21 09:20:43', 'cms', 'indicator', 'index', 'cms/indicator/index', ''),
+(3959, 1, '2019-06-21 09:21:35', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(3960, 1, '2019-06-21 09:23:14', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(3961, 1, '2019-06-21 09:23:14', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=156'),
+(3962, 1, '2019-06-21 09:23:17', 'cms', 'indicator', 'index', 'cms/indicator/index', ''),
+(3963, 1, '2019-06-21 09:23:19', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(3964, 1, '2019-06-21 09:24:06', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(3965, 1, '2019-06-21 09:24:06', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=157'),
+(3966, 1, '2019-06-21 09:24:08', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(3967, 1, '2019-06-21 09:24:15', 'cms', 'indicator', 'index', 'cms/indicator/index', ''),
+(3968, 1, '2019-06-21 09:24:19', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(3969, 1, '2019-06-21 09:24:47', 'cms', 'indicator', 'index', 'cms/indicator/index', ''),
+(3970, 1, '2019-06-21 09:24:50', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=157'),
+(3971, 1, '2019-06-21 09:24:59', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=157'),
+(3972, 1, '2019-06-21 09:24:59', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=157'),
+(3973, 1, '2019-06-21 09:25:02', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(3974, 1, '2019-06-21 09:25:29', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(3975, 1, '2019-06-21 09:25:29', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=158'),
+(3976, 1, '2019-06-21 09:25:30', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(3977, 1, '2019-06-21 09:26:55', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(3978, 1, '2019-06-21 09:26:55', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=159'),
+(3979, 1, '2019-06-21 09:26:57', 'cms', 'indicator', 'index', 'cms/indicator/index', ''),
+(3980, 1, '2019-06-21 09:27:41', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(3981, 1, '2019-06-21 09:28:15', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(3982, 1, '2019-06-21 09:28:16', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=160'),
+(3983, 1, '2019-06-21 09:28:56', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(3984, 1, '2019-06-21 09:29:18', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(3985, 1, '2019-06-21 09:29:19', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=161'),
+(3986, 1, '2019-06-21 09:29:27', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(3987, 1, '2019-06-21 09:33:14', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(3988, 1, '2019-06-21 09:33:15', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=162'),
+(3989, 1, '2019-06-21 09:33:35', 'cms', 'indicator', 'index', 'cms/indicator/index', ''),
+(3990, 6, '2019-06-22 03:58:50', 'cms', 'indicator', 'form-view', 'cms/indicator/form-view', ''),
+(3991, 6, '2019-06-22 04:19:23', 'cms', 'indicator', 'form-view', 'cms/indicator/form-view', ''),
+(3992, 6, '2019-06-22 04:34:26', 'cms', 'indicator', 'form-view', 'cms/indicator/form-view', ''),
+(3993, 6, '2019-06-22 04:34:34', 'cms', 'indicator', 'form-view', 'cms/indicator/form-view', ''),
+(3994, 6, '2019-06-22 04:56:21', 'cms', 'indicator', 'form-view', 'cms/indicator/form-view', ''),
+(3995, 6, '2019-06-22 04:57:27', 'cms', 'indicator', 'form-view', 'cms/indicator/form-view', ''),
+(3996, 6, '2019-06-22 04:57:36', 'cms', 'indicator', 'form-view', 'cms/indicator/form-view', ''),
+(3997, 6, '2019-06-22 04:57:51', 'cms', 'indicator', 'form-view', 'cms/indicator/form-view', ''),
+(3998, 6, '2019-06-22 05:02:37', 'cms', 'indicator', 'form-view', 'cms/indicator/form-view', ''),
+(3999, 6, '2019-06-22 05:04:06', 'cms', 'indicator', 'form-view', 'cms/indicator/form-view', ''),
+(4000, 6, '2019-06-22 05:04:12', 'cms', 'indicator', 'form-view', 'cms/indicator/form-view', ''),
+(4001, 6, '2019-06-22 05:04:14', 'cms', 'indicator', 'form-view', 'cms/indicator/form-view', ''),
+(4002, 6, '2019-06-22 05:04:28', 'cms', 'indicator', 'form-view', 'cms/indicator/form-view', ''),
+(4003, 6, '2019-06-22 05:05:36', 'cms', 'indicator', 'form-view', 'cms/indicator/form-view', ''),
+(4004, 6, '2019-06-22 05:05:47', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4005, 6, '2019-06-22 05:05:51', 'cms', 'indicator', 'form-view', 'cms/indicator/form-view', ''),
+(4006, 6, '2019-06-22 05:06:38', 'cms', 'indicator', 'form-view', 'cms/indicator/form-view', ''),
+(4007, 6, '2019-06-22 12:12:43', 'cms', 'indicator', 'form-view', 'cms/indicator/form-view', ''),
+(4008, 6, '2019-06-22 12:14:57', 'cms', 'category', 'index', 'cms/category', ''),
+(4009, 6, '2019-06-23 12:12:29', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4010, 6, '2019-06-23 12:14:26', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=156'),
+(4011, 6, '2019-06-23 12:14:39', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=156'),
+(4012, 6, '2019-06-23 12:14:39', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=156'),
+(4013, 6, '2019-06-23 12:14:44', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=156'),
+(4014, 6, '2019-06-23 12:14:50', 'cms', 'indicator', 'index', 'cms/indicator/', ''),
+(4015, 6, '2019-06-23 12:15:01', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=157'),
+(4016, 6, '2019-06-23 12:15:29', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=157'),
+(4017, 6, '2019-06-23 12:15:29', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=157'),
+(4018, 6, '2019-06-23 12:15:34', 'cms', 'indicator', 'index', 'cms/indicator/', ''),
+(4019, 6, '2019-06-23 12:15:34', 'cms', 'indicator', 'index', 'cms/indicator/', ''),
+(4020, 6, '2019-06-23 12:16:10', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=159'),
+(4021, 6, '2019-06-23 12:16:22', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=159'),
+(4022, 6, '2019-06-23 12:16:22', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=159'),
+(4023, 6, '2019-06-23 12:16:27', 'cms', 'indicator', 'index', 'cms/indicator/', ''),
+(4024, 6, '2019-06-23 12:16:40', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=161'),
+(4025, 6, '2019-06-23 12:16:48', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=161'),
+(4026, 6, '2019-06-23 12:16:49', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=161'),
+(4027, 6, '2019-06-23 12:16:55', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=161'),
+(4028, 6, '2019-06-23 12:17:06', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=161'),
+(4029, 6, '2019-06-23 12:17:06', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=161'),
+(4030, 6, '2019-06-23 12:17:11', 'cms', 'indicator', 'index', 'cms/indicator/', ''),
+(4031, 6, '2019-06-23 12:17:52', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=161'),
+(4032, 6, '2019-06-23 12:18:04', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=161'),
+(4033, 6, '2019-06-23 12:18:05', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=161'),
+(4034, 6, '2019-06-23 12:18:11', 'cms', 'indicator', 'index', 'cms/indicator/', ''),
+(4035, 6, '2019-06-23 15:16:00', 'cms', 'indicator', 'index', 'cms/indicator/', ''),
+(4036, 6, '2019-06-23 15:17:58', 'cms', 'indicator', 'index', 'cms/indicator/', ''),
+(4037, 6, '2019-06-23 15:20:26', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4038, 6, '2019-06-23 15:20:45', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4039, 6, '2019-06-23 15:20:45', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=163'),
+(4040, 1, '2019-06-27 01:58:11', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4041, 1, '2019-06-27 02:10:53', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4042, 1, '2019-06-27 02:10:56', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4043, 1, '2019-06-27 02:11:07', 'cms', 'category', 'index', 'cms/category', ''),
+(4044, 1, '2019-07-11 10:20:38', 'cms', 'category', 'index', 'cms/category', ''),
+(4045, 1, '2019-07-12 06:21:30', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4046, 1, '2019-07-12 06:21:39', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4047, 1, '2019-07-13 14:00:28', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4048, 1, '2019-07-13 14:00:54', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4049, 1, '2019-07-13 14:00:54', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=163'),
+(4050, 1, '2019-07-13 14:00:57', 'cms', 'indicator', 'index', 'cms/indicator/index', ''),
+(4051, 1, '2019-07-13 14:02:16', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=163'),
+(4052, 1, '2019-07-13 14:06:24', 'cms', 'category', 'index', 'cms/category', ''),
+(4053, 1, '2019-07-13 14:06:28', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4054, 1, '2019-07-13 14:06:30', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=156'),
+(4055, 1, '2019-07-13 14:06:33', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4056, 1, '2019-07-13 14:07:04', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4057, 1, '2019-07-13 14:07:16', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4058, 1, '2019-07-13 14:12:36', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4059, 1, '2019-07-13 14:12:54', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4060, 1, '2019-07-13 14:12:59', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4061, 1, '2019-07-13 14:13:10', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4062, 1, '2019-07-13 14:14:13', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4063, 1, '2019-07-13 14:14:15', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=156'),
+(4064, 1, '2019-07-13 14:14:17', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4065, 1, '2019-07-13 14:14:18', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=156'),
+(4066, 1, '2019-07-13 14:14:22', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4067, 1, '2019-07-13 14:14:38', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4068, 1, '2019-07-13 14:14:46', 'cms', 'category', 'index', 'cms/category', ''),
+(4069, 1, '2019-07-13 14:14:47', 'cms', 'category', 'create', 'cms/category/create', ''),
+(4070, 1, '2019-07-13 14:14:49', 'cms', 'category', 'index', 'cms/category', ''),
+(4071, 1, '2019-07-13 14:14:50', 'cms', 'category', 'view', 'cms/category/view', 'id=7'),
+(4072, 1, '2019-07-13 14:14:52', 'cms', 'category', 'index', 'cms/category', ''),
+(4073, 1, '2019-07-13 14:14:53', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(4074, 1, '2019-07-13 14:14:54', 'cms', 'category', 'index', 'cms/category', ''),
+(4075, 1, '2019-07-13 14:15:01', 'cms', 'category', 'index', 'cms/category', ''),
+(4076, 1, '2019-07-13 14:15:08', 'cms', 'category', 'index', 'cms/category', ''),
+(4077, 1, '2019-07-13 14:15:21', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(4078, 1, '2019-07-13 14:15:23', 'cms', 'category', 'index', 'cms/category', ''),
+(4079, 1, '2019-07-13 14:57:49', 'cms', 'category', 'index', 'cms/category', ''),
+(4080, 1, '2019-07-24 02:45:44', 'cms', 'category', 'index', 'cms/category', ''),
+(4081, 1, '2019-07-24 02:45:46', 'cms', 'category', 'view', 'cms/category/view', 'id=7'),
+(4082, 1, '2019-07-24 02:45:48', 'cms', 'category', 'index', 'cms/category', ''),
+(4083, 1, '2019-07-24 02:45:49', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(4084, 1, '2019-07-24 02:45:51', 'cms', 'category', 'index', 'cms/category', ''),
+(4085, 1, '2019-07-24 02:45:57', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4086, 1, '2019-07-24 02:46:06', 'cms', 'indicator', 'index', 'cms/indicator/index', 'IndicatorSearch%5Btitle%5D=&IndicatorSearch%5Bcategory_id%5D=7&IndicatorSearch%5Bid%5D=&IndicatorSearch%5Btype_id%5D=&IndicatorSearch%5Bunit_id%5D='),
+(4087, 1, '2019-07-24 02:46:28', 'cms', 'indicator', 'delete', 'cms/indicator/delete', 'id=163'),
+(4088, 1, '2019-07-24 02:46:28', 'cms', 'indicator', 'index', 'cms/indicator/index', ''),
+(4089, 1, '2019-07-24 02:47:00', 'cms', 'indicator', 'index', 'cms/indicator/index', 'IndicatorSearch%5Btitle%5D=&IndicatorSearch%5Bcategory_id%5D=7&IndicatorSearch%5Bid%5D=&IndicatorSearch%5Btype_id%5D=&IndicatorSearch%5Bunit_id%5D='),
+(4090, 1, '2019-07-24 03:37:52', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4091, 1, '2019-07-24 04:11:06', 'cms', 'category', 'index', 'cms/category', ''),
+(4092, 1, '2019-07-24 04:11:09', 'cms', 'category', 'update', 'cms/category/update', 'id=8'),
+(4093, 1, '2019-07-24 04:11:26', 'cms', 'category', 'update', 'cms/category/update', 'id=8'),
+(4094, 1, '2019-07-24 04:11:26', 'cms', 'category', 'view', 'cms/category/view', 'id=8'),
+(4095, 1, '2019-07-24 04:11:29', 'cms', 'category', 'index', 'cms/category/index', ''),
+(4096, 1, '2019-07-24 04:11:31', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(4097, 1, '2019-07-24 04:11:38', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(4098, 1, '2019-07-24 04:11:38', 'cms', 'category', 'view', 'cms/category/view', 'id=7'),
+(4099, 1, '2019-07-24 04:11:40', 'cms', 'category', 'index', 'cms/category/index', ''),
+(4100, 1, '2019-07-24 04:12:06', 'cms', 'category', 'update', 'cms/category/update', 'id=9'),
+(4101, 1, '2019-07-24 04:12:10', 'cms', 'category', 'update', 'cms/category/update', 'id=9'),
+(4102, 1, '2019-07-24 04:12:10', 'cms', 'category', 'view', 'cms/category/view', 'id=9'),
+(4103, 1, '2019-07-24 04:12:22', 'cms', 'category', 'index', 'cms/category/index', ''),
+(4104, 1, '2019-07-24 04:12:25', 'cms', 'category', 'update', 'cms/category/update', 'id=9'),
+(4105, 1, '2019-07-24 04:12:44', 'cms', 'category', 'update', 'cms/category/update', 'id=9'),
+(4106, 1, '2019-07-24 04:12:44', 'cms', 'category', 'view', 'cms/category/view', 'id=9'),
+(4107, 1, '2019-07-24 04:12:47', 'cms', 'category', 'index', 'cms/category/index', ''),
+(4108, 1, '2019-07-24 04:14:04', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(4109, 1, '2019-07-24 04:14:13', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(4110, 1, '2019-07-24 04:14:13', 'cms', 'category', 'view', 'cms/category/view', 'id=7'),
+(4111, 1, '2019-07-24 04:14:15', 'cms', 'category', 'index', 'cms/category/index', ''),
+(4112, 1, '2019-07-24 04:14:19', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(4113, 1, '2019-07-24 04:16:00', 'cms', 'category', 'index', 'cms/category/index', ''),
+(4114, 1, '2019-07-24 04:29:44', 'cms', 'category', 'index', 'cms/category', ''),
+(4115, 1, '2019-07-24 04:29:45', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(4116, 1, '2019-07-24 04:29:56', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(4117, 1, '2019-07-24 04:29:56', 'cms', 'category', 'view', 'cms/category/view', 'id=7'),
+(4118, 1, '2019-07-24 04:29:58', 'cms', 'category', 'index', 'cms/category/index', ''),
+(4119, 1, '2019-07-24 04:30:33', 'cms', 'category', 'update', 'cms/category/update', 'id=10'),
+(4120, 1, '2019-07-24 04:31:10', 'cms', 'category', 'update', 'cms/category/update', 'id=10'),
+(4121, 1, '2019-07-24 04:31:11', 'cms', 'category', 'view', 'cms/category/view', 'id=10'),
+(4122, 1, '2019-07-24 04:31:13', 'cms', 'category', 'index', 'cms/category/index', ''),
+(4123, 1, '2019-07-24 04:31:21', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(4124, 1, '2019-07-24 04:31:42', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(4125, 1, '2019-07-24 04:31:42', 'cms', 'category', 'view', 'cms/category/view', 'id=7'),
+(4126, 1, '2019-07-24 04:35:00', 'cms', 'category', 'index', 'cms/category/index', ''),
+(4127, 1, '2019-07-24 04:35:02', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(4128, 1, '2019-07-24 04:35:17', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(4129, 1, '2019-07-24 04:35:17', 'cms', 'category', 'view', 'cms/category/view', 'id=7'),
+(4130, 1, '2019-07-24 04:35:19', 'cms', 'category', 'index', 'cms/category/index', ''),
+(4131, 1, '2019-07-24 04:35:52', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(4132, 1, '2019-07-24 04:35:54', 'cms', 'category', 'index', 'cms/category/index', ''),
+(4133, 1, '2019-07-24 04:35:57', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4134, 1, '2019-07-24 04:36:02', 'cms', 'indicator', 'index', 'cms/indicator/index', 'IndicatorSearch%5Btitle%5D=&IndicatorSearch%5Bcategory_id%5D=7&IndicatorSearch%5Bid%5D=&IndicatorSearch%5Btype_id%5D=&IndicatorSearch%5Bunit_id%5D='),
+(4135, 0, '2019-07-24 04:36:18', 'cms', 'indicator', 'index', 'cms/indicator/index', 'IndicatorSearch%5Btitle%5D=&IndicatorSearch%5Bcategory_id%5D=7&IndicatorSearch%5Bid%5D=&IndicatorSearch%5Btype_id%5D=&IndicatorSearch%5Bunit_id%5D='),
+(4136, 0, '2019-07-24 04:36:42', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=157'),
+(4137, 0, '2019-07-24 04:37:14', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=157'),
+(4138, 0, '2019-07-24 04:37:14', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=157'),
+(4139, 0, '2019-07-24 04:37:17', 'cms', 'indicator', 'index', 'cms/indicator/index', ''),
+(4140, 0, '2019-07-24 04:37:49', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=159'),
+(4141, 0, '2019-07-24 04:37:55', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=159'),
+(4142, 0, '2019-07-24 04:37:55', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=159'),
+(4143, 0, '2019-07-24 04:37:59', 'cms', 'indicator', 'index', 'cms/indicator/index', ''),
+(4144, 0, '2019-07-24 04:38:06', 'cms', 'indicator', 'index', 'cms/indicator/index', 'IndicatorSearch%5Btitle%5D=&IndicatorSearch%5Bcategory_id%5D=7&IndicatorSearch%5Bid%5D=&IndicatorSearch%5Btype_id%5D=&IndicatorSearch%5Bunit_id%5D='),
+(4145, 0, '2019-07-24 04:38:18', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=159'),
+(4146, 0, '2019-07-24 04:38:22', 'cms', 'indicator', 'index', 'cms/indicator/index', 'IndicatorSearch%5Btitle%5D=&IndicatorSearch%5Bcategory_id%5D=7&IndicatorSearch%5Bid%5D=&IndicatorSearch%5Btype_id%5D=&IndicatorSearch%5Bunit_id%5D='),
+(4147, 0, '2019-07-24 04:38:57', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=156'),
+(4148, 0, '2019-07-24 04:39:00', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=156'),
+(4149, 0, '2019-07-24 04:39:00', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=156'),
+(4150, 0, '2019-07-24 04:39:02', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=156'),
+(4151, 0, '2019-07-24 04:39:03', 'cms', 'indicator', 'index', 'cms/indicator/index', 'IndicatorSearch%5Btitle%5D=&IndicatorSearch%5Bcategory_id%5D=7&IndicatorSearch%5Bid%5D=&IndicatorSearch%5Btype_id%5D=&IndicatorSearch%5Bunit_id%5D='),
+(4152, 0, '2019-07-24 04:39:09', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=157'),
+(4153, 0, '2019-07-24 04:39:33', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=158'),
+(4154, 0, '2019-07-24 04:39:36', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=158'),
+(4155, 0, '2019-07-24 04:39:36', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=158'),
+(4156, 0, '2019-07-24 04:39:39', 'cms', 'indicator', 'index', 'cms/indicator/index', 'IndicatorSearch%5Btitle%5D=&IndicatorSearch%5Bcategory_id%5D=7&IndicatorSearch%5Bid%5D=&IndicatorSearch%5Btype_id%5D=&IndicatorSearch%5Bunit_id%5D='),
+(4157, 0, '2019-07-24 04:39:44', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=157'),
+(4158, 0, '2019-07-24 04:39:47', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=157'),
+(4159, 0, '2019-07-24 04:39:47', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=157'),
+(4160, 0, '2019-07-24 04:39:49', 'cms', 'indicator', 'index', 'cms/indicator/index', 'IndicatorSearch%5Btitle%5D=&IndicatorSearch%5Bcategory_id%5D=7&IndicatorSearch%5Bid%5D=&IndicatorSearch%5Btype_id%5D=&IndicatorSearch%5Bunit_id%5D='),
+(4161, 1, '2019-07-24 04:42:45', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4162, 1, '2019-07-24 04:42:53', 'cms', 'indicator', 'index', 'cms/indicator/index', 'IndicatorSearch%5Btitle%5D=&IndicatorSearch%5Bcategory_id%5D=7&IndicatorSearch%5Bid%5D=&IndicatorSearch%5Btype_id%5D=&IndicatorSearch%5Bunit_id%5D='),
+(4163, 1, '2019-07-24 04:43:27', 'cms', 'indicator', 'delete', 'cms/indicator/delete', 'id=160'),
+(4164, 1, '2019-07-24 04:43:28', 'cms', 'indicator', 'index', 'cms/indicator/index', ''),
+(4165, 1, '2019-07-24 04:43:48', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=162'),
+(4166, 1, '2019-07-24 04:44:08', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=162'),
+(4167, 1, '2019-07-24 04:44:09', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=162'),
+(4168, 0, '2019-07-25 02:24:51', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4169, 1, '2019-08-20 09:42:52', 'cms', 'category', 'index', 'cms/category', ''),
+(4170, 1, '2019-08-20 09:42:56', 'cms', 'category', 'view', 'cms/category/view', 'id=10'),
+(4171, 1, '2019-08-20 09:42:59', 'cms', 'category', 'index', 'cms/category', ''),
+(4172, 1, '2019-08-20 09:43:52', 'cms', 'category', 'index', 'cms/category', ''),
+(4173, 1, '2019-08-20 09:43:54', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(4174, 1, '2019-08-20 09:43:58', 'cms', 'category', 'update', 'cms/category/update', 'id=7'),
+(4175, 1, '2019-08-20 09:43:58', 'cms', 'category', 'view', 'cms/category/view', 'id=7'),
+(4176, 1, '2019-08-20 09:43:59', 'cms', 'category', 'index', 'cms/category/index', ''),
+(4177, 1, '2019-08-20 09:46:41', 'cms', 'indicator', 'index', 'cms/indicator', ''),
+(4178, 1, '2019-08-20 09:46:45', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4179, 1, '2019-08-20 09:47:35', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4180, 1, '2019-08-20 09:47:35', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=163'),
+(4181, 1, '2019-08-20 09:47:37', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4182, 1, '2019-08-20 09:48:23', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4183, 1, '2019-08-20 09:48:24', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=164'),
+(4184, 1, '2019-08-20 09:48:29', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4185, 1, '2019-08-20 09:49:30', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4186, 1, '2019-08-20 09:49:30', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=165'),
+(4187, 1, '2019-08-20 09:49:33', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4188, 1, '2019-08-20 09:52:49', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4189, 1, '2019-08-20 09:52:50', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=166'),
+(4190, 1, '2019-08-20 09:52:53', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4191, 1, '2019-08-20 09:54:22', 'cms', 'indicator', 'index', 'cms/indicator/index', ''),
+(4192, 1, '2019-08-20 09:54:26', 'cms', 'indicator', 'index', 'cms/indicator/index', 'IndicatorSearch%5Btitle%5D=&IndicatorSearch%5Bcategory_id%5D=8&IndicatorSearch%5Bid%5D=&IndicatorSearch%5Btype_id%5D=&IndicatorSearch%5Bunit_id%5D='),
+(4193, 1, '2019-08-20 09:54:29', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=166'),
+(4194, 1, '2019-08-20 09:58:47', 'cms', 'indicator', 'update', 'cms/indicator/update', 'id=166'),
+(4195, 1, '2019-08-20 09:58:47', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=166'),
+(4196, 1, '2019-08-20 09:59:10', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4197, 1, '2019-08-20 09:59:33', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4198, 1, '2019-08-20 09:59:34', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=167'),
+(4199, 1, '2019-08-20 09:59:36', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4200, 1, '2019-08-20 09:59:53', 'cms', 'indicator', 'create', 'cms/indicator/create', ''),
+(4201, 1, '2019-08-20 09:59:54', 'cms', 'indicator', 'view', 'cms/indicator/view', 'id=168');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `auth_assignment`
 --
 
@@ -33,6 +344,23 @@ CREATE TABLE `auth_assignment` (
   `user_id` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `auth_assignment`
+--
+
+INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
+('gad_central', '7', 1555035789),
+('gad_central_permission', '1', 1561335994),
+('gad_cms_super_admin', '1', 1563020452),
+('gad_field', '4', 1554954009),
+('gad_field', '5', 1554954018),
+('gad_lgu', '6', 1554954033),
+('gad_lgu', '8', 1559195323),
+('gad_lgu_province', '3', 1559631485),
+('gad_ppdo', '9', 1560842599),
+('gad_province', '10', 1563272157),
+('gad_region', '2', 1554953963);
 
 -- --------------------------------------------------------
 
@@ -55,19 +383,85 @@ CREATE TABLE `auth_item` (
 --
 
 INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`) VALUES
-('gad_admin', 1, '', NULL, NULL, 1554696631, 1554700542),
-('gad_central', 1, '', NULL, NULL, 1554693484, 1554696884),
+('gad_admin', 1, 'ISTMS / RICTU', NULL, NULL, 1554696631, 1566450542),
+('gad_admin_permission', 2, '', NULL, NULL, 1559624730, 1563890819),
+('gad_attach_accomplishment', 2, '', NULL, NULL, 1561201182, 1561201182),
+('gad_central', 1, 'BLGD', NULL, NULL, 1554693484, 1560133651),
+('gad_central_permission', 2, '', NULL, NULL, 1559624718, 1563890833),
+('gad_cms_admin', 2, '', NULL, NULL, 1563019426, 1563019426),
+('gad_cms_super_admin', 2, '', NULL, NULL, 1563019436, 1563020634),
+('gad_comment_activity', 2, '', NULL, NULL, 1562637534, 1562637534),
+('gad_comment_attributed_pro_budget', 2, '', NULL, NULL, 1566367307, 1566367307),
+('gad_comment_co', 2, '', NULL, NULL, 1562637613, 1562637613),
+('gad_comment_for_dilg_province', 2, '', NULL, NULL, 1562637755, 1566367629),
+('gad_comment_for_dilg_region', 2, '', NULL, NULL, 1562637880, 1566367488),
+('gad_comment_for_ppdo', 2, '', NULL, NULL, 1562637678, 1562637678),
+('gad_comment_gender_issue', 2, '', NULL, NULL, 1562637490, 1562637490),
+('gad_comment_hgdg_score', 2, '', NULL, NULL, 1566367261, 1566367261),
+('gad_comment_lead', 2, '', NULL, NULL, 1562637623, 1562637623),
+('gad_comment_lgu_program', 2, '', NULL, NULL, 1566367240, 1566367240),
+('gad_comment_mooe', 2, '', NULL, NULL, 1562637598, 1562637598),
+('gad_comment_objective', 2, '', NULL, NULL, 1562637509, 1562637509),
+('gad_comment_performance', 2, '', NULL, NULL, 1562637584, 1562637584),
+('gad_comment_ps', 2, '', NULL, NULL, 1562637605, 1562637605),
+('gad_comment_relevant', 2, '', NULL, NULL, 1562637523, 1562637523),
+('gad_comment_total_annual_pro_budget', 2, '', NULL, NULL, 1566367286, 1566367286),
 ('gad_create_accomplishment', 2, '', NULL, NULL, 1554693785, 1554694234),
 ('gad_create_comment', 2, '', NULL, NULL, 1554694114, 1554694242),
+('gad_create_letter', 2, '', NULL, NULL, 1561201213, 1561201213),
+('gad_create_letter_menu', 2, '', NULL, NULL, 1564014326, 1564014326),
 ('gad_create_planbudget', 2, '', NULL, NULL, 1554693588, 1554694267),
+('gad_dashboard_citymun', 2, '', NULL, NULL, 1563025366, 1563025366),
+('gad_dashboard_menu', 2, '', NULL, NULL, 1563890775, 1563890775),
+('gad_dashboard_national', 2, '', NULL, NULL, 1563025320, 1563025320),
+('gad_dashboard_provincial', 2, '', NULL, NULL, 1563025342, 1563025342),
+('gad_dashboard_regional', 2, '', NULL, NULL, 1563025329, 1563025329),
+('gad_delete_accomplishment_report', 2, '', NULL, NULL, 1560130622, 1560130622),
+('gad_delete_attachment', 2, '', NULL, NULL, 1562631326, 1562631326),
+('gad_delete_plan_budget', 2, '', NULL, NULL, 1560130613, 1560130613),
+('gad_delete_rowaccomplishment', 2, '', NULL, NULL, 1560912922, 1560912922),
+('gad_delete_rowplanbudget', 2, '', NULL, NULL, 1560912904, 1560912904),
+('gad_delete_uploaded_files_endorsing', 2, '', NULL, NULL, 1564038760, 1564038760),
+('gad_document_menu', 2, '', NULL, NULL, 1564066242, 1564066242),
 ('gad_edit_cell', 2, '', NULL, NULL, 1554694358, 1554694358),
+('gad_edit_gisupdata', 2, '', NULL, NULL, 1560912443, 1560912443),
 ('gad_endorse_report', 2, '', NULL, NULL, 1554694849, 1554694849),
-('gad_field', 1, '', NULL, NULL, 1554693407, 1554696974),
-('gad_province', 1, '', NULL, NULL, 1554693438, 1554697064),
-('gad_region', 1, '', NULL, NULL, 1554693450, 1554697116),
+('gad_field', 1, 'DILG C/M Office', NULL, NULL, 1554693407, 1560841878),
+('gad_field_permission', 2, '', NULL, NULL, 1559261305, 1561201362),
+('gad_hgdg_score_standard', 2, '', NULL, NULL, 1560145164, 1560145164),
+('gad_letter_endorsement_dilg', 2, 'CERTIFICATE OF REVIEW AND ENDORSEMENT', NULL, NULL, 1563933025, 1563933025),
+('gad_letter_endorsement_ppdo', 2, 'letter of review and endorsement from the Municipal/City/Provincial Planning and Coordinating Office', NULL, NULL, 1563932912, 1563932912),
+('gad_letter_general_observation', 2, 'Letter of Review (General Observations and Recommendations)', NULL, NULL, 1563933157, 1563933157),
+('gad_letter_review_ppdo', 2, 'Provincial Planning and Coordinating Office (If the GPB is not aligned with the Higher LGU’s Plan/Priorities)', NULL, NULL, 1563932802, 1563932802),
+('gad_letter_specifc_observation', 2, '', NULL, NULL, 1560912904, 1560912904),
+('gad_lgu', 1, 'LGU C/M Office', NULL, NULL, 1554953029, 1560841796),
+('gad_lgu_permission', 2, '', NULL, NULL, 1559184586, 1566273008),
+('gad_lgu_province', 1, 'LGU Provincial Office', NULL, NULL, 1559619251, 1560841787),
+('gad_lgu_province_permission', 2, '', NULL, NULL, 1559618290, 1566461134),
+('gad_load_plan', 2, '', NULL, NULL, 1564014499, 1564014499),
+('gad_load_uploaded_files', 2, '', NULL, NULL, 1564014526, 1564014526),
+('gad_lookup_tables', 2, '', NULL, NULL, 1563020615, 1563020615),
+('gad_menu_create', 2, '', NULL, NULL, 1559261611, 1559261611),
+('gad_menu_report', 2, '', NULL, NULL, 1559261737, 1559261737),
+('gad_ppdo', 1, 'Provincial, Planning and Development office (PPDO)', NULL, NULL, 1560841746, 1560842627),
+('gad_ppdo_permission', 2, '', NULL, NULL, 1560841727, 1564066261),
+('gad_province', 1, 'DILG Provincial Office', NULL, NULL, 1554693438, 1563272513),
+('gad_province_permission', 2, 'dilg province permission', NULL, NULL, 1559624654, 1566367572),
+('gad_region', 1, 'DILG Regional Office', NULL, NULL, 1554693450, 1559625085),
+('gad_region_permission', 2, 'DILG Region Permission', NULL, NULL, 1559624636, 1564066283),
 ('gad_return_report', 2, '', NULL, NULL, 1554697004, 1554697004),
 ('gad_review_report', 2, '', NULL, NULL, 1554694745, 1554695057),
+('gad_submit_all_to_central', 2, '', NULL, NULL, 1559729102, 1559729102),
 ('gad_submit_report', 2, '', NULL, NULL, 1554695225, 1554695225),
+('gad_submit_to_central', 2, '', NULL, NULL, 1559284732, 1559284732),
+('gad_submit_to_cmlgoo', 2, '', NULL, NULL, 1559284692, 1559284692),
+('gad_submit_to_province', 2, '', NULL, NULL, 1559284712, 1559284712),
+('gad_submit_to_region', 2, '', NULL, NULL, 1559284722, 1559284722),
+('gad_update_other_details', 2, '', NULL, NULL, 1565749656, 1565749656),
+('gad_upload_files_endorsing', 2, '', NULL, NULL, 1564038707, 1564038707),
+('gad_upload_files_row', 2, '', NULL, NULL, 1561684818, 1561684818),
+('gad_upload_later', 2, '', NULL, NULL, 1566270199, 1566270199),
+('gad_user_management', 2, '', NULL, NULL, 1563020592, 1563020592),
 ('gad_view_comment', 2, '', NULL, NULL, 1554694424, 1554694424),
 ('gad_viewreport_accomplishment', 2, '', NULL, NULL, 1554694040, 1554694294),
 ('gad_viewreport_planbudget', 2, '', NULL, NULL, 1554694001, 1554694001);
@@ -88,38 +482,168 @@ CREATE TABLE `auth_item_child` (
 --
 
 INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
-('gad_central', 'gad_create_accomplishment'),
-('gad_central', 'gad_create_comment'),
-('gad_central', 'gad_create_planbudget'),
-('gad_central', 'gad_edit_cell'),
-('gad_central', 'gad_endorse_report'),
-('gad_central', 'gad_view_comment'),
-('gad_central', 'gad_viewreport_accomplishment'),
-('gad_central', 'gad_viewreport_planbudget'),
-('gad_field', 'gad_create_accomplishment'),
-('gad_field', 'gad_create_comment'),
-('gad_field', 'gad_create_planbudget'),
-('gad_field', 'gad_edit_cell'),
-('gad_field', 'gad_endorse_report'),
-('gad_field', 'gad_review_report'),
-('gad_field', 'gad_submit_report'),
-('gad_field', 'gad_view_comment'),
-('gad_field', 'gad_viewreport_accomplishment'),
-('gad_field', 'gad_viewreport_planbudget'),
-('gad_province', 'gad_create_comment'),
-('gad_province', 'gad_return_report'),
-('gad_province', 'gad_review_report'),
-('gad_province', 'gad_submit_report'),
-('gad_province', 'gad_view_comment'),
-('gad_province', 'gad_viewreport_accomplishment'),
-('gad_province', 'gad_viewreport_planbudget'),
-('gad_region', 'gad_create_comment'),
-('gad_region', 'gad_return_report'),
-('gad_region', 'gad_review_report'),
-('gad_region', 'gad_submit_report'),
-('gad_region', 'gad_view_comment'),
-('gad_region', 'gad_viewreport_accomplishment'),
-('gad_region', 'gad_viewreport_planbudget');
+('gad_admin', 'gad_admin_permission'),
+('gad_admin_permission', 'gad_cms_super_admin'),
+('gad_admin_permission', 'gad_dashboard_menu'),
+('gad_admin_permission', 'gad_menu_report'),
+('gad_admin_permission', 'gad_review_report'),
+('gad_admin_permission', 'gad_view_comment'),
+('gad_admin_permission', 'gad_viewreport_accomplishment'),
+('gad_admin_permission', 'gad_viewreport_planbudget'),
+('gad_central', 'gad_central_permission'),
+('gad_central_permission', 'gad_cms_admin'),
+('gad_central_permission', 'gad_dashboard_menu'),
+('gad_central_permission', 'gad_menu_report'),
+('gad_central_permission', 'gad_review_report'),
+('gad_central_permission', 'gad_view_comment'),
+('gad_central_permission', 'gad_viewreport_accomplishment'),
+('gad_central_permission', 'gad_viewreport_planbudget'),
+('gad_cms_super_admin', 'gad_lookup_tables'),
+('gad_cms_super_admin', 'gad_user_management'),
+('gad_comment_for_dilg_province', 'gad_comment_activity'),
+('gad_comment_for_dilg_province', 'gad_comment_attributed_pro_budget'),
+('gad_comment_for_dilg_province', 'gad_comment_co'),
+('gad_comment_for_dilg_province', 'gad_comment_gender_issue'),
+('gad_comment_for_dilg_province', 'gad_comment_hgdg_score'),
+('gad_comment_for_dilg_province', 'gad_comment_lead'),
+('gad_comment_for_dilg_province', 'gad_comment_lgu_program'),
+('gad_comment_for_dilg_province', 'gad_comment_mooe'),
+('gad_comment_for_dilg_province', 'gad_comment_objective'),
+('gad_comment_for_dilg_province', 'gad_comment_performance'),
+('gad_comment_for_dilg_province', 'gad_comment_ps'),
+('gad_comment_for_dilg_province', 'gad_comment_relevant'),
+('gad_comment_for_dilg_province', 'gad_comment_total_annual_pro_budget'),
+('gad_comment_for_dilg_region', 'gad_comment_activity'),
+('gad_comment_for_dilg_region', 'gad_comment_attributed_pro_budget'),
+('gad_comment_for_dilg_region', 'gad_comment_co'),
+('gad_comment_for_dilg_region', 'gad_comment_gender_issue'),
+('gad_comment_for_dilg_region', 'gad_comment_hgdg_score'),
+('gad_comment_for_dilg_region', 'gad_comment_lgu_program'),
+('gad_comment_for_dilg_region', 'gad_comment_mooe'),
+('gad_comment_for_dilg_region', 'gad_comment_objective'),
+('gad_comment_for_dilg_region', 'gad_comment_performance'),
+('gad_comment_for_dilg_region', 'gad_comment_ps'),
+('gad_comment_for_dilg_region', 'gad_comment_relevant'),
+('gad_comment_for_dilg_region', 'gad_comment_total_annual_pro_budget'),
+('gad_comment_for_ppdo', 'gad_comment_activity'),
+('gad_comment_for_ppdo', 'gad_comment_relevant'),
+('gad_field', 'gad_field_permission'),
+('gad_field_permission', 'gad_attach_accomplishment'),
+('gad_field_permission', 'gad_create_comment'),
+('gad_field_permission', 'gad_create_letter'),
+('gad_field_permission', 'gad_endorse_report'),
+('gad_field_permission', 'gad_hgdg_score_standard'),
+('gad_field_permission', 'gad_menu_report'),
+('gad_field_permission', 'gad_return_report'),
+('gad_field_permission', 'gad_review_report'),
+('gad_field_permission', 'gad_submit_report'),
+('gad_field_permission', 'gad_view_comment'),
+('gad_field_permission', 'gad_viewreport_accomplishment'),
+('gad_field_permission', 'gad_viewreport_planbudget'),
+('gad_lgu', 'gad_lgu_permission'),
+('gad_lgu_permission', 'gad_attach_accomplishment'),
+('gad_lgu_permission', 'gad_create_accomplishment'),
+('gad_lgu_permission', 'gad_create_planbudget'),
+('gad_lgu_permission', 'gad_delete_accomplishment_report'),
+('gad_lgu_permission', 'gad_delete_attachment'),
+('gad_lgu_permission', 'gad_delete_plan_budget'),
+('gad_lgu_permission', 'gad_delete_rowaccomplishment'),
+('gad_lgu_permission', 'gad_delete_rowplanbudget'),
+('gad_lgu_permission', 'gad_edit_cell'),
+('gad_lgu_permission', 'gad_edit_gisupdata'),
+('gad_lgu_permission', 'gad_endorse_report'),
+('gad_lgu_permission', 'gad_load_plan'),
+('gad_lgu_permission', 'gad_load_uploaded_files'),
+('gad_lgu_permission', 'gad_menu_create'),
+('gad_lgu_permission', 'gad_menu_report'),
+('gad_lgu_permission', 'gad_submit_report'),
+('gad_lgu_permission', 'gad_update_other_details'),
+('gad_lgu_permission', 'gad_upload_files_row'),
+('gad_lgu_permission', 'gad_upload_later'),
+('gad_lgu_permission', 'gad_view_comment'),
+('gad_lgu_permission', 'gad_viewreport_accomplishment'),
+('gad_lgu_permission', 'gad_viewreport_planbudget'),
+('gad_lgu_province', 'gad_lgu_province_permission'),
+('gad_lgu_province_permission', 'gad_attach_accomplishment'),
+('gad_lgu_province_permission', 'gad_create_accomplishment'),
+('gad_lgu_province_permission', 'gad_create_comment'),
+('gad_lgu_province_permission', 'gad_create_planbudget'),
+('gad_lgu_province_permission', 'gad_delete_accomplishment_report'),
+('gad_lgu_province_permission', 'gad_delete_attachment'),
+('gad_lgu_province_permission', 'gad_delete_plan_budget'),
+('gad_lgu_province_permission', 'gad_delete_rowaccomplishment'),
+('gad_lgu_province_permission', 'gad_delete_rowplanbudget'),
+('gad_lgu_province_permission', 'gad_edit_cell'),
+('gad_lgu_province_permission', 'gad_endorse_report'),
+('gad_lgu_province_permission', 'gad_load_plan'),
+('gad_lgu_province_permission', 'gad_load_uploaded_files'),
+('gad_lgu_province_permission', 'gad_menu_create'),
+('gad_lgu_province_permission', 'gad_menu_report'),
+('gad_lgu_province_permission', 'gad_review_report'),
+('gad_lgu_province_permission', 'gad_submit_report'),
+('gad_lgu_province_permission', 'gad_update_other_details'),
+('gad_lgu_province_permission', 'gad_upload_files_row'),
+('gad_lgu_province_permission', 'gad_upload_later'),
+('gad_lgu_province_permission', 'gad_view_comment'),
+('gad_lgu_province_permission', 'gad_viewreport_accomplishment'),
+('gad_lgu_province_permission', 'gad_viewreport_planbudget'),
+('gad_ppdo', 'gad_ppdo_permission'),
+('gad_ppdo_permission', 'gad_comment_for_ppdo'),
+('gad_ppdo_permission', 'gad_create_comment'),
+('gad_ppdo_permission', 'gad_create_letter_menu'),
+('gad_ppdo_permission', 'gad_dashboard_menu'),
+('gad_ppdo_permission', 'gad_document_menu'),
+('gad_ppdo_permission', 'gad_endorse_report'),
+('gad_ppdo_permission', 'gad_letter_endorsement_ppdo'),
+('gad_ppdo_permission', 'gad_letter_review_ppdo'),
+('gad_ppdo_permission', 'gad_menu_report'),
+('gad_ppdo_permission', 'gad_return_report'),
+('gad_ppdo_permission', 'gad_review_report'),
+('gad_ppdo_permission', 'gad_submit_to_cmlgoo'),
+('gad_ppdo_permission', 'gad_upload_files_endorsing'),
+('gad_ppdo_permission', 'gad_view_comment'),
+('gad_ppdo_permission', 'gad_viewreport_accomplishment'),
+('gad_ppdo_permission', 'gad_viewreport_planbudget'),
+('gad_province', 'gad_province_permission'),
+('gad_province_permission', 'gad_comment_for_dilg_province'),
+('gad_province_permission', 'gad_create_letter_menu'),
+('gad_province_permission', 'gad_dashboard_menu'),
+('gad_province_permission', 'gad_document_menu'),
+('gad_province_permission', 'gad_letter_endorsement_dilg'),
+('gad_province_permission', 'gad_letter_general_observation'),
+('gad_province_permission', 'gad_letter_specifc_observation'),
+('gad_province_permission', 'gad_menu_report'),
+('gad_province_permission', 'gad_return_report'),
+('gad_province_permission', 'gad_review_report'),
+('gad_province_permission', 'gad_submit_report'),
+('gad_province_permission', 'gad_upload_files_endorsing'),
+('gad_province_permission', 'gad_view_comment'),
+('gad_province_permission', 'gad_viewreport_accomplishment'),
+('gad_province_permission', 'gad_viewreport_planbudget'),
+('gad_region', 'gad_region_permission'),
+('gad_region_permission', 'gad_attach_accomplishment'),
+('gad_region_permission', 'gad_comment_for_dilg_region'),
+('gad_region_permission', 'gad_create_comment'),
+('gad_region_permission', 'gad_create_letter'),
+('gad_region_permission', 'gad_create_letter_menu'),
+('gad_region_permission', 'gad_dashboard_menu'),
+('gad_region_permission', 'gad_delete_uploaded_files_endorsing'),
+('gad_region_permission', 'gad_document_menu'),
+('gad_region_permission', 'gad_endorse_report'),
+('gad_region_permission', 'gad_hgdg_score_standard'),
+('gad_region_permission', 'gad_letter_endorsement_dilg'),
+('gad_region_permission', 'gad_letter_general_observation'),
+('gad_region_permission', 'gad_letter_specifc_observation'),
+('gad_region_permission', 'gad_menu_report'),
+('gad_region_permission', 'gad_return_report'),
+('gad_region_permission', 'gad_review_report'),
+('gad_region_permission', 'gad_submit_all_to_central'),
+('gad_region_permission', 'gad_submit_report'),
+('gad_region_permission', 'gad_submit_to_central'),
+('gad_region_permission', 'gad_upload_files_endorsing'),
+('gad_region_permission', 'gad_view_comment'),
+('gad_region_permission', 'gad_viewreport_accomplishment'),
+('gad_region_permission', 'gad_viewreport_planbudget');
 
 -- --------------------------------------------------------
 
@@ -137,20 +661,59 @@ CREATE TABLE `auth_rule` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `file`
+--
+
+CREATE TABLE `file` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `model` varchar(255) NOT NULL,
+  `itemId` int(11) NOT NULL,
+  `hash` varchar(255) NOT NULL,
+  `size` int(11) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `mime` varchar(255) NOT NULL,
+  `is_main` tinyint(1) DEFAULT '0',
+  `date_upload` int(11) DEFAULT NULL,
+  `sort` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `file`
+--
+
+INSERT INTO `file` (`id`, `name`, `model`, `itemId`, `hash`, `size`, `type`, `mime`, `is_main`, `date_upload`, `sort`) VALUES
+(5, '3067', 'GadPlanBudget', 119, '27645fd5348e4e3ef2cff19fe2988320', 199422, 'jpg', 'image/jpeg', 0, 1561677769, 1),
+(6, '3091', 'GadPlanBudget', 119, 'ae6e6a6b95596a50321d3e463c42fe8e', 501655, 'jpg', 'image/jpeg', 0, 1561677769, 1),
+(7, '86a37a5176a8e18ace4ea55f9480303b-700', 'GadPlanBudget', 119, '616bfcbfa5848e1553e823f00c5d5a7d', 96763, 'jpg', 'image/jpeg', 0, 1561677769, 1),
+(8, 'Letter1(1)', 'GadPlanBudget', 117, '6697e1afc1978af6c182b9515af0abf7', 40135, 'docx', 'application/octet-stream', 0, 1561684647, 1),
+(9, 'Workshop - Process Flow, Data Analysis, Performance Monitoring', 'GadPlanBudget', 117, '42e2ed3a174bc6416e9d0d00b15189fb', 44871, 'xlsm', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 0, 1561684647, 1),
+(11, 'sample_pdf', 'GadPlanBudget', 117, '9305a539391a96ece4141bf71a8ef0b4', 180215, 'pdf', 'application/pdf', 0, 1561689311, 1),
+(12, 'CHRISTINE-JUSTIFICATION_2nd-sem-2019', 'GadPlanBudget', 120, '959d2e1200b8a9318c5cfda772fb569e', 50001, 'docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 0, 1561700994, 1),
+(14, 'testing_changing_name', '', 0, '', 0, '', '', 0, NULL, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `gad_accomplishment_report`
 --
 
 CREATE TABLE `gad_accomplishment_report` (
   `id` int(11) NOT NULL,
+  `plan_budget_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `record_id` int(11) DEFAULT NULL,
   `focused_id` int(11) DEFAULT NULL,
   `inner_category_id` int(11) DEFAULT NULL,
+  `gi_sup_data` text,
+  `source` varchar(250) DEFAULT NULL,
+  `cliorg_ppa_attributed_program_id` varchar(50) DEFAULT NULL,
   `ppa_focused_id` int(11) DEFAULT NULL,
   `ppa_value` text,
   `cause_gender_issue` text,
   `objective` text,
   `relevant_lgu_ppa` text,
+  `activity_category_id` varchar(150) DEFAULT NULL,
   `activity` text,
   `performance_indicator` text,
   `target` text,
@@ -170,19 +733,60 @@ CREATE TABLE `gad_accomplishment_report` (
 -- Dumping data for table `gad_accomplishment_report`
 --
 
-INSERT INTO `gad_accomplishment_report` (`id`, `user_id`, `record_id`, `focused_id`, `inner_category_id`, `ppa_focused_id`, `ppa_value`, `cause_gender_issue`, `objective`, `relevant_lgu_ppa`, `activity`, `performance_indicator`, `target`, `actual_results`, `total_approved_gad_budget`, `actual_cost_expenditure`, `variance_remarks`, `date_created`, `time_created`, `date_updated`, `time_updated`, `record_tuc`, `this_tuc`) VALUES
-(1, NULL, NULL, 1, 1, 1, '', 'fsdfds', 'fsdfds', 'fsdf', 'fsdfs', 'fdsf', 'sdfsd', 'fsdfs', '124323.00', '232.00', 'fsdfsdf', '2019-04-01', '04:18:10pm', NULL, NULL, NULL, NULL),
-(2, NULL, NULL, 1, 1, 0, 'ppa other value', 'cause of gender issue', 'gad objetive', 'relevant', 'gad act', 'indictor', 'target', 'actual', '11111111.00', '222222.00', 'variance', '2019-04-01', '04:19:33pm', NULL, NULL, NULL, NULL),
-(3, NULL, 23, 1, 1, 0, 'value added tax', 'cause of the gender issue is here by request 12345', 'gad objecctive samples', '', '', 'perform sample', '120 participants', '-- 100 has been participated', '4545454.00', '4590000000.00', 'very good', '2019-04-02', '02:36:08pm', NULL, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'd6861363e2d3cc3137cffda883ee5002'),
-(4, NULL, 23, 2, 1, 0, 'value added tax 56', 'cause of the gender issue is here by request', 'gad objecctive samples', '', '', '', '', '', '110.00', '101.00', '', '2019-04-02', '02:38:04pm', NULL, NULL, '2be6b436dff7942e9a17cd20d42a7f24', '64ef1879acb1c511a4570a6341ea9647'),
-(5, NULL, 23, 2, 1, 0, 'value added tax 56', 'cause of the gender issue is here by request', 'gad objecctive samples', '', '', '', '', '', NULL, NULL, '', '2019-04-02', '02:38:14pm', NULL, NULL, '2be6b436dff7942e9a17cd20d42a7f24', '317d10c69ca2d3922bca9c8640658422'),
-(6, NULL, 23, 2, 1, 0, 'value added tax 56', 'cause of the gender issue is here by request', 'gad objecctive samples', '', '', '', '', '', NULL, NULL, '', '2019-04-02', '02:38:20pm', NULL, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'a08e57a0e127d51659b4dd2a710080ab'),
-(7, NULL, 23, 1, 1, 1, '', 'other posible organizaiont', 'gad object 123', 'relevant sample lgu', 'hey hey gad activity', '-- 2,980 children ages 3-4 yrs. Old\n\n-- 65 Day Care Workers 65 Day Care Centers 1', '', '-- michael\n-- markbon\n-- daniel\n-- remar', '12300000000.00', '145.00', '', '2019-04-02', '02:41:48pm', NULL, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'edf3b506da2359b45a59749491c3699c'),
-(8, NULL, 23, 2, 1, 1, '', 'fsdfsd', 'fsdfsdfdf', '', '', '', '', '', '1.00', '102.00', '', '2019-04-02', '03:20:06pm', NULL, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'd97b0707f31df33db2cccf49f91a1ef7'),
-(9, NULL, 23, 1, 2, 1, '', 'FSDFDS', 'FSDFSDFS', '', 'may makikilala', '', '', '', NULL, NULL, '', '2019-04-02', '03:21:42pm', NULL, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'ae8c5a2a78c1658b105a8c5e75155bf5'),
-(10, NULL, 23, 2, 2, 1, '', 'gdfgf', 'gfgfg', '', '', '', '', '', '109.00', '100.00', '', '2019-04-02', '03:22:19pm', NULL, NULL, '2be6b436dff7942e9a17cd20d42a7f24', '56cec2ca4e8de6f57e70643a2d9d01fb'),
-(11, NULL, 40, 1, 1, 0, '23 sample data', 'cause and gender', 'gad objecctive samples', '', '', '', '', '', NULL, NULL, '', '2019-04-04', '01:07:46pm', NULL, NULL, '073c73c9e247e11d6d301828ba036cf0', 'ed045e0be4c4243fd6c888425d73c941'),
-(12, NULL, 51, 1, 1, 1, '', 'fsdfds', 'FSDFSDFS', '', '', '', '', '', NULL, NULL, '', '2019-04-04', '03:14:39pm', NULL, NULL, '65d2e30191bc151895e278720dbfe760', 'd559f1d6cad0530c858bbfbf6439d7cb');
+INSERT INTO `gad_accomplishment_report` (`id`, `plan_budget_id`, `user_id`, `record_id`, `focused_id`, `inner_category_id`, `gi_sup_data`, `source`, `cliorg_ppa_attributed_program_id`, `ppa_focused_id`, `ppa_value`, `cause_gender_issue`, `objective`, `relevant_lgu_ppa`, `activity_category_id`, `activity`, `performance_indicator`, `target`, `actual_results`, `total_approved_gad_budget`, `actual_cost_expenditure`, `variance_remarks`, `date_created`, `time_created`, `date_updated`, `time_updated`, `record_tuc`, `this_tuc`) VALUES
+(1, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, 1, '', 'fsdfds', 'fsdfds', 'fsdf', NULL, 'fsdfs', 'fdsf', 'sdfsd', 'fsdfs', '124323.00', '232.00', 'fsdfsdf', '2019-04-01', '04:18:10pm', NULL, NULL, NULL, NULL),
+(2, 0, NULL, NULL, 1, 1, NULL, NULL, NULL, 0, 'ppa other value', 'cause of gender issue', 'gad objetive', 'relevant', NULL, 'gad act', 'indictor', 'target', 'actual', '11111111.00', '222222.00', 'variance', '2019-04-01', '04:19:33pm', NULL, NULL, NULL, NULL),
+(3, 0, NULL, 23, 1, 1, NULL, NULL, NULL, 0, 'value added tax', 'cause of the gender issue is here by request 12345', 'gad objecctive samples', '', NULL, '', 'perform sample', '120 participants', '-- 100 has been participated', '4545454.00', '4590000000.00', 'very good', '2019-04-02', '02:36:08pm', NULL, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'd6861363e2d3cc3137cffda883ee5002'),
+(4, 0, NULL, 23, 2, 1, NULL, NULL, NULL, 0, 'value added tax 56', 'cause of the gender issue is here by request', 'gad objecctive samples', '', NULL, '', '', '', '', '110.00', '101.00', '', '2019-04-02', '02:38:04pm', NULL, NULL, '2be6b436dff7942e9a17cd20d42a7f24', '64ef1879acb1c511a4570a6341ea9647'),
+(5, 0, NULL, 23, 2, 1, NULL, NULL, NULL, 0, 'value added tax 56', 'cause of the gender issue is here by request', 'gad objecctive samples', '', NULL, '', '', '', '', NULL, NULL, '', '2019-04-02', '02:38:14pm', NULL, NULL, '2be6b436dff7942e9a17cd20d42a7f24', '317d10c69ca2d3922bca9c8640658422'),
+(6, 0, NULL, 23, 2, 1, NULL, NULL, NULL, 0, 'value added tax 56', 'cause of the gender issue is here by request', 'gad objecctive samples', '', NULL, '', '', '', '', NULL, NULL, '', '2019-04-02', '02:38:20pm', NULL, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'a08e57a0e127d51659b4dd2a710080ab'),
+(7, 0, NULL, 23, 1, 1, NULL, NULL, NULL, 1, '', 'other posible organizaiont', 'gad object 123', 'relevant sample lgu', NULL, 'hey hey gad activity', '-- 2,980 children ages 3-4 yrs. Old\n\n-- 65 Day Care Workers 65 Day Care Centers 1', '', '-- michael\n-- markbon\n-- daniel\n-- remar', '12300000000.00', '145.00', '', '2019-04-02', '02:41:48pm', NULL, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'edf3b506da2359b45a59749491c3699c'),
+(8, 0, NULL, 23, 2, 1, NULL, NULL, NULL, 1, '', 'fsdfsd', 'fsdfsdfdf', '', NULL, '', '', '', '', '1.00', '102.00', '', '2019-04-02', '03:20:06pm', NULL, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'd97b0707f31df33db2cccf49f91a1ef7'),
+(9, 0, NULL, 23, 1, 2, NULL, NULL, NULL, 1, '', 'FSDFDS', 'FSDFSDFS', '', NULL, 'may makikilala', '', '', '', NULL, NULL, '', '2019-04-02', '03:21:42pm', NULL, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'ae8c5a2a78c1658b105a8c5e75155bf5'),
+(10, 0, NULL, 23, 2, 2, NULL, NULL, NULL, 1, '', 'gdfgf', 'gfgfg', '', NULL, '', '', '', '', '109.00', '100.00', '', '2019-04-02', '03:22:19pm', NULL, NULL, '2be6b436dff7942e9a17cd20d42a7f24', '56cec2ca4e8de6f57e70643a2d9d01fb'),
+(11, 0, NULL, 40, 1, 1, NULL, NULL, NULL, 0, '23 sample data', 'cause and gender', 'gad objecctive samples', '', NULL, '', '', '', '', NULL, NULL, '', '2019-04-04', '01:07:46pm', NULL, NULL, '073c73c9e247e11d6d301828ba036cf0', 'ed045e0be4c4243fd6c888425d73c941'),
+(12, 0, NULL, 51, 1, 1, NULL, NULL, NULL, 1, '', 'fsdfds', 'FSDFSDFS', '', NULL, '', '', '', '', NULL, NULL, '', '2019-04-04', '03:14:39pm', NULL, NULL, '65d2e30191bc151895e278720dbfe760', 'd559f1d6cad0530c858bbfbf6439d7cb'),
+(13, 0, NULL, 67, 1, 1, 'Supporting data stats', NULL, '1,2,3,4,5', 0, 'descr 123 456', 'aother activity category', 'gad object 123 456', 'Relevant 123', NULL, 'gad ct 123', 'target 123 567', '', 'actual 123', '123.00', '123.00', 'remarks 123', '2019-05-23', '09:56:05am', NULL, NULL, '9c89544eaea8171182c5e6718a3b8c6c', '20c89eed86e903e05b926db73614e128'),
+(15, 0, NULL, 67, 1, 1, 'Stats gender issue', NULL, '1,2,3,4,5', 1, 'other', '', 'gad obje', 'Relevant 123', NULL, 'gad', 'perform', '', 'acsdfs', '3000000.00', '300000.00', 'ramarks', '2019-05-23', '01:42:10pm', NULL, NULL, '9c89544eaea8171182c5e6718a3b8c6c', '98e9b48facab9ff349f88b0b6db1ec31'),
+(16, 0, NULL, 67, 1, 2, '', NULL, '1,2,3,4,5', 0, 'DEscription GAD Mandate AR tara na bels', 'SPecify AR act cate', 'objective AR 123', 'relevant AR 123', NULL, 'activity AR 123', 'indicator target AR 123', '', 'actual results AR 123', '340000000.00', '12300000.00', 'variance remarks w123', '2019-05-23', '01:45:46pm', NULL, NULL, '9c89544eaea8171182c5e6718a3b8c6c', '4ce87c49a7501e9f2b60d67ab71dfaf7'),
+(17, 0, NULL, 82, 1, 1, 'Gender issue sample data', NULL, '1,2,3,4,5', 1, 'Title of Gender Issue', '', 'GAD objective', 'relevant', NULL, 'gad acti', 'performance', '', 'actual results', '15200000.00', '2300000.00', 'Sample vairnace remarks', '2019-05-31', '10:08:40am', NULL, NULL, '2abd12ac7fbd47cf3b6ebcd799ab3ff2', '4aa17b0810c7936bb8347f877daa143a'),
+(18, 0, NULL, 105, 1, 1, 'Hey hey', NULL, '1,2,3,4,5', 1, 'Title of desc', '', 'gad obje', 'Relevant 123', NULL, 'gad act', 'performance', '', 'actual', '12320000.00', '90992.00', 'variance', '2019-06-19', '01:54:06pm', NULL, NULL, 'c89356180d5b36f52087537e213900b4', '7bafdf34c25147cd58b2e45fa41ad3a0'),
+(33, NULL, NULL, 140, 1, 1, 'Supporting data 12', 'source12.com', '1,2,4,5', NULL, 'Sample GAD', NULL, 'Objective', 'Relevant data', '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16', 'Activity 1', '50 female students', NULL, '50 students', '560000.00', '4000.00', 'Remarks', '2019-08-10', '12:49:10pm', NULL, NULL, '9e787d0bd7b851b485681d72a37cc3ad', NULL),
+(66, 350, NULL, 150, 1, 2, 'Sample Supporting Statistics Data', 'Sample Source of Supporting Statistics data', '1,2,5', NULL, 'Slow progress of gender mainstreaming in the provincial government', NULL, '1. Strengthen the GAD Focal Point System in the Provincial government', 'None', '3,4,5', 'Regular Meetings of GFPS; Conduct of GAD capacity Development Activities for GFPS Members', '4 Quarterly Meetings\n1 training conducted\n50% Female\n50% Male', NULL, NULL, '100000.00', NULL, NULL, NULL, NULL, NULL, NULL, '062f782fa9d5532a5c35d32042952547', NULL),
+(67, 351, NULL, 150, 2, 1, 'Sample Supporting Statistics Data', 'Sample Source of Supporting Statistics data', '1,3,4', NULL, 'Inadequate Health services to male & female retires', NULL, 'Establish linkage with provl. Retirees. Improve health and lifesyle of provl. Retirees', 'Provincial Capitol Retirees Care and welfare Program', '1,2,3,7,10,14,16', 'Conduct Retirees Annual gathering :\n1. Outreach medical & dental Services\n2. Laboratory Exams\n3. Livelihood Training\n4. Socio-cultural education/training\n5. Dental Consultation Services', '132 registered retirees (85 male + 48 female) avail of the medical services', NULL, NULL, '258000.00', '100000.00', NULL, NULL, NULL, NULL, NULL, '062f782fa9d5532a5c35d32042952547', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_activity_category`
+--
+
+CREATE TABLE `gad_activity_category` (
+  `id` int(11) NOT NULL,
+  `title` varchar(250) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `gad_activity_category`
+--
+
+INSERT INTO `gad_activity_category` (`id`, `title`) VALUES
+(1, 'CapDev / Trainings - Gender Sensitivity Trainings (GST)'),
+(2, 'CapDev / Trainings - Gender Analysis'),
+(3, 'CapDev / Trainings - Gender Responsive Planning and Budgeting'),
+(4, 'CapDev / Trainings - GAD Related Policies'),
+(5, 'Development of IEC Materials'),
+(6, 'GAD Advocacy Activities'),
+(7, 'PPAs related to the implementation of Republic Act No. 10354-Reproductive Health Law'),
+(8, 'Establishment of Violence Against Women and their Children (VAWC)  Center'),
+(9, 'Establishment / Maintenance of Day Care Center'),
+(10, 'Establishment / Maintenance of Women Crisis Center'),
+(11, 'Establishment / Maintenance of Halfway houses for trafficked women and girls'),
+(12, 'Institutional Mechanism to Implement the MCW - Creation and/or Strengthening the LGU GFPS'),
+(13, 'Institutional Mechanism to Implement the MCW - Establishment & Maintenance of GAD Database'),
+(14, 'Institutional Mechanism to Implement the MCW - GAD Planning & Budgeting Local Development Plans'),
+(15, 'Institutional Mechanism to Implement the MCW - Mainstreaming Gender Perspectives in Local Development Plans'),
+(16, 'Institutional Mechanism to Implement the MCW - Formulation/Enhancement and Implementation of the LGU GAD Code');
 
 -- --------------------------------------------------------
 
@@ -195,13 +799,15 @@ CREATE TABLE `gad_ar_attributed_program` (
   `record_id` int(11) DEFAULT NULL,
   `record_tuc` varchar(150) DEFAULT NULL,
   `controller_id` varchar(150) DEFAULT NULL,
-  `ppa_attributed_program_id` int(11) DEFAULT NULL,
+  `ppa_attributed_program_id` varchar(150) DEFAULT NULL,
   `ppa_attributed_program_others` text,
   `lgu_program_project` text,
+  `checklist_id` int(11) DEFAULT NULL,
+  `score_type` int(11) DEFAULT NULL,
   `hgdg_pimme` varchar(10) DEFAULT NULL,
   `total_annual_pro_cost` decimal(18,2) DEFAULT NULL,
   `gad_attributed_pro_cost` decimal(18,2) DEFAULT NULL,
-  `variance_remarks` text,
+  `ar_ap_variance_remarks` text,
   `date_created` date DEFAULT NULL,
   `time_created` varchar(10) DEFAULT NULL,
   `date_updated` date DEFAULT NULL,
@@ -212,17 +818,26 @@ CREATE TABLE `gad_ar_attributed_program` (
 -- Dumping data for table `gad_ar_attributed_program`
 --
 
-INSERT INTO `gad_ar_attributed_program` (`id`, `record_id`, `record_tuc`, `controller_id`, `ppa_attributed_program_id`, `ppa_attributed_program_others`, `lgu_program_project`, `hgdg_pimme`, `total_annual_pro_cost`, `gad_attributed_pro_cost`, `variance_remarks`, `date_created`, `time_created`, `date_updated`, `time_updated`) VALUES
-(1, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-accomplishment-report', 0, 'sample AR', 'Sample title of lgu program and project', '1.000', '24000000.00', '1500000.00', 'variance remarks sample', NULL, NULL, NULL, NULL),
-(2, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-accomplishment-report', 0, 'other value of ap program', 'title of LGU for the second time around 123', '1.34', '34500000.00', '456767777777.00', 'fsdfsd 1234', '2019-04-03', '02:44:13pm', NULL, NULL),
-(3, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-accomplishment-report', 1, '', 'Sample title of lgu program and project', '1.23', '670000000000.00', '45000000000.00', '', '2019-04-03', '02:50:16pm', NULL, NULL),
-(4, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-accomplishment-report', 3, '', 'fsdfdsf', '1.23', '340000000.00', '3400000.00', '', '2019-04-03', '02:52:34pm', NULL, NULL),
-(5, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-accomplishment-report', 1, '', 'fsdfsdfsd', '1.0', NULL, NULL, '', '2019-04-03', '02:59:12pm', NULL, NULL),
-(6, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-accomplishment-report', 1, '', 'fsdfds', 'fsdf', '1234444444444.00', '123555555555.00', '', '2019-04-03', '03:02:02pm', NULL, NULL),
-(7, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-accomplishment-report', 5, '', 'institutional issue of the philippines', '1.5', '450000000.00', '600000000.00', '', '2019-04-04', '08:56:34am', NULL, NULL),
-(8, NULL, '073c73c9e247e11d6d301828ba036cf0', 'gad-accomplishment-report', 0, 'attribute 23 sample data', 'sample title', '', NULL, NULL, '', '2019-04-04', '01:12:16pm', NULL, NULL),
-(9, NULL, 'f3e1aa4386c25c74357c542d6d70ae29', 'gad-accomplishment-report', 1, '', 'sample to create passing variable to default', '', NULL, NULL, '', '2019-04-04', '01:26:01pm', NULL, NULL),
-(10, NULL, 'f3e1aa4386c25c74357c542d6d70ae29', 'gad-accomplishment-report', 5, '', 'sample institutional view report and tocreate is equal to not', '', NULL, NULL, '', '2019-04-04', '01:27:46pm', NULL, NULL);
+INSERT INTO `gad_ar_attributed_program` (`id`, `record_id`, `record_tuc`, `controller_id`, `ppa_attributed_program_id`, `ppa_attributed_program_others`, `lgu_program_project`, `checklist_id`, `score_type`, `hgdg_pimme`, `total_annual_pro_cost`, `gad_attributed_pro_cost`, `ar_ap_variance_remarks`, `date_created`, `time_created`, `date_updated`, `time_updated`) VALUES
+(1, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-accomplishment-report', '0', 'sample AR', 'Sample title of lgu program and project', NULL, NULL, '1.000', '24000000.00', '1500000.00', 'variance remarks sample', NULL, NULL, NULL, NULL),
+(2, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-accomplishment-report', '0', 'other value of ap program', 'title of LGU for the second time around 123', NULL, NULL, '1.34', '34500000.00', '456767777777.00', 'fsdfsd 1234', '2019-04-03', '02:44:13pm', NULL, NULL),
+(3, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-accomplishment-report', '1', '', 'Sample title of lgu program and project', NULL, NULL, '1.23', '670000000000.00', '45000000000.00', '', '2019-04-03', '02:50:16pm', NULL, NULL),
+(4, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-accomplishment-report', '3', '', 'fsdfdsf', NULL, NULL, '1.23', '340000000.00', '3400000.00', '', '2019-04-03', '02:52:34pm', NULL, NULL),
+(5, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-accomplishment-report', '1', '', 'fsdfsdfsd', NULL, NULL, '1.0', NULL, NULL, '', '2019-04-03', '02:59:12pm', NULL, NULL),
+(6, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-accomplishment-report', '1', '', 'fsdfds', NULL, NULL, 'fsdf', '1234444444444.00', '123555555555.00', '', '2019-04-03', '03:02:02pm', NULL, NULL),
+(7, NULL, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-accomplishment-report', '5', '', 'institutional issue of the philippines', NULL, NULL, '1.5', '450000000.00', '600000000.00', '', '2019-04-04', '08:56:34am', NULL, NULL),
+(8, NULL, '073c73c9e247e11d6d301828ba036cf0', 'gad-accomplishment-report', '0', 'attribute 23 sample data', 'sample title', NULL, NULL, '', NULL, NULL, '', '2019-04-04', '01:12:16pm', NULL, NULL),
+(9, NULL, 'f3e1aa4386c25c74357c542d6d70ae29', 'gad-accomplishment-report', '1', '', 'sample to create passing variable to default', NULL, NULL, '', NULL, NULL, '', '2019-04-04', '01:26:01pm', NULL, NULL),
+(10, NULL, 'f3e1aa4386c25c74357c542d6d70ae29', 'gad-accomplishment-report', '5', '', 'sample institutional view report and tocreate is equal to not', NULL, NULL, '', NULL, NULL, '', '2019-04-04', '01:27:46pm', NULL, NULL),
+(11, NULL, '9c89544eaea8171182c5e6718a3b8c6c', 'gad-accomplishment-report', '1', '', 'Title AR attributed programs 123', NULL, NULL, '6.5', '5000000.00', '6000000.00', '', '2019-05-23', '02:01:19pm', NULL, NULL),
+(12, NULL, '9c89544eaea8171182c5e6718a3b8c6c', 'gad-accomplishment-report', NULL, '', 'Sample title of lgu program and project', NULL, NULL, '4.5', '1000000.00', NULL, '', '2019-05-23', '02:27:06pm', NULL, NULL),
+(13, NULL, '2abd12ac7fbd47cf3b6ebcd799ab3ff2', 'gad-accomplishment-report', '1', '', 'Title of LGU', NULL, NULL, '5.6', '8500000.00', NULL, 'variance', '2019-05-31', '10:09:42am', NULL, NULL),
+(14, NULL, '2abd12ac7fbd47cf3b6ebcd799ab3ff2', 'gad-accomplishment-report', '1', '', 'sample title', NULL, NULL, '4.5', '67670000.00', NULL, 'variance', '2019-05-31', '10:20:43am', NULL, NULL),
+(17, NULL, 'c89356180d5b36f52087537e213900b4', 'gad-accomplishment-report', '1', '', 'Sample Attributed Programs Title Under Accomplishment Report', NULL, NULL, '20.1', '500000.00', NULL, 'sample remarks', '2019-06-10', '01:37:02pm', NULL, NULL),
+(24, 140, '9e787d0bd7b851b485681d72a37cc3ad', 'gad-accomplishment-report', '1,2,3,4,5', NULL, 'Title of LGU Program or Project Sample\n\nTitle of LGU Program or Project Sample\n\nTitle of LGU Program or Project Sample\n\nTitle of LGU Program or Project Sample', 22, 2, '7.8', '989889898.00', NULL, 'Sample Remarks\n\nSample Remarks\n\nSample Remarks', '2019-08-10', '12:38:43pm', NULL, NULL),
+(27, NULL, '062f782fa9d5532a5c35d32042952547', 'gad-accomplishment-report', '1,3,4', NULL, 'Strengthening of Material and Child Health Program Through Community Volunteerism', 6, NULL, '17.07', '40566000.00', NULL, NULL, NULL, NULL, NULL, NULL),
+(28, NULL, '062f782fa9d5532a5c35d32042952547', 'gad-accomplishment-report', '2,5', NULL, 'Basic Computer Literacy Training', 10, NULL, '18.66', '200000.00', NULL, NULL, NULL, NULL, NULL, NULL),
+(29, NULL, '062f782fa9d5532a5c35d32042952547', 'gad-accomplishment-report', '1', NULL, 'Special Program for Employment of Students', 5, NULL, '18.66', '900000.00', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -235,48 +850,591 @@ CREATE TABLE `gad_attributed_program` (
   `record_id` int(11) DEFAULT NULL,
   `record_tuc` varchar(150) DEFAULT NULL,
   `controller_id` varchar(150) DEFAULT NULL,
-  `ppa_attributed_program_id` int(11) DEFAULT NULL,
+  `ppa_attributed_program_id` varchar(50) DEFAULT NULL,
   `ppa_attributed_program_others` text,
   `lgu_program_project` text,
-  `hgdg` varchar(10) DEFAULT NULL,
+  `checklist_id` int(11) DEFAULT NULL,
+  `hgdg` double DEFAULT NULL,
   `total_annual_pro_budget` decimal(18,2) DEFAULT NULL,
   `attributed_pro_budget` decimal(18,2) DEFAULT NULL,
-  `lead_responsible_office` varchar(150) DEFAULT NULL,
+  `ap_lead_responsible_office` varchar(150) DEFAULT NULL,
   `date_created` date DEFAULT NULL,
   `time_created` varchar(10) DEFAULT NULL,
   `date_updated` date DEFAULT NULL,
-  `time_updated` varchar(10) DEFAULT NULL
+  `time_updated` varchar(10) DEFAULT NULL,
+  `upload_status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `gad_attributed_program`
 --
 
-INSERT INTO `gad_attributed_program` (`id`, `record_id`, `record_tuc`, `controller_id`, `ppa_attributed_program_id`, `ppa_attributed_program_others`, `lgu_program_project`, `hgdg`, `total_annual_pro_budget`, `attributed_pro_budget`, `lead_responsible_office`, `date_created`, `time_created`, `date_updated`, `time_updated`) VALUES
-(1, NULL, NULL, NULL, NULL, 'ppa other value 1', 'lgu program value 1', '0.0', '1000.00', '2000.00', 'GAD Office', NULL, NULL, NULL, NULL),
-(2, NULL, NULL, NULL, NULL, 'ppa value 2', 'lgu value 2', '0.0', '3000.00', '4000.00', 'GAD Staff', NULL, NULL, NULL, NULL),
-(3, NULL, '35ef7ed7529399d9732cfc57dcc3c583', NULL, 1, '', 'sample economic title of lgu program 1234', '0.0', '123.00', '56.00', 'GAD Staff samole for economic', '2019-03-28', '11:20:51am', NULL, NULL),
-(4, NULL, '35ef7ed7529399d9732cfc57dcc3c583', 'gad-plan-budget', 0, 'Sample PPA Here', 'Untitle is the title 123', '0.0', NULL, NULL, 'GAD IT Staff', '2019-03-28', '01:48:51pm', NULL, NULL),
-(5, NULL, '35ef7ed7529399d9732cfc57dcc3c583', 'gad-plan-budget', 3, '', 'Title of this LGU is untitled', '0.0', '9090998.00', '566000000.00', 'GAD ISTMS STAFF 123', '2019-03-28', '01:52:26pm', NULL, NULL),
-(6, NULL, '35ef7ed7529399d9732cfc57dcc3c583', 'gad-plan-budget', 2, '', 'Social Experiement', '0.0', '8900000.00', '450000.00', 'GAD Focal Person', '2019-03-28', '04:05:28pm', NULL, NULL),
-(7, NULL, '35ef7ed7529399d9732cfc57dcc3c583', 'gad-plan-budget', 0, 'Sample PPA Here', 'Gender and Attributes', '1.0000', NULL, NULL, '', '2019-03-28', '04:09:10pm', NULL, NULL),
-(8, NULL, '35ef7ed7529399d9732cfc57dcc3c583', 'gad-plan-budget', 3, '', 'sample infra program', '0.0', NULL, NULL, '', '2019-03-28', '04:15:18pm', NULL, NULL),
-(9, NULL, '5f5e132cdbc034cb4e0edea82a6abdf3', 'gad-plan-budget', 1, '', 'Title of this LGU is untitled', '', NULL, NULL, '', '2019-04-02', '11:22:06am', NULL, NULL),
-(10, NULL, '61e6afa72a40ff43549cb4d43ece2bc3', 'gad-plan-budget', 1, '', 'to create passing variable', '1.2', NULL, NULL, '', '2019-04-04', '01:51:32pm', NULL, NULL);
+INSERT INTO `gad_attributed_program` (`id`, `record_id`, `record_tuc`, `controller_id`, `ppa_attributed_program_id`, `ppa_attributed_program_others`, `lgu_program_project`, `checklist_id`, `hgdg`, `total_annual_pro_budget`, `attributed_pro_budget`, `ap_lead_responsible_office`, `date_created`, `time_created`, `date_updated`, `time_updated`, `upload_status`) VALUES
+(1, NULL, NULL, NULL, NULL, 'ppa other value 1', 'lgu program value 1', NULL, 0, '1000.00', '2000.00', 'GAD Office', NULL, NULL, NULL, NULL, 0),
+(2, NULL, NULL, NULL, NULL, 'ppa value 2', 'lgu value 2', NULL, 0, '3000.00', '4000.00', 'GAD Staff', NULL, NULL, NULL, NULL, 0),
+(3, NULL, '35ef7ed7529399d9732cfc57dcc3c583', NULL, '1', '', 'sample economic title of lgu program 1234', NULL, 0, '123.00', '56.00', 'GAD Staff samole for economic', '2019-03-28', '11:20:51am', NULL, NULL, 0),
+(4, NULL, '35ef7ed7529399d9732cfc57dcc3c583', 'gad-plan-budget', '0', 'Sample PPA Here', 'Untitle is the title 123', NULL, 0, NULL, NULL, 'GAD IT Staff', '2019-03-28', '01:48:51pm', NULL, NULL, 0),
+(5, NULL, '35ef7ed7529399d9732cfc57dcc3c583', 'gad-plan-budget', '3', '', 'Title of this LGU is untitled', NULL, 0, '9090998.00', '566000000.00', 'GAD ISTMS STAFF 123', '2019-03-28', '01:52:26pm', NULL, NULL, 0),
+(6, NULL, '35ef7ed7529399d9732cfc57dcc3c583', 'gad-plan-budget', '2', '', 'Social Experiement', NULL, 0, '8900000.00', '450000.00', 'GAD Focal Person', '2019-03-28', '04:05:28pm', NULL, NULL, 0),
+(7, NULL, '35ef7ed7529399d9732cfc57dcc3c583', 'gad-plan-budget', '0', 'Sample PPA Here', 'Gender and Attributes', NULL, 1, NULL, NULL, '', '2019-03-28', '04:09:10pm', NULL, NULL, 0),
+(8, NULL, '35ef7ed7529399d9732cfc57dcc3c583', 'gad-plan-budget', '3', '', 'sample infra program', NULL, 0, NULL, NULL, '', '2019-03-28', '04:15:18pm', NULL, NULL, 0),
+(9, NULL, '5f5e132cdbc034cb4e0edea82a6abdf3', 'gad-plan-budget', '1', '', 'Title of this LGU is untitled', NULL, 0, NULL, NULL, '', '2019-04-02', '11:22:06am', NULL, NULL, 0),
+(10, NULL, '61e6afa72a40ff43549cb4d43ece2bc3', 'gad-plan-budget', '1', '', 'to create passing variable', NULL, 1.2, NULL, NULL, '', '2019-04-04', '01:51:32pm', NULL, NULL, 0),
+(11, NULL, '4c3925c6c806b0c5382e5d24b023d1ea', 'gad-plan-budget', '0', 'Other value sample', 'Sample title', NULL, 5, '100000.00', '450000.00', 'GAD Focal Person', '2019-04-12', '11:10:45am', NULL, NULL, 0),
+(12, NULL, '4c3925c6c806b0c5382e5d24b023d1ea', 'gad-plan-budget', '1', '', 'economic sample data', NULL, 8, '677.00', '6700000.00', 'hfdghfgh', '2019-04-12', '11:13:25am', NULL, NULL, 0),
+(13, NULL, '4c3925c6c806b0c5382e5d24b023d1ea', 'gad-plan-budget', '1', '', 'sample data form economic 2', NULL, 16, NULL, NULL, '', '2019-04-12', '11:14:02am', NULL, NULL, 0),
+(14, NULL, '4c3925c6c806b0c5382e5d24b023d1ea', 'gad-plan-budget', '2', '', 'Sample data for social 1234', NULL, 20, '700.00', '23440000.00', 'GAD CO', '2019-04-12', '11:14:20am', NULL, NULL, 0),
+(15, NULL, '4c3925c6c806b0c5382e5d24b023d1ea', 'gad-plan-budget', '1', NULL, 'Program project Under these 5 sectors', NULL, 1.5, '800.00', '4500000000.00', '', '2019-05-22', '09:26:05am', NULL, NULL, 0),
+(16, NULL, '4c3925c6c806b0c5382e5d24b023d1ea', 'gad-plan-budget', '1,2,4,5', NULL, 'Program project Under these 4 sectors', NULL, 20.1, '0.00', '25000000000.00', 'GAD Central Office', '2019-05-22', '09:29:31am', NULL, NULL, 0),
+(17, NULL, '16922c0d901f3b1975a967afb5578266', 'gad-plan-budget', '1,2,3,4,5', NULL, 'sample economic title of lgu program 1234', NULL, 5.6, '78000000.00', '55656565.00', 'pre', '2019-05-27', '02:53:24pm', NULL, NULL, 0),
+(18, NULL, '16922c0d901f3b1975a967afb5578266', 'gad-plan-budget', '1,2,3,4,5', NULL, 'Title', NULL, 7.8, '90000000.00', NULL, 'GAD Focal', '2019-05-27', '02:56:54pm', NULL, NULL, 0),
+(20, NULL, '4e77aa678b7f8dcfc2220505b51fdb49', 'gad-plan-budget', '1,2,3,4,5', NULL, 'Title of LGU Program', NULL, 20, '800000.00', NULL, 'GAD Staff', '2019-06-10', '01:47:55pm', NULL, NULL, 0),
+(21, NULL, '98195d1c3333389675f1a36bde7d4286', 'gad-plan-budget', '1,2,3,4,5', NULL, 'LGU Program project', NULL, 4.5, '12000.00', NULL, 'GAD Staff', '2019-06-10', '02:38:39pm', NULL, NULL, 0),
+(22, NULL, '98195d1c3333389675f1a36bde7d4286', 'gad-plan-budget', '1,2,3,4,5', NULL, 'Title of this LGU is untitled', NULL, 23, '56000.00', NULL, 'GAD Staff', '2019-06-10', '02:40:38pm', NULL, NULL, 0),
+(23, NULL, '8b88c704e67966ef323bfa4b45377d8b', 'gad-plan-budget', '1,2,3,4,5', NULL, 'Sample Project', NULL, 18, '20000.00', NULL, 'GAD Staff', '2019-06-24', '02:14:39pm', NULL, NULL, 0),
+(24, NULL, '296aa15132005f8aa01ea83c9a73e056', 'gad-plan-budget', '1,2,3,4,5', NULL, 'Sample Project', NULL, 19.89, '12000.00', NULL, 'GAD Staff', '2019-06-24', '02:17:24pm', NULL, NULL, 0),
+(25, NULL, '296aa15132005f8aa01ea83c9a73e056', 'gad-plan-budget', '1,2,3,4,5', NULL, 'Sample 1', NULL, 4.5, '10000.00', NULL, 'GAD Staff', '2019-06-24', '02:36:34pm', NULL, NULL, 0),
+(54, NULL, 'eef0b042ca4df3ec3339eee83d56930c', 'gad-plan-budget', '3', NULL, 'ROAD AND BRIDGES DEVELOPMENT PROGRAM', NULL, 14.32, '60000.00', NULL, 'Provincial Engineer\'s Office', '2019-07-25', '11:58:25pm', NULL, NULL, 2),
+(55, NULL, 'eef0b042ca4df3ec3339eee83d56930c', 'gad-plan-budget', '3', NULL, 'MOTORPOOL DEVELOPMENT AND MANAGEMENT PROGRAM', NULL, 12.48, '145000000.00', NULL, 'Provincial Equipment Pool Office', '2019-07-26', '12:00:16am', NULL, NULL, 2),
+(56, NULL, 'eef0b042ca4df3ec3339eee83d56930c', 'gad-plan-budget', '2', NULL, 'PROVINCIAL HEALTH OFFICE OPERATION MANAGEMENT', NULL, 18.52, '53562867.00', NULL, 'Provincial Health Office', '2019-07-26', '12:04:02am', NULL, NULL, 2),
+(57, NULL, '3441318fcd7b90c521af0e80e1911017', 'gad-plan-budget', '1', NULL, 'AGRI-LIME PRODUCTION PROGRAM', NULL, 8.81, '2800000.00', NULL, 'OPG-Livelihood Project Management Unit', '2019-07-26', '09:16:01am', NULL, NULL, 2),
+(59, NULL, 'eef0b042ca4df3ec3339eee83d56930c', 'gad-plan-budget', '1,2,3,4,5', NULL, 'MOTORPOOL DEVELOPMENT AND MANAGEMENT PROGRAM', NULL, 8.56, '4000000.00', NULL, 'Provincial Engineer\'s Office', '2019-07-26', '04:23:14pm', NULL, NULL, 2),
+(103, 133, '55f4a86614bac551da0adcc56f029f95', 'gad-plan-budget', '1,2,3,4,5', NULL, 'Strengthening of Material and Child Health Program Through Community Volunteerism', 21, 17.07, '40566000.00', NULL, 'PSWDO', '2019-08-10', '07:26:30pm', NULL, NULL, 2),
+(104, 133, '55f4a86614bac551da0adcc56f029f95', 'gad-plan-budget', '2,5', NULL, 'Basic Computer Literacy Training', 10, 18.66, '200000.00', NULL, 'PSWDO', '2019-08-10', '07:26:30pm', NULL, NULL, 0),
+(105, 133, '55f4a86614bac551da0adcc56f029f95', 'gad-plan-budget', '1', NULL, 'Special Program for Employment of Students', 6, 18.66, '900000.00', NULL, 'PSWDO', '2019-08-10', '07:26:30pm', NULL, NULL, 0),
+(106, NULL, '19f257a47426bdfb9979fda8530640b6', 'gad-plan-budget', '1,2,3,4,5', NULL, 'Title of LGU sample 1', 1, 7.8, '582222.00', NULL, 'GAD Focal Person', '2019-08-21', '12:48:38pm', NULL, NULL, 1),
+(107, 141, '130c5b8a7ec305bf81528c729ea83190', 'gad-plan-budget', '1,3,4', NULL, 'Strengthening of Material and Child Health Program Through Community Volunteerism', 6, 17.07, '40566000.00', NULL, 'PSWDO', '2019-08-22', '11:31:45am', NULL, NULL, 2),
+(108, 141, '130c5b8a7ec305bf81528c729ea83190', 'gad-plan-budget', '2,5', NULL, 'Basic Computer Literacy Training', 10, 18.66, '200000.00', NULL, 'PSWDO', '2019-08-22', '11:31:45am', NULL, NULL, 2),
+(109, 141, '130c5b8a7ec305bf81528c729ea83190', 'gad-plan-budget', '1', NULL, 'Special Program for Employment of Students', 5, 18.66, '900000.00', NULL, 'PSWDO', '2019-08-22', '11:31:45am', NULL, NULL, 2),
+(110, 146, '4a77f676cdab18ab09d663af3c8eb665', 'gad-plan-budget', '1,3,4', NULL, 'Strengthening of Material and Child Health Program Through Community Volunteerism', 6, 17.07, '40566000.00', NULL, 'PSWDO', '2019-08-22', '04:01:54pm', NULL, NULL, 0),
+(111, 146, '4a77f676cdab18ab09d663af3c8eb665', 'gad-plan-budget', '2,5', NULL, 'Basic Computer Literacy Training', 10, 18.66, '200000.00', NULL, 'PSWDO', '2019-08-22', '04:01:54pm', NULL, NULL, 0),
+(112, 146, '4a77f676cdab18ab09d663af3c8eb665', 'gad-plan-budget', '1', NULL, 'Special Program for Employment of Students', 5, 18.66, '900000.00', NULL, 'PSWDO', '2019-08-22', '04:01:54pm', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `gad_attributes`
+-- Table structure for table `gad_category_comment`
 --
 
-CREATE TABLE `gad_attributes` (
+CREATE TABLE `gad_category_comment` (
   `id` int(11) NOT NULL,
-  `table_name` varchar(50) DEFAULT NULL,
-  `clone_table_name` varchar(50) DEFAULT NULL,
-  `attribute_name` varchar(50) DEFAULT NULL,
-  `clone_attribute_name` varchar(50) DEFAULT NULL
+  `category_id` int(11) DEFAULT NULL,
+  `record_id` int(11) DEFAULT NULL,
+  `value` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `gad_category_comment`
+--
+
+INSERT INTO `gad_category_comment` (`id`, `category_id`, `record_id`, `value`) VALUES
+(4, NULL, NULL, 'a.	All programs, activities and projects (PAPs) are responsive to LGU’s identified gender issues and/or GAD mandates; 123'),
+(5, NULL, NULL, 'b.	All attributed programs followed the guidelines in the circulars; and '),
+(7, NULL, NULL, 'c.	Used and accomplished the correct template/form.'),
+(8, NULL, 7, 'tor'),
+(9, 7, 113, '1.What was the purpose on the establishment of Community GAD Centers? If the said centers are an avenue for the GAD information, please include in your objective'),
+(10, 7, 113, '2.What is the gender issue for the skills training with women as the target group? Please conduct gender analysis to surface-out the gender disparity of the activity. Support the gender issue with statistics.'),
+(11, 7, 114, 'se se se no hey no baby'),
+(12, 7, 132, ' Kindly improve the statement of the gender issue on Item 2 (page 1).'),
+(13, 7, 132, 'For uniformity purposes, performance indicators and targets should be stated in the following manner:'),
+(14, 7, 132, 'When citing a law, write the particular section of the law that is being invoked as GAD Mandate. For example, which section of Republic Act 10361 or the Batas Kasambahay states that there should be an increased awareness of the general public on the rights, privileges and benefits of domestic workers?'),
+(15, 7, 132, 'The objective of the Social Welfare and Community Development activity (page 2) should mention that those policies are GAD-related.'),
+(16, 7, 132, 'What is the gender issue behind the Government Internship Program? What is the basis for the selection of 100 newly-graduated students to benefit from the program?'),
+(17, 7, 132, 'What is the gender issue on Women Empowerment and Gender Activation on Livelihood Development (page 2)? Are the target beneficiaries (300 fisherfolk) women?'),
+(18, 7, 132, 'Kindly improve the statement of the GAD mandate under income generating projects (page 3'),
+(19, 7, 132, 'sample comments'),
+(20, 7, 136, '1.	What was the purpose on the establishment of Community GAD Centers? If the said centers are an avenue for the GAD information, please include in your objective'),
+(21, 7, 136, '2.	What is the gender issue for the skills training with women as the target group? Please conduct gender analysis to surface-out the gender disparity of the activity. Support the gender issue with statistics.'),
+(22, 7, 136, '3.	Are these women victims of violence? If so, you may include this in gender issue on domestic violence (row 2 page 1).'),
+(23, 7, 139, 'sample comment 1'),
+(24, 7, 139, 'sample comment 2'),
+(25, 7, 139, 'sample comment 3');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_checklist`
+--
+
+CREATE TABLE `gad_checklist` (
+  `id` int(11) NOT NULL,
+  `report_type_id` int(11) NOT NULL,
+  `title` varchar(250) DEFAULT NULL,
+  `is_hidden` int(11) NOT NULL,
+  `sort` double NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `gad_checklist`
+--
+
+INSERT INTO `gad_checklist` (`id`, `report_type_id`, `title`, `is_hidden`, `sort`) VALUES
+(1, 1, 'Generic', 0, 1),
+(2, 1, 'Agricultural and Agrarian Reform', 0, 2),
+(3, 1, 'Natural Resource Management', 0, 3),
+(4, 1, 'Private Sector Development', 0, 5),
+(5, 1, 'Social Sector : Education', 0, 6),
+(6, 1, 'Social Sector : Health', 0, 7),
+(7, 1, 'Social Sector : Housing and Settlement', 0, 8),
+(8, 1, 'Social Sector Women in Areas Under Armed Conflict', 0, 9),
+(9, 1, 'Justice', 0, 10),
+(10, 1, 'Information and Communication Technologies', 0, 11),
+(11, 1, 'Microfinance', 0, 12),
+(12, 1, 'Labor and Employment', 0, 13),
+(13, 1, 'Child Labor', 0, 14),
+(14, 1, 'Migration', 0, 15),
+(15, 1, 'Infrastructure', 0, 4),
+(16, 1, 'Tourism', 0, 16),
+(17, 1, 'Energy', 0, 17),
+(18, 1, 'Disaster Risk Reduction and Management', 0, 18),
+(19, 1, 'Development Planning', 0, 19),
+(20, 1, 'Funding Facilities', 0, 20),
+(21, 1, 'Fisheries', 0, 21),
+(22, 2, 'Project Implementation and Management, and Monitoring Evaluation', 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_cms_category`
+--
+
+CREATE TABLE `gad_cms_category` (
+  `id` int(255) NOT NULL,
+  `title` text COLLATE utf8_unicode_ci NOT NULL,
+  `frequency` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `frequency_id` int(255) DEFAULT NULL,
+  `lgup_content_type_id` int(11) NOT NULL DEFAULT '1',
+  `lgup_content_width_id` int(11) DEFAULT NULL,
+  `applicable_to` int(11) NOT NULL,
+  `left_or_right` int(11) NOT NULL,
+  `sort` double DEFAULT NULL,
+  `add_comment` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `gad_cms_category`
+--
+
+INSERT INTO `gad_cms_category` (`id`, `title`, `frequency`, `frequency_id`, `lgup_content_type_id`, `lgup_content_width_id`, `applicable_to`, `left_or_right`, `sort`, `add_comment`) VALUES
+(7, 'Letter of Deficiencies and GPB Review Form (General Observations and Recommendations)', '', NULL, 1, NULL, 0, 0, NULL, 0),
+(8, 'Letter of Review and Endorsement from Provincial Planning and Development Coordinating Office', '', NULL, 1, NULL, 0, 0, NULL, 0),
+(9, 'Certificate of Review and Endorsement from DILG Region/Province', '', NULL, 1, NULL, 0, 0, NULL, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_cms_choice_with_subquestion`
+--
+
+CREATE TABLE `gad_cms_choice_with_subquestion` (
+  `id` int(255) NOT NULL,
+  `indicator_id` int(255) DEFAULT NULL,
+  `answer` varchar(200) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `gad_cms_choice_with_subquestion`
+--
+
+INSERT INTO `gad_cms_choice_with_subquestion` (`id`, `indicator_id`, `answer`) VALUES
+(1, 1, 'others'),
+(2, 2, 'others'),
+(3, 3, 'others'),
+(4, 4, 'others'),
+(5, 5, 'others'),
+(6, 7, 'others'),
+(7, 10, 'others'),
+(8, 11, 'others'),
+(9, 12, 'others'),
+(10, 13, 'others'),
+(11, 16, 'others'),
+(12, 19, 'Others'),
+(13, 20, 'Others'),
+(14, 21, 'Others'),
+(15, 22, 'Others'),
+(16, 24, 'Others'),
+(17, 27, 'Others'),
+(18, 28, 'Others'),
+(19, 29, 'Others'),
+(20, 30, 'Others'),
+(21, 32, 'Others'),
+(24, 41, 'Others'),
+(25, 43, 'Others'),
+(26, 45, 'Others'),
+(27, 50, 'Others'),
+(28, 52, 'Others'),
+(29, 54, 'Others'),
+(30, 64, 'YES'),
+(31, 77, 'YES'),
+(32, 101, 'others'),
+(33, 103, 'others'),
+(34, 105, 'Others'),
+(36, 111, 'Others'),
+(37, 113, 'Others'),
+(38, 115, 'Others');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_cms_content_type`
+--
+
+CREATE TABLE `gad_cms_content_type` (
+  `id` int(11) NOT NULL,
+  `type` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `gad_cms_content_type`
+--
+
+INSERT INTO `gad_cms_content_type` (`id`, `type`, `description`) VALUES
+(1, 'Detailed View', 'Detailed LGU Information'),
+(2, 'Grid View', ''),
+(4, 'Image', ''),
+(5, 'Slide Images', ''),
+(6, 'PDF Preview', ''),
+(7, 'Map', ''),
+(8, 'Pie Chart', ''),
+(9, 'Bar Graph', ''),
+(10, 'Line Graph', ''),
+(11, 'Downloadables', ''),
+(12, 'List of Links', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_cms_content_width`
+--
+
+CREATE TABLE `gad_cms_content_width` (
+  `id` int(11) NOT NULL,
+  `class_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(250) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `gad_cms_content_width`
+--
+
+INSERT INTO `gad_cms_content_width` (`id`, `class_name`, `description`) VALUES
+(1, 'col-sm-12', 'column for small devices 100%'),
+(2, 'col-md-12', 'column for medium devices 100%'),
+(3, 'col-lg-12', 'column for large devices 100%');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_cms_frequency`
+--
+
+CREATE TABLE `gad_cms_frequency` (
+  `id` int(255) NOT NULL,
+  `title` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+  `count` int(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `gad_cms_frequency`
+--
+
+INSERT INTO `gad_cms_frequency` (`id`, `title`, `count`) VALUES
+(1, 'Term', 0),
+(2, 'Annually', 1),
+(3, 'Semi-annually', 2),
+(4, 'Quarterly', 4),
+(5, 'Monthly', 12),
+(6, 'Weekly', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_cms_frequency_details`
+--
+
+CREATE TABLE `gad_cms_frequency_details` (
+  `id` int(255) NOT NULL,
+  `frequency_id` int(255) NOT NULL,
+  `details` varchar(100) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `gad_cms_frequency_details`
+--
+
+INSERT INTO `gad_cms_frequency_details` (`id`, `frequency_id`, `details`) VALUES
+(1, 1, 'Term'),
+(2, 2, 'Year'),
+(3, 3, 'First Semester'),
+(4, 3, 'Second Semester'),
+(5, 4, 'First Quarter'),
+(6, 4, 'Second Quarter'),
+(7, 4, 'Third Quarter'),
+(8, 4, 'Fourth Quarter'),
+(9, 5, 'January'),
+(10, 5, 'February'),
+(11, 5, 'March'),
+(12, 5, 'April'),
+(13, 5, 'May'),
+(14, 5, 'June'),
+(15, 5, 'July'),
+(16, 5, 'August'),
+(17, 5, 'September'),
+(18, 5, 'October'),
+(19, 5, 'November'),
+(20, 5, 'December');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_cms_indicator`
+--
+
+CREATE TABLE `gad_cms_indicator` (
+  `id` int(255) NOT NULL,
+  `category_id` int(255) NOT NULL,
+  `title` text COLLATE utf8_unicode_ci NOT NULL,
+  `type_id` int(255) DEFAULT NULL,
+  `frequency_id` int(255) DEFAULT NULL,
+  `unit_id` int(255) DEFAULT NULL,
+  `default_choice_id` int(255) DEFAULT NULL,
+  `parent` int(255) NOT NULL,
+  `in_chart` int(11) DEFAULT NULL,
+  `sort` double DEFAULT NULL,
+  `is_required` int(11) DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `gad_cms_indicator`
+--
+
+INSERT INTO `gad_cms_indicator` (`id`, `category_id`, `title`, `type_id`, `frequency_id`, `unit_id`, `default_choice_id`, `parent`, `in_chart`, `sort`, `is_required`) VALUES
+(156, 7, 'Date: _____________', 2, NULL, 6, NULL, 0, NULL, 1, 2),
+(157, 7, 'Dear _______________,', 2, NULL, 6, NULL, 0, NULL, 3, 2),
+(158, 7, 'Address of LGU', 2, NULL, 6, NULL, 0, NULL, 2, 2),
+(159, 7, 'This Office acknowledges receipt of the GAD Plan and Budget (GPB) FY ______ of your LGU. We, however, defer endorsement of the same due to the following general observations and recommendations and enclosed/attached specific observations and recommendations:', 2, NULL, 2, NULL, 0, NULL, NULL, 2),
+(161, 7, 'Very truly yours,', 2, NULL, 6, NULL, 0, NULL, NULL, 2),
+(162, 7, 'Signatory Title', 2, NULL, 7, 1, 0, NULL, NULL, 2),
+(163, 8, 'Date', 2, NULL, 6, NULL, 0, NULL, NULL, 2),
+(164, 8, '(Name of the Provincial Director)', 2, NULL, 6, NULL, 0, NULL, 2, 2),
+(165, 8, '(Province Name)', 2, NULL, 6, NULL, 0, NULL, 3, 2),
+(166, 8, 'This is in reference to the GAD Plan and Budget (GPB) FY (yyyy) of   (Name of LGU)\r\n\r\nPlease be informed that per review of this   Office, the   said GPB is aligned with Municipality/City/Provinciale priorities/plans. \r\n\r\nFollowing the provisions  of  Republic Act No. 9710 and its Implementing Rules and Regulations, and PCW-DILG-DBM-NEDA Joint Memorandum Circular Nos. 2013-01 and  2016-01,  we are forwarding  to  your  office the  GAD plan and  Budget FY (yyyy) of    (Name of LGU)  for  your review  and issuance  of endorsement  to  incorporate  the said   GPB  to  their Annual Investment Program and Annual  Budget.', 1, NULL, NULL, NULL, 0, NULL, 4, 1),
+(167, 8, '(yyyy)', 2, NULL, 2, NULL, 0, NULL, NULL, 2),
+(168, 8, '(Name of LGU)', 2, NULL, 6, NULL, 0, NULL, NULL, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_cms_ind_choices`
+--
+
+CREATE TABLE `gad_cms_ind_choices` (
+  `id` int(255) NOT NULL,
+  `indicator_id` int(255) DEFAULT NULL,
+  `default_choice_id` int(255) DEFAULT NULL,
+  `value` varchar(300) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `gad_cms_ind_choices`
+--
+
+INSERT INTO `gad_cms_ind_choices` (`id`, `indicator_id`, `default_choice_id`, `value`) VALUES
+(201, 162, NULL, 'Regional Director'),
+(202, 162, NULL, 'Provincial Director');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_cms_ind_default_choices`
+--
+
+CREATE TABLE `gad_cms_ind_default_choices` (
+  `id` int(255) NOT NULL,
+  `title` varchar(100) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `gad_cms_ind_default_choices`
+--
+
+INSERT INTO `gad_cms_ind_default_choices` (`id`, `title`) VALUES
+(1, 'OTHERS'),
+(2, 'YES/NO'),
+(3, 'PRESENCE/ABSENCE'),
+(4, 'POSTED/NOT POSTED'),
+(5, 'ON-GOING/COMPLETED'),
+(6, '1/0');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_cms_sub_question`
+--
+
+CREATE TABLE `gad_cms_sub_question` (
+  `id` int(255) NOT NULL,
+  `indicator_id` int(255) DEFAULT NULL,
+  `sub_question` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
+  `type` int(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `gad_cms_sub_question`
+--
+
+INSERT INTO `gad_cms_sub_question` (`id`, `indicator_id`, `sub_question`, `type`) VALUES
+(1, 1, 'Please specify', 6),
+(2, 2, 'Please specify', 6),
+(3, 3, 'Please specify', 6),
+(4, 4, 'Please specify', 6),
+(5, 5, 'Please specify', 6),
+(6, 7, 'Please specify', 6),
+(7, 10, 'Please specify', 6),
+(8, 11, 'Please specify', 6),
+(9, 12, 'Please specify', 6),
+(10, 13, 'Please specify', 6),
+(11, 16, 'Please specify', 6),
+(12, 19, 'Please Specify', 6),
+(13, 20, 'Please Specify', 6),
+(14, 21, 'Please Specify', 6),
+(15, 22, 'Please Specify', 6),
+(16, 24, 'Please Specify', 6),
+(17, 27, 'Please Specify', 6),
+(18, 28, 'Please Specify', 6),
+(19, 29, 'Please Specify', 6),
+(20, 30, 'Please Specify', 6),
+(21, 32, 'Please Specify', 6),
+(24, 41, 'Please Specify', 2),
+(25, 43, 'Please Specify', 2),
+(26, 45, 'Please Specify', 2),
+(27, 50, 'Please Specify', 2),
+(28, 52, 'Please Specify', 2),
+(29, 54, 'Please Specify', 2),
+(30, 64, 'Agencies involved', 6),
+(31, 77, 'Agencies involved', 6),
+(32, 101, 'Please Specify', 2),
+(33, 103, 'Please Specify', 2),
+(34, 105, 'Please Specify', 2),
+(36, 111, 'Please Specify', 2),
+(37, 113, 'Please Specify', 2),
+(38, 115, 'Please Specify', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_cms_type`
+--
+
+CREATE TABLE `gad_cms_type` (
+  `id` int(255) NOT NULL,
+  `title` varchar(50) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `gad_cms_type`
+--
+
+INSERT INTO `gad_cms_type` (`id`, `title`) VALUES
+(1, 'title'),
+(2, 'question'),
+(3, 'second-level-title'),
+(4, 'third-level-title'),
+(5, 'question-main-title'),
+(6, 'question-second-level-title'),
+(7, 'question-third-level-title');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_cms_unit`
+--
+
+CREATE TABLE `gad_cms_unit` (
+  `id` int(255) NOT NULL,
+  `title` varchar(50) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `gad_cms_unit`
+--
+
+INSERT INTO `gad_cms_unit` (`id`, `title`) VALUES
+(1, 'NONE'),
+(2, 'NUMERICAL'),
+(3, 'AMOUNT'),
+(4, 'YEAR'),
+(5, 'DATE'),
+(6, 'TEXT'),
+(7, 'DROPDOWN'),
+(8, 'NUMERICAL (WITH DECIMAL)'),
+(9, 'TEXTAREA'),
+(10, 'FILE ATTACHMENT'),
+(11, 'CHECKBOX');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_cms_values`
+--
+
+CREATE TABLE `gad_cms_values` (
+  `id` int(255) NOT NULL,
+  `term_record_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `yearly_record_id` int(255) DEFAULT NULL,
+  `da_brgy_id` int(255) DEFAULT NULL,
+  `category_id` int(255) NOT NULL,
+  `indicator_id` int(255) NOT NULL,
+  `sub_question_id` int(255) DEFAULT NULL,
+  `frequency_details_id` int(255) DEFAULT NULL,
+  `value` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `remarks` text COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `gad_cms_values`
+--
+
+INSERT INTO `gad_cms_values` (`id`, `term_record_id`, `yearly_record_id`, `da_brgy_id`, `category_id`, `indicator_id`, `sub_question_id`, `frequency_details_id`, `value`, `remarks`) VALUES
+(1731, NULL, 114, NULL, 7, 156, NULL, NULL, '12/09/2019', ''),
+(1732, NULL, 114, NULL, 7, 157, NULL, NULL, 'Governor Vilma Santos', ''),
+(1733, NULL, 114, NULL, 7, 158, NULL, NULL, 'Pangasinan', ''),
+(1734, NULL, 114, NULL, 7, 159, NULL, NULL, '2019', ''),
+(1735, NULL, 114, NULL, 7, 160, NULL, NULL, 'Pangasinan', ''),
+(1736, NULL, 114, NULL, 7, 161, NULL, NULL, 'Mark Bon', ''),
+(1737, NULL, 114, NULL, 7, 162, NULL, NULL, 'City Planning and Coordinating Officer', ''),
+(1738, NULL, 113, NULL, 7, 156, NULL, NULL, '12/09/2019', ''),
+(1739, NULL, 113, NULL, 7, 157, NULL, NULL, 'Mayor Joy Belmonte', ''),
+(1740, NULL, 113, NULL, 7, 158, NULL, NULL, 'Quezon City', ''),
+(1741, NULL, 113, NULL, 7, 159, NULL, NULL, '2019', ''),
+(1742, NULL, 113, NULL, 7, 160, NULL, NULL, 'Quezon City', ''),
+(1743, NULL, 113, NULL, 7, 161, NULL, NULL, 'Mark Angelo Bon', ''),
+(1744, NULL, 113, NULL, 7, 162, NULL, NULL, 'City Planning and Coordinating Officer', ''),
+(1779, NULL, 132, NULL, 7, 156, NULL, NULL, 'July 24, 2019', ''),
+(1780, NULL, 132, NULL, 7, 157, NULL, NULL, 'Governor Mark Angelo D. Bon', ''),
+(1781, NULL, 132, NULL, 7, 158, NULL, NULL, 'Adams', ''),
+(1782, NULL, 132, NULL, 7, 159, NULL, NULL, '2018', ''),
+(1783, NULL, 132, NULL, 7, 161, NULL, NULL, 'Genicka Mae DG. Paguiligan', ''),
+(1784, NULL, 132, NULL, 7, 162, NULL, NULL, 'Regional Director', ''),
+(1785, NULL, 136, NULL, 7, 156, NULL, NULL, 'July 28, 2019', ''),
+(1786, NULL, 136, NULL, 7, 157, NULL, NULL, 'Juan Dela Cruz', ''),
+(1787, NULL, 136, NULL, 7, 158, NULL, NULL, 'Apalit, Pampanga', ''),
+(1788, NULL, 136, NULL, 7, 159, NULL, NULL, '2018', ''),
+(1789, NULL, 136, NULL, 7, 161, NULL, NULL, 'Pedro S. Reyes', ''),
+(1790, NULL, 136, NULL, 7, 162, NULL, NULL, 'Provincial Director', ''),
+(1791, NULL, 139, NULL, 7, 156, NULL, NULL, '', ''),
+(1792, NULL, 139, NULL, 7, 157, NULL, NULL, '', ''),
+(1793, NULL, 139, NULL, 7, 158, NULL, NULL, '', ''),
+(1794, NULL, 139, NULL, 7, 159, NULL, NULL, '', ''),
+(1795, NULL, 139, NULL, 7, 161, NULL, NULL, '', ''),
+(1796, NULL, 139, NULL, 7, 162, NULL, NULL, '', ''),
+(1803, NULL, 139, NULL, 8, 163, NULL, NULL, '', ''),
+(1804, NULL, 139, NULL, 8, 164, NULL, NULL, '', ''),
+(1805, NULL, 139, NULL, 8, 165, NULL, NULL, '', ''),
+(1806, NULL, 139, NULL, 8, 166, NULL, NULL, '', ''),
+(1807, NULL, 139, NULL, 8, 167, NULL, NULL, '', ''),
+(1808, NULL, 139, NULL, 8, 168, NULL, NULL, '', '');
 
 -- --------------------------------------------------------
 
@@ -286,18 +1444,22 @@ CREATE TABLE `gad_attributes` (
 
 CREATE TABLE `gad_comment` (
   `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `office_c` int(2) DEFAULT NULL,
+  `resp_user_id` int(11) DEFAULT NULL,
+  `resp_office_c` int(2) DEFAULT NULL,
   `record_id` int(11) DEFAULT NULL,
-  `record_tuc` varchar(100) DEFAULT NULL,
-  `form_id` varchar(50) DEFAULT NULL,
-  `controller_id` varchar(50) DEFAULT NULL,
   `plan_budget_id` int(11) NOT NULL,
-  `plan_budget_tuc` varchar(100) DEFAULT NULL,
-  `region_c` varchar(2) DEFAULT NULL,
-  `province_c` varchar(2) DEFAULT NULL,
-  `citymun_c` varchar(2) DEFAULT NULL,
+  `resp_region_c` varchar(2) DEFAULT NULL,
+  `resp_province_c` varchar(2) DEFAULT NULL,
+  `resp_citymun_c` varchar(2) DEFAULT NULL,
+  `focused_id` int(11) NOT NULL,
+  `inner_category_id` int(11) NOT NULL,
   `comment` mediumtext,
+  `row_no` int(11) NOT NULL,
+  `column_no` int(11) NOT NULL,
+  `column_title` varchar(250) DEFAULT NULL,
+  `row_value` text NOT NULL,
+  `column_value` text NOT NULL,
+  `model_name` varchar(150) DEFAULT NULL,
   `attribute_name` varchar(150) DEFAULT NULL,
   `date_created` date DEFAULT NULL,
   `time_created` varchar(10) DEFAULT NULL,
@@ -309,86 +1471,573 @@ CREATE TABLE `gad_comment` (
 -- Dumping data for table `gad_comment`
 --
 
-INSERT INTO `gad_comment` (`id`, `user_id`, `office_c`, `record_id`, `record_tuc`, `form_id`, `controller_id`, `plan_budget_id`, `plan_budget_tuc`, `region_c`, `province_c`, `citymun_c`, `comment`, `attribute_name`, `date_created`, `time_created`, `date_updated`, `time_updated`) VALUES
-(1, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 39, NULL, '13', '74', '04', 'Comment here', 'objective', '2019-03-25', '07:55:15am', NULL, NULL),
-(2, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 39, NULL, '13', '74', '04', 'Comment here 2', 'objective', '2019-03-25', '07:55:20am', NULL, NULL),
-(3, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 39, NULL, '13', '74', '04', 'Comment here 3', 'objective', '2019-03-25', '07:55:24am', NULL, NULL),
-(5, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 39, NULL, '13', '74', '04', 'add comment here 1', 'relevant_lgu_program_project', '2019-03-25', '09:19:35am', NULL, NULL),
-(6, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 39, NULL, '13', '74', '04', 'dagdag ng comment', 'objective', '2019-03-25', '09:22:05am', NULL, NULL),
-(7, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 39, NULL, '13', '74', '04', 'add comment to relebvant', 'relevant_lgu_program_project', '2019-03-25', '09:24:33am', NULL, NULL),
-(8, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 39, NULL, '13', '74', '04', 'bakit walang gad activity?', 'activity', '2019-03-25', '09:37:45am', NULL, NULL),
-(9, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 39, NULL, '13', '74', '04', 'test add comment after display gad activity', 'relevant_lgu_program_project', '2019-03-25', '09:38:08am', NULL, NULL),
-(10, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 37, NULL, '13', '74', '04', 'add comment to performance  target', 'performance_target', '2019-03-25', '09:58:43am', NULL, NULL),
-(12, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 38, NULL, '13', '74', '04', 'update indicator for demoralized by charms', 'performance_indicator', '2019-03-25', '10:01:09am', NULL, NULL),
-(13, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 39, NULL, '13', '74', '04', 'write comment here', 'budget_mooe', '2019-03-25', '10:04:10am', NULL, NULL),
-(14, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 38, NULL, '13', '74', '04', 'fdsfdf', 'budget_mooe', '2019-03-25', '10:15:14am', NULL, NULL),
-(15, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 37, NULL, '13', '74', '04', 'added comment', 'lead_responsible_office', '2019-03-25', '10:16:47am', NULL, NULL),
-(16, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 37, NULL, '13', '74', '04', 'bakit 100 lang?', 'budget_ps', '2019-03-25', '10:18:03am', NULL, NULL),
-(17, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 38, NULL, '13', '74', '04', 'fsdfdf', 'budget_ps', '2019-03-25', '10:19:43am', NULL, NULL),
-(18, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 37, NULL, '13', '74', '04', 'add v', 'performance_indicator', '2019-03-25', '11:26:48am', NULL, NULL),
-(19, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 41, NULL, '13', '74', '04', 'bakit walang responsible', 'lead_responsible_office', '2019-03-25', '11:42:25am', NULL, NULL),
-(20, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 39, NULL, '13', '74', '04', 'bakit walang budget', 'budget_ps', '2019-03-25', '12:23:48pm', NULL, NULL),
-(21, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 44, NULL, '13', '74', '04', 'add commenet here', 'objective', '2019-03-25', '02:04:13pm', NULL, NULL),
-(22, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 39, NULL, '13', '74', '04', 'add comment here', 'performance_indicator', '2019-03-25', '02:22:53pm', NULL, NULL),
-(23, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 39, NULL, '13', '74', '04', 'add comment', 'performance_target', '2019-03-25', '02:23:48pm', NULL, NULL),
-(24, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 42, NULL, '13', '74', '04', 'comment also here', 'performance_indicator', '2019-03-25', '02:24:21pm', NULL, NULL),
-(25, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 39, NULL, '13', '74', '04', 'comment nanamern', 'budget_co', '2019-03-26', '02:07:50pm', NULL, NULL),
-(26, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 39, NULL, '13', '74', '04', 'comment remar', 'performance_target', '2019-03-26', '03:39:47pm', NULL, NULL),
-(28, 1, 2, 18, '59b81cbb9281bcc907f7e746a56ebfb6', NULL, NULL, 54, NULL, '13', '74', '04', 'bakit walang laman ung pt?', 'performance_target', '2019-03-27', '10:21:54am', NULL, NULL),
-(29, 1, 2, 18, '59b81cbb9281bcc907f7e746a56ebfb6', NULL, NULL, 52, NULL, '13', '74', '04', 'fdsfd', 'relevant_lgu_program_project', '2019-03-27', '10:30:11am', NULL, NULL),
-(30, 1, 2, 18, '59b81cbb9281bcc907f7e746a56ebfb6', NULL, NULL, 53, NULL, '13', '74', '04', 'Comment here', 'performance_indicator', '2019-03-27', '11:57:37am', NULL, NULL),
-(31, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 37, NULL, '13', '74', '04', 'add comment', 'performance_indicator', '2019-03-27', '04:07:52pm', NULL, NULL),
-(32, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 37, NULL, '13', '74', '04', 'add comment', 'performance_indicator', '2019-03-27', '04:09:39pm', NULL, NULL),
-(33, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 37, NULL, '13', '74', '04', 'add comment', 'performance_indicator', '2019-03-27', '04:10:56pm', NULL, NULL),
-(34, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 38, NULL, '13', '74', '04', 'comment here to subscribe', 'relevant_lgu_program_project', '2019-03-27', '04:11:23pm', NULL, NULL),
-(35, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL, 38, NULL, '13', '74', '04', 'comment also here', 'budget_co', '2019-03-27', '04:12:03pm', NULL, NULL),
-(36, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'attributed-program', 'gad-plan-budget', 4, NULL, '13', '74', '04', 'vakit walang nakalagay?', 'hgdg', '2019-03-28', '02:39:25pm', NULL, NULL),
-(37, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'cli-org-focused-form', 'gad-plan-budget', 37, NULL, '13', '74', '04', 'client focused with cont form id', 'objective', '2019-03-28', '02:55:32pm', NULL, NULL),
-(38, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'cli-org-focused-form', 'gad-plan-budget', 57, NULL, '13', '74', '04', 'to decrease this potencial', 'relevant_lgu_program_project', '2019-03-28', '02:57:53pm', NULL, NULL),
-(39, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'cli-org-focused-form', 'gad-plan-budget', 38, NULL, '13', '74', '04', '12,334 lang?', 'budget_ps', '2019-03-28', '03:02:57pm', NULL, NULL),
-(40, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'cli-org-focused-form', 'gad-plan-budget', 38, NULL, '13', '74', '04', '100000 lang?', 'budget_mooe', '2019-03-28', '03:03:13pm', NULL, NULL),
-(41, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'cli-org-focused-form', 'gad-plan-budget', 38, NULL, '13', '74', '04', 'beguield lang?', 'performance_indicator', '2019-03-28', '03:03:25pm', NULL, NULL),
-(42, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'cli-org-focused-form', 'gad-plan-budget', 38, NULL, '13', '74', '04', 'indignation lang?', 'performance_target', '2019-03-28', '03:03:46pm', NULL, NULL),
-(44, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'cli-org-focused-form', 'gad-plan-budget', 38, NULL, '13', '74', '04', 'to be welcomed lang?', 'relevant_lgu_program_project', '2019-03-28', '03:04:18pm', NULL, NULL),
-(45, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'cli-org-focused-form', 'gad-plan-budget', 38, NULL, '13', '74', '04', 'who are so beguiled lang?', 'objective', '2019-03-28', '03:20:58pm', NULL, NULL),
-(46, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'cli-org-focused-form', 'gad-plan-budget', 38, NULL, '13', '74', '04', 'eh dapat dagdagan ng another beguiled 123', 'objective', '2019-03-28', '03:21:24pm', NULL, NULL),
-(47, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'cli-org-focused-form', 'gad-plan-budget', 38, NULL, '13', '74', '04', '78 lang talaga?', 'budget_co', '2019-03-28', '03:22:03pm', NULL, NULL),
-(49, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'cli-org-focused-form', 'gad-plan-budget', 38, NULL, '13', '74', '04', 'sige ako nalang', 'lead_responsible_office', '2019-03-28', '03:22:29pm', NULL, NULL),
-(51, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'cli-org-focused-form', 'gad-plan-budget', 44, NULL, '13', '74', '04', 'write here the comment', 'relevant_lgu_program_project', '2019-03-28', '03:26:51pm', NULL, NULL),
-(52, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'attributed-program', 'gad-plan-budget', 4, NULL, '13', '74', '04', 'total annual program budget comment', 'total_annual_pro_budget', '2019-03-28', '03:33:54pm', NULL, NULL),
-(53, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'cli-org-focused-form', 'gad-plan-budget', 38, NULL, '13', '74', '04', 'write', 'activity', '2019-03-28', '03:38:03pm', NULL, NULL),
-(54, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'cli-org-focused-form', 'gad-plan-budget', 38, NULL, '13', '74', '04', 'write comment', 'performance_target', '2019-03-28', '03:38:13pm', NULL, NULL),
-(55, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'attributed-program', 'gad-plan-budget', 4, NULL, '13', '74', '04', 'write ulet here', 'attributed_pro_budget', '2019-03-28', '03:39:31pm', NULL, NULL),
-(56, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'attributed-program', 'gad-plan-budget', 4, NULL, '13', '74', '04', 'tara na uwi na', 'lead_responsible_office', '2019-03-28', '04:03:16pm', NULL, NULL),
-(58, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'cli-org-focused-form', 'gad-plan-budget', 38, NULL, '13', '74', '04', 're so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound ', 'performance_target', '2019-03-29', '02:30:24pm', NULL, NULL),
-(59, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'cli-org-focused-form', 'gad-plan-budget', 38, NULL, '13', '74', '04', 'write another comments', 'performance_target', '2019-03-29', '02:32:58pm', NULL, NULL),
-(60, 1, 2, NULL, 'fsdfdsf3434', 'gad-ar-input-form', 'gad-accomplishment-report', 1, NULL, '13', '74', '04', 'save this comment', 'cause_gender_issue', '2019-04-02', '09:41:11am', NULL, NULL),
-(61, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 3, NULL, '13', '74', '04', 'add comment here', 'cause_gender_issue', '2019-04-02', '02:45:16pm', NULL, NULL),
-(63, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 3, NULL, '13', '74', '04', 'comment here', 'objective', '2019-04-02', '02:52:34pm', NULL, NULL),
-(64, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 7, NULL, '13', '74', '04', 'comment here', 'relevant_lgu_ppa', '2019-04-02', '02:55:21pm', NULL, NULL),
-(65, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 7, NULL, '13', '74', '04', 'comment here for relevant ', 'relevant_lgu_ppa', '2019-04-02', '02:55:35pm', NULL, NULL),
-(66, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 7, NULL, '13', '74', '04', 'bakit may hey hey? diba dapat wala', 'activity', '2019-04-02', '02:58:06pm', NULL, NULL),
-(67, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 3, NULL, '13', '74', '04', 'anong uri ng indicator?', 'performance_indicator', '2019-04-02', '03:00:17pm', NULL, NULL),
-(68, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 3, NULL, '13', '74', '04', 'bakit 120 ang kasali?', 'target', '2019-04-02', '03:01:57pm', NULL, NULL),
-(69, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 7, NULL, '13', '74', '04', 'bakit dito walang parti?', 'target', '2019-04-02', '03:02:11pm', NULL, NULL),
-(70, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 4, NULL, '13', '74', '04', 'anong actual result nito?', 'actual_results', '2019-04-02', '03:04:30pm', NULL, NULL),
-(71, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 7, NULL, '13', '74', '04', 'ang laki naman ng budget', 'total_approved_gad_budget', '2019-04-02', '03:08:24pm', NULL, NULL),
-(72, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 7, NULL, '13', '74', '04', 'paki mo ba?', 'total_approved_gad_budget', '2019-04-02', '03:08:35pm', NULL, NULL),
-(73, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 7, NULL, '13', '74', '04', 'bakit dito di dineclare?', 'actual_cost_expenditure', '2019-04-02', '03:09:03pm', NULL, NULL),
-(74, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 7, NULL, '13', '74', '04', 'pakilagyan naman ng remarks', 'variance_remarks', '2019-04-02', '03:11:26pm', NULL, NULL),
-(75, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 7, NULL, '13', '74', '04', 'write comment beshy wap', 'performance_indicator', '2019-04-03', '09:47:58am', NULL, NULL),
-(76, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 7, NULL, '13', '74', '04', 'add pa more', 'performance_indicator', '2019-04-03', '09:48:54am', NULL, NULL),
-(77, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 7, NULL, '13', '74', '04', 'comment pa sir', 'performance_indicator', '2019-04-03', '09:50:55am', NULL, NULL),
-(78, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'attributed-program', 'gad-accomplishment-report', 2, NULL, '13', '74', '04', 'sobrang laki naman ng budget', 'gad_attributed_pro_cost', '2019-04-03', '04:01:58pm', NULL, NULL),
-(79, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 7, NULL, '13', '74', '04', 'bakit silang apat lang? dapat kasama si yoseph', 'actual_results', '2019-04-04', '09:03:17am', NULL, NULL),
-(80, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 9, NULL, '13', '74', '04', 'ano ba yan', 'actual_results', '2019-04-04', '10:55:52am', NULL, NULL),
-(81, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'cli-org-focused-form', 'gad-plan-budget', 44, NULL, '13', '74', '04', 'gfhjk', 'relevant_lgu_program_project', '2019-04-04', '03:59:56pm', NULL, NULL),
-(82, 1, 2, 56, 'd577d1a0bec810f2ed218b29c92f6df3', 'cli-org-focused-form', 'gad-plan-budget', 84, NULL, '13', '74', '04', 'anakan moko\n', 'objective', '2019-04-04', '04:08:11pm', NULL, NULL),
-(83, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 9, NULL, '13', '74', '04', 'write comment here', 'activity', '2019-04-05', '09:13:15am', NULL, NULL),
-(84, 1, 2, 23, '2be6b436dff7942e9a17cd20d42a7f24', 'gad-ar-input-form', 'gad-accomplishment-report', 9, NULL, '13', '74', '04', 'comment here', 'performance_indicator', '2019-04-05', '09:14:25am', NULL, NULL),
-(85, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'attributed-program', 'gad-plan-budget', 7, NULL, '13', '74', '04', 'bakit wala?', 'lgu_program_project', '2019-04-08', '10:24:16am', NULL, NULL),
-(86, 1, 2, 4, '35ef7ed7529399d9732cfc57dcc3c583', 'attributed-program', 'gad-plan-budget', 7, NULL, '13', '74', '04', '1.0 galing ah', 'hgdg', '2019-04-08', '10:24:37am', NULL, NULL),
-(89, 1, 2, 58, '9227cb232c84b89369c8dd97442a3fa3', 'cli-org-focused-form', 'gad-plan-budget', 86, NULL, '13', '74', '04', 'sample comment 12345', 'relevant_lgu_program_project', '2019-04-08', '02:54:12pm', NULL, NULL);
+INSERT INTO `gad_comment` (`id`, `resp_user_id`, `resp_office_c`, `record_id`, `plan_budget_id`, `resp_region_c`, `resp_province_c`, `resp_citymun_c`, `focused_id`, `inner_category_id`, `comment`, `row_no`, `column_no`, `column_title`, `row_value`, `column_value`, `model_name`, `attribute_name`, `date_created`, `time_created`, `date_updated`, `time_updated`) VALUES
+(1, 1, 2, 4, 39, '13', '74', '04', 0, 0, 'Dragon', 0, 0, NULL, '', '', NULL, 'objective', '2019-03-25', '07:55:15am', NULL, NULL),
+(2, 1, 2, 4, 39, '13', '74', '04', 0, 0, 'Comment here 2', 0, 0, NULL, '', '', NULL, 'objective', '2019-03-25', '07:55:20am', NULL, NULL),
+(3, 1, 2, 4, 39, '13', '74', '04', 0, 0, 'Comment here 3', 0, 0, NULL, '', '', NULL, 'objective', '2019-03-25', '07:55:24am', NULL, NULL),
+(5, 1, 2, 4, 39, '13', '74', '04', 0, 0, 'add comment here 1', 0, 0, NULL, '', '', NULL, 'relevant_lgu_program_project', '2019-03-25', '09:19:35am', NULL, NULL),
+(6, 1, 2, 4, 39, '13', '74', '04', 0, 0, 'dagdag ng comment', 0, 0, NULL, '', '', NULL, 'objective', '2019-03-25', '09:22:05am', NULL, NULL),
+(7, 1, 2, 4, 39, '13', '74', '04', 0, 0, 'add comment to relebvant', 0, 0, NULL, '', '', NULL, 'relevant_lgu_program_project', '2019-03-25', '09:24:33am', NULL, NULL),
+(8, 1, 2, 4, 39, '13', '74', '04', 0, 0, 'bakit walang gad activity?', 0, 0, NULL, '', '', NULL, 'activity', '2019-03-25', '09:37:45am', NULL, NULL),
+(9, 1, 2, 4, 39, '13', '74', '04', 0, 0, 'test add comment after display gad activity', 0, 0, NULL, '', '', NULL, 'relevant_lgu_program_project', '2019-03-25', '09:38:08am', NULL, NULL),
+(10, 1, 2, 4, 37, '13', '74', '04', 0, 0, 'add comment to performance  target', 0, 0, NULL, '', '', NULL, 'performance_target', '2019-03-25', '09:58:43am', NULL, NULL),
+(12, 1, 2, 4, 38, '13', '74', '04', 0, 0, 'update indicator for demoralized by charms', 0, 0, NULL, '', '', NULL, 'performance_indicator', '2019-03-25', '10:01:09am', NULL, NULL),
+(13, 1, 2, 4, 39, '13', '74', '04', 0, 0, 'write comment here', 0, 0, NULL, '', '', NULL, 'budget_mooe', '2019-03-25', '10:04:10am', NULL, NULL),
+(14, 1, 2, 4, 38, '13', '74', '04', 0, 0, 'fdsfdf', 0, 0, NULL, '', '', NULL, 'budget_mooe', '2019-03-25', '10:15:14am', NULL, NULL),
+(15, 1, 2, 4, 37, '13', '74', '04', 0, 0, 'added comment', 0, 0, NULL, '', '', NULL, 'lead_responsible_office', '2019-03-25', '10:16:47am', NULL, NULL),
+(16, 1, 2, 4, 37, '13', '74', '04', 0, 0, 'bakit 100 lang?', 0, 0, NULL, '', '', NULL, 'budget_ps', '2019-03-25', '10:18:03am', NULL, NULL),
+(17, 1, 2, 4, 38, '13', '74', '04', 0, 0, 'fsdfdf', 0, 0, NULL, '', '', NULL, 'budget_ps', '2019-03-25', '10:19:43am', NULL, NULL),
+(18, 1, 2, 4, 37, '13', '74', '04', 0, 0, 'add v', 0, 0, NULL, '', '', NULL, 'performance_indicator', '2019-03-25', '11:26:48am', NULL, NULL),
+(19, 1, 2, 4, 41, '13', '74', '04', 0, 0, 'bakit walang responsible', 0, 0, NULL, '', '', NULL, 'lead_responsible_office', '2019-03-25', '11:42:25am', NULL, NULL),
+(20, 1, 2, 4, 39, '13', '74', '04', 0, 0, 'bakit walang budget', 0, 0, NULL, '', '', NULL, 'budget_ps', '2019-03-25', '12:23:48pm', NULL, NULL),
+(21, 1, 2, 4, 44, '13', '74', '04', 0, 0, 'add commenet here', 0, 0, NULL, '', '', NULL, 'objective', '2019-03-25', '02:04:13pm', NULL, NULL),
+(22, 1, 2, 4, 39, '13', '74', '04', 0, 0, 'add comment here', 0, 0, NULL, '', '', NULL, 'performance_indicator', '2019-03-25', '02:22:53pm', NULL, NULL),
+(23, 1, 2, 4, 39, '13', '74', '04', 0, 0, 'add comment', 0, 0, NULL, '', '', NULL, 'performance_target', '2019-03-25', '02:23:48pm', NULL, NULL),
+(24, 1, 2, 4, 42, '13', '74', '04', 0, 0, 'comment also here', 0, 0, NULL, '', '', NULL, 'performance_indicator', '2019-03-25', '02:24:21pm', NULL, NULL),
+(25, 1, 2, 4, 39, '13', '74', '04', 0, 0, 'comment nanamern', 0, 0, NULL, '', '', NULL, 'budget_co', '2019-03-26', '02:07:50pm', NULL, NULL),
+(26, 1, 2, 4, 39, '13', '74', '04', 0, 0, 'comment remar', 0, 0, NULL, '', '', NULL, 'performance_target', '2019-03-26', '03:39:47pm', NULL, NULL),
+(28, 1, 2, 18, 54, '13', '74', '04', 0, 0, 'bakit walang laman ung pt?', 0, 0, NULL, '', '', NULL, 'performance_target', '2019-03-27', '10:21:54am', NULL, NULL),
+(29, 1, 2, 18, 52, '13', '74', '04', 0, 0, 'fdsfd', 0, 0, NULL, '', '', NULL, 'relevant_lgu_program_project', '2019-03-27', '10:30:11am', NULL, NULL),
+(30, 1, 2, 18, 53, '13', '74', '04', 0, 0, 'Comment here', 0, 0, NULL, '', '', NULL, 'performance_indicator', '2019-03-27', '11:57:37am', NULL, NULL),
+(31, 1, 2, 4, 37, '13', '74', '04', 0, 0, 'add comment', 0, 0, NULL, '', '', NULL, 'performance_indicator', '2019-03-27', '04:07:52pm', NULL, NULL),
+(32, 1, 2, 4, 37, '13', '74', '04', 0, 0, 'add comment', 0, 0, NULL, '', '', NULL, 'performance_indicator', '2019-03-27', '04:09:39pm', NULL, NULL),
+(33, 1, 2, 4, 37, '13', '74', '04', 0, 0, 'add comment', 0, 0, NULL, '', '', NULL, 'performance_indicator', '2019-03-27', '04:10:56pm', NULL, NULL),
+(34, 1, 2, 4, 38, '13', '74', '04', 0, 0, 'comment here to subscribe', 0, 0, NULL, '', '', NULL, 'relevant_lgu_program_project', '2019-03-27', '04:11:23pm', NULL, NULL),
+(35, 1, 2, 4, 38, '13', '74', '04', 0, 0, 'comment also here', 0, 0, NULL, '', '', NULL, 'budget_co', '2019-03-27', '04:12:03pm', NULL, NULL),
+(36, 1, 2, 4, 4, '13', '74', '04', 0, 0, 'vakit walang nakalagay?', 0, 0, NULL, '', '', NULL, 'hgdg', '2019-03-28', '02:39:25pm', NULL, NULL),
+(37, 1, 2, 4, 37, '13', '74', '04', 0, 0, 'client focused with cont form id', 0, 0, NULL, '', '', NULL, 'objective', '2019-03-28', '02:55:32pm', NULL, NULL),
+(38, 1, 2, 4, 57, '13', '74', '04', 0, 0, 'to decrease this potencial', 0, 0, NULL, '', '', NULL, 'relevant_lgu_program_project', '2019-03-28', '02:57:53pm', NULL, NULL),
+(39, 1, 2, 4, 38, '13', '74', '04', 0, 0, '12,334 lang?', 0, 0, NULL, '', '', NULL, 'budget_ps', '2019-03-28', '03:02:57pm', NULL, NULL),
+(40, 1, 2, 4, 38, '13', '74', '04', 0, 0, '100000 lang?', 0, 0, NULL, '', '', NULL, 'budget_mooe', '2019-03-28', '03:03:13pm', NULL, NULL),
+(41, 1, 2, 4, 38, '13', '74', '04', 0, 0, 'beguield lang?', 0, 0, NULL, '', '', NULL, 'performance_indicator', '2019-03-28', '03:03:25pm', NULL, NULL),
+(42, 1, 2, 4, 38, '13', '74', '04', 0, 0, 'indignation lang?', 0, 0, NULL, '', '', NULL, 'performance_target', '2019-03-28', '03:03:46pm', NULL, NULL),
+(44, 1, 2, 4, 38, '13', '74', '04', 0, 0, 'to be welcomed lang?', 0, 0, NULL, '', '', NULL, 'relevant_lgu_program_project', '2019-03-28', '03:04:18pm', NULL, NULL),
+(45, 1, 2, 4, 38, '13', '74', '04', 0, 0, 'who are so beguiled lang?', 0, 0, NULL, '', '', NULL, 'objective', '2019-03-28', '03:20:58pm', NULL, NULL),
+(46, 1, 2, 4, 38, '13', '74', '04', 0, 0, 'eh dapat dagdagan ng another beguiled 123', 0, 0, NULL, '', '', NULL, 'objective', '2019-03-28', '03:21:24pm', NULL, NULL),
+(47, 1, 2, 4, 38, '13', '74', '04', 0, 0, '78 lang talaga?', 0, 0, NULL, '', '', NULL, 'budget_co', '2019-03-28', '03:22:03pm', NULL, NULL),
+(49, 1, 2, 4, 38, '13', '74', '04', 0, 0, 'sige ako nalang', 0, 0, NULL, '', '', NULL, 'lead_responsible_office', '2019-03-28', '03:22:29pm', NULL, NULL),
+(51, 1, 2, 4, 44, '13', '74', '04', 0, 0, 'write here the comment', 0, 0, NULL, '', '', NULL, 'relevant_lgu_program_project', '2019-03-28', '03:26:51pm', NULL, NULL),
+(52, 1, 2, 4, 4, '13', '74', '04', 0, 0, 'total annual program budget comment', 0, 0, NULL, '', '', NULL, 'total_annual_pro_budget', '2019-03-28', '03:33:54pm', NULL, NULL),
+(53, 1, 2, 4, 38, '13', '74', '04', 0, 0, 'write', 0, 0, NULL, '', '', NULL, 'activity', '2019-03-28', '03:38:03pm', NULL, NULL),
+(54, 1, 2, 4, 38, '13', '74', '04', 0, 0, 'write comment', 0, 0, NULL, '', '', NULL, 'performance_target', '2019-03-28', '03:38:13pm', NULL, NULL),
+(55, 1, 2, 4, 4, '13', '74', '04', 0, 0, 'write ulet here', 0, 0, NULL, '', '', NULL, 'attributed_pro_budget', '2019-03-28', '03:39:31pm', NULL, NULL),
+(56, 1, 2, 4, 4, '13', '74', '04', 0, 0, 'tara na uwi na', 0, 0, NULL, '', '', NULL, 'lead_responsible_office', '2019-03-28', '04:03:16pm', NULL, NULL),
+(58, 1, 2, 4, 38, '13', '74', '04', 0, 0, 're so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound ', 0, 0, NULL, '', '', NULL, 'performance_target', '2019-03-29', '02:30:24pm', NULL, NULL),
+(59, 1, 2, 4, 38, '13', '74', '04', 0, 0, 'write another comments', 0, 0, NULL, '', '', NULL, 'performance_target', '2019-03-29', '02:32:58pm', NULL, NULL),
+(60, 1, 2, NULL, 1, '13', '74', '04', 0, 0, 'save this comment', 0, 0, NULL, '', '', NULL, 'cause_gender_issue', '2019-04-02', '09:41:11am', NULL, NULL),
+(61, 1, 2, 23, 3, '13', '74', '04', 0, 0, 'add comment here', 0, 0, NULL, '', '', NULL, 'cause_gender_issue', '2019-04-02', '02:45:16pm', NULL, NULL),
+(63, 1, 2, 23, 3, '13', '74', '04', 0, 0, 'comment here', 0, 0, NULL, '', '', NULL, 'objective', '2019-04-02', '02:52:34pm', NULL, NULL),
+(64, 1, 2, 23, 7, '13', '74', '04', 0, 0, 'comment here', 0, 0, NULL, '', '', NULL, 'relevant_lgu_ppa', '2019-04-02', '02:55:21pm', NULL, NULL),
+(65, 1, 2, 23, 7, '13', '74', '04', 0, 0, 'comment here for relevant ', 0, 0, NULL, '', '', NULL, 'relevant_lgu_ppa', '2019-04-02', '02:55:35pm', NULL, NULL),
+(66, 1, 2, 23, 7, '13', '74', '04', 0, 0, 'bakit may hey hey? diba dapat wala', 0, 0, NULL, '', '', NULL, 'activity', '2019-04-02', '02:58:06pm', NULL, NULL),
+(67, 1, 2, 23, 3, '13', '74', '04', 0, 0, 'anong uri ng indicator?', 0, 0, NULL, '', '', NULL, 'performance_indicator', '2019-04-02', '03:00:17pm', NULL, NULL),
+(68, 1, 2, 23, 3, '13', '74', '04', 0, 0, 'bakit 120 ang kasali?', 0, 0, NULL, '', '', NULL, 'target', '2019-04-02', '03:01:57pm', NULL, NULL),
+(69, 1, 2, 23, 7, '13', '74', '04', 0, 0, 'bakit dito walang parti?', 0, 0, NULL, '', '', NULL, 'target', '2019-04-02', '03:02:11pm', NULL, NULL),
+(70, 1, 2, 23, 4, '13', '74', '04', 0, 0, 'anong actual result nito?', 0, 0, NULL, '', '', NULL, 'actual_results', '2019-04-02', '03:04:30pm', NULL, NULL),
+(71, 1, 2, 23, 7, '13', '74', '04', 0, 0, 'ang laki naman ng budget', 0, 0, NULL, '', '', NULL, 'total_approved_gad_budget', '2019-04-02', '03:08:24pm', NULL, NULL),
+(72, 1, 2, 23, 7, '13', '74', '04', 0, 0, 'paki mo ba?', 0, 0, NULL, '', '', NULL, 'total_approved_gad_budget', '2019-04-02', '03:08:35pm', NULL, NULL),
+(73, 1, 2, 23, 7, '13', '74', '04', 0, 0, 'bakit dito di dineclare?', 0, 0, NULL, '', '', NULL, 'actual_cost_expenditure', '2019-04-02', '03:09:03pm', NULL, NULL),
+(74, 1, 2, 23, 7, '13', '74', '04', 0, 0, 'pakilagyan naman ng remarks', 0, 0, NULL, '', '', NULL, 'variance_remarks', '2019-04-02', '03:11:26pm', NULL, NULL),
+(75, 1, 2, 23, 7, '13', '74', '04', 0, 0, 'write comment beshy wap', 0, 0, NULL, '', '', NULL, 'performance_indicator', '2019-04-03', '09:47:58am', NULL, NULL),
+(76, 1, 2, 23, 7, '13', '74', '04', 0, 0, 'add pa more', 0, 0, NULL, '', '', NULL, 'performance_indicator', '2019-04-03', '09:48:54am', NULL, NULL),
+(77, 1, 2, 23, 7, '13', '74', '04', 0, 0, 'comment pa sir', 0, 0, NULL, '', '', NULL, 'performance_indicator', '2019-04-03', '09:50:55am', NULL, NULL),
+(78, 1, 2, 23, 2, '13', '74', '04', 0, 0, 'sobrang laki naman ng budget', 0, 0, NULL, '', '', NULL, 'gad_attributed_pro_cost', '2019-04-03', '04:01:58pm', NULL, NULL),
+(79, 1, 2, 23, 7, '13', '74', '04', 0, 0, 'bakit silang apat lang? dapat kasama si yoseph', 0, 0, NULL, '', '', NULL, 'actual_results', '2019-04-04', '09:03:17am', NULL, NULL),
+(80, 1, 2, 23, 9, '13', '74', '04', 0, 0, 'ano ba yan', 0, 0, NULL, '', '', NULL, 'actual_results', '2019-04-04', '10:55:52am', NULL, NULL),
+(81, 1, 2, 4, 44, '13', '74', '04', 0, 0, 'gfhjk', 0, 0, NULL, '', '', NULL, 'relevant_lgu_program_project', '2019-04-04', '03:59:56pm', NULL, NULL),
+(82, 1, 2, 56, 84, '13', '74', '04', 0, 0, 'anakan moko\n', 0, 0, NULL, '', '', NULL, 'objective', '2019-04-04', '04:08:11pm', NULL, NULL),
+(83, 1, 2, 23, 9, '13', '74', '04', 0, 0, 'write comment here', 0, 0, NULL, '', '', NULL, 'activity', '2019-04-05', '09:13:15am', NULL, NULL),
+(84, 1, 2, 23, 9, '13', '74', '04', 0, 0, 'comment here', 0, 0, NULL, '', '', NULL, 'performance_indicator', '2019-04-05', '09:14:25am', NULL, NULL),
+(85, 1, 2, 4, 7, '13', '74', '04', 0, 0, 'bakit wala?', 0, 0, NULL, '', '', NULL, 'lgu_program_project', '2019-04-08', '10:24:16am', NULL, NULL),
+(86, 1, 2, 4, 7, '13', '74', '04', 0, 0, '1.0 galing ah', 0, 0, NULL, '', '', NULL, 'hgdg', '2019-04-08', '10:24:37am', NULL, NULL),
+(89, 1, 2, 58, 86, '13', '74', '04', 0, 0, 'sample comment 12345', 0, 0, NULL, '', '', NULL, 'relevant_lgu_program_project', '2019-04-08', '02:54:12pm', NULL, NULL),
+(97, 2, 2, 4, 62, '03', NULL, NULL, 0, 0, 'pre bakit zero?', 0, 0, NULL, '', '', NULL, 'budget_mooe', '2019-04-10', '03:20:00pm', NULL, NULL),
+(98, 4, 2, 66, 92, '03', '08', '01', 0, 0, 'weez?', 0, 0, NULL, '', '', NULL, 'objective', '2019-05-20', '01:55:29pm', NULL, NULL),
+(101, 4, 2, 66, 96, '03', '08', '01', 0, 0, 'wite', 0, 0, NULL, '', '', NULL, 'ppa_value', '2019-05-21', '02:08:36pm', NULL, NULL),
+(102, 4, 2, 66, 13, '03', '08', '01', 0, 0, 'Write Comment 1234', 0, 0, NULL, '', '', NULL, 'attributed_pro_budget', '2019-05-22', '02:34:59pm', NULL, NULL),
+(103, 4, 2, 66, 15, '03', '08', '01', 0, 0, 'write comment', 0, 0, NULL, '', '', NULL, 'attributed_pro_budget', '2019-05-22', '02:47:17pm', NULL, NULL),
+(104, 4, 2, 66, 12, '03', '08', '01', 0, 0, 'write', 0, 0, NULL, '', '', NULL, 'hgdg', '2019-05-22', '03:06:28pm', NULL, NULL),
+(105, 4, 2, 66, 12, '03', '08', '01', 0, 0, 'were', 0, 0, NULL, '', '', NULL, 'total_annual_pro_budget', '2019-05-22', '03:06:50pm', NULL, NULL),
+(106, 4, 2, 67, 11, '03', '08', '01', 0, 0, 'commented here boss', 0, 0, NULL, '', '', NULL, 'lgu_program_project', '2019-05-23', '03:25:46pm', NULL, NULL),
+(107, 6, 2, 79, 100, '03', '08', '01', 0, 0, 'comment here', 0, 0, NULL, '', '', NULL, 'ppa_value', '2019-05-30', '10:53:55am', NULL, NULL),
+(108, 4, 2, 79, 100, '03', '08', '01', 0, 0, 'writeable comment', 0, 0, NULL, '', '', NULL, 'relevant_lgu_program_project', '2019-05-30', '02:47:40pm', NULL, NULL),
+(109, 4, 3, 79, 100, '03', '08', '01', 0, 0, 'pre bakit add gad activty let\'s be specific', 0, 0, NULL, '', '', NULL, 'activity', '2019-05-30', '03:27:46pm', NULL, NULL),
+(110, 2, 1, 79, 100, '03', NULL, NULL, 0, 0, 'pre bakit 23?', 0, 0, NULL, '', '', NULL, 'performance_target', '2019-05-30', '03:37:15pm', NULL, NULL),
+(111, 3, 0, 98, 103, '03', '08', NULL, 0, 0, 'write comment here', 0, 0, NULL, '', '', NULL, 'relevant_lgu_program_project', '2019-06-05', '02:54:30pm', NULL, NULL),
+(112, 4, 3, 109, 113, '03', '08', '01', 0, 0, 'sample comment', 0, 0, NULL, '', '', NULL, 'activity', '2019-06-24', '01:13:16pm', NULL, NULL),
+(117, NULL, NULL, NULL, 122, NULL, NULL, NULL, 0, 0, 'hello baby', 1, 4, NULL, '45454', 'fsdfsdfsdf', NULL, 'GAD Activity', NULL, NULL, NULL, NULL),
+(118, NULL, NULL, NULL, 122, NULL, NULL, NULL, 0, 0, 'Hello Sirs', 1, 4, NULL, '45454', 'fsdfsdfsdf', NULL, 'activity', NULL, NULL, NULL, NULL),
+(119, NULL, NULL, NULL, 119, NULL, NULL, NULL, 0, 0, 'For years un', 6, 4, NULL, 'Gender Issue Sample Title', 'Endorse Resolution for the creation and establishment of functional GAD office and Focal Person', NULL, 'activity', NULL, NULL, NULL, NULL),
+(121, 9, 2, 117, 119, '03', '08', '', 1, 1, 'Activity on Establishment & maintenance of Community Gender and Development Centers, and Provision of skills training and livelihood assistance to identified priority women’s groups are not aligned with the Gender Issue and its Objective (refer to general observation no. 1).  Awareness activities are activities that delivers information on the targeted beneficiaries.', 6, 4, 'GAD Activity', 'Gender Issue Sample Title', 'Endorse Resolution for the creation and establishment of functional GAD office and Focal Person', 'GadPlanBudget', 'activity', NULL, NULL, NULL, NULL),
+(128, 9, 2, 117, 118, '03', '08', '', 1, 1, 'Please consider the following questions:\n1.	What was the purpose on the establishment of Community GAD Centers? If the said centers are an avenue for the GAD information, please include in your objective.\n2.	What is the gender issue for the skills training with women as the target group? Please conduct gender analysis to surface-out the gender disparity of the activity. Support the gender issue with statistics.\n3.	Are these women victims of violence? If so, you may include this in gender issue on domestic violence (row 2 page 1).\n\nActivity on Orientation/briefing on MCW/GAD, VAWC & other related laws should contain a sex-disaggregated or women’s empowerment indicators.  Please refer to general observation no. 3.', 8, 6, 'MOOE', 'Title', '9000000.00', 'GadPlanBudget', 'budget_mooe', NULL, NULL, '2019-07-11', '10:37:09am'),
+(143, 9, 2, 117, 123, '03', '08', '', 1, 1, 'Bakit 56000000.00  lang ang budget nyo? give some explanation about this issue and save the date updated and time updated', 7, 6, 'MOOE', 'gsdgfsg', '56000000.00', 'GadPlanBudget', 'budget_mooe', NULL, NULL, '2019-07-11', '09:53:49am'),
+(144, 2, 1, 132, 281, '03', '', '', 1, 1, 'Column 4.  Activity on Establishment maintenance of Community Gender and Development Centers, and Provision of skills training and livelihood assistance to identified priority women’s groups are not aligned with the Gender Issue and its Objective (refer to general observation no. 1).  Awareness activities are activities that delivers information on the targeted beneficiaries.\n\nPlease consider the following questions:\n1.	What was the purpose on the establishment of Community GAD Centers? If the said centers are an avenue for the GAD information, please include in your objective.\n2.	What is the gender issue for the skills training with women as the target group? Please conduct gender analysis to surface-out the gender disparity of the activity. Support the gender issue with statistics.\n3.	Are these women victims of violence? If so, you may include this in gender issue on domestic violence (row 2 page 1).\n\nColumn 5.  Activity on Orientation/briefing on MCW/GAD, VAWC  other related laws should contain a sex-disaggregated or women’s empowerment indicators.  Please refer to general observation no. 3.\n\nColumn 6.  Please breakdown the GAD budget for each activity (refer to general observation no. 2).', 1, 3, 'Relevant LGU Program and Project', 'Title', 'Relevant', 'GadPlanBudget', 'relevant_lgu_program_project', '2019-07-24', '09:11:29am', '2019-07-24', '04:14:54pm'),
+(145, 2, 1, 132, 283, '03', '', '', 1, 1, 'What was the purpose on the establishment of Community GAD Centers? If the said centers are an avenue for the GAD information, please include in your objective.\n\nWhat was the purpose on the establishment of Community GAD Centers? If the said centers are an avenue for the GAD information, please include in your objective.\n\nWhat was the purpose on the establishment of Community GAD Centers? If the said centers are an avenue for the GAD information, please include in your objective.\n\nWhat was the purpose on the establishment of Community GAD Centers? If the said centers are an avenue for the GAD information, please include in your objective.', 2, 5, 'Performance Target', 'Title 3', '53 students', 'GadPlanBudget', 'performance_target', '2019-07-24', '09:12:11am', '2019-07-24', '04:02:03pm'),
+(149, 2, 1, 132, 283, '03', '', '', 1, 1, 'The second activity identified is not a GAD Activity. Rather, it is more of an objective.  Please include this as part of the objective.', 2, 5, 'Performance Target', 'Title 3', '53 students', 'GadPlanBudget', 'performance_target', '2019-07-24', '04:04:12pm', NULL, NULL),
+(150, 2, 1, 132, 281, '03', '', '', 1, 1, 'Column 6.  Please breakdown the GAD budget for each activity (refer to general observation no. 2).', 1, 5, 'Performance Target', 'Title', '50 students', 'GadPlanBudget', 'performance_target', '2019-07-24', '04:04:32pm', NULL, NULL),
+(151, 2, 1, 132, 283, '03', '', '', 1, 1, '3.	Are these women victims of violence? If so, you may include this in gender issue on domestic violence (row 2 page 1).', 2, 5, 'Performance Target', 'Title 3', '53 students', 'GadPlanBudget', 'performance_target', '2019-07-24', '04:05:22pm', NULL, NULL),
+(152, 2, 1, 132, 281, '03', '', '', 1, 1, 'Please consider the following questions:\n1.	What was the purpose on the establishment of Community GAD Centers? If the said centers are an avenue for the GAD information, please include in your objective.\n2.	What is the gender issue for the skills training with women as the target group? Please conduct gender analysis to surface-out the gender disparity of the activity. Support the gender issue with statistics.\n3.	Are these women victims of violence? If so, you may include this in gender issue on domestic violence (row 2 page 1).', 1, 5, 'Performance Target', 'Title', '50 students', 'GadPlanBudget', 'performance_target', '2019-07-24', '04:05:53pm', NULL, NULL),
+(156, 2, 1, 132, 281, '03', '', '', 1, 1, 'sdfdf', 1, 5, 'Performance Target', 'Title', '50 students', 'GadPlanBudget', 'performance_target', '2019-07-24', '04:25:47pm', NULL, NULL),
+(157, 9, 2, 137, 291, '03', '54', '', 2, 2, 'Please breakdown the GAD budget for each activity', 1, 4, 'GAD Activity', '1. PPTO\n\nLack/Low understanding on gender and development issues like violence Against Women and children (VAWC)\n\namong female and male PTO personnel', 'conduct one-day seminar (in two batches) on VAWC awareness in june and jly 2014', 'GadPlanBudget', 'activity', '2019-07-26', '09:32:22am', NULL, NULL),
+(158, 9, 2, 137, 291, '03', '54', '', 2, 2, 'In this element, no mention that a meeting with male and female officials and consultation with other stakeholders, including women and men that may be affected by the project', 1, 4, 'GAD Activity', '1. PPTO\n\nLack/Low understanding on gender and development issues like violence Against Women and children (VAWC)\n\namong female and male PTO personnel', 'conduct one-day seminar (in two batches) on VAWC awareness in june and jly 2014', 'GadPlanBudget', 'activity', '2019-07-26', '09:32:46am', NULL, NULL),
+(159, 2, 1, 136, 285, '03', '', '', 1, 1, 'sample observations', 1, 4, 'GAD Activity', 'Low level of awareness on Magna Carta on Women & Gender and Development, Anti Violence Against Women and their Children and other related laws at the community level', '1. Strenthening of Barangay GAD Monitors\n\na. Organization of additional Barangay GAD Monitors', 'GadPlanBudget', 'activity', '2019-07-26', '11:28:47am', '2019-07-26', '11:29:32am'),
+(160, 9, 2, 144, 298, '03', '54', '', 1, 1, 'Sample comment nga tayo dito', 1, 3, 'Relevant LGU Program and Project', 'Sample descriiption with source 1', 'relevant 123', 'GadPlanBudget', 'relevant_lgu_program_project', '2019-08-19', '07:13:16pm', NULL, NULL),
+(161, 9, 2, 139, 292, '03', '54', '', 1, 1, 'GAD comment here by ppdo unique id', 1, 4, 'GAD Activity', 'Low level of awareness on Magna Carta on Women & Gender and Development, Anti Violence Against Women and their Children and other related laws at the community level', '1. Strenthening of Barangay GAD Monitors\n\na. Organization of additional Barangay GAD Monitors', 'GadPlanBudget', 'activity', '2019-08-19', '08:14:14pm', NULL, NULL),
+(162, 9, 2, 139, 293, '03', '54', '', 1, 1, 'gender activity with unique user id', 2, 4, 'GAD Activity', 'Low level of awareness on Magna Carta on Women & Gender and Development, Anti Violence Against Women and their Children and other related laws at the community level', 'b. trainings, Workshops Seminars', 'GadPlanBudget', 'activity', '2019-08-19', '08:16:00pm', NULL, NULL),
+(163, 10, 2, 139, 292, '03', '54', '', 1, 1, 'a lonely nights romantic moments', 1, 4, 'GAD Activity', 'Low level of awareness on Magna Carta on Women & Gender and Development, Anti Violence Against Women and their Children and other related laws at the community level', '1. Strenthening of Barangay GAD Monitors\n\na. Organization of additional Barangay GAD Monitors', 'GadPlanBudget', 'activity', '2019-08-19', '08:22:09pm', NULL, NULL),
+(164, 9, 2, 144, 298, '03', '54', '', 1, 1, 'This activity is being used by other Plan', 1, 4, 'GAD Activity', 'Sample descriiption with source 1', '1. Istitutional Development\n1.1 Strenthening GAD Sectoral TWG in the Province\n\na. Training, Workshop seminars (Gender mainstreaming, Gender Sensitivity and Analysis)', 'GadPlanBudget', 'activity', '2019-08-20', '01:30:32pm', NULL, NULL),
+(165, 10, 2, 139, 297, '03', '54', '', 2, 1, 'hello', 5, 1, 'Title / Description of Gender Issue or GAD Mandate', 'Implementation of RA-9170 Magna Carta on Women \n-> Low Level of awareness on Magna Carta  on Women & Gender  and Development, Anti-Violence Against Women and their children and other related laws at the community level', 'Implementation of RA-9170 Magna Carta on Women \n-> Low Level of awareness on Magna Carta  on Women & Gender  and Development, Anti-Violence Against Women and their children and other related laws at the community level', 'GadPlanBudget', 'ppa_value', '2019-08-21', '02:46:30pm', NULL, NULL),
+(166, 10, 2, 139, 296, '03', '54', '', 2, 2, 'fsdfdsfdsf', 6, 3, 'Relevant LGU Program and Project', 'Implementation of RA-9170 Magna Carta on Women \n-> Low Level of awareness on Magna Carta  on Women & Gender  and Development, Anti-Violence Against Women and their children and other related laws at the community level', 'COMMUNITY BASED GENDER AND DEVELOPMENT PROGRAM', 'GadPlanBudget', 'relevant_lgu_program_project', '2019-08-21', '02:56:17pm', NULL, NULL),
+(167, 10, 2, 139, 296, '03', '54', '', 2, 2, 'fsdfsdfsdfs', 6, 2, 'GAD Objective', 'Implementation of RA-9170 Magna Carta on Women \n-> Low Level of awareness on Magna Carta  on Women & Gender  and Development, Anti-Violence Against Women and their children and other related laws at the community level', 'To mainstream gender and development in all phases of development and services provision', 'GadPlanBudget', 'objective', '2019-08-21', '03:04:22pm', NULL, NULL),
+(168, 10, 2, 139, 296, '03', '54', '', 2, 2, 'ewan', 6, 3, 'Relevant LGU Program and Project', 'Implementation of RA-9170 Magna Carta on Women \n-> Low Level of awareness on Magna Carta  on Women & Gender  and Development, Anti-Violence Against Women and their children and other related laws at the community level', 'COMMUNITY BASED GENDER AND DEVELOPMENT PROGRAM', 'GadPlanBudget', 'relevant_lgu_program_project', '2019-08-21', '03:16:26pm', NULL, NULL),
+(173, 10, 2, 139, 106, '03', '54', '', 0, 0, 'Nothing that matters', 1, 1, 'Title of LGU Program or Project', 'Title of LGU sample 1', 'Title of LGU sample 1', 'GadAttributedProgram', 'lgu_program_project', '2019-08-21', '05:10:55pm', NULL, NULL),
+(174, 10, 2, 139, 106, '03', '54', '', 0, 0, 'Also compare to this project under attributed programs', 1, 1, 'Title of LGU Program or Project', 'Title of LGU sample 1', 'Title of LGU sample 1', 'GadAttributedProgram', 'lgu_program_project', '2019-08-21', '05:11:33pm', NULL, NULL),
+(175, 10, 2, 139, 106, '03', '54', '', 0, 0, 'medyo maliit ung budget na naka-allot', 1, 3, 'Total Annual Program/ Project Budget', 'Title of LGU sample 1', '582222.00', 'GadAttributedProgram', 'total_annual_pro_budget', '2019-08-21', '05:11:50pm', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_create_status`
+--
+
+CREATE TABLE `gad_create_status` (
+  `id` int(11) NOT NULL,
+  `code` int(11) NOT NULL,
+  `title` varchar(250) DEFAULT NULL,
+  `is_active` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `gad_create_status`
+--
+
+INSERT INTO `gad_create_status` (`id`, `code`, `title`, `is_active`) VALUES
+(1, 1, 'New Plan', 1),
+(2, 2, ' For Revision', 1),
+(3, 3, 'Supplemental Plan', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_excel_attachments`
+--
+
+CREATE TABLE `gad_excel_attachments` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `filename` text COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(50) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `gad_excel_attachments`
+--
+
+INSERT INTO `gad_excel_attachments` (`id`, `user_id`, `filename`, `type`) VALUES
+(2033, 8, '8-08062019-test_plan', 'xlsx'),
+(2034, 8, '8-08072019-test_plan', 'xlsx'),
+(2035, 8, '8-08072019-sample_upload', 'xlsx'),
+(2036, 8, 'sample_upload', 'xlsx'),
+(2037, 8, '8-08072019-sample_upload', 'xlsx'),
+(2038, 8, '8-2019-08-07-sample_upload', 'xlsx'),
+(2039, 8, '8-2019-08-07-01-55-48am-sample_upload', 'xlsx'),
+(2040, 8, '8-2019-08-07-02-36-40am-sample_upload', 'xlsx'),
+(2041, 8, '8-2019-08-07-02-37-15am-sample_upload', 'xlsx'),
+(2042, 8, '8-2019-08-07-02-37-36am-sample_upload', 'xlsx'),
+(2043, 8, '8-2019-08-07-02-37-56am-sample_upload', 'xlsx'),
+(2044, 8, '8-2019-08-07-02-38-03am-sample_upload', 'xlsx'),
+(2045, 8, '8-2019-08-07-02-38-33am-sample_upload', 'xlsx'),
+(2046, 8, '8-2019-08-07-02-38-45am-sample_upload', 'xlsx'),
+(2047, 8, '8-2019-08-07-02-38-57am-sample_upload', 'xlsx'),
+(2048, 8, '8-2019-08-07-02-39-09am-sample_upload', 'xlsx'),
+(2049, 8, '8-2019-08-07-02-39-15am-sample_upload', 'xlsx'),
+(2050, 8, '8-2019-08-07-02-39-27am-sample_upload', 'xlsx'),
+(2051, 8, '8-2019-08-07-02-39-45am-sample_upload', 'xlsx'),
+(2052, 8, '8-2019-08-07-02-39-57am-sample_upload', 'xlsx'),
+(2053, 8, '8-2019-08-07-02-40-16am-sample_upload', 'xlsx'),
+(2054, 8, '8-2019-08-07-02-40-24am-sample_upload', 'xlsx'),
+(2055, 8, '8-2019-08-07-02-40-45am-sample_upload', 'xlsx'),
+(2056, 8, '8-2019-08-07-02-41-04am-sample_upload', 'xlsx'),
+(2057, 8, '8-2019-08-07-02-41-29am-sample_upload', 'xlsx'),
+(2058, 8, '8-2019-08-07-02-41-46am-sample_upload', 'xlsx'),
+(2059, 8, '8-2019-08-07-02-41-51am-sample_upload', 'xlsx'),
+(2060, 8, '8-2019-08-07-02-41-59am-sample_upload', 'xlsx'),
+(2061, 8, '8-2019-08-07-02-42-06am-sample_upload', 'xlsx'),
+(2062, 8, '8-2019-08-07-02-42-11am-sample_upload', 'xlsx'),
+(2063, 8, '8-2019-08-07-02-42-31am-sample_upload', 'xlsx'),
+(2064, 8, '8-2019-08-07-02-42-46am-sample_upload', 'xlsx'),
+(2065, 8, '8-2019-08-07-02-44-49am-sample_upload', 'xlsx'),
+(2066, 8, '8-2019-08-07-07-47-03am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2067, 8, '8-2019-08-07-07-48-29am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2068, 8, '8-2019-08-07-07-49-16am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2069, 8, '8-2019-08-07-07-50-59am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2070, 8, '8-2019-08-07-07-51-11am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2071, 8, '8-2019-08-07-07-53-28am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2072, 8, '8-2019-08-07-07-53-43am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2073, 8, '8-2019-08-07-07-55-56am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2074, 8, '8-2019-08-07-07-56-29am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2075, 8, '8-2019-08-07-07-56-42am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2076, 8, '8-2019-08-07-07-58-52am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2077, 8, '8-2019-08-07-07-59-05am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2078, 8, '8-2019-08-07-07-59-39am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2079, 8, '8-2019-08-07-08-00-27am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2080, 8, '8-2019-08-07-08-01-54am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2081, 8, '8-2019-08-07-08-04-56am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2082, 8, '8-2019-08-07-08-05-05am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2083, 8, '8-2019-08-07-08-06-06am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2084, 8, '8-2019-08-07-08-06-17am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2085, 8, '8-2019-08-07-08-07-09am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2086, 8, '8-2019-08-07-08-07-14am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2087, 8, '8-2019-08-07-08-07-47am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2088, 8, '8-2019-08-07-08-07-56am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2089, 8, '8-2019-08-07-08-11-54am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2090, 8, '8-2019-08-07-08-12-09am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2091, 8, '8-2019-08-07-08-12-24am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2092, 8, '8-2019-08-07-08-12-50am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2093, 8, '8-2019-08-07-08-13-46am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2094, 8, '8-2019-08-07-08-14-04am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2095, 8, '8-2019-08-07-08-17-55am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2096, 8, '8-2019-08-07-08-18-37am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2097, 8, '8-2019-08-07-08-20-40am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2098, 8, '8-2019-08-07-08-22-05am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2099, 8, '8-2019-08-07-08-22-17am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2100, 8, '8-2019-08-07-08-24-13am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2101, 8, '8-2019-08-07-08-25-15am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2102, 8, '8-2019-08-07-08-25-22am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2103, 8, '8-2019-08-07-08-26-31am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2104, 8, '8-2019-08-07-08-28-38am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2105, 8, '8-2019-08-07-08-29-12am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2106, 8, '8-2019-08-07-08-29-20am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2107, 8, '8-2019-08-07-08-31-44am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2108, 8, '8-2019-08-07-08-32-10am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2109, 8, '8-2019-08-07-08-32-59am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2110, 8, '8-2019-08-07-08-33-25am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2111, 8, '8-2019-08-07-08-33-48am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2112, 8, '8-2019-08-07-08-34-02am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2113, 8, '8-2019-08-07-08-34-15am-GAD-Plan-Budget-Template (1)', 'xlsx'),
+(2114, 8, '8-2019-08-07-08-35-32am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2115, 8, '8-2019-08-07-08-35-52am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2116, 8, '8-2019-08-07-08-37-37am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2117, 8, '8-2019-08-07-08-39-19am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2118, 8, '8-2019-08-07-08-44-07am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2119, 8, '8-2019-08-07-08-44-45am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2120, 8, '8-2019-08-07-08-47-30am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2121, 8, '8-2019-08-07-08-47-40am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2122, 8, '8-2019-08-07-08-47-46am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2123, 8, '8-2019-08-07-08-48-11am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2124, 8, '8-2019-08-07-08-48-25am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2125, 8, '8-2019-08-07-08-49-09am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2126, 8, '8-2019-08-07-08-49-34am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2127, 8, '8-2019-08-07-08-51-48am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2128, 8, '8-2019-08-07-08-52-00am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2129, 8, '8-2019-08-07-08-59-01am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2130, 8, '8-2019-08-07-09-00-54am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2131, 8, '8-2019-08-07-09-05-51am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2132, 8, '8-2019-08-07-09-21-32am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2133, 8, '8-2019-08-07-09-25-07am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2134, 8, '8-2019-08-07-09-28-30am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2135, 8, '8-2019-08-07-09-34-14am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2136, 8, '8-2019-08-07-09-35-01am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2137, 8, '8-2019-08-07-09-36-52am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2138, 8, '8-2019-08-07-09-43-03am-GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2139, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2140, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2141, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2142, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2143, 8, 'pds_report (1)', 'xlsx'),
+(2144, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2145, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2146, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2147, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2148, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2149, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2150, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2151, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2152, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2153, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2154, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2155, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2156, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2157, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2158, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2159, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2160, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2161, 8, 'GAD-Plan-Budget-Template (2)', 'xlsx'),
+(2162, 8, 'GAD-Plan-Budget-Attributed-Programs', 'xlsx'),
+(2163, 8, 'GAD-Plan-Budget-Attributed-Programs', 'xlsx'),
+(2164, 8, 'GAD-Plan-Budget-Attributed-Programs', 'xlsx'),
+(2165, 8, 'GAD-Plan-Budget-Attributed-Programs', 'xlsx'),
+(2166, 8, 'GAD-Plan-Budget-Attributed-Programs', 'xlsx'),
+(2167, 8, 'GAD-Plan-Budget-Attributed-Programs', 'xlsx'),
+(2168, 8, 'GAD-Plan-Budget-Attributed-Programs', 'xlsx'),
+(2169, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (1)', 'xlsx'),
+(2170, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (4)', 'xlsx'),
+(2171, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (4)', 'xlsx'),
+(2172, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (4)', 'xlsx'),
+(2173, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (4)', 'xlsx'),
+(2174, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (4)', 'xlsx'),
+(2175, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (4)', 'xlsx'),
+(2176, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (4)', 'xlsx'),
+(2177, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (4)', 'xlsx'),
+(2178, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (4)', 'xlsx'),
+(2179, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (4)', 'xlsx'),
+(2180, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (4)', 'xlsx'),
+(2181, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (4)', 'xlsx'),
+(2182, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (4)', 'xlsx'),
+(2183, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (4)', 'xlsx'),
+(2184, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (4)', 'xlsx'),
+(2185, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (4)', 'xlsx'),
+(2186, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (4)', 'xlsx'),
+(2187, 8, 'GAD-Plan-Budget-Attributed-Programs-Template (4)', 'xlsx'),
+(2188, 8, 'GAD-Plan-Budget-Template (6)', 'xlsx'),
+(2189, 8, 'GAD-Plan-Budget-Template (6)', 'xlsx'),
+(2190, 8, 'GAD-Plan-Budget-Template (6)', 'xlsx'),
+(2191, 8, 'GAD-Plan-Budget-Template (6)', 'xlsx'),
+(2192, 8, 'GAD-Plan-Budget-Template (6)', 'xlsx'),
+(2193, 8, 'GAD-Plan-Budget-Template (6)', 'xlsx'),
+(2194, 8, 'GAD-Plan-Budget-Template (6)', 'xlsx'),
+(2195, 8, 'GAD-Plan-Budget-Template (6)', 'xlsx'),
+(2196, 8, 'GAD-Plan-Budget-Template (6)', 'xlsx'),
+(2197, 8, 'GAD-Plan-Budget-Template (6)', 'xlsx'),
+(2198, 8, 'GAD-Plan-Budget-Template (6)', 'xlsx'),
+(2199, 8, 'GAD-Plan-Budget-Template (6)', 'xlsx'),
+(2200, 8, 'GAD-Plan-Budget-Template (6)', 'xlsx'),
+(2201, 8, 'GAD-Plan-Budget-Template (6)', 'xlsx'),
+(2202, 8, 'GAD-Plan-Budget-Template (6)', 'xlsx'),
+(2203, 8, 'Accomplishment-Report-Template', 'xlsx'),
+(2204, 8, 'Accomplishment-Report-Template', 'xlsx'),
+(2205, 8, 'Accomplishment-Report-Template', 'xlsx'),
+(2206, 8, 'Accomplishment-Report-Template', 'xlsx'),
+(2207, 8, 'Accomplishment-Report-Template', 'xlsx'),
+(2208, 8, 'Accomplishment-Report-Template', 'xlsx'),
+(2209, 8, 'Accomplishment-Report-Template', 'xlsx'),
+(2210, 8, 'Accomplishment-Report-Template (1)', 'xlsx'),
+(2211, 8, 'Accomplishment-Report-Template (1)', 'xlsx'),
+(2212, 8, 'Accomplishment-Report-Template (1)', 'xlsx'),
+(2213, 8, 'Accomplishment-Report-Template (1)', 'xlsx'),
+(2214, 8, 'Accomplishment-Report-Template (1)', 'xlsx'),
+(2215, 8, 'Accomplishment-Report-Template (1)', 'xlsx'),
+(2216, 8, 'Accomplishment-Report-Template (1)', 'xlsx'),
+(2217, 8, 'Accomplishment-Report-Template (1)', 'xlsx'),
+(2218, 8, 'Accomplishment-Report-Template (1)', 'xlsx'),
+(2219, 8, 'Accomplishment-Report-Template (1)', 'xlsx'),
+(2220, 8, 'Accomplishment-Report-Template (2)', 'xlsx'),
+(2221, 8, 'Accomplishment-Report-Template (2)', 'xlsx'),
+(2222, 8, 'Accomplishment-Report-Template (2)', 'xlsx'),
+(2223, 8, 'Accomplishment-Report-Template (2)', 'xlsx'),
+(2224, 8, 'Accomplishment-Report-Template (2)', 'xlsx'),
+(2225, 8, 'Accomplishment-Report-Template (2)', 'xlsx'),
+(2226, 8, 'Accomplishment-Report-Template (2)', 'xlsx'),
+(2227, 8, 'Accomplishment-Report-Template (2)', 'xlsx'),
+(2228, 8, 'Accomplishment-Report-Template (2)', 'xlsx'),
+(2229, 8, 'Accomplishment-Report-Template (2)', 'xlsx'),
+(2230, 8, 'Accomplishment-Report-Template (2)', 'xlsx'),
+(2231, 8, 'Attributed-Programs-AR-Template', 'xlsx'),
+(2232, 8, 'Attributed-Programs-AR-Template', 'xlsx'),
+(2233, 8, 'Attributed-Programs-AR-Template', 'xlsx'),
+(2234, 8, 'Attributed-Programs-AR-Template', 'xlsx'),
+(2235, 8, 'Attributed-Programs-AR-Template', 'xlsx'),
+(2236, 8, 'Attributed-Programs-AR-Template', 'xlsx'),
+(2237, 8, 'Attributed-Programs-AR-Template', 'xlsx'),
+(2238, 8, 'Attributed-Programs-AR-Template', 'xlsx'),
+(2239, 8, 'Attributed-Programs-AR-Template', 'xlsx'),
+(2240, 8, 'Attributed-Programs-AR-Template', 'xlsx'),
+(2241, 8, 'Attributed-Programs-AR-Template', 'xlsx'),
+(2242, 8, 'Attributed-Programs-AR-Template', 'xlsx'),
+(2243, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2244, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2245, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2246, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2247, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2248, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2249, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2250, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2251, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2252, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2253, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2254, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2255, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2256, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2257, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2258, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2259, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2260, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2261, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2262, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2263, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2264, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2265, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2266, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2267, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2268, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2269, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2270, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2271, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2272, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2273, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2274, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2275, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2276, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2277, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2278, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2279, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2280, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2281, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2282, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2283, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2284, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2285, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2286, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2287, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2288, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2289, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2290, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2291, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2292, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2293, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2294, 8, 'GAD-Plan-Budget-Template (9)', 'xlsx'),
+(2295, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2296, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2297, 8, 'Attributed-Programs-AR-Template (1)', 'xlsx'),
+(2298, 8, 'Attributed-Programs-GPB-Template (1)', 'xlsx'),
+(2299, 8, 'Attributed-Programs-GPB-Template (1)', 'xlsx'),
+(2300, 8, 'Attributed-Programs-GPB-Template (1)', 'xlsx'),
+(2301, 8, 'Attributed-Programs-GPB-Template (1)', 'xlsx'),
+(2302, 8, 'Attributed-Programs-GPB-Template (1)', 'xlsx'),
+(2303, 8, 'Attributed-Programs-AR-Template (1)', 'xlsx'),
+(2304, 8, 'Attributed-Programs-AR-Template (1)', 'xlsx'),
+(2305, 8, 'Attributed-Programs-AR-Template (1)', 'xlsx'),
+(2306, 8, 'Attributed-Programs-AR-Template (1)', 'xlsx'),
+(2307, 8, 'Attributed-Programs-AR-Template (1)', 'xlsx'),
+(2308, 8, 'Attributed-Programs-AR-Template', 'xlsx'),
+(2309, 8, 'Attributed-Programs-AR-Template', 'xlsx'),
+(2310, 8, 'Attributed-Programs-AR-Template (1)', 'xlsx'),
+(2311, 8, 'Attributed-Programs-AR-Template', 'xlsx'),
+(2312, 8, 'Attributed-Programs-AR-Template', 'xlsx'),
+(2313, 8, 'Accomplishment-Report-Template (1)', 'xlsx'),
+(2314, 8, 'Accomplishment-Report-Template (1)', 'xlsx'),
+(2315, 8, 'Attributed-Programs-AR-Template', 'xlsx'),
+(2316, 8, 'Accomplishment-Report-Template (2)', 'xlsx'),
+(2317, 8, 'Accomplishment-Report-Template (3)', 'xlsx'),
+(2318, 8, 'Accomplishment-Report-Template', 'xlsx'),
+(2319, 8, 'GAD-Plan-Budget-Template (10)', 'xlsx'),
+(2320, 8, 'GAD-Plan-Budget-Template (9)', 'xlsx'),
+(2321, 8, 'GAD-Plan-Budget-Template (8)', 'xlsx'),
+(2322, 8, 'GAD-Plan-Budget-Template (6)', 'xlsx'),
+(2323, 8, 'Attributed-Programs-GPB-Template (1)', 'xlsx'),
+(2324, 8, 'Attributed-Programs-GPB-Template', 'xlsx'),
+(2325, 8, 'Attributed-Programs-GPB-Template (1)', 'xlsx'),
+(2326, 8, 'Attributed-Programs-GPB-Template (2)', 'xlsx'),
+(2327, 8, 'Attributed-Programs-GPB-Template', 'xlsx'),
+(2328, 8, 'Attributed-Programs-GPB-Template (3)', 'xlsx'),
+(2329, 6, 'Accomplishment-Report-Template', 'xlsx'),
+(2330, 6, 'Accomplishment-Report-Template', 'xlsx'),
+(2331, 6, 'Attributed-Programs-GPB-Template', 'xlsx'),
+(2332, 6, 'GAD-Plan-Budget-Template', 'xlsx'),
+(2333, 6, 'GAD-Plan-Budget-Template', 'xlsx'),
+(2334, 6, 'GAD-Plan-Budget-Template', 'xlsx'),
+(2335, 6, 'GAD-Plan-Budget-Template', 'xlsx'),
+(2336, 3, 'GAD-Plan-Budget-Template', 'xlsx'),
+(2337, 3, 'Attributed-Programs-GPB-Template', 'xlsx'),
+(2338, 6, 'Attributed-Programs-GPB-Template (3)', 'xlsx');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_file_attached`
+--
+
+CREATE TABLE `gad_file_attached` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `file_name` varchar(250) DEFAULT NULL,
+  `model_id` int(11) NOT NULL,
+  `model_name` varchar(150) NOT NULL,
+  `remarks` varchar(250) DEFAULT NULL,
+  `hash` varchar(150) DEFAULT NULL,
+  `extension` varchar(10) DEFAULT NULL,
+  `file_folder_type_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `gad_file_attached`
+--
+
+INSERT INTO `gad_file_attached` (`id`, `user_id`, `file_name`, `model_id`, `model_name`, `remarks`, `hash`, `extension`, `file_folder_type_id`) VALUES
+(233, 0, 'pds_report.xlsx', 128, 'GadPlanBudget', NULL, '2b75c2e43a883430d9a23a071565ddff', 'xlsx', 1),
+(234, 0, 'learning-development-template.xlsx', 128, 'GadPlanBudget', NULL, '92d0be924b46737f50d4c59082f8d403', 'xlsx', 1),
+(235, 0, 'service-record-template (9).xlsx', 128, 'GadPlanBudget', NULL, '888573d93ec6f921ee1658b2a61683c9', 'xlsx', 1),
+(236, 0, 'pds_report.xlsx', 281, 'GadPlanBudget', NULL, '2b75c2e43a883430d9a23a071565ddff', 'xlsx', 1),
+(237, 0, 'learning-development-template.xlsx', 281, 'GadPlanBudget', NULL, '92d0be924b46737f50d4c59082f8d403', 'xlsx', 1),
+(238, 0, 'service-record-template (9).xlsx', 281, 'GadPlanBudget', NULL, '888573d93ec6f921ee1658b2a61683c9', 'xlsx', 1),
+(243, 0, 'chart.png', 40, 'GadAttributedProgram', NULL, '413ee17ff91eb133c0bd8a167af8672b', 'png', 1),
+(244, 0, 'pds_report.xlsx', 26, 'GadAttributedProgram', NULL, '5fc4cea83e0401cdb13d64d4214890d8', 'xlsx', 1),
+(245, 0, 'Specific Observations and Recommendations (8).docx', 50, 'GadAttributedProgram', NULL, '00196ea87a2c8cb950ebd2470ce1a80b', 'docx', 1),
+(246, 0, 'work-experience-template (1).xlsx', 51, 'GadAttributedProgram', NULL, '442626726787aa1051dcc29fa320ffd3', 'xlsx', 1),
+(247, 0, 'chart.png.png', 52, 'GadAttributedProgram', NULL, '75fba8e4f948957d1b3f884522369e85', 'png', 2),
+(248, 0, 'R2-Itinerary.pdf', 27, 'GadAttributedProgram', NULL, 'be80b4472eaaf2120110fdbc15f102f7', 'pdf', 2),
+(250, 0, 'chart.png.png', 284, 'GadPlanBudget', NULL, '0111ff0ccbb95766bec97b3b65a5339d', 'png', 1),
+(252, 0, 'learning-development-template.xlsx', 132, 'GadRecord', NULL, '2c2772ce863386acf54b2bdd6cf8906a', 'xlsx', 3),
+(253, 0, 'final_FM-QP-ISTMS-ISPDPMD-56-08-USE-CASE-DIAGRAM.docx', 132, 'GadRecord', NULL, '775ace6c63177d01f48a4ed347bfd903', 'docx', 3),
+(254, 0, 'preview-pdf (3).pdf', 132, 'GadRecord', NULL, 'ff585108097d66f7b3d79ac194a44bf0', 'pdf', 3),
+(255, 0, 'pds_report.xlsx', 54, 'GadAttributedProgram', NULL, 'dcd09f75bfd82adc453d354da3909d42', 'xlsx', 2),
+(256, 0, 'Questions (DRDIGS Roll-out Region 2).docx', 55, 'GadAttributedProgram', NULL, '892519870e638c6619a6276b9ce8f991', 'docx', 2),
+(257, 0, 'work-experience-template (1).xlsx', 56, 'GadAttributedProgram', NULL, 'b3a96c6af905f01861900a2cabade0dc', 'xlsx', 2),
+(258, 0, 'pds_report.xlsx', 57, 'GadAttributedProgram', NULL, '81f8577967f1fe3b2c07eef728c3d537', 'xlsx', 2),
+(259, 0, 'Specific Observations and Recommendations (1).docx', 137, 'GadRecord', NULL, '2b2fb437d88470a62cf35243dbbec2ff', 'docx', 3),
+(260, 0, 'General Observations and Recommendations.docx', 137, 'GadRecord', NULL, '7568c4cacc606822140aab1537531236', 'docx', 3),
+(261, 0, 'pds_report.xlsx', 285, 'GadPlanBudget', NULL, 'ca3e148c913b066f56614ade86cec693', 'xlsx', 1),
+(262, 0, 'AIDIS Sample Script.docx', 58, 'GadAttributedProgram', NULL, 'bacbab91b2563ab236e84438d72a572e', 'docx', 2),
+(263, 0, 'pds_report.xlsx', 292, 'GadPlanBudget', NULL, 'ca3e148c913b066f56614ade86cec693', 'xlsx', 1),
+(264, 0, 'final_FM-QP-ISTMS-ISPDPMD-56-09-USER-ACCEPTANCE-CERTIFICATE(done).docx', 59, 'GadAttributedProgram', NULL, '8ab1890146f52a26c34dcd2b63a71269', 'docx', 2),
+(265, 0, 'General Observations and Recommendation.pdf', 136, 'GadRecord', NULL, '7e2cb9ab5a65476ef4f543460ca47b95', 'pdf', 3),
+(266, 0, 'Specific Observations and Recommendation.pdf', 136, 'GadRecord', NULL, '4495834546a34f0df52c881589ba90ad', 'pdf', 3),
+(267, 0, 'Specific Observations and Recommendations (6).docx', 139, 'GadRecord', NULL, 'f830f5cd50edc251b2e1628778849429', 'docx', 3),
+(268, 0, 'Specific Observations and Recommendations (28).docx', 144, 'GadRecord', NULL, 'e9008ebb1cb57e98a5b318e9c0f3c8bb', 'docx', 3),
+(269, 0, 'General Observations and Recommendations (3).docx', 139, 'GadRecord', NULL, '6c826e785a09b2a8700d9f7e5e35dbcc', 'docx', 3),
+(270, 6, 'Specific Observation (18).docx', 298, 'GadPlanBudget', NULL, '0badb38334de483af747ee51b252817b', 'docx', 1),
+(271, 6, 'Letter of Review for PPDO (1).docx', 298, 'GadPlanBudget', 'just a letter needed by me', 'b744a9a56f6cb8e411553852e18bd70f', 'docx', 2),
+(272, 6, 'Specific Observation (18).docx', 60, 'GadAttributedProgram', 'attributed files', '86244067bb032841178bb249c1a65148', 'docx', 1),
+(273, 6, 'Specific Observation (18).docx', 61, 'GadAttributedProgram', 'all these files are important', 'f323622ecc2d0b94a24dadf01bbb7ff2', 'docx', 1),
+(274, 6, 'Specific Observation (17).docx', 61, 'GadAttributedProgram', 'all these files are important', '71aa2c5e37cb383c6b5322d6e42cd417', 'docx', 1),
+(275, 6, 'Specific Observation (16).docx', 61, 'GadAttributedProgram', 'all these files are important', '263ba6aad120ea9f1395e643771fb3b0', 'docx', 1),
+(276, 6, 'Specific Observation (15).docx', 61, 'GadAttributedProgram', 'all these files are important', 'd690aeb543aaaca5db3d522c72bedda7', 'docx', 1),
+(277, 6, 'Specific Observation (14).docx', 61, 'GadAttributedProgram', 'all these files are important', '7bdb61bf41ad306c0ac54ffdb8e8c326', 'docx', 1),
+(278, 6, 'Specific Observation (13).docx', 61, 'GadAttributedProgram', 'all these files are important', '6ca0a1cf0d86ae83f8109b60c55f0193', 'docx', 1),
+(279, 6, 'Specific Observation (12).docx', 61, 'GadAttributedProgram', 'all these files are important', 'cb3375250c9e82e5e53f2581ba7c9132', 'docx', 1),
+(280, 6, 'Specific Observation (11).docx', 61, 'GadAttributedProgram', 'all these files are important', 'd0f0b3c98b1ad681c9788c48301baa2f', 'docx', 1),
+(281, 2, 'Letter of Review for PPDO.docx', 136, 'GadRecord', 'i endorsed this LGU', 'cfba0ea1648d6cd270cfe819aadecd72', 'docx', 1),
+(282, 6, 'routing_slip (2).xls', 350, 'GadPlanBudget', 'sample file', '4164224ad6eb66cc1dc934f6282213dc', 'xls', 1),
+(283, 6, 'Philippine-Airlines_12Aug2019_RPHK7X_FILARTERVIN.pdf', 351, 'GadPlanBudget', 'sample file', '3c08ecba8b03a9e64cea337d404d9dcd', 'pdf', 1),
+(284, 6, 'routing_slip (2).xls', 107, 'GadAttributedProgram', 'remarks', '5914fa548ebe08f9e27141399cc3574d', 'xls', 1),
+(285, 6, 'routing_slip.xls', 108, 'GadAttributedProgram', 'sample score', 'acc7894505b76dedb2955b03a65bacd3', 'xls', 1),
+(286, 6, 'routing_slip.xls', 109, 'GadAttributedProgram', 'passing  score', 'c0a2f5921a4a616ee6de787e63328f5b', 'xls', 1),
+(287, 8, 'routing_slip (2).xls', 340, 'GadPlanBudget', 'hello', '30236083c2ac1c2782c2efcdd67e5cc3', 'xls', 1),
+(288, 8, 'routing_slip (2).xls', 103, 'GadAttributedProgram', '', 'ec5ceead2a1b913a314e6f8ac8bb595f', 'xls', 1),
+(289, 6, 'Philippine-Airlines_12Aug2019_RPHK7X_FILARTERVIN.pdf.pdf', 350, 'GadPlanBudget', '', '4b138b4ef921391e2d15d509c3913b53', 'pdf', 2),
+(290, 2, 'Philippine-Airlines_12Aug2019_RPHK7X_FILARTERVIN.pdf.pdf', 146, 'GadRecord', '', '72ae5ea94b656e817bef1456bf715680', 'pdf', 1),
+(291, 2, 'luffy3.png', 146, 'GadRecord', '', '511ec98d802b400fd37b299f1f99329b', 'png', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gad_file_folder_type`
+--
+
+CREATE TABLE `gad_file_folder_type` (
+  `id` int(11) NOT NULL,
+  `title` varchar(250) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `gad_file_folder_type`
+--
+
+INSERT INTO `gad_file_folder_type` (`id`, `title`) VALUES
+(1, 'Narrative Project Accomplishment Report'),
+(2, 'Result of HGDG Checklist'),
+(3, 'Endorsing LGU Attachment(s)'),
+(4, 'For Revision Attachment(s)');
 
 -- --------------------------------------------------------
 
@@ -425,8 +2074,8 @@ CREATE TABLE `gad_form_type` (
 --
 
 INSERT INTO `gad_form_type` (`id`, `title`) VALUES
-(1, 'Annex A - Annual Gender and Development (GAD) Plan and Budget'),
-(2, 'Annex B - Annual Gender and Development (GAD) Accomplishment Report');
+(1, 'Annual Gender and Development (GAD) Plan and Budget'),
+(2, 'Annual Gender and Development (GAD) Accomplishment Report');
 
 -- --------------------------------------------------------
 
@@ -450,43 +2099,28 @@ INSERT INTO `gad_inner_category` (`id`, `title`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `gad_lead_responsible_office`
---
-
-CREATE TABLE `gad_lead_responsible_office` (
-  `id` int(11) NOT NULL,
-  `title` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `gad_lead_responsible_office`
---
-
-INSERT INTO `gad_lead_responsible_office` (`id`, `title`) VALUES
-(1, 'Sample Office 1'),
-(2, 'sample office 2'),
-(3, 'sample office 3'),
-(4, 'sample office 4'),
-(5, 'sample office 5');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `gad_plan_budget`
 --
 
 CREATE TABLE `gad_plan_budget` (
   `id` int(11) NOT NULL,
+  `old_plan_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `record_id` int(11) DEFAULT NULL,
   `focused_id` int(11) DEFAULT NULL,
   `inner_category_id` int(11) DEFAULT NULL,
+  `gi_sup_data` text,
+  `source` text,
+  `cliorg_ppa_attributed_program_id` varchar(50) DEFAULT NULL,
   `ppa_focused_id` int(11) DEFAULT NULL,
   `ppa_value` varchar(500) DEFAULT NULL,
   `cause_gender_issue` text,
   `objective` text,
   `relevant_lgu_program_project` text,
+  `activity_category_id` varchar(150) DEFAULT NULL,
   `activity` text,
+  `date_implement_start` date DEFAULT NULL,
+  `date_implement_end` date DEFAULT NULL,
   `performance_target` text,
   `performance_indicator` text,
   `budget_mooe` decimal(18,2) DEFAULT NULL,
@@ -499,58 +2133,33 @@ CREATE TABLE `gad_plan_budget` (
   `time_updated` varchar(10) DEFAULT NULL,
   `sort` decimal(18,2) DEFAULT NULL,
   `record_tuc` varchar(150) DEFAULT NULL,
-  `tuc` varchar(150) DEFAULT NULL
+  `tuc` varchar(150) DEFAULT NULL,
+  `upload_status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `gad_plan_budget`
 --
 
-INSERT INTO `gad_plan_budget` (`id`, `user_id`, `record_id`, `focused_id`, `inner_category_id`, `ppa_focused_id`, `ppa_value`, `cause_gender_issue`, `objective`, `relevant_lgu_program_project`, `activity`, `performance_target`, `performance_indicator`, `budget_mooe`, `budget_ps`, `budget_co`, `lead_responsible_office`, `date_created`, `time_created`, `date_updated`, `time_updated`, `sort`, `record_tuc`, `tuc`) VALUES
-(37, NULL, NULL, 1, 1, 0, 'Low level of understanding on GAD and Development issues like VAWC among SB Secretariat', 'Most female and male SB secretariat personnel are not aware about VAWC', 'To create / enhance gender awareness and consciousness particularly in VAWC among SB Personnel gf and bf', 'Capability Building rer', 'Conduct one-day seminar on VAWC Awareness qwew', 'SB Personnel will be aware  on gender issues (VAWC)      123  ', 'No. of SB Person 56', '200.00', '14544.00', '5000.00', 'GAD TWG', NULL, NULL, NULL, NULL, NULL, '35ef7ed7529399d9732cfc57dcc3c583', NULL),
-(38, NULL, NULL, 1, 1, 0, 'Low level of understanding on GAD and Development issues like VAWC among SB Secretariat', '\"On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail i', '-- who are so \n-- beguiled and demoralized \n-- by the charms of pleasure of the moment 2', '-- to be welcomed and every pain avoided.', 'o avoid worse pains.', ' indignation and dislike men 123', 'beguiled and demoralized by the charms', '100000.00', '12334.00', '78096654.00', 'MGSO and Staff', NULL, NULL, NULL, NULL, NULL, '35ef7ed7529399d9732cfc57dcc3c583', NULL),
-(39, NULL, NULL, 1, 2, 0, 'Low level of understanding on GAD and Development issues like VAWC among SB Secretariat', '\"On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail i', 'pleasure of the moment 45', 'test update value relevant value after display gad activity', 'add gad activity', '', '', '100000.00', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '35ef7ed7529399d9732cfc57dcc3c583', NULL),
-(41, NULL, 4, 2, 1, 0, 'indignation and dislike men', 'to be welcomed and every pain avoided.', '', '', '', '', '', NULL, NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '35ef7ed7529399d9732cfc57dcc3c583', NULL),
-(44, NULL, 4, 2, 2, 0, 'ppa other 3', 'cause 2', 'gad objective', 'test update value relevant value after display gad activity', 'Conduct one-day seminar on VAWC Awareness qwew', 'SB Personnel will be aware  on gender issues (VAWC)      123  ', 'No. of SB Person 56', '200.00', '14544.00', '5000.00', 'GAD TWG IS - Incor', NULL, NULL, NULL, NULL, NULL, '35ef7ed7529399d9732cfc57dcc3c583', NULL),
-(48, NULL, 18, 1, 1, 1, NULL, 'fsdfsdf', 'fsdfdsf', 'fdsfdsf', 'fsdfsdf', '', '', '500000.00', '100.00', '1000.00', '', NULL, NULL, NULL, NULL, NULL, '59b81cbb9281bcc907f7e746a56ebfb6', NULL),
-(49, NULL, 18, 2, 1, 2, NULL, 'fdsfsd', 'fsdfsdf', '', '', '', '', '5654444.00', '10.00', '20.00', '', NULL, NULL, NULL, NULL, NULL, '59b81cbb9281bcc907f7e746a56ebfb6', NULL),
-(50, NULL, 18, 1, 2, 2, NULL, 'fdsfsdf', 'fdsfdsfsdf', '', '', '', '', '63566.00', '300.00', '20.00', '', NULL, NULL, NULL, NULL, NULL, '59b81cbb9281bcc907f7e746a56ebfb6', NULL),
-(51, NULL, 18, 2, 2, 6, NULL, 'fsdfdsf', 'sdfsdfdsf', '', '', '', '', '10.00', '10.00', '2.00', '', NULL, NULL, NULL, NULL, NULL, '59b81cbb9281bcc907f7e746a56ebfb6', NULL),
-(52, NULL, 18, 1, 2, 4, NULL, 'fdfsdf', 'fdfdf', '', '', '', '', '123.00', '120.00', '30.00', '', NULL, NULL, NULL, NULL, NULL, '59b81cbb9281bcc907f7e746a56ebfb6', NULL),
-(53, NULL, 18, 2, 2, 3, NULL, 'fdfdf', 'fdfdf', '', '', '', '', NULL, '20.00', '12.00', '', NULL, NULL, NULL, NULL, NULL, '59b81cbb9281bcc907f7e746a56ebfb6', NULL),
-(54, NULL, 18, 1, 1, 3, NULL, 'dasd', 'dasd', '', '', '', '', NULL, '200.00', '10.00', '', NULL, NULL, NULL, NULL, NULL, '59b81cbb9281bcc907f7e746a56ebfb6', NULL),
-(55, NULL, 18, 2, 1, 3, NULL, 'dasds', 'dsdsd', '', '', '', '', NULL, '10.00', '60.00', '', NULL, NULL, NULL, NULL, NULL, '59b81cbb9281bcc907f7e746a56ebfb6', NULL),
-(56, NULL, 18, 2, 2, 0, 'other organization', 'fsdfdf', '', '', '', '', '', NULL, '20.00', '1.00', '', NULL, NULL, NULL, NULL, NULL, '59b81cbb9281bcc907f7e746a56ebfb6', NULL),
-(57, NULL, 4, 1, 1, 0, 'unified textarea and input', ' lines of codes', 'to decrease lines of codes', 'to decrease lines of codes', 'gad acti 2', 'perfomarnce 23', 'indica 5', '289898.00', '1111112.00', '4444445.00', 'staff', NULL, NULL, NULL, NULL, NULL, '35ef7ed7529399d9732cfc57dcc3c583', NULL),
-(58, NULL, 20, 1, 1, 1, NULL, 'cause 2', 'gad objective', 'test update value relevant value after display gad activity', 'add gad activity', '', '', NULL, '4545.01', NULL, '', NULL, NULL, NULL, NULL, NULL, '8f2e11ab8c35ecdf1c2e25e81d5f154f', NULL),
-(59, NULL, 4, 1, 1, 0, 'try 2 others', 'cause 24554', '123', '1234', '12345', '123456', '1234567', '12345678.00', '123456789.00', '1234567890.00', '', '2019-03-28', '11:38:26am', NULL, NULL, NULL, '35ef7ed7529399d9732cfc57dcc3c583', NULL),
-(60, NULL, 4, 1, 1, 0, 'unified textarea and input', 'lines of codes', 'to decrease lines of codes', '', '', '', '', '678999000.00', NULL, NULL, '', '2019-03-28', '11:40:10am', NULL, NULL, NULL, '35ef7ed7529399d9732cfc57dcc3c583', NULL),
-(61, NULL, 4, 1, 1, 0, 'unified textarea and input', 'lines of codes', 'gad objective 909090', '', '', '', '', NULL, NULL, NULL, '', '2019-03-28', '11:52:19am', NULL, NULL, NULL, '35ef7ed7529399d9732cfc57dcc3c583', NULL),
-(62, NULL, 4, 1, 1, 0, 'try 2 others', 'lines of codes', 'gad objective 909090', '', '', '', '', NULL, NULL, NULL, 'ISTMS', '2019-03-28', '11:53:04am', NULL, NULL, NULL, '35ef7ed7529399d9732cfc57dcc3c583', NULL),
-(63, NULL, 29, 1, 1, 1, NULL, 'fsdffdf', '', '', '', '', '', NULL, NULL, NULL, '', '2019-04-02', '03:23:56pm', NULL, NULL, NULL, 'a4973a17fe17e8f56cf3dc7d0fd3bc2a', NULL),
-(64, NULL, 29, 2, 1, 1, NULL, 'fsdfd', 'fdfdf', '', '', '', '', NULL, NULL, NULL, '', '2019-04-02', '03:24:11pm', NULL, NULL, NULL, 'a4973a17fe17e8f56cf3dc7d0fd3bc2a', NULL),
-(65, NULL, 29, 2, 2, 1, NULL, 'fdsfsdf', 'fsdfsdf', '', '', '', '', NULL, NULL, NULL, '', '2019-04-02', '03:25:30pm', NULL, NULL, NULL, 'a4973a17fe17e8f56cf3dc7d0fd3bc2a', NULL),
-(66, NULL, 29, 1, 2, 1, NULL, 'fsdfdsf', 'sdfsdf', '', '', '', '', NULL, NULL, NULL, '', '2019-04-02', '03:29:15pm', NULL, NULL, NULL, 'a4973a17fe17e8f56cf3dc7d0fd3bc2a', NULL),
-(67, NULL, 29, 2, 1, 1, NULL, 'fsdfsdh2343', 'fsdfsdfs', '', '', '', '', NULL, NULL, NULL, '', '2019-04-02', '03:29:45pm', NULL, NULL, NULL, 'a4973a17fe17e8f56cf3dc7d0fd3bc2a', NULL),
-(68, NULL, 30, 1, 1, 1, NULL, 'gdfgdgdfg345', 'gdfgdgfd4545', 'fsdfdf', '', '', '', NULL, NULL, NULL, '', '2019-04-02', '03:41:54pm', NULL, NULL, NULL, 'c67fd08259e41f4c1396f02d024035e8', NULL),
-(69, NULL, 30, 2, 1, 1, NULL, 'fsdfdf', 'sdfdf', '', '', '', '', NULL, NULL, NULL, '', '2019-04-02', '03:42:08pm', NULL, NULL, NULL, 'c67fd08259e41f4c1396f02d024035e8', NULL),
-(70, NULL, 30, 2, 1, 3, NULL, 'fdsfsd', 'fsdfd', '', '', '', '', NULL, NULL, NULL, '', '2019-04-02', '03:43:45pm', NULL, NULL, NULL, 'c67fd08259e41f4c1396f02d024035e8', NULL),
-(71, NULL, 30, 2, 2, 5, NULL, 'fdsfsdf', 'iuiuiui', '', '', '', '', NULL, NULL, NULL, '', '2019-04-02', '03:55:56pm', NULL, NULL, NULL, 'c67fd08259e41f4c1396f02d024035e8', NULL),
-(72, NULL, 30, 1, 2, 1, NULL, 'yuoiuiu', 'mkjhjkhjk', '', '', '', '', NULL, NULL, NULL, '', '2019-04-02', '03:58:00pm', NULL, NULL, NULL, 'c67fd08259e41f4c1396f02d024035e8', NULL),
-(73, NULL, 31, 2, 1, 1, NULL, 'kiioouoi', '', '', '', '', '', NULL, NULL, NULL, '', '2019-04-02', '04:02:34pm', NULL, NULL, NULL, '813bd4dd36005f0d90ca6bb9c716ca47', NULL),
-(74, NULL, 31, 1, 2, 1, NULL, 'fsdf', 'fsdfsdfs', '', '', '', '', NULL, NULL, NULL, '', '2019-04-02', '04:04:12pm', NULL, NULL, NULL, '813bd4dd36005f0d90ca6bb9c716ca47', NULL),
-(75, NULL, 31, 2, 2, 2, NULL, 'fdfdf', '', '', '', '', '', NULL, NULL, NULL, '', '2019-04-02', '04:04:42pm', NULL, NULL, NULL, '813bd4dd36005f0d90ca6bb9c716ca47', NULL),
-(76, NULL, 32, 1, 1, 1, NULL, 'fsdfs', 'fdf', '', '', '', '', NULL, NULL, NULL, '', '2019-04-02', '04:05:26pm', NULL, NULL, NULL, 'b7caf5200738000629c0707776462cf9', NULL),
-(77, NULL, 32, 2, 2, 1, NULL, 'fsd', '', '', '', '', '', NULL, NULL, NULL, '', '2019-04-02', '04:05:42pm', NULL, NULL, NULL, 'b7caf5200738000629c0707776462cf9', NULL),
-(78, NULL, 32, 2, 1, 1, NULL, 'fsdfd', '', '', '', '', '', NULL, NULL, NULL, '', '2019-04-02', '04:06:09pm', NULL, NULL, NULL, 'b7caf5200738000629c0707776462cf9', NULL),
-(79, NULL, 43, 1, 1, 1, NULL, 'to create passing variable on step', '', '', '', '', '', NULL, NULL, NULL, '', '2019-04-04', '01:52:15pm', NULL, NULL, NULL, '61e6afa72a40ff43549cb4d43ece2bc3', NULL),
-(80, NULL, 49, 1, 2, 1, NULL, 'dsdsd', 'dsdsd', '', '', '', '', NULL, NULL, NULL, '', '2019-04-04', '03:07:49pm', NULL, NULL, NULL, 'd950c62ba6127660e77e379715cc7ea2', NULL),
-(81, NULL, 49, 2, 1, 2, NULL, 'fsdfdf', 'fdsfdsf', '', '', '', '', NULL, NULL, NULL, '', '2019-04-04', '03:13:09pm', NULL, NULL, NULL, 'd950c62ba6127660e77e379715cc7ea2', NULL),
-(82, NULL, 49, 2, 1, 2, NULL, 'fsdfdf', 'fdsfdsf', '', '', '', '', NULL, NULL, NULL, '', '2019-04-04', '03:13:10pm', NULL, NULL, NULL, 'd950c62ba6127660e77e379715cc7ea2', NULL),
-(83, NULL, 50, 1, 1, 1, NULL, 'fdsfsd', 'fdsfdsfsdf', '', '', '', '', NULL, NULL, NULL, '', '2019-04-04', '03:13:55pm', NULL, NULL, NULL, '831c5c546b76dd3f6edae6db5e16c5cf', NULL),
-(84, NULL, 56, 1, 1, 3, NULL, 'oikimommoimoimoimoi', 'jmonjoomomimoi', 'hbjbhjhb', 'hbbhubhbuh', '20%', 'jnhnhjjkkj', '551665651.00', '651515.00', '6151551.00', 'istmuiookjjj', '2019-04-04', '04:07:38pm', NULL, NULL, NULL, 'd577d1a0bec810f2ed218b29c92f6df3', NULL),
-(85, NULL, 56, 1, 1, 3, NULL, 'oikimommoimoimoimoi', 'jmonjoomomimoi', 'hbjbhjhb', 'hbbhubhbuh', '20%', 'jnhnhjjkkj', '551665651.00', '651515.00', '6151551.00', 'istmuiookjjj', '2019-04-04', '04:07:39pm', NULL, NULL, NULL, 'd577d1a0bec810f2ed218b29c92f6df3', NULL),
-(86, NULL, 58, 1, 1, 1, NULL, 'cause 24554', 'gad objective sample 123', 'maglagay tayo here', '', '', '', '1522222.00', NULL, NULL, 'GAD Staff', '2019-04-08', '02:50:09pm', NULL, NULL, NULL, '9227cb232c84b89369c8dd97442a3fa3', NULL);
+INSERT INTO `gad_plan_budget` (`id`, `old_plan_id`, `user_id`, `record_id`, `focused_id`, `inner_category_id`, `gi_sup_data`, `source`, `cliorg_ppa_attributed_program_id`, `ppa_focused_id`, `ppa_value`, `cause_gender_issue`, `objective`, `relevant_lgu_program_project`, `activity_category_id`, `activity`, `date_implement_start`, `date_implement_end`, `performance_target`, `performance_indicator`, `budget_mooe`, `budget_ps`, `budget_co`, `lead_responsible_office`, `date_created`, `time_created`, `date_updated`, `time_updated`, `sort`, `record_tuc`, `tuc`, `upload_status`) VALUES
+(128, 0, NULL, 129, 1, 1, 'sample source', NULL, '1,2,3,4,5', NULL, 'Title', '', 'Gad Objective 1', 'Relevant', '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16', 'GAD Activity 1', '2019-07-17', '2019-08-16', '50 students', NULL, '560000.00', NULL, NULL, 'GAD Staff', '2019-07-23', '02:04:30pm', NULL, NULL, NULL, 'cca8801c1dfed05b4b855c564cb6e077', NULL, 2),
+(129, 0, NULL, 129, 2, 1, 'Gender issue 1', NULL, '2,3', NULL, 'Title 2', '', 'Objetive 2', 'Relevant This', '4,5', 'Sample activity 2', '2019-07-19', '2019-08-21', '51 students', NULL, NULL, '562222.00', NULL, 'GAD staff 2', '2019-07-23', '02:05:39pm', NULL, NULL, NULL, 'cca8801c1dfed05b4b855c564cb6e077', NULL, 2),
+(130, 0, NULL, 129, 1, 1, 'Gender Issue 3', NULL, '3', NULL, 'Title 3', '', 'Gad objective 3', 'relevant 3', '2,3', 'Activit 3', '2019-07-11', '2019-08-08', '53 students', NULL, NULL, NULL, '8900000.00', 'gad staff 3', '2019-07-23', '02:06:37pm', NULL, NULL, NULL, 'cca8801c1dfed05b4b855c564cb6e077', NULL, 2),
+(281, 128, NULL, 132, 1, 1, 'sample source', NULL, '1,2,3,4,5', NULL, 'Title', '', 'Gad Objective 1', 'Relevant', '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16', 'GAD Activity 1', '2019-07-17', '2019-08-16', '50 students', NULL, '560000.00', NULL, NULL, 'GAD Staff', '2019-07-24', '08:25:30am', NULL, NULL, NULL, '714022ad4a7e0070891205c97d809ba1', NULL, 2),
+(282, 129, NULL, 132, 2, 1, 'Gender issue 1', NULL, '2,3', NULL, 'Title 2', '', 'Objetive 2', 'Relevant This', '4,5', 'Sample activity 2', '2019-07-19', '2019-08-21', '51 students', NULL, NULL, '562222.00', NULL, 'GAD staff 2', '2019-07-24', '08:25:30am', NULL, NULL, NULL, '714022ad4a7e0070891205c97d809ba1', NULL, 2),
+(283, 130, NULL, 132, 1, 1, 'Gender Issue 3', NULL, '3', NULL, 'Title 3', '', 'Gad objective 3', 'relevant 3', '2,3', 'Activit 3', '2019-07-11', '2019-08-08', '53 students', NULL, NULL, NULL, '8900000.00', 'gad staff 3', '2019-07-24', '08:25:30am', NULL, NULL, NULL, '714022ad4a7e0070891205c97d809ba1', NULL, 2),
+(285, 0, NULL, 136, 1, 1, 'Supporting data sample', NULL, '1,2,3,4,5', NULL, 'Low level of awareness on Magna Carta on Women and Gender and Development, Anti Violence Against Women and their Children and other related laws at the community level', '', 'To Increase awareness on gender equality and development and other laws affecting women and children at the community level', 'COMMUNITY BASED GENDER AND DEVELOPMENT PROGRAM', '1,2', '1. Strenthening of Barangay GAD Monitors\n\na. Organization of additional Barangay GAD Monitors', '2019-07-10', '2019-08-14', '86 Bgy. GAD Monitors (80 Female , 6 male)', NULL, '900000.00', NULL, NULL, 'Office of the Governor/Provincial Office Planning and Development Office', '2019-07-25', '11:20:30pm', NULL, NULL, NULL, 'eef0b042ca4df3ec3339eee83d56930c', NULL, 2),
+(286, 0, NULL, 136, 1, 1, 'Supporting data', NULL, '1,2,3,4,5', NULL, 'Low level of awareness on Magna Carta on Women and Gender and Development, Anti Violence Against Women and their Children and other related laws at the community level', '', 'a. increase the number of barangays with functional Barangays GAD', 'COMMUNITY BASED GENDER AND DEVELOPMENT PROGRAM', '2', 'b. trainings, Workshops Seminars', '2019-07-18', '2019-08-16', '2 TOWS conducted participated by 251 female and 8 malel BGMs', NULL, '8090909.00', NULL, NULL, 'Office of the Governor/Provincial Office Planning and Development Office', '2019-07-25', '11:28:06pm', NULL, NULL, NULL, 'eef0b042ca4df3ec3339eee83d56930c', NULL, 0),
+(288, 0, NULL, 136, 2, 1, 'Supporting data', NULL, '1,2,3,4,5', NULL, 'Implementation of RA-9170 Magna Carta on Women \n-> Low Level of awareness on Magna Carta  on Women & Gender  and Development, Anti-Violence Against Women and their children and other related laws at the community level', '', 'To mainstream gender and development in all phases of development and services provision', 'COMMUNITY BASED GENDER AND DEVELOPMENT PROGRAM', '2,3', '1. Istitutional Development\n1.1 Strenthening GAD Sectoral TWG in the Province\n\na. Training, Workshop seminars (Gender mainstreaming, Gender Sensitivity and Analysis)', '2019-07-03', '2019-08-14', '\n\n\n\n\n\n6. GAD Sectoral meetings conducted participated by 5 males and 20 females between January to December', NULL, '40000000.00', NULL, NULL, 'Provincial Planning and Development Office (PPDO)', '2019-07-25', '11:49:45pm', NULL, NULL, NULL, 'eef0b042ca4df3ec3339eee83d56930c', NULL, 0),
+(289, 0, NULL, 136, 2, 2, '', NULL, '3,4', NULL, 'Implementation of RA-9170 Magna Carta on Women \n-> Low Level of awareness on Magna Carta  on Women & Gender  and Development, Anti-Violence Against Women and their children and other related laws at the community level', '', 'To mainstream gender and development in all phases of development and services provision', 'COMMUNITY BASED GENDER AND DEVELOPMENT PROGRAM', '2,4', '1.2 Capability Building/Conduct of Trainings', '2019-07-18', '2019-08-23', '6. GAD Sectoral meetings conducted participated by 5 males and 20 females between January to December', NULL, '560000.00', NULL, NULL, 'Provincial Planning and Development Office (PPDO)', '2019-07-25', '11:52:59pm', NULL, NULL, NULL, 'eef0b042ca4df3ec3339eee83d56930c', NULL, 0),
+(290, 0, NULL, 136, 2, 1, 'Supporting data', NULL, '1,2,3,4,5', NULL, 'Implementation of RA-9170 Magna Carta on Women \n-> Low Level of awareness on Magna Carta  on Women & Gender  and Development, Anti-Violence Against Women and their children and other related laws at the community level', '', 'To mainstream gender and development in all phases of development and services provision', 'COMMUNITY BASED GENDER AND DEVELOPMENT PROGRAM', '', '1.3 Establishment of GAD Databases\nTraining, Seminar/Workshop on Rapid Gender Analysis (RGA), FAO Gender Analysis Framework and the Gender Analysis Matrix', '2019-07-17', '2019-08-14', '1 training conducted participated by 25 males and 200 females', NULL, '100000.00', NULL, NULL, 'Provincial Planning and Development Office (PPDO)', '2019-07-25', '11:56:03pm', NULL, NULL, NULL, 'eef0b042ca4df3ec3339eee83d56930c', NULL, 0),
+(291, 0, NULL, 137, 2, 2, '', NULL, '1,2,3,4,5', NULL, '1. PPTO\n\nLack/Low understanding on gender and development issues like violence Against Women and children (VAWC)\n\namong female and male PTO personnel', '', 'To create/enhance gender awareness and consciousness particularly on VAWC among female and male PTO personnel', 'Capacity Development Program (training) of PTO', '3', 'conduct one-day seminar (in two batches) on VAWC awareness in june and jly 2014', '2019-07-17', '2019-08-14', '100% of female and male PTO personnel will be  fully aware on gender issues', NULL, '20000.00', NULL, NULL, 'Provincial Planning and Development Office (PPDO)', '2019-07-26', '09:12:34am', NULL, NULL, NULL, '3441318fcd7b90c521af0e80e1911017', NULL, 0),
+(340, 0, NULL, 133, 1, 2, 'Sample Supporting Statistics Data', 'Sample Source of Supporting Statistics data 3', '1,3,4,5', NULL, 'Slow progress of gender mainstreaming in the provincial government', NULL, '1. Strengthen the GAD Focal Point System in the Provincial government', 'NA', '3,4', 'Regular Meetings of GFPS; Conduct of GAD capacity Development Activities for GFPS Members', '2019-03-27', '2019-03-29', '4 Quarterly Meetings\n1 training conducted\n50% Female\n50% Male', NULL, '100000.00', NULL, NULL, 'PGO-GAD', '2019-08-10', '05:45:43pm', NULL, NULL, NULL, '55f4a86614bac551da0adcc56f029f95', NULL, 2),
+(349, 0, NULL, 133, 2, 1, 'Sample Supporting Statistics Data', 'Sample Source of Supporting Statistics data 1456', '1,3,4', NULL, 'Inadequate Health services to male & female retires', NULL, 'Establish linkage with provl. Retirees. Improve health and lifesyle of provl. Retirees', 'Provincial Capitol Retirees Care and welfare Program', '1,2,3,7,10,14,16', 'Conduct Retirees Annual gathering :\n1. Outreach medical & dental Services\n2. Laboratory Exams\n3. Livelihood Training\n4. Socio-cultural education/training\n5. Dental Consultation Services', '2019-03-10', '2019-03-17', '132 registered retirees (85 male + 48 female) avail of the medical services', NULL, '258000.00', NULL, NULL, 'PHRMO', '2019-08-10', '05:45:43pm', NULL, NULL, NULL, '55f4a86614bac551da0adcc56f029f95', NULL, 1),
+(350, 0, NULL, 141, 1, 2, 'Sample Supporting Statistics Data', 'Sample Source of Supporting Statistics data', '1,2,5', NULL, 'Slow progress of gender mainstreaming in the provincial government', NULL, '1. Strengthen the GAD Focal Point System in the Provincial government', 'None', '3,4,5', 'Regular Meetings of GFPS; Conduct of GAD capacity Development Activities for GFPS Members', '2019-02-01', '2019-02-28', '4 Quarterly Meetings\n1 training conducted\n50% Female\n50% Male', NULL, '100000.00', NULL, NULL, 'PGO-GAD', '2019-08-22', '11:34:24am', NULL, NULL, NULL, '130c5b8a7ec305bf81528c729ea83190', NULL, 2),
+(351, 0, NULL, 141, 2, 1, 'Sample Supporting Statistics Data', 'Sample Source of Supporting Statistics data', '1,3,4', NULL, 'Inadequate Health services to male & female retires', NULL, 'Establish linkage with provl. Retirees. Improve health and lifesyle of provl. Retirees', 'Provincial Capitol Retirees Care and welfare Program', '1,2,3,7,10,14,16', 'Conduct Retirees Annual gathering :\n1. Outreach medical & dental Services\n2. Laboratory Exams\n3. Livelihood Training\n4. Socio-cultural education/training\n5. Dental Consultation Services', '2019-03-10', '2019-03-17', '132 registered retirees (85 male + 48 female) avail of the medical services', NULL, '258000.00', NULL, NULL, 'PHRMO', '2019-08-22', '11:34:24am', NULL, NULL, NULL, '130c5b8a7ec305bf81528c729ea83190', NULL, 2),
+(352, 0, NULL, 146, 1, 2, 'Sample Supporting Statistics Data', 'Sample Source of Supporting Statistics data', '1,2,5', NULL, 'Slow progress of gender mainstreaming in the provincial government', NULL, '1. Strengthen the GAD Focal Point System in the Provincial government', 'None', '3,4,5', 'Regular Meetings of GFPS; Conduct of GAD capacity Development Activities for GFPS Members', '2019-02-01', '2019-02-28', '4 Quarterly Meetings\n1 training conducted\n50% Female\n50% Male', NULL, '100000.00', NULL, NULL, 'PGO-GAD', '2019-08-22', '04:01:19pm', NULL, NULL, NULL, '4a77f676cdab18ab09d663af3c8eb665', NULL, 0),
+(353, 0, NULL, 146, 2, 1, 'Sample Supporting Statistics Data', 'Sample Source of Supporting Statistics data', '1,3,4', NULL, 'Inadequate Health services to male & female retires', NULL, 'Establish linkage with provl. Retirees. Improve health and lifesyle of provl. Retirees', 'Provincial Capitol Retirees Care and welfare Program', '1,2,3,7,10,14,16', 'Conduct Retirees Annual gathering :\n1. Outreach medical & dental Services\n2. Laboratory Exams\n3. Livelihood Training\n4. Socio-cultural education/training\n5. Dental Consultation Services', '2019-03-10', '2019-03-17', '132 registered retirees (85 male + 48 female) avail of the medical services', NULL, '258000.00', NULL, NULL, 'PHRMO', '2019-08-22', '04:01:19pm', NULL, NULL, NULL, '4a77f676cdab18ab09d663af3c8eb665', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -570,60 +2179,9 @@ CREATE TABLE `gad_ppa_attributed_program` (
 INSERT INTO `gad_ppa_attributed_program` (`id`, `title`) VALUES
 (1, 'Economic'),
 (2, 'Social'),
-(3, 'Infrastacture'),
+(3, 'Infrastructure'),
 (4, 'Environmental'),
 (5, 'Institutional');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `gad_ppa_client_focused`
---
-
-CREATE TABLE `gad_ppa_client_focused` (
-  `id` int(11) NOT NULL,
-  `title` varchar(250) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `gad_ppa_client_focused`
---
-
-INSERT INTO `gad_ppa_client_focused` (`id`, `title`) VALUES
-(1, 'Capacity Development (CapDev) - Gender Sensetivity Trainings (GST)'),
-(2, 'Capacity Development (CapDev) - Gender Analysis'),
-(3, 'Capacity Development (CapDev) - Gender Responsive Planning and Budgeting'),
-(4, 'Capacity Development (CapDev) - GAD Related Policies'),
-(5, 'Development of IEC Materials'),
-(6, 'GAD Advocacy Activities'),
-(7, 'PPAs related to the implementation of Republic Act No. 10354 - Reproductive Health Law'),
-(8, 'Establishment of Violence Against Women and their Children (VAWC) Center'),
-(9, 'Establishment/Maintenance of Day Care Center'),
-(10, 'Establishment/ Maintenance of Women Crisis Center'),
-(11, 'Establishment/Maintenance of Halfway houses for trafficked women and girls');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `gad_ppa_organizational_focused`
---
-
-CREATE TABLE `gad_ppa_organizational_focused` (
-  `id` int(11) NOT NULL,
-  `title` varchar(250) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `gad_ppa_organizational_focused`
---
-
-INSERT INTO `gad_ppa_organizational_focused` (`id`, `title`) VALUES
-(1, 'Capacity Development (CapDev) - Gender Sensetivity Trainings (GST)'),
-(2, 'Capacity Development (CapDev) - Gender Analysis'),
-(3, 'Capacity Development (CapDev) - Gender Responsive Planning and Budgeting'),
-(4, 'Capacity Development (CapDev) - GAD Related policies'),
-(5, 'Development of IEC Materials'),
-(6, 'GAD Advocacy Activities');
 
 -- --------------------------------------------------------
 
@@ -633,8 +2191,13 @@ INSERT INTO `gad_ppa_organizational_focused` (`id`, `title`) VALUES
 
 CREATE TABLE `gad_record` (
   `id` int(11) NOT NULL,
+  `create_status_id` int(11) DEFAULT NULL,
   `report_type_id` int(11) DEFAULT NULL,
+  `attached_ar_record_id` int(11) DEFAULT NULL,
+  `for_revision_record_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
+  `office_c` int(11) DEFAULT NULL,
+  `isdilg` int(11) DEFAULT '0',
   `region_c` varchar(2) DEFAULT NULL,
   `province_c` varchar(2) DEFAULT NULL,
   `citymun_c` varchar(2) DEFAULT NULL,
@@ -647,7 +2210,7 @@ CREATE TABLE `gad_record` (
   `form_type` int(11) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   `is_returned` varchar(3) DEFAULT 'no',
-  `is_archive` int(11) DEFAULT NULL,
+  `is_archive` int(11) NOT NULL DEFAULT '0',
   `tuc` varchar(150) DEFAULT NULL,
   `date_created` date DEFAULT NULL,
   `time_created` varchar(10) DEFAULT NULL
@@ -657,84 +2220,116 @@ CREATE TABLE `gad_record` (
 -- Dumping data for table `gad_record`
 --
 
-INSERT INTO `gad_record` (`id`, `report_type_id`, `user_id`, `region_c`, `province_c`, `citymun_c`, `total_lgu_budget`, `total_gad_budget`, `year`, `prepared_by`, `approved_by`, `footer_date`, `form_type`, `status`, `is_returned`, `is_archive`, `tuc`, `date_created`, `time_created`) VALUES
-(4, 1, 1, '13', '74', '04', '520000.00', '480000.00', 2019, 'Mark Angelo D. Bon', 'Leonel Rey D. Bon', '2019-04-18', NULL, 0, '', NULL, '35ef7ed7529399d9732cfc57dcc3c583', NULL, NULL),
-(5, 1, 1, '13', '74', '04', '49000.00', '56000.00', 2019, NULL, NULL, NULL, NULL, 0, '', NULL, 'ca7abc20601f1a61d49d17e30d03a650', '2019-03-06', '05:57:16am'),
-(6, 1, 1, '13', '74', '04', '8900000.00', '1200000.00', 2019, NULL, NULL, NULL, NULL, 0, '', NULL, '8f4f766accba068f0c974299ae4f2fda', '2019-03-25', '03:31:37pm'),
-(7, 1, 1, '13', '74', '04', '78900000.00', '230000.00', 2018, NULL, NULL, NULL, NULL, 0, '', NULL, '2225240acb80809912a505ffcb61696e', '2019-03-25', '03:34:45pm'),
-(8, 1, 1, '13', '74', '04', '3432412.00', '343434.00', 2010, NULL, NULL, NULL, NULL, 0, '', NULL, '3c4c4b142cb161430cf5be0ae13a01e4', '2019-03-25', '03:41:23pm'),
-(9, 1, 1, '13', '74', '04', '80945409.00', '890000.00', 2019, NULL, NULL, NULL, NULL, 0, '', NULL, 'fd8469c76fc3ee90c82b4fe98dce460a', '2019-03-25', '03:42:00pm'),
-(10, 1, 1, '13', '74', '04', '890.00', '908.00', 2019, NULL, NULL, NULL, NULL, 0, '', NULL, '61c2119ef915eb27efc8f592265c30b9', '2019-03-26', '09:28:18am'),
-(11, 1, 1, '13', '74', '04', '4500067.00', '23400.00', 2018, NULL, NULL, NULL, NULL, 0, '', NULL, '34d44fb45223baba20afddac5ece2236', '2019-03-26', '09:34:48am'),
-(12, 1, 1, '13', '74', '04', '450000000.00', '1200000.00', 2016, NULL, NULL, NULL, NULL, 0, '', NULL, 'bf8b26af6c90cbe3234d1351cba191dd', '2019-03-26', '09:35:23am'),
-(13, 1, 1, '13', '74', '04', '22.00', '23.00', 2011, NULL, NULL, NULL, NULL, 0, '', NULL, 'cc86af63145ff79a636ae47f6e3e0a04', '2019-03-26', '09:49:17am'),
-(14, 1, 1, '13', '74', '04', '8909889.00', '880000.00', 2018, NULL, NULL, NULL, NULL, 0, '', NULL, '0b64a1f4d76f3828e58c390e468359b9', '2019-03-26', '10:43:50am'),
-(15, 1, 1, '13', '74', '04', '111111.00', '222222.00', 3333, NULL, NULL, NULL, NULL, 0, '', NULL, 'da4f6710a5ebbc547fdd2a636a52d44f', '2019-03-26', '10:55:55am'),
-(16, 1, 1, '13', '74', '04', '1230000.00', '110000.00', 2018, NULL, NULL, NULL, NULL, 0, '', NULL, '9e157539d93450d614ab3f63bbdeec0e', '2019-03-26', '11:44:39am'),
-(17, 1, 1, '13', '74', '04', '898989.00', '90000.00', 2019, NULL, NULL, NULL, NULL, 0, '', NULL, '62f8ba1f61f2b37148d84a994bcd7b97', '2019-03-26', '04:14:35pm'),
-(18, 1, 1, '13', '74', '04', '160000.00', '17000.00', 2018, NULL, NULL, NULL, NULL, 0, '', NULL, '59b81cbb9281bcc907f7e746a56ebfb6', '2019-03-27', '08:03:05am'),
-(19, 1, 1, '13', '74', '04', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '', NULL, '447b36b0b79ca7d876c2deb879842097', '2019-03-27', '04:18:26pm'),
-(20, 1, 1, '13', '74', '04', '20164.00', '8978.00', 2019, NULL, NULL, NULL, NULL, 0, '', NULL, '8f2e11ab8c35ecdf1c2e25e81d5f154f', '2019-03-27', '04:20:22pm'),
-(21, 1, 1, '13', '74', '04', '89000000.00', '87800000.00', 2019, NULL, NULL, NULL, NULL, 0, '', NULL, '07ed948ff226cecf183427e2ceac9040', '2019-03-29', '11:15:59am'),
-(22, 1, 1, '13', '74', '04', '60000000.00', '7800000.00', 2019, NULL, NULL, NULL, NULL, 0, '', NULL, '5f5e132cdbc034cb4e0edea82a6abdf3', '2019-04-02', '11:15:37am'),
-(23, 2, 1, '13', '74', '04', '3900000000.00', '4500000000.00', 2019, 'Michael P. Cortuna', 'Denie D. Maomay', '2019-04-04', NULL, 0, '', NULL, '2be6b436dff7942e9a17cd20d42a7f24', '2019-04-02', '11:33:48am'),
-(24, 2, 1, '13', '74', '04', '234343.00', '4343434.00', 2019, NULL, NULL, NULL, NULL, 0, '', NULL, 'f3b91afe045424554b562cfb10f71c40', '2019-04-02', '11:39:23am'),
-(25, 2, 1, '13', '74', '04', '234343.00', '4343434.00', 2019, NULL, NULL, NULL, NULL, 0, '', NULL, '9427f45bef8b62f02bb224108787b9ae', '2019-04-02', '11:42:01am'),
-(26, 2, 1, '13', '74', '04', '234343.00', '4343434.00', 2019, NULL, NULL, NULL, NULL, 0, '', NULL, '108554adab419af8a19de9da4653f5e5', '2019-04-02', '11:42:49am'),
-(27, 1, 1, '13', '74', '04', '4560000000.00', '78000000.00', 2019, NULL, NULL, NULL, NULL, 0, '', NULL, '45d3f3366da9647024acacd295fa6aef', '2019-04-02', '11:49:14am'),
-(28, 1, 1, '13', '74', '04', '345000000000.00', '8900000000.00', 2019, NULL, NULL, '2019-04-02', NULL, 0, '', NULL, 'a48db701bce71f2383611f802551e4db', '2019-04-02', '11:51:05am'),
-(29, 1, 1, '13', '74', '04', '12355540000000.00', '123000000000.00', 2019, NULL, NULL, '2019-04-02', NULL, 0, '', NULL, 'a4973a17fe17e8f56cf3dc7d0fd3bc2a', '2019-04-02', '03:23:26pm'),
-(30, 1, 1, '13', '74', '04', '1200000000000.00', '29000000000.00', 2018, NULL, NULL, '2019-04-02', NULL, 0, '', NULL, 'c67fd08259e41f4c1396f02d024035e8', '2019-04-02', '03:40:56pm'),
-(31, 1, 1, '13', '74', '04', '2300000000.00', '90000000.00', 2019, NULL, NULL, '2019-04-02', NULL, 0, '', NULL, '813bd4dd36005f0d90ca6bb9c716ca47', '2019-04-02', '04:01:02pm'),
-(32, 1, 1, '13', '74', '04', '34000000.00', '670000.00', 2012, NULL, NULL, '2019-04-02', NULL, 0, '', NULL, 'b7caf5200738000629c0707776462cf9', '2019-04-02', '04:05:12pm'),
-(33, 1, 1, '13', '74', '04', '167800000000.00', '6780000000.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, '386fe705bd1166bd29420068b203fe36', '2019-04-04', '10:25:41am'),
-(34, 1, 1, '13', '74', '04', '23400000.00', '23000000.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, '0f2cd43e69c0161ea7b17c62d070e9c8', '2019-04-04', '11:25:12am'),
-(35, 2, 1, '13', '74', '04', '123.00', '234.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, 'eb657d1128389f5ad8657b0d1095c457', '2019-04-04', '12:25:30pm'),
-(36, 2, 1, '13', '74', '04', '123.00', '234.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, '3a09f3f813e985bd765f8b3db0191f7e', '2019-04-04', '12:25:44pm'),
-(37, 2, 1, '13', '74', '04', '12111.00', '131111.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, '7d49008dc5f832acd44b41662f3ed6a9', '2019-04-04', '12:30:25pm'),
-(38, 2, 1, '13', '74', '04', '111111.00', '33333.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, '5b828e0d0f24fcf2b2de95cdd1b7ca8d', '2019-04-04', '12:32:56pm'),
-(39, 2, 1, '13', '74', '04', '3459.00', '89877.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, '992885a8ac3affd380c712096d64d7a5', '2019-04-04', '12:38:40pm'),
-(40, 2, 1, '13', '74', '04', '230000000000.00', '24000000000.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, '073c73c9e247e11d6d301828ba036cf0', '2019-04-04', '01:06:45pm'),
-(41, 2, 1, '13', '74', '04', '9999999999999999.99', '655555555555.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, 'e8b8488de8357018ffe209253a3f4bf2', '2019-04-04', '01:24:45pm'),
-(42, 2, 1, '13', '74', '04', '344444444444.00', '4555555555.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, 'f3e1aa4386c25c74357c542d6d70ae29', '2019-04-04', '01:25:24pm'),
-(43, 1, 1, '13', '74', '04', '7855.00', '700000.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, '61e6afa72a40ff43549cb4d43ece2bc3', '2019-04-04', '01:50:56pm'),
-(44, 2, 1, '13', '74', '04', '67.00', '45.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, '926392ffe1331cd5451444dbabb87aa4', '2019-04-04', '01:58:30pm'),
-(45, 2, 1, '13', '74', '04', '34.00', '45.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, '4988624c31fa62304cb93dbeef260f36', '2019-04-04', '01:58:38pm'),
-(46, 1, 1, '13', '74', '04', '1000000.00', '20000.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, '5b1f65881f7fc39f1f8ec94e730fb20a', '2019-04-04', '02:17:20pm'),
-(47, 1, 1, '13', '74', '04', '5454545.00', '454354.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, 'e494bab4b4b71d2c6f3a8a106f8af138', '2019-04-04', '02:36:48pm'),
-(48, 2, 1, '13', '74', '04', '4567777.00', '234444.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, 'dc3fcd330b598da6ab27aae84f959b61', '2019-04-04', '03:03:33pm'),
-(49, 1, 1, '13', '74', '04', '2343434.00', '122222222.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, 'd950c62ba6127660e77e379715cc7ea2', '2019-04-04', '03:07:32pm'),
-(50, 1, 1, '13', '74', '04', '234343434.00', '3333333.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, '831c5c546b76dd3f6edae6db5e16c5cf', '2019-04-04', '03:13:35pm'),
-(51, 2, 1, '13', '74', '04', '666666666666.00', '7777777777.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, '65d2e30191bc151895e278720dbfe760', '2019-04-04', '03:14:25pm'),
-(52, 2, 1, '13', '74', '04', '109.00', '102.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, 'fd4683a8ce93f1b70da819f02dc3df43', '2019-04-04', '03:27:39pm'),
-(53, 1, 1, '13', '74', '04', '10902323.00', '789999.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, '716d26aae6d9d07ba815b92b75cd62ff', '2019-04-04', '03:33:39pm'),
-(54, 2, 1, '13', '74', '04', '3333333.00', '444444.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, 'ec2658168c253b4ad0ed73c9401a6625', '2019-04-04', '03:36:39pm'),
-(55, 1, 1, '13', '74', '04', '23434.00', '43243.00', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, '82afa84a70e8f72587f1a7cc568cce3f', '2019-04-04', '03:37:57pm'),
-(56, 1, 1, '13', '74', '04', '9999999999999999.99', '9999999999999999.99', 2019, NULL, NULL, '2019-04-04', NULL, 0, '', NULL, 'd577d1a0bec810f2ed218b29c92f6df3', '2019-04-04', '04:06:19pm'),
-(57, 1, 1, '13', '74', '04', '2340000.00', '450000.00', 2019, NULL, NULL, '2019-04-05', NULL, 0, '', NULL, '3480c9e0fcf012e36840549e9114e6f1', '2019-04-05', '09:35:31am'),
-(58, 1, 1, '13', '74', '04', '2000000.00', '100000.00', 2019, NULL, NULL, '2019-04-08', NULL, 0, 'no', NULL, '9227cb232c84b89369c8dd97442a3fa3', '2019-04-08', '02:48:21pm');
+INSERT INTO `gad_record` (`id`, `create_status_id`, `report_type_id`, `attached_ar_record_id`, `for_revision_record_id`, `user_id`, `office_c`, `isdilg`, `region_c`, `province_c`, `citymun_c`, `total_lgu_budget`, `total_gad_budget`, `year`, `prepared_by`, `approved_by`, `footer_date`, `form_type`, `status`, `is_returned`, `is_archive`, `tuc`, `date_created`, `time_created`) VALUES
+(133, 1, 1, NULL, NULL, 8, 4, 0, '03', '54', '01', '89000000.00', NULL, 2018, 'Mark Angelo D. Bon', 'Leonel Rey D. Bon', '2019-08-22', NULL, 3, 'no', 0, '55f4a86614bac551da0adcc56f029f95', '2019-07-25', '08:23:20am'),
+(135, 1, 2, NULL, NULL, 8, 4, 0, '03', '54', '01', '57000.00', NULL, 2019, NULL, NULL, '2019-07-25', NULL, 8, 'no', 0, 'b14f7eb53fbff96a2a11b465fbbc8ed1', '2019-07-25', '10:53:01pm'),
+(140, 1, 2, NULL, NULL, 8, 4, 0, '03', '54', '01', '79000000.00', NULL, 2018, NULL, 'Kevin C. Rawlo', '2019-07-26', NULL, 8, 'no', 0, '9e787d0bd7b851b485681d72a37cc3ad', '2019-07-26', '04:04:02pm'),
+(141, 1, 1, 150, NULL, 6, 3, 0, '03', '54', '02', '8900000.00', NULL, 2018, 'Mark Angelo D. Bon', 'Leonel Rey D. Bon', '2019-08-22', NULL, 4, 'no', 0, '130c5b8a7ec305bf81528c729ea83190', '2019-07-27', '12:09:52pm'),
+(146, 1, 1, NULL, NULL, 3, 2, 0, '03', '54', NULL, NULL, NULL, NULL, NULL, NULL, '2019-08-22', NULL, 3, 'no', 0, '4a77f676cdab18ab09d663af3c8eb665', '2019-07-27', '12:15:56pm'),
+(150, NULL, 2, NULL, NULL, 6, 3, 0, '03', '54', '02', '4860000.00', NULL, 2019, NULL, NULL, '2019-08-22', NULL, 0, 'no', 0, '062f782fa9d5532a5c35d32042952547', '2019-08-22', '08:06:25am'),
+(151, NULL, 1, NULL, NULL, 6, 3, 0, '03', '54', '02', '45345435.00', NULL, 2014, NULL, NULL, '2019-08-23', NULL, 0, 'no', 0, '65f8529ade761d7f5d9d44071cbf8b62', '2019-08-23', '01:55:07pm');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `gad_reports_history`
+-- Table structure for table `gad_report_history`
 --
 
-CREATE TABLE `gad_reports_history` (
+CREATE TABLE `gad_report_history` (
   `id` int(11) NOT NULL,
-  `res_user_id` int(11) DEFAULT NULL,
-  `res_region_c` varchar(2) DEFAULT NULL,
-  `res_province_c` varchar(2) DEFAULT NULL,
-  `res_citymun_c` varchar(3) DEFAULT NULL,
-  `role` varchar(50) DEFAULT NULL,
-  `record_id` int(11) DEFAULT NULL,
-  `record_tuc` varchar(150) DEFAULT NULL,
   `remarks` text,
+  `tuc` varchar(100) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
-  `is_returned` varchar(3) DEFAULT NULL,
+  `responsible_office_c` int(11) DEFAULT NULL,
+  `responsible_user_id` int(11) DEFAULT NULL,
   `date_created` date DEFAULT NULL,
   `time_created` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `gad_report_history`
+--
+
+INSERT INTO `gad_report_history` (`id`, `remarks`, `tuc`, `status`, `responsible_office_c`, `responsible_user_id`, `date_created`, `time_created`) VALUES
+(1, 'Default remarks : Submitted to Central Office 9', 'd8a9929fc5fd73a4f434d71a20fbc236', 3, 1, 2, '2019-06-07', '04:52:42am'),
+(2, 'Default remarks : Submitted to Central Office 3', 'a58d54d328600e3bac15987cd8ffc10d', 3, 1, 2, '2019-06-07', '04:52:42am'),
+(3, 'Default remarks : Submitted to Central Office 5', 'd8a9929fc5fd73a4f434d71a20fbc236', 3, 1, 2, '2019-06-07', '05:04:37am'),
+(4, 'Default remarks : Submitted to Central Office 2', 'a58d54d328600e3bac15987cd8ffc10d', 3, 1, 2, '2019-06-07', '05:05:27am'),
+(5, 'Default remarks : Submitted to Central Office 7', 'd8a9929fc5fd73a4f434d71a20fbc236', 3, 1, 2, '2019-06-07', '05:06:01am'),
+(6, 'Default remarks : Submitted to Central Office 1', 'a58d54d328600e3bac15987cd8ffc10d', 3, 1, 2, '2019-06-07', '05:06:08am'),
+(8, 'Submit this city of angeles (Php 450,000.00)', 'c54c6f01287171e4e375544a734f7566', 3, NULL, NULL, '2019-06-07', '02:01:40pm'),
+(9, 'remarks new ccity', '92fbabdc7eb2abac018bcb5b53532c30', 3, NULL, NULL, '2019-06-07', '02:14:21pm'),
+(10, 'final to central', '92fbabdc7eb2abac018bcb5b53532c30', 4, NULL, NULL, '2019-06-07', '02:15:33pm'),
+(11, '', '98195d1c3333389675f1a36bde7d4286', 3, NULL, NULL, '2019-06-10', '02:47:43pm'),
+(12, 'For Review by PPDO', '4e77aa678b7f8dcfc2220505b51fdb49', 1, NULL, NULL, '2019-06-10', '04:11:55pm'),
+(13, 'For Review by PPDO', '90f7a391380b3a48b9db4ba61ff4bab9', 1, NULL, NULL, '2019-06-18', '10:09:54am'),
+(14, 'For Review by PPDO', '8e4d8c9bb7ed3de6a87e142b09fc7588', 1, NULL, NULL, '2019-06-18', '03:24:42pm'),
+(15, 'Please make some review with this Plan. Thanks', '3afa0b63806720a1c044b0d3c8354047', 1, NULL, NULL, '2019-06-19', '09:58:36am'),
+(16, 'Here we come', 'c41d9d8628db26da2656e546e11abd71', 1, NULL, NULL, '2019-06-19', '10:07:49am'),
+(17, 'Submit to PPDO again', 'c41d9d8628db26da2656e546e11abd71', 1, NULL, NULL, '2019-06-19', '10:46:03am'),
+(18, 'submit ulet', 'c41d9d8628db26da2656e546e11abd71', 1, NULL, NULL, '2019-06-19', '12:31:38pm'),
+(19, 'Submit this to PPDO test if  change the status of AR', 'ae46028627a51ed9f7e0ca4e247766f4', 1, NULL, NULL, '2019-06-21', '12:46:52pm'),
+(20, 'submit to PPDO', '55bb6995a773b3146b7cede719df491a', 1, NULL, NULL, '2019-06-24', '09:45:46am'),
+(21, 'Default Remarks : For Review by PPDO', 'c41d9d8628db26da2656e546e11abd71', 1, NULL, NULL, '2019-06-24', '10:53:45am'),
+(22, '', 'c41d9d8628db26da2656e546e11abd71', 2, NULL, NULL, '2019-06-24', '11:58:30am'),
+(23, 'Please Comply within 5 working days', 'c41d9d8628db26da2656e546e11abd71', 7, NULL, NULL, '2019-06-24', '12:00:56pm'),
+(24, '', 'c41d9d8628db26da2656e546e11abd71', 2, NULL, NULL, '2019-06-24', '12:07:50pm'),
+(25, 'submit this bro', '8b88c704e67966ef323bfa4b45377d8b', 1, NULL, NULL, '2019-07-08', '01:58:24pm'),
+(26, 'Endorsed', '8b88c704e67966ef323bfa4b45377d8b', 2, NULL, NULL, '2019-07-09', '08:25:22am'),
+(27, 'Submit this report to PPDO using modal', '296aa15132005f8aa01ea83c9a73e056', 1, NULL, NULL, '2019-07-16', '04:47:28pm'),
+(28, '', '296aa15132005f8aa01ea83c9a73e056', 7, NULL, NULL, '2019-07-16', '05:49:12pm'),
+(29, 'Submit ulet sa PPDO', '296aa15132005f8aa01ea83c9a73e056', 1, NULL, NULL, '2019-07-16', '05:53:52pm'),
+(30, 'submit to dilg province using modal', '296aa15132005f8aa01ea83c9a73e056', 2, NULL, NULL, '2019-07-16', '06:13:00pm'),
+(31, 'submit to PPDO the apalit', '530884087f382ab84a2a96fd7b5bca58', 1, NULL, NULL, '2019-07-16', '06:40:41pm'),
+(32, 'Submit to DILG Province', '530884087f382ab84a2a96fd7b5bca58', 2, NULL, NULL, '2019-07-16', '08:22:35pm'),
+(33, 'Endorse this LGU using modal', '530884087f382ab84a2a96fd7b5bca58', 4, NULL, NULL, '2019-07-16', '08:38:08pm'),
+(34, 'Submit to region using modal', '3403f25ef0557f830015bc03f844ae78', 3, NULL, NULL, '2019-07-16', '08:42:36pm'),
+(35, 'Return this using modal by region', '3403f25ef0557f830015bc03f844ae78', 6, NULL, NULL, '2019-07-17', '09:52:08am'),
+(36, 'Submitted to DILG sample change of status encoded by huc', '1544f2f10ba892fce891330671f1671d', 3, NULL, NULL, '2019-07-22', '09:43:50pm'),
+(37, 'Submit to Region agad using new validation', 'a3346c99e2ac6986bce0d8e7b2ef4799', 3, NULL, NULL, '2019-07-22', '09:50:38pm'),
+(38, 'submit to PPDO sample pre', '8502efe35fb73c444129d925b8f05d29', 1, NULL, NULL, '2019-07-22', '09:55:45pm'),
+(39, 'Submit this pre', '8502efe35fb73c444129d925b8f05d29', 2, NULL, NULL, '2019-07-22', '09:56:15pm'),
+(40, 'Endorsed by dilg province', '8502efe35fb73c444129d925b8f05d29', 4, NULL, NULL, '2019-07-22', '09:58:09pm'),
+(41, 'using new endorse validation', 'a3346c99e2ac6986bce0d8e7b2ef4799', 10, NULL, NULL, '2019-07-22', '09:59:46pm'),
+(42, 'Submit to Region', 'cca8801c1dfed05b4b855c564cb6e077', 3, NULL, NULL, '2019-07-22', '10:38:43pm'),
+(43, 'Please revised this plan', 'cca8801c1dfed05b4b855c564cb6e077', 6, NULL, NULL, '2019-07-23', '09:24:48am'),
+(44, 'also revise this report', '1544f2f10ba892fce891330671f1671d', 10, NULL, NULL, '2019-07-23', '11:23:43am'),
+(45, 'Submit this Report', '714022ad4a7e0070891205c97d809ba1', 3, NULL, NULL, '2019-07-24', '09:09:02am'),
+(46, 'I endorsed this LGU', '714022ad4a7e0070891205c97d809ba1', 10, NULL, NULL, '2019-07-25', '04:19:54pm'),
+(47, 'Kindly Review this Plan, thank you', '3441318fcd7b90c521af0e80e1911017', 1, NULL, NULL, '2019-07-26', '09:22:51am'),
+(48, 'No inputted name for Prepared by and Approved by', '3441318fcd7b90c521af0e80e1911017', 7, NULL, NULL, '2019-07-26', '09:26:34am'),
+(49, 'i inputted the name of local chief executive and chair person thank you', '3441318fcd7b90c521af0e80e1911017', 1, NULL, NULL, '2019-07-26', '09:29:44am'),
+(50, 'I reviewed the plan subject for endorsement', '3441318fcd7b90c521af0e80e1911017', 2, NULL, NULL, '2019-07-26', '09:41:44am'),
+(51, 'I endorsed this LGU', '3441318fcd7b90c521af0e80e1911017', 4, NULL, NULL, '2019-07-26', '10:02:27am'),
+(52, 'Submit this plan', 'eef0b042ca4df3ec3339eee83d56930c', 3, NULL, NULL, '2019-07-26', '11:13:13am'),
+(53, 'return this plan', 'eef0b042ca4df3ec3339eee83d56930c', 6, NULL, NULL, '2019-07-26', '11:30:18am'),
+(54, 'revised', 'eef0b042ca4df3ec3339eee83d56930c', 3, NULL, NULL, '2019-07-26', '11:31:32am'),
+(55, 'return', 'eef0b042ca4df3ec3339eee83d56930c', 6, NULL, NULL, '2019-07-26', '11:32:22am'),
+(56, 'Submit to Region', 'eef0b042ca4df3ec3339eee83d56930c', 3, NULL, NULL, '2019-07-27', '11:54:11am'),
+(57, 'Default Remarks : For Review by PPDO', '19f257a47426bdfb9979fda8530640b6', 1, NULL, NULL, '2019-07-27', '12:08:15pm'),
+(58, 'Submit this to PPDO for sample comment', 'e38e582bd873440819de1a60e99c0c95', 1, NULL, NULL, '2019-08-19', '07:04:05pm'),
+(59, 'submit to province test unique user id in comment', '19f257a47426bdfb9979fda8530640b6', 2, NULL, NULL, '2019-08-19', '08:17:33pm'),
+(60, 'Endorse this LGU to Province', 'e38e582bd873440819de1a60e99c0c95', 2, NULL, NULL, '2019-08-20', '03:15:22pm'),
+(61, 'there is no attributed program inputted', '19f257a47426bdfb9979fda8530640b6', 7, NULL, NULL, '2019-08-21', '12:47:40pm'),
+(62, 'okay na po, meron ng attributed program', '19f257a47426bdfb9979fda8530640b6', 1, NULL, NULL, '2019-08-21', '12:49:42pm'),
+(63, 'Kindly check this report, this is for endorsement', '19f257a47426bdfb9979fda8530640b6', 2, NULL, NULL, '2019-08-21', '12:51:05pm'),
+(64, 'kindly review this report PPDO', '130c5b8a7ec305bf81528c729ea83190', 1, NULL, NULL, '2019-08-22', '02:13:07pm'),
+(65, 'Test the showing and hiding of button', '130c5b8a7ec305bf81528c729ea83190', 7, NULL, NULL, '2019-08-22', '02:21:28pm'),
+(66, 'Revised this po', '130c5b8a7ec305bf81528c729ea83190', 1, NULL, NULL, '2019-08-22', '02:29:32pm'),
+(67, 'return this ulet to check if ma-edit ung revised', '130c5b8a7ec305bf81528c729ea83190', 7, NULL, NULL, '2019-08-22', '02:31:50pm'),
+(68, 'Okay na-edit naman kapag pinarevise ung bawat cell', '130c5b8a7ec305bf81528c729ea83190', 1, NULL, NULL, '2019-08-22', '02:32:41pm'),
+(69, 'Submit this repport to DILG prov', '130c5b8a7ec305bf81528c729ea83190', 2, NULL, NULL, '2019-08-22', '02:39:23pm'),
+(70, 'Revised this please', '130c5b8a7ec305bf81528c729ea83190', 5, NULL, NULL, '2019-08-22', '02:45:35pm'),
+(71, 'return this to LGU', '130c5b8a7ec305bf81528c729ea83190', 7, NULL, NULL, '2019-08-22', '02:54:24pm'),
+(72, 'submit this to PPDO', '130c5b8a7ec305bf81528c729ea83190', 1, NULL, NULL, '2019-08-22', '02:56:59pm'),
+(73, 'Submit this to DILG province', '130c5b8a7ec305bf81528c729ea83190', 2, NULL, NULL, '2019-08-22', '03:03:18pm'),
+(74, 'revised this', '130c5b8a7ec305bf81528c729ea83190', 5, NULL, NULL, '2019-08-22', '03:05:11pm'),
+(75, 'Okay na po', '130c5b8a7ec305bf81528c729ea83190', 2, NULL, NULL, '2019-08-22', '03:07:48pm'),
+(76, 'endorse this LGU', '130c5b8a7ec305bf81528c729ea83190', 4, NULL, NULL, '2019-08-22', '03:08:28pm'),
+(77, 'Submit this to Region', '55f4a86614bac551da0adcc56f029f95', 3, NULL, NULL, '2019-08-22', '03:42:24pm'),
+(78, 'Return this LGU', '55f4a86614bac551da0adcc56f029f95', 6, NULL, NULL, '2019-08-22', '03:53:35pm'),
+(79, 'submit ti reg', '55f4a86614bac551da0adcc56f029f95', 3, NULL, NULL, '2019-08-22', '03:54:31pm'),
+(80, 'submit to reg', '4a77f676cdab18ab09d663af3c8eb665', 3, NULL, NULL, '2019-08-22', '04:16:58pm');
 
 -- --------------------------------------------------------
 
@@ -758,21 +2353,51 @@ INSERT INTO `gad_report_type` (`id`, `title`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `gad_score_type`
+--
+
+CREATE TABLE `gad_score_type` (
+  `id` int(11) NOT NULL,
+  `code` int(11) DEFAULT NULL,
+  `title` varchar(250) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `gad_score_type`
+--
+
+INSERT INTO `gad_score_type` (`id`, `code`, `title`) VALUES
+(1, 1, 'PIMME'),
+(2, 2, 'FIMME');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `gad_status`
 --
 
 CREATE TABLE `gad_status` (
   `id` int(11) NOT NULL,
-  `title` varchar(50) DEFAULT NULL
+  `code` int(11) NOT NULL,
+  `title` varchar(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `gad_status`
 --
 
-INSERT INTO `gad_status` (`id`, `title`) VALUES
-(1, 'Submitted by LGU'),
-(2, 'Endorsed by C/MLGOO');
+INSERT INTO `gad_status` (`id`, `code`, `title`) VALUES
+(1, 0, 'Encoding Process (CC/M)'),
+(2, 1, 'For Review by PPDO'),
+(3, 2, 'Submitted to DILG Provincial Office'),
+(4, 4, 'Endorsed By DILG (Province)'),
+(5, 5, 'Returned to PPDO by DILG Provincial Office'),
+(6, 3, 'Submitted to Regional Office'),
+(7, 6, 'Returned to LGU by Regional Office'),
+(8, 7, ' Returned to LGU C/M Office by PPDO'),
+(9, 8, 'Encoding Process (HUC/ICC)'),
+(10, 9, 'Encoding Process (Province)'),
+(11, 10, 'Endorsed by DILG (Region)');
 
 -- --------------------------------------------------------
 
@@ -800,6 +2425,7 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 ('m140830_172703_change_account_table_name', 1551314917),
 ('m141222_110026_update_ip_field', 1551314918),
 ('m141222_135246_alter_username_length', 1551314920),
+('m150127_040544_files', 1561597128),
 ('m150614_103145_update_social_account_table', 1551314923),
 ('m150623_212711_fix_username_notnull', 1551314924),
 ('m160127_032401_create_required_tables', 1551315030),
@@ -833,7 +2459,8 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 ('m190121_005631_updated_psgc_012118', 1551325874),
 ('m190214_000816_inser_bac_section', 1551325874),
 ('m190214_081321_insert_clinic_section', 1551325875),
-('m190222_091440_user_history', 1551325876);
+('m190222_091440_user_history', 1551325876),
+('m190823_005434_permission_letter_spec_observ', 1566536415);
 
 -- --------------------------------------------------------
 
@@ -861,7 +2488,12 @@ INSERT INTO `profile` (`user_id`, `name`, `public_email`, `gravatar_email`, `gra
 (2, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (3, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (4, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(5, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(5, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(6, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(7, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(8, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(9, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(10, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -44738,7 +46370,12 @@ INSERT INTO `tbldesignation_user_history` (`id`, `USER_ID`, `DESIGNATION_C`, `ST
 (2, 2, NULL, NULL, NULL),
 (3, 3, 14, NULL, NULL),
 (4, 4, NULL, NULL, NULL),
-(5, 5, 5, NULL, NULL);
+(5, 5, 5, NULL, NULL),
+(6, 6, 5, NULL, NULL),
+(7, 7, 15, NULL, NULL),
+(8, 8, 5, NULL, NULL),
+(9, 9, 14, NULL, NULL),
+(10, 10, 14, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -44835,7 +46472,12 @@ INSERT INTO `tbldivision_user_history` (`id`, `USER_ID`, `DIVISION_C`, `START_DA
 (2, 2, NULL, NULL, NULL),
 (3, 3, NULL, NULL, NULL),
 (4, 4, NULL, NULL, NULL),
-(5, 5, NULL, NULL, NULL);
+(5, 5, NULL, NULL, NULL),
+(6, 6, NULL, NULL, NULL),
+(7, 7, 26, NULL, NULL),
+(8, 8, NULL, NULL, NULL),
+(9, 9, NULL, NULL, NULL),
+(10, 10, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -45138,7 +46780,12 @@ INSERT INTO `tblposition_user_history` (`id`, `USER_ID`, `POSITION_C`, `START_DA
 (2, 2, 8, NULL, NULL),
 (3, 3, 8, NULL, NULL),
 (4, 4, 8, NULL, NULL),
-(5, 5, 8, NULL, NULL);
+(5, 5, 8, NULL, NULL),
+(6, 6, 8, NULL, NULL),
+(7, 7, 8, NULL, NULL),
+(8, 8, 62, NULL, NULL),
+(9, 9, 66, NULL, NULL),
+(10, 10, 10, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -45366,7 +47013,12 @@ INSERT INTO `tblsection_user_history` (`id`, `USER_ID`, `SECTION_C`, `START_DATE
 (2, 2, NULL, NULL, NULL),
 (3, 3, NULL, NULL, NULL),
 (4, 4, NULL, NULL, NULL),
-(5, 5, NULL, NULL, NULL);
+(5, 5, NULL, NULL, NULL),
+(6, 6, NULL, NULL, NULL),
+(7, 7, NULL, NULL, NULL),
+(8, 8, NULL, NULL, NULL),
+(9, 9, NULL, NULL, NULL),
+(10, 10, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -45430,7 +47082,12 @@ INSERT INTO `tblservice_user_history` (`id`, `USER_ID`, `SERVICE_C`, `START_DATE
 (2, 2, NULL, NULL, NULL),
 (3, 3, NULL, NULL, NULL),
 (4, 4, NULL, NULL, NULL),
-(5, 5, NULL, NULL, NULL);
+(5, 5, NULL, NULL, NULL),
+(6, 6, NULL, NULL, NULL),
+(7, 7, 9, NULL, NULL),
+(8, 8, NULL, NULL, NULL),
+(9, 9, NULL, NULL, NULL),
+(10, 10, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -45492,11 +47149,16 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `email`, `password_hash`, `auth_key`, `confirmed_at`, `unconfirmed_email`, `blocked_at`, `registration_ip`, `created_at`, `updated_at`, `flags`) VALUES
-(1, 'markbon', 'bonmarkangelo@gmail.com', '$2y$10$u97SFFzJGFP.v1AW6qWwhOZuV0z7No9klhkpevQTb8HTnzvv7ewoy', 'sof0Nm2hRLNgSp3ijnYdP82XRnTkl81D', 1551831703, NULL, NULL, '::1', 1551831703, 1551847335, 0),
-(2, 'region_region3', 'region@g.com', '$2y$10$ygdtw40mCdHkFWw2UXBnN.yoWKAWIXIQwXR8SNKZZfdh6vi4PR0Du', 'bxp1uHqVM9rW_hNOvPsKzcKilrBalrvG', 1554692457, NULL, NULL, '::1', 1554692457, 1554701570, 0),
-(3, 'province_region3', 'province_central_luzon@g.com', '$2y$10$C/3KNZRzcK6GY5HgoexNL.mXiW9XhKjY11ilNc9YW7su0TTvfdBhy', 'BvN1HF7vtKCgGdG0T20790uFK6p1iIPz', 1554700785, NULL, NULL, '::1', 1554700785, 1554701500, 0),
-(4, 'non_huc_region3', 'abucay@g.com', '$2y$10$B/NVSwUeH8wf7FGQ32Ryme.WoWMzQeZyvKMsuUbUhPupWz4kt5eoy', 'lEMRTS_DBq3eVdw-9FS7j3kkGHeS-vcu', 1554701079, NULL, NULL, '::1', 1554701079, 1554701283, 0),
-(5, 'huc_region3', 'angelescitypampang@g.com', '$2y$10$ARoWQN60nqvFKny11KAjs.w3fFpRK1RYPMoBZa26YnXPI3ODSSJx2', 'q0q3GMMD-V93fI8OWPLftjHVZRPEiCCf', 1554701248, NULL, NULL, '::1', 1554701248, 1554701248, 0);
+(1, 'markbon', 'bonmarkangelo@gmail.com', '$2y$10$y9fCh9/l7WvPwlkVoj2f0uZwD37bZUmQK8FXDxX59rEdlah1AvahW', 'sof0Nm2hRLNgSp3ijnYdP82XRnTkl81D', 1551831703, NULL, NULL, '::1', 1551831703, 1554954468, 0),
+(2, 'reg_region3', 'region@g.com', '$2y$10$HrGBEkQ19qHDVOvCIOArN.XAlmQ1Y/PaVHAkLB0EhUD8dQZHK6WhW', 'bxp1uHqVM9rW_hNOvPsKzcKilrBalrvG', 1554692457, NULL, NULL, '::1', 1554692457, 1554954473, 0),
+(3, 'prov_region3', 'province_central_luzon@g.com', '$2y$10$rDH2CTvE8Ul1p1pP4WPPu.ja2MNI84YA66gQCpv62cWQax4Y1DLh6', 'BvN1HF7vtKCgGdG0T20790uFK6p1iIPz', 1554700785, NULL, NULL, '::1', 1554700785, 1554954479, 0),
+(4, 'nhuc_region3', 'abucay@g.com', '$2y$10$z6wdGE6DPArUDLKSAu2tJ.q6ziDsMa8wgyXrYdNqdd/l8G/v8LGHy', 'lEMRTS_DBq3eVdw-9FS7j3kkGHeS-vcu', 1554701079, NULL, NULL, '::1', 1554701079, 1554954484, 0),
+(5, 'huc_region3', 'angelescitypampang@g.com', '$2y$10$rCMffrmuTBlv5Zfoi/.Pwu2uXCO71VPr6DX0rACxsa0fJkCwnkPcG', 'q0q3GMMD-V93fI8OWPLftjHVZRPEiCCf', 1554701248, NULL, NULL, '::1', 1554701248, 1554954490, 0),
+(6, 'lgu_region3', 'lguregion3@g.com', '$2y$10$bOywSkac1P7WFXCbdk3BPOrtTfpZvWdH5SGzHsfMhcNQP.LXgFAZm', 'XlYLSza3KPg38R0cWNKFnrGL80YdTv_i', 1554953936, NULL, NULL, '::1', 1554953936, 1563274380, 0),
+(7, 'central_office', 'centralblgd@g.com', '$2y$10$tRe75ZCP13mBWFKL6qLtH.MQzFfc6Iz4WG80uSH85U/Eh1oG4huXm', 'dbJJ5zrnVLnYzSF-a8xrmzG_QUmUQzSu', 1555034654, NULL, NULL, '::1', 1555034655, 1555035648, 0),
+(8, 'lgu_huc_region3', 'lgu_huc_region3@gmail.com', '$2y$10$N1XCKM.1wU6c5lRU9LiLvOVW176elJ32dqhb7Rr4fD8ygE7cHNhRe', 'cug1wHUMFIt-l6fsfJh6LZT3gUAIeU_a', 1559195298, NULL, NULL, '::1', 1559195298, 1559195308, 0),
+(9, 'ppdo_region3', 'bonmark@gmail.com', '$2y$10$95yNMNHvvlalEmnYLYXlJuR2xnFKm10vIrRn154ylkKXyxMCpRJNi', 'JeZ5aSzjdEjrv4mT5PDttm07suW-51mz', 1560842579, NULL, NULL, '::1', 1560842579, 1560842591, 0),
+(10, 'prov_dilg_region3', 'bon@gm.com', '$2y$10$AH7jVU4K3ZWjhKmqdHZYJ.3XC26U31/.cCwq4XcXacxFPiEraNh1e', 'du4WIrejvRu-HiJJfxO4a7JtN1RNsfjM', 1563272112, NULL, NULL, '::1', 1563272112, 1563272118, 0);
 
 -- --------------------------------------------------------
 
@@ -45531,7 +47193,12 @@ INSERT INTO `user_history` (`id`, `user_id`, `username`, `email`, `auth_key`, `r
 (7, 4, 'non_huc_region3', 'abucay@g.com', 'lEMRTS_DBq3eVdw-9FS7j3kkGHeS-vcu', '::1', 1554701079, NULL, 1554701079, 1554701283),
 (8, 3, 'prov_ilocos', 'province_central_luzon@g.com', 'BvN1HF7vtKCgGdG0T20790uFK6p1iIPz', '::1', 1554700785, NULL, 1554700785, 1554701432),
 (9, 3, 'province_region3', 'province_central_luzon@g.com', 'BvN1HF7vtKCgGdG0T20790uFK6p1iIPz', '::1', 1554700785, NULL, 1554700785, 1554701469),
-(10, 2, 'region_region3', 'region@g.com', 'bxp1uHqVM9rW_hNOvPsKzcKilrBalrvG', '::1', 1554692457, NULL, 1554692457, 1554701570);
+(10, 2, 'region_region3', 'region@g.com', 'bxp1uHqVM9rW_hNOvPsKzcKilrBalrvG', '::1', 1554692457, NULL, 1554692457, 1554701570),
+(11, 6, 'lgu_region3', 'lguregion3@g.com', 'XlYLSza3KPg38R0cWNKFnrGL80YdTv_i', '::1', 1554953936, NULL, 1554953936, 1554953936),
+(12, 7, 'central_office', 'centralblgd@g.com', 'dbJJ5zrnVLnYzSF-a8xrmzG_QUmUQzSu', '::1', 1555034654, NULL, 1555034655, 1555034655),
+(13, 8, 'lgu_huc_region3', 'lgu_huc_region3@gmail.com', 'cug1wHUMFIt-l6fsfJh6LZT3gUAIeU_a', '::1', 1559195298, NULL, 1559195298, 1559195298),
+(14, 9, 'ppdo_region3', 'bonmark@gmail.com', 'JeZ5aSzjdEjrv4mT5PDttm07suW-51mz', '::1', 1560842579, NULL, 1560842579, 1560842579),
+(15, 10, 'prov_dilg_region3', 'bon@gm.com', 'du4WIrejvRu-HiJJfxO4a7JtN1RNsfjM', '::1', 1563272112, NULL, 1563272112, 1563272112);
 
 -- --------------------------------------------------------
 
@@ -45574,13 +47241,24 @@ CREATE TABLE `user_info` (
 INSERT INTO `user_info` (`user_id`, `EMP_N`, `LAST_M`, `FIRST_M`, `MIDDLE_M`, `SUFFIX`, `BIRTH_D`, `SEX_C`, `OFFICE_C`, `DIVISION_C`, `SECTION_C`, `POSITION_C`, `DESIGNATION`, `REGION_C`, `PROVINCE_C`, `CITYMUN_C`, `MOBILEPHONE`, `LANDPHONE`, `FAX_NO`, `EMAIL`, `PHOTO`, `ALTER_EMAIL`, `BARANGAY_C`, `EMP_STATUS`, `PARENT_ID`) VALUES
 (1, '09205', 'Bon', 'Mark Angelo', 'Dayagmil', '', '1995-10-12', 'Male', 4, NULL, NULL, 2, NULL, '13', '74', '04', '09169945751', NULL, NULL, NULL, NULL, NULL, '022', '1', NULL),
 (2, 'markbon', 'Central Luzon', 'Regional', '', '', '2019-04-15', 'Male', 1, NULL, NULL, NULL, NULL, '03', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, '1', NULL),
-(3, 'markbon', 'Bataan', 'Province', '', '', '2019-04-14', 'Male', 2, NULL, NULL, NULL, NULL, '03', '08', '', '', NULL, NULL, NULL, NULL, NULL, NULL, '1', NULL),
-(4, 'markbon', 'Abucay', 'Non HUC', '', '', '2019-04-15', 'Male', 3, NULL, NULL, NULL, NULL, '03', '08', '01', '', NULL, NULL, NULL, NULL, NULL, '', '1', NULL),
-(5, NULL, 'Angeles City', 'HUC', '', '', '2019-04-15', 'Male', 4, NULL, NULL, NULL, NULL, '03', '54', '01', '', NULL, NULL, NULL, NULL, NULL, '', '1', NULL);
+(3, 'markbon', 'PROVINCE', 'LGU', '', '', '2019-04-14', 'Male', 2, NULL, NULL, NULL, NULL, '03', '54', '', '', NULL, NULL, NULL, NULL, NULL, NULL, '1', NULL),
+(4, 'markbon', 'kailangan', 'di', '', '', '2019-04-15', 'Male', 3, NULL, NULL, NULL, NULL, '03', '08', '01', '', NULL, NULL, NULL, NULL, NULL, '', '1', NULL),
+(5, '', 'HUC', 'LGU', '', '', '2019-04-15', 'Male', 4, NULL, NULL, NULL, NULL, '03', '54', '01', '', NULL, NULL, NULL, NULL, NULL, '', '1', NULL),
+(6, '', 'NOT HUC', 'LGU', '', '', '2019-04-22', 'Male', 4, NULL, NULL, NULL, NULL, '03', '54', '02', '', NULL, NULL, NULL, NULL, NULL, '', '1', NULL),
+(7, '', 'CENTRAL', 'DILG', '', '', '2019-04-15', 'Male', 3, NULL, NULL, NULL, NULL, '13', '74', '04', '', NULL, NULL, NULL, NULL, NULL, '', '1', NULL),
+(8, '', 'kailangan', 'di', '', '', '2019-05-29', 'Male', 4, NULL, NULL, NULL, NULL, '03', '54', '01', '', NULL, NULL, NULL, NULL, NULL, '', '1', NULL),
+(9, '', 'PPDO', 'PPDO', '', '', '2019-06-11', 'Male', 2, NULL, NULL, NULL, NULL, '03', '54', '', '', NULL, NULL, NULL, NULL, NULL, NULL, '1', NULL),
+(10, '', 'PROVINCE', 'DILG', '', '', '2019-07-10', 'Male', 2, NULL, NULL, NULL, NULL, '03', '54', '', '', NULL, NULL, NULL, NULL, NULL, NULL, '1', NULL);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `audit_trail`
+--
+ALTER TABLE `audit_trail`
+  ADD PRIMARY KEY (`activity_id`);
 
 --
 -- Indexes for table `auth_assignment`
@@ -45611,9 +47289,23 @@ ALTER TABLE `auth_rule`
   ADD PRIMARY KEY (`name`);
 
 --
+-- Indexes for table `file`
+--
+ALTER TABLE `file`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `file_model` (`model`),
+  ADD KEY `file_item_id` (`itemId`);
+
+--
 -- Indexes for table `gad_accomplishment_report`
 --
 ALTER TABLE `gad_accomplishment_report`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gad_activity_category`
+--
+ALTER TABLE `gad_activity_category`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -45629,15 +47321,139 @@ ALTER TABLE `gad_attributed_program`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `gad_attributes`
+-- Indexes for table `gad_category_comment`
 --
-ALTER TABLE `gad_attributes`
+ALTER TABLE `gad_category_comment`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gad_checklist`
+--
+ALTER TABLE `gad_checklist`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gad_cms_category`
+--
+ALTER TABLE `gad_cms_category`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_bpls_frequency_5877_01` (`frequency_id`);
+
+--
+-- Indexes for table `gad_cms_choice_with_subquestion`
+--
+ALTER TABLE `gad_cms_choice_with_subquestion`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_bpls_indicator_6147_03` (`indicator_id`);
+
+--
+-- Indexes for table `gad_cms_content_type`
+--
+ALTER TABLE `gad_cms_content_type`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gad_cms_content_width`
+--
+ALTER TABLE `gad_cms_content_width`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gad_cms_frequency`
+--
+ALTER TABLE `gad_cms_frequency`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gad_cms_frequency_details`
+--
+ALTER TABLE `gad_cms_frequency_details`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_bpls_frequency_7578_05` (`frequency_id`);
+
+--
+-- Indexes for table `gad_cms_indicator`
+--
+ALTER TABLE `gad_cms_indicator`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_bpls_category_8888_014` (`category_id`),
+  ADD KEY `fk_bpls_frequency_8888_015` (`frequency_id`),
+  ADD KEY `fk_bpls_type_8888_016` (`type_id`),
+  ADD KEY `fk_bpls_unit_8888_017` (`unit_id`);
+
+--
+-- Indexes for table `gad_cms_ind_choices`
+--
+ALTER TABLE `gad_cms_ind_choices`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_bpls_ind_default_choices_8186_08` (`default_choice_id`),
+  ADD KEY `fk_bpls_indicator_8186_09` (`indicator_id`);
+
+--
+-- Indexes for table `gad_cms_ind_default_choices`
+--
+ALTER TABLE `gad_cms_ind_default_choices`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gad_cms_sub_question`
+--
+ALTER TABLE `gad_cms_sub_question`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_bpls_indicator_9738_020` (`indicator_id`),
+  ADD KEY `fk_bpls_unit_9738_021` (`type`);
+
+--
+-- Indexes for table `gad_cms_type`
+--
+ALTER TABLE `gad_cms_type`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gad_cms_unit`
+--
+ALTER TABLE `gad_cms_unit`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gad_cms_values`
+--
+ALTER TABLE `gad_cms_values`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_bpls_record_6611_07` (`da_brgy_id`),
+  ADD KEY `fk_bpls_category_6611_08` (`category_id`),
+  ADD KEY `fk_bpls_frequency_details_6611_09` (`frequency_details_id`),
+  ADD KEY `fk_bpls_indicator_6611_010` (`indicator_id`),
+  ADD KEY `fk_bpls_sub_question_6611_011` (`sub_question_id`);
 
 --
 -- Indexes for table `gad_comment`
 --
 ALTER TABLE `gad_comment`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gad_create_status`
+--
+ALTER TABLE `gad_create_status`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gad_excel_attachments`
+--
+ALTER TABLE `gad_excel_attachments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gad_file_attached`
+--
+ALTER TABLE `gad_file_attached`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gad_file_folder_type`
+--
+ALTER TABLE `gad_file_folder_type`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -45659,12 +47475,6 @@ ALTER TABLE `gad_inner_category`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `gad_lead_responsible_office`
---
-ALTER TABLE `gad_lead_responsible_office`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `gad_plan_budget`
 --
 ALTER TABLE `gad_plan_budget`
@@ -45677,33 +47487,27 @@ ALTER TABLE `gad_ppa_attributed_program`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `gad_ppa_client_focused`
---
-ALTER TABLE `gad_ppa_client_focused`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `gad_ppa_organizational_focused`
---
-ALTER TABLE `gad_ppa_organizational_focused`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `gad_record`
 --
 ALTER TABLE `gad_record`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `gad_reports_history`
+-- Indexes for table `gad_report_history`
 --
-ALTER TABLE `gad_reports_history`
+ALTER TABLE `gad_report_history`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `gad_report_type`
 --
 ALTER TABLE `gad_report_type`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gad_score_type`
+--
+ALTER TABLE `gad_score_type`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -45895,34 +47699,160 @@ ALTER TABLE `user_info`
 --
 
 --
+-- AUTO_INCREMENT for table `audit_trail`
+--
+ALTER TABLE `audit_trail`
+  MODIFY `activity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4202;
+
+--
+-- AUTO_INCREMENT for table `file`
+--
+ALTER TABLE `file`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
 -- AUTO_INCREMENT for table `gad_accomplishment_report`
 --
 ALTER TABLE `gad_accomplishment_report`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+
+--
+-- AUTO_INCREMENT for table `gad_activity_category`
+--
+ALTER TABLE `gad_activity_category`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `gad_ar_attributed_program`
 --
 ALTER TABLE `gad_ar_attributed_program`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `gad_attributed_program`
 --
 ALTER TABLE `gad_attributed_program`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 
 --
--- AUTO_INCREMENT for table `gad_attributes`
+-- AUTO_INCREMENT for table `gad_category_comment`
 --
-ALTER TABLE `gad_attributes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `gad_category_comment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT for table `gad_checklist`
+--
+ALTER TABLE `gad_checklist`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `gad_cms_category`
+--
+ALTER TABLE `gad_cms_category`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `gad_cms_choice_with_subquestion`
+--
+ALTER TABLE `gad_cms_choice_with_subquestion`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+
+--
+-- AUTO_INCREMENT for table `gad_cms_content_type`
+--
+ALTER TABLE `gad_cms_content_type`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `gad_cms_content_width`
+--
+ALTER TABLE `gad_cms_content_width`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `gad_cms_frequency`
+--
+ALTER TABLE `gad_cms_frequency`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `gad_cms_frequency_details`
+--
+ALTER TABLE `gad_cms_frequency_details`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `gad_cms_indicator`
+--
+ALTER TABLE `gad_cms_indicator`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=169;
+
+--
+-- AUTO_INCREMENT for table `gad_cms_ind_choices`
+--
+ALTER TABLE `gad_cms_ind_choices`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=203;
+
+--
+-- AUTO_INCREMENT for table `gad_cms_ind_default_choices`
+--
+ALTER TABLE `gad_cms_ind_default_choices`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `gad_cms_sub_question`
+--
+ALTER TABLE `gad_cms_sub_question`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+
+--
+-- AUTO_INCREMENT for table `gad_cms_type`
+--
+ALTER TABLE `gad_cms_type`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `gad_cms_unit`
+--
+ALTER TABLE `gad_cms_unit`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `gad_cms_values`
+--
+ALTER TABLE `gad_cms_values`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1809;
 
 --
 -- AUTO_INCREMENT for table `gad_comment`
 --
 ALTER TABLE `gad_comment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=176;
+
+--
+-- AUTO_INCREMENT for table `gad_create_status`
+--
+ALTER TABLE `gad_create_status`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `gad_excel_attachments`
+--
+ALTER TABLE `gad_excel_attachments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2339;
+
+--
+-- AUTO_INCREMENT for table `gad_file_attached`
+--
+ALTER TABLE `gad_file_attached`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=292;
+
+--
+-- AUTO_INCREMENT for table `gad_file_folder_type`
+--
+ALTER TABLE `gad_file_folder_type`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `gad_focused`
@@ -45943,16 +47873,10 @@ ALTER TABLE `gad_inner_category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `gad_lead_responsible_office`
---
-ALTER TABLE `gad_lead_responsible_office`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
 -- AUTO_INCREMENT for table `gad_plan_budget`
 --
 ALTER TABLE `gad_plan_budget`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=354;
 
 --
 -- AUTO_INCREMENT for table `gad_ppa_attributed_program`
@@ -45961,28 +47885,16 @@ ALTER TABLE `gad_ppa_attributed_program`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `gad_ppa_client_focused`
---
-ALTER TABLE `gad_ppa_client_focused`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
--- AUTO_INCREMENT for table `gad_ppa_organizational_focused`
---
-ALTER TABLE `gad_ppa_organizational_focused`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
 -- AUTO_INCREMENT for table `gad_record`
 --
 ALTER TABLE `gad_record`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
 
 --
--- AUTO_INCREMENT for table `gad_reports_history`
+-- AUTO_INCREMENT for table `gad_report_history`
 --
-ALTER TABLE `gad_reports_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `gad_report_history`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT for table `gad_report_type`
@@ -45991,10 +47903,16 @@ ALTER TABLE `gad_report_type`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `gad_score_type`
+--
+ALTER TABLE `gad_score_type`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `gad_status`
 --
 ALTER TABLE `gad_status`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `province_cluster`
@@ -46024,7 +47942,7 @@ ALTER TABLE `tbldesignation`
 -- AUTO_INCREMENT for table `tbldesignation_user_history`
 --
 ALTER TABLE `tbldesignation_user_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tbldivision`
@@ -46036,7 +47954,7 @@ ALTER TABLE `tbldivision`
 -- AUTO_INCREMENT for table `tbldivision_user_history`
 --
 ALTER TABLE `tbldivision_user_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tbloffice`
@@ -46060,7 +47978,7 @@ ALTER TABLE `tblposition_category`
 -- AUTO_INCREMENT for table `tblposition_user_history`
 --
 ALTER TABLE `tblposition_user_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tblsection`
@@ -46072,7 +47990,7 @@ ALTER TABLE `tblsection`
 -- AUTO_INCREMENT for table `tblsection_user_history`
 --
 ALTER TABLE `tblsection_user_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tblservice`
@@ -46084,7 +48002,7 @@ ALTER TABLE `tblservice`
 -- AUTO_INCREMENT for table `tblservice_user_history`
 --
 ALTER TABLE `tblservice_user_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tbl_emp_status`
@@ -46096,19 +48014,19 @@ ALTER TABLE `tbl_emp_status`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `user_history`
 --
 ALTER TABLE `user_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `user_info`
 --
 ALTER TABLE `user_info`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
