@@ -127,7 +127,7 @@ class AccomplishmentController extends \yii\web\Controller
             return Yii::$app->response->sendFile($path);
         }
         else{
-            \Yii::$app->getSession()->setFlash('danger', '<strong>Unable to download the template of Service Record (excel)</strong>');
+            \Yii::$app->getSession()->setFlash('danger', '<strong>Unable to download the template Accomlishment Report</strong>');
             return $this->redirect(['upload-service-record']);
         }
     }
