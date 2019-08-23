@@ -22,7 +22,7 @@ $this->title = "Annual GAD Accomplishment Reports";
         </div> -->
         <div class="cust-panel-body">
             <div class="cust-panel-title">
-                <p class="sub-title"><span class="glyphicon glyphicon-info-sign"></span> Primary Information <?= DefaultController::DisplayStatusByTuc($ruc); ?></p>
+                <p class="sub-title"><span class="glyphicon glyphicon-info-sign"></span> Primary Information </p>
             </div>
             <div class="cust-panel-inner-body">
                 <table class="table table-responsive table-hover table-bordered basic-information">

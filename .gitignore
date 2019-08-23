@@ -40,7 +40,7 @@ phpunit.phar
 /frontend/web/uploads/system_generated
 /frontend/web/uploads
 
-# ignore generated files
+# ignore generated file
 /frontend/web/index.php
 /frontend/web/index-test.php
 /frontend/web/robots.txt
