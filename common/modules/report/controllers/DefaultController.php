@@ -42,7 +42,7 @@ class DefaultController extends Controller
             $total_lgu_budget = !empty($query->total_lgu_budget) ? $query->total_lgu_budget : "";
             $total_gad_budget = GadPlanBudgetController::ComputeGadBudget($ruc);
 
-            return "<label class='label label-default' style='font-size:15px;'>Has been attached to GAD Plan and Budget FY ".$year." with Total LGU Budget of Php ".number_format($total_lgu_budget,2)." & Total GAD Budget of Php ".($total_gad_budget)."</label><br/><br/>";
+            return "<label class='label label-success' style='font-size:15px; font-weight:normal'>Note : This Accomplishment Report has been attached to GAD Plan and Budget <span style='color:blue;'>FY ".$year."</span> with Total LGU Budget of <span style='color:blue;'>Php ".number_format($total_lgu_budget,2)."</span> & Total GAD Budget of ".($total_gad_budget)."</label><br/><br/>";
         }
         else
         {
