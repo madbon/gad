@@ -58,11 +58,11 @@ use richardfan\widget\JSRegister;
 <div class="gad-comment-form">
 <div class="confirm" style="display: none;"></div>
     <?php $form = ActiveForm::begin(); ?>
-    <?= $form->field($model, 'plan_budget_id')->textInput()->label() ?>
-    <?= $form->field($model, 'attribute_name')->textInput()->label() ?>
-    <?= $form->field($model, 'record_tuc')->textInput()->label() ?>
-    <?= $form->field($model, 'record_id')->textInput()->label() ?>
-    <?= $form->field($model, 'id')->textInput()->label() ?>
+    <?= $form->field($model, 'plan_budget_id')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'attribute_name')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'record_tuc')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'record_id')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
 
     <div class="row" style="margin-top: -45px;">
         <div class="col-sm-4">
@@ -102,7 +102,9 @@ use richardfan\widget\JSRegister;
                             ]);  
                         }
 
-                        echo Html::a('<span class="glyphicon glyphicon-download"></span> Specic Observation and Recommendation (.docx)',
+                        if(Yii::$app->user->can("gad_letter_specifc_observation"))
+                        {
+                            echo Html::a('<span class="glyphicon glyphicon-download"></span> Specic Observation and Recommendation (.docx)',
                             [
                                 '/cms/document/download-specific-observation',
                                 'ruc' => $ruc,
@@ -112,7 +114,7 @@ use richardfan\widget\JSRegister;
                                 'class' => 'btn-link',
                                 'title' => 'Download Letter/Certificate'
                             ]);  
-                    
+                        }
                     ?>
                 </div>
             </div>

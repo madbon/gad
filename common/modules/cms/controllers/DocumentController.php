@@ -126,6 +126,11 @@ class DocumentController extends Controller
         ->groupBy(['GC.id'])
         ->orderBy(['GC.id' => SORT_ASC])
         ->all();
+
+        $qryCommentPpdo = $qryComment->where(['REC.tuc' => $ruc,'GC.resp_user_id' => Yii::$app->user->identity->id])
+        ->groupBy(['GC.id'])
+        ->orderBy(['GC.id' => SORT_ASC])
+        ->all();
         // echo "<pre>";
         // print_r($qryCommentAttributed); exit;
 
@@ -150,6 +155,7 @@ class DocumentController extends Controller
             'prepared_by' => $prepared_by,
             'qryCommentGadPlan' => $qryCommentGadPlan,
             'qryCommentAttributed' => $qryCommentAttributed,
+            'qryComment' => $qryCommentPpdo,
         ]);
         
     }

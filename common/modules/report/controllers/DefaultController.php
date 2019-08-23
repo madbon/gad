@@ -23,6 +23,7 @@ use yii\db\Expression;
 use \common\models\GadFileAttached;
 use common\models\CreateStatus;
 use common\modules\report\controllers\GadPlanBudgetController;
+use common\modules\report\controllers\GadAccomplishmentReportController;
 use common\modules\report\controllers\GadRecordController;
 use yii\web\UploadedFile;
 /**
@@ -30,6 +31,26 @@ use yii\web\UploadedFile;
  */
 class DefaultController extends Controller
 {
+    public function HasBeenAttachedToGpb($ar_ruc)
+    {
+        if(GadRecord::find()->where(['attached_ar_record_id' => DefaultController::GetRecordIdByRuc($ar_ruc)])->exists())
+        {
+            $query = GadRecord::find()->where(['attached_ar_record_id' => DefaultController::GetRecordIdByRuc($ar_ruc)])->one();
+            $plan_id = !empty($query->id) ? $query->id : "";
+            $ruc = !empty($query->tuc) ? $query->tuc : "";
+            $year = !empty($query->year) ? $query->year : "";
+            $total_lgu_budget = !empty($query->total_lgu_budget) ? $query->total_lgu_budget : "";
+            $total_gad_budget = GadPlanBudgetController::ComputeGadBudget($ruc);
+
+            return "<label class='label label-default' style='font-size:15px;'>Has been attached to GAD Plan and Budget FY ".$year." with Total LGU Budget of Php ".number_format($total_lgu_budget,2)." & Total GAD Budget of Php ".($total_gad_budget)."</label><br/><br/>";
+        }
+        else
+        {
+            return "";
+        }
+       
+    }
+
     public function ScoreTypeTitle($id)
     {
         $query = \common\models\GadScoreType::find()->select(['title'])->where(['id' => $id])->one();
@@ -275,6 +296,15 @@ class DefaultController extends Controller
     public function actionDeletePlanBudgetAttrib($attrib_id)
     {
         $model = GadAttributedProgram::deleteAll(['id'=>$attrib_id]);
+
+        // \Yii::$app->getSession()->setFlash('success', "Data has been deleted");
+        // return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
+    }
+
+    public function GetStatusByRuc($ruc)
+    {
+        $model = GadRecord::find()->where(['tuc' => $ruc])->one();
+        return !empty($model->status) ? $model->status : "";
 
         // \Yii::$app->getSession()->setFlash('success', "Data has been deleted");
         // return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
@@ -1346,17 +1376,18 @@ class DefaultController extends Controller
     public function actionUpdateAttachedAr($record_id,$ruc,$tocreate,$onstep)
     {
         // $record_id is the accomplishment rcord id
-        GadRecord::updateAll(['attached_ar_record_id' => $record_id], 'tuc = "'.$ruc.'" ');
-
-        // GadRecord::updateAll(['attached_ar_record_id' => null], 'attached_ar_record_id = '.$record_id.' ');
-        // $getGpbRecordId = GadRecord::find()->where(['tuc' => $ruc])->one();
-        // GadRecord::updateAll(['attached_ar_record_id' => $getGpbRecordId->id], 'id = '.$record_id.' ');
-        \Yii::$app->getSession()->setFlash('success', "Accomplishment Report has been attached");
-
-
+        if(GadRecord::find()->where(['tuc' => $ruc,'attached_ar_record_id' => $record_id])->exists())
+        {
+            GadRecord::updateAll(['attached_ar_record_id' => null], 'tuc = "'.$ruc.'" ');
+            \Yii::$app->getSession()->setFlash('warning', "Attached has been removed");
+        }
+        else
+        {
+            GadRecord::updateAll(['attached_ar_record_id' => $record_id], 'tuc = "'.$ruc.'" ');
+            \Yii::$app->getSession()->setFlash('success', "Accomplishment Report has been attached");
+        }
 
         return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
-
     }
 
     public function actionLoadAr($params)

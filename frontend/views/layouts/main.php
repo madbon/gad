@@ -151,6 +151,12 @@ nav.navbar-default div.navbar-header a
 ?>
 
         <?php if (Yii::$app->user->isGuest) { ?>
+
+            <?php
+                $this->registerJs("
+                    $('#page-wrapper').css({'margin':'0'});
+                ");
+            ?>
         <div id="wrapper">
             <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">

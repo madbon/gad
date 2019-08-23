@@ -22,6 +22,7 @@ use yii\web\UploadedFile;
 use common\models\GadFileAttached;
 use common\models\GadAttributedProgram;
 use yii\db\Expression;
+use common\modules\report\controllers\DefaultController;
 
 
 
@@ -43,6 +44,82 @@ class GadPlanBudgetController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function actionLoadAr($ruc,$recordOne_attached_ar_record_id)
+    {
+        $condition = [];
+        $condition2 = [];
+        $condition3 = [];
+        if(Yii::$app->user->can("gad_lgu_permission"))
+        {
+            $condition = ['REC.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C, 'REC.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C];
+        }
+        else if(Yii::$app->user->can("gad_lgu_province_permission"))
+        {
+            $condition = ['REC.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C, 'REC.citymun_c' => null, 'REC.office_c' => 2];
+        }
+
+        $arrComma = [];
+        $QueryComma = GadRecord::find()->select(['attached_ar_record_id'])->where(['not',['attached_ar_record_id' => null]])->all();
+        foreach ($QueryComma as $key => $row) {
+            # code...
+            $arrComma[] = $row["attached_ar_record_id"];
+        }
+
+        $QueryGetArId = GadRecord::find()->where(['tuc' => $ruc])->one();
+
+        $arrComma2 = [];
+        $QueryComma2 = GadRecord::find()->select(["id"])->where(['not',['id' => $arrComma]])->andWhere(['report_type_id' => 2])->orWhere(['id' => $QueryGetArId->attached_ar_record_id])->all();
+
+        foreach ($QueryComma2 as $key => $row2) {
+            $arrComma2[] = $row2["id"];
+        }
+
+        if(empty($QueryGetArId->attached_ar_record_id))
+        {
+            $condition2 = ['not',['REC.id' => $arrComma]];
+        }
+        else
+        {
+            // $condition3 = ['REC.id' => $QueryGetArId->attached_ar_record_id];
+            $condition2 = ['in','REC.id',$arrComma2];
+        }
+
+
+        $qry = (new \yii\db\Query())
+        ->select([
+            'PRV.province_m as province_name',
+            'CTC.citymun_m as citymun_name',
+            'REC.status as record_status',
+            'REC.total_lgu_budget',
+            'REC.year',
+            'REC.prepared_by',
+            'REC.approved_by',
+            'REC.id as record_id',
+            'REC.attached_ar_record_id as ar_id',
+            'REC.tuc as ruc'
+        ])
+        ->from('gad_record REC')
+        ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = REC.region_c')
+        ->leftJoin(['PRV' => 'tblprovince'], 'PRV.province_c = REC.province_c')
+        ->leftJoin(['CTC' => 'tblcitymun'], 'CTC.citymun_c = REC.citymun_c AND CTC.province_c = REC.province_c')
+        ->where(['REC.report_type_id' => 2])
+        ->andWhere($condition)
+        // ->andWhere($condition3)
+        ->andFilterWhere($condition2)
+        ->andWhere(['REC.is_archive' => 0])
+        // ->andFilterWhere(['REC.id' => ])
+        ->groupBy(['REC.id'])
+        ->orderBy(['REC.id' => SORT_DESC])
+        ->all();
+        // ->createCommand()->rawSql;
+        // print_r($qry); /exit;
+        return $this->renderAjax('_view_list_accomplishment',[
+            'qry' => $qry,
+            'recordOne_attached_ar_record_id' => $recordOne_attached_ar_record_id,
+            'ruc' => $ruc
+        ]);
     }
 
     public function actionLoadPlan($ruc,$onstep,$tocreate)
@@ -541,6 +618,7 @@ class GadPlanBudgetController extends Controller
             'modelUpdate' => $modelUpdate,
             'tags_ppaSectors' => $tags_ppaSectors,
             'tags_activityCategory' => $tags_activityCategory,
+            'status' => DefaultController::GetStatusByRuc($ruc)
         ]);
     }
 
@@ -567,6 +645,7 @@ class GadPlanBudgetController extends Controller
             'modelUpdate' => $modelUpdate,
             'tags_ppaSectors' => $tags_ppaSectors,
             'tags_checkList' => $tags_checkList,
+            'status' => DefaultController::GetStatusByRuc($ruc)
         ]);
     }
 
@@ -816,6 +895,8 @@ class GadPlanBudgetController extends Controller
                     $model->hash = $hash; 
                     $model->extension = $image->extension;
                     $model->file_folder_type_id = $upload->file_folder_type_id;
+                    $model->user_id = Yii::$app->user->identity->id;
+                    $model->remarks = $upload->remarks;
 
 
                     if($model->save(false))
@@ -842,8 +923,6 @@ class GadPlanBudgetController extends Controller
 
            if($upload->load(Yii::$app->request->post()))
            {
-            // echo "<pre>"; 
-            // print_r($upload); exit;
                 $upload->file_name = UploadedFile::getInstances($upload,'file_name');
                 if($upload->file_name)
                 {
@@ -866,7 +945,6 @@ class GadPlanBudgetController extends Controller
                         $model->extension = $image->extension;
                         $model->file_folder_type_id = $upload->file_folder_type_id;
                         $model->remarks = $upload->remarks;
-
 
                         if($model->save(false))
                         {
