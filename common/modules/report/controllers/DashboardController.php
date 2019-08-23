@@ -71,6 +71,7 @@ class DashboardController extends \yii\web\Controller
         }
 
         $count_status = [];
+        $status_count = [];
         foreach ($queryChart as $key1 => $row1) {
             $status_count[] = (int)$row1['count_status'];
         }
