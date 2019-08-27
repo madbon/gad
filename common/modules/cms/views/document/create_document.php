@@ -96,7 +96,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         'buttons' => [
                             'create' => function($url,$model) 
                             {
-                                return Html::a('Add comments/recommendations', ['/cms/category-comment', 'ruc' => $model['ruc']],['class' => 'btn btn-success btn-sm']);
+                                if($model['category_id'] == 7)
+                                {
+                                    return Html::a('Add comments/recommendations', ['/cms/category-comment', 'ruc' => $model['ruc']],['class' => 'btn btn-success btn-sm']);
+                                }
                             },
                             'update' => function($url,$model) 
                             {

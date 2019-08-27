@@ -343,6 +343,17 @@ nav.navbar-default div.navbar-header a
                                 }
                             }
                         ?>
+
+                        <?php if(Yii::$app->user->can("gad_cms_super_admin")){ ?>
+                            <?php if(Yii::$app->controller->id == "settings" || Yii::$app->session["activelink"] == "settings"){ ?>
+                            <li class="activelink">
+                            <?php }else{ ?>
+                                <li>
+                            <?php } ?>
+                                <?php echo Html::a("<span class='fa fa-cogs'></span> Settings",['/admin/settings']); ?>
+                            </li>
+                        <?php } ?>
+
                         <li>
                             <?php
                                 echo Html::beginForm(['/user/logout'], 'post').Html::submitButton('<span class="glyphicon glyphicon-off"></span> Logout',['class' => 'btn btn-link logout']).Html::endForm();

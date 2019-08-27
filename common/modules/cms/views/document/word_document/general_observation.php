@@ -1,4 +1,5 @@
 <?php
+use common\modules\cms\controllers\DocumentController;
     /* Note: any element you append to a document must reside inside of a Section. */
 
         // Adding an empty Section to the document...
@@ -85,7 +86,7 @@
             $count_table_row += 1;
             $table->addRow();
             $table->addCell(500)->addText("{$count_table_row}");
-            $table->addCell(8500)->addText("{$row['value']}");
+            $table->addCell(8500)->addText(DocumentController::WrapText(DocumentController::ChangeAmpersand("{$row['value']}")));
         }
         // --------------------- Table End
 

@@ -86,8 +86,8 @@ use common\modules\cms\controllers\DocumentController;
 
         foreach ($qryComment as $key => $row) {
             $table->addRow();
-            $table->addCell(3000)->addText($row["column_title"]."<w:br/>".DocumentController::WrapText($row['column_value']));
-            $table->addCell(6000)->addText(DocumentController::WrapText($row['comment_value']));
+            $table->addCell(3000)->addText($row["column_title"]."<w:br/>".DocumentController::WrapText(DocumentController::ChangeAmpersand($row['column_value'])));
+            $table->addCell(6000)->addText(DocumentController::WrapText(DocumentController::ChangeAmpersand($row['comment_value'])));
         }
         // --------------------- Table End
 

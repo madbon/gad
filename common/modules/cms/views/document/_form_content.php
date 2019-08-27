@@ -49,15 +49,15 @@ use common\modules\rms\controllers\DynamicViewController;
 			            <?php 
 			                if($d->type_title == "title") { ?>
 			                <tr>
-			                    <th colspan=3 style="padding-top: 0px;font-size: 18px;"><?= $d->indicator_title; ?>:</th>
+			                    <th colspan=3 style="padding-top: 0px;font-size: 18px; white-space: pre-line;"><?= $d->indicator_title; ?>:</th>
 			                </tr>
 			                <?php } else if($d->type_title == "second-level-title") { ?>
 			                <tr>
-			                    <th colspan=3 style="padding: 7.5px;color: #4a4a4a"><?= $d->indicator_title; ?></th>
+			                    <th colspan=3 style="padding: 7.5px;color: #4a4a4a; white-space: pre-line;"><?= $d->indicator_title; ?></th>
 			                </tr>
 			                 <?php } else if($d->type_title == "third-level-title") { ?>
 			                <tr>
-			                    <th colspan=3 style="padding: 7.5px; font-size:15px; font-weight: normal; color: #4a4a4a"><?= $d->indicator_title; ?></th>
+			                    <th colspan=3 style="padding: 7.5px; font-size:15px; font-weight: normal; color: #4a4a4a; white-space: pre-line;"><?= $d->indicator_title; ?></th>
 			                </tr>
 			                <?php } else { ?>
 

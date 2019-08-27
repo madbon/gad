@@ -199,13 +199,15 @@ $this->title = "Annual GAD Plan and Budget";
                 <?php 
                     if(Yii::$app->user->can("gad_create_letter_menu"))
                     {
-                        echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Letter of Review / Endorsement',['/cms/document/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-primary','style' => '']); 
+                        // echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Letter of Review / Endorsement',['/cms/document/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-primary','style' => '']); 
+                        echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Create General Observation/Recommendation',['/cms/document/form-view', 'category_id' => 7, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-primary','style' => '']);
+                        // echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Create General Observation/Recommendation',['/cms/document/form-view', 'category_id' => 7, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-primary','style' => '']);
                     }
                 ?>
                 <?php
                     $urlsearchplan = '@web/report/gad-plan-budget/search-plan?ruc='.$ruc."&onstep=".$onstep."&tocreate=".$tocreate;;
-                    echo Html::button('<span class="glyphicon glyphicon-search"> </span> Search', ['value'=>Url::to($urlsearchplan),
-                            'class' => 'btn btn-default btn-md modalButton ','title' => 'Upload Files','style' => '']);
+                    // echo Html::button('<span class="glyphicon glyphicon-search"> </span> Search', ['value'=>Url::to($urlsearchplan),
+                    //         'class' => 'btn btn-default btn-md modalButton ','title' => '','style' => '']);
                 ?>
             </div>
         </div>

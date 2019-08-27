@@ -390,24 +390,25 @@ class GadPlanBudgetController extends Controller
         }
         else if($status == 6) // Returned to LGU by Regional Office
         {
-            
+            $andFilterValue = ['REC.tuc' => $tuc];
         }
         else if($status == 7) // Returned to LGU C/M Office by PPDO
         {
-           
+            $andFilterValue = ['REC.tuc' => $tuc];
         }
         else if($status == 10) // Endorsed by DILG Region
         {
-           
+           $andFilterValue = ['REC.tuc' => $tuc];
         }
 
         $userAssignment = (new \yii\db\Query())
         ->select([
-            'ASS.user_id'
+            'UI.user_id'
         ])
         ->from('user_info UI')
         ->leftJoin(['ASS' => 'auth_assignment'], 'ASS.user_id = UI.user_id')
-        ->where($conditionAssTitle)
+        ->leftJoin(['REC' => 'gad_record'], 'REC.user_id = UI.user_id')
+        ->andFilterWhere($conditionAssTitle)
         ->andFilterWhere($andFilterValue)
         ->one();
         $userAssignmentUserId = !empty($userAssignment['user_id']) ? $userAssignment['user_id'] : "";
