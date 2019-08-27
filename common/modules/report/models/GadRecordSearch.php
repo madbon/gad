@@ -49,7 +49,14 @@ class GadRecordSearch extends GadRecord
         $filteredByRole = [];
         if(Yii::$app->user->can("gad_lgu_permission"))
         {
-            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C];
+            if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
+            {
+                $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'GR.status'=>[3,6,8,10]];
+            }
+            else
+            {
+                $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'GR.status'=>[0,1,2,4,5,7]];
+            }
         }
         elseif(Yii::$app->user->can("gad_field_permission"))
         {
@@ -57,20 +64,20 @@ class GadRecordSearch extends GadRecord
         }
         else if(Yii::$app->user->can("gad_province_permission")) // all lower level lgu under its province
         {
-            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C, 'CTY.lgu_type' => ['CC','M']];
+            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.status'=>[0,1,2,4,5,7]];
         }
         else if(Yii::$app->user->can("gad_lgu_province_permission")) // all plan submitted by this province
         {
             $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,
-            'GR.office_c' => 2];
+            'GR.status' => [3,6,9,10],'GR.office_c' => 2];
         }
         else if(Yii::$app->user->can("gad_region_permission"))
         {
-            $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,'CTY.lgu_type' => ['ICC','HUC']];
+            $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,'GR.status' => [3,6,8,9,10]];
         }
         else if(Yii::$app->user->can("gad_ppdo_permission"))
         {
-            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,];
+            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.status'=>[0,1,2,4,5,7]];
         }
         else
         {

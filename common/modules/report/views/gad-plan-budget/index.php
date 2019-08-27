@@ -49,7 +49,17 @@ $this->title = "Annual GAD Plan and Budget";
                              if($grand_total_pb < $fivePercentTotalLguBudget){ ?>
                                 <a class="btn btn-default btn-sm" style="background-color: gray; color:white;"><span class="glyphicon glyphicon-remove"></span> &nbsp;Reached the 5%</a>
                             <?php }else{ ?>
-                                <a class="btn btn-success btn-sm"><span class="glyphicon glyphicon-ok"></span> &nbsp;Reached the 5%</a>
+                                <?php
+                                    if($grand_total_pb > $recTotalLguBudget)
+                                    {
+                                        echo '<a class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-warning-sign"></span> &nbsp;Total GAD Budget is greater than LGU Budget</a>';
+                                    }
+                                    else
+                                    {
+                                        echo '<a class="btn btn-success btn-sm"><span class="glyphicon glyphicon-ok"></span> &nbsp;Reached the 5%</a>';
+                                    }
+                                ?>
+                                
                             <?php } ?>
                             
                             <?php if(!empty($recordOne_attached_ar_record_id)){ ?>
@@ -92,7 +102,15 @@ $this->title = "Annual GAD Plan and Budget";
                                 }
                                 else
                                 {
-                                    echo "<td style='color:blue;'> : Php ".number_format($grand_total_pb,2)."</td>";
+                                    if($grand_total_pb > $recTotalLguBudget)
+                                    {
+                                        echo "<td style='color:red;'> : Php ".number_format($grand_total_pb,2)."</td>";
+                                    }
+                                    else
+                                    {
+                                        echo "<td style='color:blue;'> : Php ".number_format($grand_total_pb,2)."</td>";
+                                    }
+                                    
                                 }
                             ?>
                             
@@ -199,13 +217,15 @@ $this->title = "Annual GAD Plan and Budget";
                 <?php 
                     if(Yii::$app->user->can("gad_create_letter_menu"))
                     {
-                        echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Letter of Review / Endorsement',['/cms/document/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-primary','style' => '']); 
+                        // echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Letter of Review / Endorsement',['/cms/document/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-primary','style' => '']); 
+                        echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Create General Observation/Recommendation',['/cms/document/form-view', 'category_id' => 7, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-primary','style' => '']);
+                        // echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Create General Observation/Recommendation',['/cms/document/form-view', 'category_id' => 7, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-primary','style' => '']);
                     }
                 ?>
                 <?php
                     $urlsearchplan = '@web/report/gad-plan-budget/search-plan?ruc='.$ruc."&onstep=".$onstep."&tocreate=".$tocreate;;
-                    echo Html::button('<span class="glyphicon glyphicon-search"> </span> Search', ['value'=>Url::to($urlsearchplan),
-                            'class' => 'btn btn-default btn-md modalButton ','title' => 'Upload Files','style' => '']);
+                    // echo Html::button('<span class="glyphicon glyphicon-search"> </span> Search', ['value'=>Url::to($urlsearchplan),
+                    //         'class' => 'btn btn-default btn-md modalButton ','title' => '','style' => '']);
                 ?>
             </div>
         </div>
@@ -224,8 +244,18 @@ $this->title = "Annual GAD Plan and Budget";
                             // echo Html::a('<span class="glyphicon glyphicon-refresh"></span> Load Plan',['load-plan','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate],['class' => 'btn btn-success'])."&nbsp;";
                             // echo Html::a('<span class="glyphicon glyphicon-refresh"></span> Load Uploaded Files',['load-file','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate],['class' => 'btn btn-success']);
                         // }
-                        echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
-                        'class' => 'btn btn-info btn-md modalButton pull-right']);
+                        if(!empty($recordOne_attached_ar_record_id) && ($grand_total_pb > $fivePercentTotalLguBudget))
+                        {
+                            if($grand_total_pb > $recTotalLguBudget)
+                            {
+
+                            }
+                            else
+                            {
+                                echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
+                            'class' => 'btn btn-info btn-md modalButton pull-right']);
+                            }
+                        }
                     }
                 }
                 else if(Yii::$app->user->can("gad_lgu_province_permission"))
@@ -238,8 +268,18 @@ $this->title = "Annual GAD Plan and Budget";
                             // echo Html::a('<span class="glyphicon glyphicon-refresh"></span> Load Plan',['load-plan','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate],['class' => 'btn btn-success'])."&nbsp;";
                             // echo Html::a('<span class="glyphicon glyphicon-refresh"></span> Load Uploaded Files',['load-file','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate],['class' => 'btn btn-success']);
                         // }
-                        echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
-                        'class' => 'btn btn-info btn-md modalButton pull-right']);
+                        if(!empty($recordOne_attached_ar_record_id) && ($grand_total_pb > $fivePercentTotalLguBudget))
+                        {
+                            if($grand_total_pb > $recTotalLguBudget)
+                            {
+
+                            }
+                            else
+                            {
+                                echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
+                                'class' => 'btn btn-info btn-md modalButton pull-right']);
+                            }
+                        }
                     }
                 }
                 else if(Yii::$app->user->can("gad_ppdo_permission"))

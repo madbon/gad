@@ -75,7 +75,7 @@ $this->title = $index_title;
             <div class="table-responsive">
             <br/>
                 <?php
-                    echo $this->render('_search', ['model' => $searchModel, 'region' => $region,'province' => $province,'citymun' => $citymun,'report_type' => $report_type]);
+                    echo $this->render('_search', ['model' => $searchModel, 'region' => $region,'province' => $province,'citymun' => $citymun,'report_type' => $report_type,'statusList' => $statusList,'arrayYear' => $arrayYear]);
                 ?>
                 <?php
                     if(Yii::$app->user->can("gad_submit_all_to_central"))
@@ -197,16 +197,24 @@ $this->title = $index_title;
                                                     ['class'=>'btn btn-info btn-xs btn-block']);
                                         },
                                         'delete'=>function ($url, $model) {
-                                            return Html::a('<i class="glyphicon glyphicon-trash"></i> Delete', 
-                                            [
-                                              '/report/gad-record/delete', 'id' => $model['record_id']
-                                            ], 
-                                            [
-                                              'class' => 'btn btn-xs btn-danger btn-block',
-                                              'data' => [
-                                                  'confirm' => 'Are you sure you want to delete this item?',
-                                                  'method' => 'post']
-                                            ]);
+                                            if($model['record_status'] == 0 || $model['record_status'] == 6 || $model['record_status'] == 7 || $model['record_status'] == 8 || $model['record_status'] == 9)
+                                            {
+                                                return Html::a('<i class="glyphicon glyphicon-trash"></i> Delete', 
+                                                [
+                                                  '/report/gad-record/delete', 'id' => $model['record_id']
+                                                ], 
+                                                [
+                                                  'class' => 'btn btn-xs btn-danger btn-block',
+                                                  'data' => [
+                                                      'confirm' => 'Are you sure you want to delete this item?',
+                                                      'method' => 'post']
+                                                ]);
+                                            }
+                                            else
+                                            {
+                                                return false;
+                                            }
+                                            
                                         },
                                     ],
                                 ],
@@ -301,16 +309,23 @@ $this->title = $index_title;
                                                     ['class'=>'btn btn-info btn-xs btn-view-report btn-block']);
                                         },
                                         'delete'=>function ($url, $model) {
-                                            return Html::a('<i class="glyphicon glyphicon-trash"></i> Delete', 
+                                            if($model['record_status'] == 0 || $model['record_status'] == 6 || $model['record_status'] == 7 || $model['record_status'] == 8 || $model['record_status'] == 9)
+                                            {
+                                                return Html::a('<i class="glyphicon glyphicon-trash"></i> Delete', 
                                             [
-                                              '/report/gad-record/delete', 'id' => $model['record_id']
-                                            ], 
-                                            [
-                                              'class' => 'btn btn-xs btn-danger btn-block',
-                                              'data' => [
-                                                  'confirm' => 'Are you sure you want to delete this item?',
-                                                  'method' => 'post']
-                                            ]);
+                                                  '/report/gad-record/delete', 'id' => $model['record_id']
+                                                ], 
+                                                [
+                                                  'class' => 'btn btn-xs btn-danger btn-block',
+                                                  'data' => [
+                                                      'confirm' => 'Are you sure you want to delete this item?',
+                                                      'method' => 'post']
+                                                ]);
+                                            }
+                                            else
+                                            {
+                                                return false;
+                                            }
                                         },
                                     ],
                                 ],
@@ -609,7 +624,7 @@ $this->title = $index_title;
                                     'template' => '{view}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
-                                            if($model['record_status'] == 2 || $model['record_status'] == 5)
+                                            if($model['record_status'] == 2 || $model['record_status'] == 5 || $model['record_status'] == 4)
                                             {
                                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
                                                     'ruc' => $model['record_tuc'], 

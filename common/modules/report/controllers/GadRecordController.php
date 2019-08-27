@@ -12,6 +12,8 @@ use niksko12\user\models\Region;
 use niksko12\user\models\Province;
 use niksko12\user\models\Citymun;
 use yii\helpers\ArrayHelper;
+use common\models\GadStatus;
+use common\models\GadYear;
 /**
  * GadRecordController implements the CRUD actions for GadRecord model.
  */
@@ -118,9 +120,13 @@ class GadRecordController extends Controller
         $regionCondition = [];
         $provinceCondition = [];
         $citymunCondition = [];
-
+        $statusCondition = [];
         $index_title = "";
         $urlReport = "";
+
+        $firstYear = (int)date('Y') - 2;
+        $lastYear = $firstYear + 1;
+        $arrayYear = [];
 
         Yii::$app->session["activelink"] = $report_type;
         switch ($report_type) {
@@ -142,16 +148,26 @@ class GadRecordController extends Controller
             break;
         }
 
-        if(Yii::$app->user->can("gad_lgu_permission") || Yii::$app->user->can("gad_field_permission")) // C/MLGOO
+        if(Yii::$app->user->can("gad_lgu_permission")) // C/MLGOO
         {
             $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
             $provinceCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
             $citymunCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C, 'citymun_c' => $searchModel->citymun_c  = Yii::$app->user->identity->userinfo->CITYMUN_C];
+
+            if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
+            {
+                $statusCondition = [3,6,8,10];
+            }
+            else
+            {
+                $statusCondition = [0,1,2,4,5,7];
+            }
         }
         else if(Yii::$app->user->can("gad_region_permission")) // Regional Office
         {
             $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
             $provinceCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
+            $statusCondition = [3,6,8,9,10];
 
             if(!empty($searchModel->citymun_c) || !empty($searchModel->province_c))
             {
@@ -161,23 +177,46 @@ class GadRecordController extends Controller
             {
                 $citymunCondition = ['region_c' => 0];
             }
-            
         }
-        else if(Yii::$app->user->can("gad_province_permission") || Yii::$app->user->can("gad_lgu_province_permission")) // Provincial Office
+        else if(Yii::$app->user->can("gad_province_permission")) // Provincial Office
         {
             $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
             $provinceCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
             $citymunCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
+            $statusCondition = [0,1,2,4,5,7];
         } 
+        else if(Yii::$app->user->can("gad_lgu_province_permission"))
+        {
+            $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
+            $provinceCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
+            $citymunCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
+            $statusCondition = [3,6,9,10];
+        }
+        else if(Yii::$app->user->can("gad_ppdo_permission"))
+        {
+            $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
+            $provinceCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
+            $citymunCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
+            $statusCondition = [0,1,2,4,5,7];
+        }
         else if(Yii::$app->user->can("gad_central_permission") || Yii::$app->user->can("gad_admin_permission"))
         {
             $provinceCondition = ['region_c' => $searchModel->region_c];
+            $citymunCondition = ['province_c' => $searchModel->province_c];
+            $statusCondition = [0,1,2,3,4,5,6,7,8,9,10];
         }
-
+        else
+        {
+            $provinceCondition = ['region_c' => $searchModel->region_c];
+            $citymunCondition = ['province_c' => $searchModel->province_c];
+            $statusCondition = [0,1,2,3,4,5,6,7,8,9,10];
+        }
 
         $region = ArrayHelper::map(Region::find()->where($regionCondition)->all(), 'region_c', 'region_m');
         $province = ArrayHelper::map(Province::find()->where($provinceCondition)->all(), 'province_c', 'province_m');
         $citymun = ArrayHelper::map(Citymun::find()->where($citymunCondition)->all(), 'citymun_c', 'citymun_m');
+        $statusList = ArrayHelper::map(GadStatus::find()->where(['code' => $statusCondition])->all(), 'code', 'title');
+        $arrayYear = ArrayHelper::map(GadYear::find()->orderBy(['value' => SORT_DESC])->all(), 'value', 'value');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -188,6 +227,8 @@ class GadRecordController extends Controller
             'region' => $region,
             'province' => $province,
             'citymun' => $citymun,
+            'statusList' => $statusList,
+            'arrayYear' => $arrayYear
         ]);
     }
 
