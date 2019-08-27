@@ -75,7 +75,7 @@ $this->title = $index_title;
             <div class="table-responsive">
             <br/>
                 <?php
-                    echo $this->render('_search', ['model' => $searchModel, 'region' => $region,'province' => $province,'citymun' => $citymun,'report_type' => $report_type]);
+                    echo $this->render('_search', ['model' => $searchModel, 'region' => $region,'province' => $province,'citymun' => $citymun,'report_type' => $report_type,'statusList' => $statusList,'arrayYear' => $arrayYear]);
                 ?>
                 <?php
                     if(Yii::$app->user->can("gad_submit_all_to_central"))
@@ -609,7 +609,7 @@ $this->title = $index_title;
                                     'template' => '{view}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
-                                            if($model['record_status'] == 2 || $model['record_status'] == 5)
+                                            if($model['record_status'] == 2 || $model['record_status'] == 5 || $model['record_status'] == 4)
                                             {
                                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
                                                     'ruc' => $model['record_tuc'], 

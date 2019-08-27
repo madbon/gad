@@ -13,6 +13,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use niksko12\user\models\UserInfo;
+use niksko12\user\models\User;
 use niksko12\user\models\Region;
 use niksko12\user\models\Province;
 use niksko12\user\models\Citymun;
@@ -23,6 +24,7 @@ use common\models\GadFileAttached;
 use common\models\GadAttributedProgram;
 use yii\db\Expression;
 use common\modules\report\controllers\DefaultController;
+
 
 
 
@@ -340,6 +342,82 @@ class GadPlanBudgetController extends Controller
     public function actionChangeReportStatus($status,$tuc,$onstep,$tocreate)
     {
         $qry = GadRecord::find()->where(['tuc' => $tuc])->one();
+        $qryStatus = \common\models\GadStatus::find()->where(['code' => $status])->one();
+        $statusTitle = !empty($qryStatus->title) ? $qryStatus->title : "";
+        $conditionAssTitle = [];
+        $andFilterValue =  [];
+
+        $sourceMailContent = (new \yii\db\Query())
+        ->select([
+            'REG.region_m',
+            'PROV.province_m',
+            'CITY.citymun_m',
+            'REC.year',
+            'REC.total_lgu_budget',
+            'REC.prepared_by',
+            'REC.approved_by'
+        ])
+        ->from('gad_record REC')
+        ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = REC.region_c')
+        ->leftJoin(['PROV' => 'tblprovince'], 'PROV.province_c = REC.province_c')
+        ->leftJoin(['CITY' => 'tblcitymun'], 'CITY.citymun_c = REC.citymun_c AND CITY.province_c = REC.province_c')
+        ->where(['REC.tuc' => $tuc])
+        ->one();
+
+        $region_name = !empty($sourceMailContent['region_m']) ? $sourceMailContent['region_m'] : "";
+        $province_name = !empty($sourceMailContent['province_m']) ? $sourceMailContent['province_m'] : "";
+        $citymun_name = !empty($sourceMailContent['citymun_m']) ? $sourceMailContent['citymun_m'] : "";
+        $report_year = !empty($sourceMailContent['year']) ? $sourceMailContent['year'] : "";
+        $total_lgu_budget = !empty($sourceMailContent['total_lgu_budget']) ? $sourceMailContent['total_lgu_budget'] : "";
+        $total_gad_budget = GadPlanBudgetController::ComputeGadBudget($tuc);
+        $prepared_by = !empty($sourceMailContent['prepared_by']) ? $sourceMailContent['prepared_by'] : "";
+        $approved_by = !empty($sourceMailContent['approved_by']) ? $sourceMailContent['approved_by'] : "";
+
+        if($status == 1) // For Review by PPDO
+        {
+            $conditionAssTitle = ['ASS.item_name' => ['gad_ppdo']];
+            $andFilterValue = ['UI.PROVINCE_C' => Yii::$app->user->identity->userinfo->PROVINCE_C];
+        }
+        else if($status == 2) // Submitted to DILG Provincial Office
+        {
+            $conditionAssTitle = ['ASS.item_name' => ['gad_province']];
+            $andFilterValue = ['UI.PROVINCE_C' => Yii::$app->user->identity->userinfo->PROVINCE_C];
+        }
+        else if($status == 3) // Submitted to Regional Office
+        {
+            $conditionAssTitle = ['ASS.item_name' => ['gad_region']];
+            $andFilterValue = ['UI.REGION_C' => Yii::$app->user->identity->userinfo->REGION_C];
+        }
+        else if($status == 6) // Returned to LGU by Regional Office
+        {
+            
+        }
+        else if($status == 7) // Returned to LGU C/M Office by PPDO
+        {
+           
+        }
+        else if($status == 10) // Endorsed by DILG Region
+        {
+           
+        }
+
+        $userAssignment = (new \yii\db\Query())
+        ->select([
+            'ASS.user_id'
+        ])
+        ->from('user_info UI')
+        ->leftJoin(['ASS' => 'auth_assignment'], 'ASS.user_id = UI.user_id')
+        ->where($conditionAssTitle)
+        ->andFilterWhere($andFilterValue)
+        ->one();
+        $userAssignmentUserId = !empty($userAssignment['user_id']) ? $userAssignment['user_id'] : "";
+
+        if(User::find()->where(['id' => $userAssignmentUserId])->exists())
+        {
+            $user = User::find()->where(['id' => $userAssignmentUserId])->One();
+            $user->sendMail($statusTitle,"GAD Plan and Budget Monitoring System | auto-generated message | Region :".$region_name." | Province : ".$province_name." | City/Municipality : ".$citymun_name." | GAD Plan and Budget FY. ".$report_year." | Total LGU Budget : ".$total_lgu_budget." | Total GAD Budget : ".$total_gad_budget." | Prepared By : ".$prepared_by." | Approved By : ".$approved_by." ");
+        }
+        
 
         if($status == 1)
         {

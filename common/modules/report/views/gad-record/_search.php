@@ -108,34 +108,9 @@ use kartik\select2\Select2;/* @var $this yii\web\View */
     </div>
     <div class="col-sm-4">
         <?php
-            $arrStatus = [];
-            if(Yii::$app->user->can("gad_lgu_permission"))
-            {
-                if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
-                {
-                    $arrStatus = [0 => "Encoding Process", 3 => "Endorsed to DILG Regional Office", 4 => "Submitted to Central Office", 6 => "Returned by Regional Office"];
-                }
-                else
-                {
-                    $arrStatus = [0 => "Encoding Process", 1 => "For Review  by PPDO", 2 => "Endorsed to DILG Field Office (C/MLGOO)",5 => "Returned by DILG Field Office (C/MLGOO)"];
-                }
-            }
-            else if(Yii::$app->user->can("gad_lgu_province_permission") || Yii::$app->user->can("gad_province_permission"))
-            {
-                $arrStatus = [0 => "Encoding Process", 3 => "Endorsed to DILG Regional Office", 4 => "Submitted to Central Office", 6 => "Returned by Regional Office"];
-            }
-            else if(Yii::$app->user->can("gad_region_permission"))
-            {
-                $arrStatus = [0 => "Encoding Process", 3 => "Endorsed to DILG Regional Office", 4 => "Submitted to Central Office", 6 => "Returned by Regional Office"];
-            }
-            else
-            {
-                $arrStatus = [0 => "Encoding Process",1 => "For Review  by PPDO", 2 => "Endorsed to DILG Field Office (C/MLGOO)", 3 => "Endorsed to DILG Regional Office", 4 => "Submitted to Central Office",5 => "Returned by DILG Field Office (C/MLGOO)", 6 => "Returned by Regional Office",  ];
-            }
-
             
             echo $form->field($model, 'status')->widget(Select2::classname(), [
-                'data' => $arrStatus,
+                'data' => $statusList,
                 'options' => ['placeholder' => 'Report Status'],
                 'pluginOptions' => [
                     'allowClear' => true,
@@ -152,7 +127,7 @@ use kartik\select2\Select2;/* @var $this yii\web\View */
     <div class="col-sm-4">
         <?php
             echo $form->field($model, 'year')->widget(Select2::classname(), [
-                'data' => [2018 => '2018', 2019 => '2019'],
+                'data' => $arrayYear,
                 'options' => ['placeholder' => 'Year'],
                 'pluginOptions' => [
                     'allowClear' => true,
