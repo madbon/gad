@@ -82,6 +82,11 @@ ul.nav-tabs li.disabled a
     color:whitesmoke;
 }
 
+.navbar-static-side
+{
+    margin-top: 51px;
+}
+
 /*ul.nav li.activeLink
 {
     background-color: #7e57b1;
@@ -396,6 +401,9 @@ nav.navbar-default div.navbar-header a
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     ;
                   });
+                });
+                $("#side-menu").click(function(){
+                    $(".navbar-static-side").css({'margin-top':'0'});
                 });
             </script>
         <?php richardfan\widget\JSRegister::end(); ?>

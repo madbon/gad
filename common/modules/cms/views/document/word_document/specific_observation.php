@@ -66,7 +66,7 @@ use common\modules\cms\controllers\DocumentController;
         foreach ($qryCommentAttributed as $key1 => $row1) {
             $table->addRow();
             $table->addCell(3000)->addText("Row ".$row1["row_no"].". <w:br/>".(DocumentController::WrapText(DocumentController::ChangeAmpersand($row1['row_value']))));
-            $table->addCell(6000)->addText("Column ".$row1["column_no"].". ".(DocumentController::WrapText(DocumentController::ChangeAmpersand($row1['column_value'])))." ".DocumentController::WrapText(DocumentController::ChangeAmpersand($row['comment_value'])));
+            $table->addCell(6000)->addText("Column ".$row1["column_no"].". ".(DocumentController::WrapText(DocumentController::ChangeAmpersand($row1['column_value'])))." ".DocumentController::WrapText(DocumentController::ChangeAmpersand($row1['comment_value'])));
         }
         // --------------------- Table End
 
