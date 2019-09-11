@@ -22,6 +22,24 @@ $this->title = "Annual GAD Plan and Budget";
     {
         background-color: skyblue !important;
     }*/
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      padding: 12px 16px;
+      z-index: 1;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
 </style>
 
 <div class="gad-plan-budget-index">
@@ -390,11 +408,17 @@ $this->title = "Annual GAD Plan and Budget";
                         <p class="sub-title"><span class="glyphicon glyphicon-th"></span> Tabular Report</p>
                     </div>
                     <div class="col-sm-6">
-                        <div class="btn-group pull-right">
-                            <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Preview Client / Org. Focused',['print/gpb-client-organization-focused','region' => $recRegion,'province' => $recProvince, 'citymun' => $recCitymun, 'grand_total' => $grand_total_pb, 'total_lgu_budget' => $recTotalLguBudget,'ruc' => $ruc],['class'=>'btn btn-md btn-default','target'=>'_blank']);  ?>
-                            <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Preview Attributed Program',['print/gpb-attributed-program'],['class'=>'btn btn-md btn-default','target'=>'_blank']);  ?>
-                            <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Preview GAD Plan and Budget',['print/gad-plan-budget','region' => $recRegion,'province' => $recProvince, 'citymun' => $recCitymun, 'grand_total' => $grand_total_pb, 'total_lgu_budget' => $recTotalLguBudget,'ruc' => $ruc],['class'=>'btn btn-md btn-default','target'=>'_blank']);  ?>
+                        <div class="dropdown">
+                            <button class="btn btn-default btn-md"> More Actions</button>
+                            <div class="dropdown-content">
+                                <div class="btn-group-vertical">
+                                    <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Preview Client / Org. Focused',['print/gpb-client-organization-focused','region' => $recRegion,'province' => $recProvince, 'citymun' => $recCitymun, 'grand_total' => $grand_total_pb, 'total_lgu_budget' => $recTotalLguBudget,'ruc' => $ruc],['class'=>'btn btn-md btn-default','target'=>'_blank']);  ?>
+                                    <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Preview Attributed Program',['print/gpb-attributed-program'],['class'=>'btn btn-md btn-default','target'=>'_blank']);  ?>
+                                    <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Preview GAD Plan and Budget',['print/gad-plan-budget','region' => $recRegion,'province' => $recProvince, 'citymun' => $recCitymun, 'grand_total' => $grand_total_pb, 'total_lgu_budget' => $recTotalLguBudget,'ruc' => $ruc],['class'=>'btn btn-md btn-default','target'=>'_blank']);  ?>
+                                </div>
+                            </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>
