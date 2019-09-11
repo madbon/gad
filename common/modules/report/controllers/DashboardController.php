@@ -76,6 +76,8 @@ class DashboardController extends \yii\web\Controller
             $status_count[] = (int)$row1['count_status'];
         }
 
+        // $data_status = [];
+        // $product_status = [];
         $data_status = ['name'=>'Total Percentage', 'type'=>'column','data' => $status_count];
         $product_status = [0 => $data_status];
 

@@ -73,7 +73,7 @@ class GadRecordSearch extends GadRecord
         }
         else if(Yii::$app->user->can("gad_region_permission"))
         {
-            $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,'GR.status' => [3,6,8,9,10]];
+            $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,'GR.status' => [0,1,2,3,4,5,6,7,8,9,10]];
         }
         else if(Yii::$app->user->can("gad_ppdo_permission"))
         {
@@ -117,10 +117,7 @@ class GadRecordSearch extends GadRecord
         ->andFilterWhere(['GR.province_c' => $this->province_c])
         ->andFilterWhere(['GR.citymun_c' => $this->citymun_c])
         ->andFilterWhere(['GR.status' => $this->status])
-        ->andFilterWhere(['GR.status' => Yii::$app->user->can("gad_central") ? 4 : ""])
         ->andFilterWhere(['GR.year' => $this->year])
-        ->andFilterWhere(Yii::$app->user->can("gad_ppdo_permission") ? ['not in', 'CTY.lgu_type', ["HUC","ICC"]] : [])
-        ->orFilterWhere(Yii::$app->user->can("gad_region_permission") ? ['GR.office_c' => 2] : [])
         ->andFilterWhere(['GR.status' => $this->status])
         ->groupBy(['GR.id'])
         ->orderBy(['GR.id' => SORT_DESC]);
