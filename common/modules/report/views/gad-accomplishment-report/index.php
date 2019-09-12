@@ -60,25 +60,37 @@ $this->title = "Annual GAD Accomplishment Reports";
     </div>
 
     <br/>
-    <div class="btn-group">
-        <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-            <?php if($qryReportStatus == 8 || $qryReportStatus == 10 || $qryReportStatus == 6 || $qryReportStatus == 0){ ?>
-                <button type="button" class="btn btn-success" id="btn-encode" style="margin-bottom: 5px;">
-                    <span class="glyphicon glyphicon-pencil"></span> Encode Accomplishment Report
-                </button>
-                <?php 
-                    echo Html::a('<span class="glyphicon glyphicon-cloud-upload"></span> Upload Accomplishment Report (excel)',['/upload/accomplishment/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'btn btn-success btn-md']);
-                ?>
-                <?php 
-                    echo Html::a('<span class="glyphicon glyphicon-cloud-upload"></span> Upload Attrbiuted Programs (excel)',['/upload/accomplishment-attributed/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'btn btn-success btn-md']);
-                ?>
-                <?php
-                    $urlCopyPlan = '@web/report/gad-accomplishment-report/copy-plan?ruc='.$ruc."&onstep=".$onstep."&tocreate=".$tocreate;;
-                    echo Html::button('<span class="glyphicon glyphicon-copy"> </span> Copy Plan', ['value'=>Url::to($urlCopyPlan),
-                            'class' => 'btn btn-default btn-md modalButton ','title' => 'Copy GAD Plan and Budget','style' => '']);
-                ?>
+    <div class="dropdown" style="margin-bottom: 10px;">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
+                <?php if($qryReportStatus == 8 || $qryReportStatus == 10 || $qryReportStatus == 6 || $qryReportStatus == 0){ ?>
+                    <li>
+                        <a href="#" id="btn-encode">
+                            <span class="glyphicon glyphicon-pencil" style='color:blue;'></span> Encode Accomplishment Report
+                        </a>
+                    </li>
+                    <li>
+                        <?php 
+                            echo Html::a('<span class="glyphicon glyphicon-cloud-upload" style="color:green;"></span> Upload Accomplishment Report (excel)',['/upload/accomplishment/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'']);
+                        ?>
+                    </li>
+                    <li>
+                        <?php 
+                            echo Html::a('<span class="glyphicon glyphicon-cloud-upload" style="color:green;"></span> Upload Attrbiuted Programs (excel)',['/upload/accomplishment-attributed/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'']);
+                        ?>
+                    </li>
+                    <li>
+                        <?php
+                            $urlCopyPlan = '@web/report/gad-accomplishment-report/copy-plan?ruc='.$ruc."&onstep=".$onstep."&tocreate=".$tocreate;;
+                            echo Html::button('<span class="glyphicon glyphicon-copy" style="color:#3a96e5;"> </span> Copy Plan', ['value'=>Url::to($urlCopyPlan),
+                                    'class' => 'btn-link modalButton ','title' => 'Copy GAD Plan and Budget','style' => 'text-decoration:none; padding-left:17px; color:black;']);
+                        ?>
+                    </li>
+                <?php } ?>
             <?php } ?>
-        <?php } ?>
+        </ul>
     </div>
     <?php
         $urlSetSession = \yii\helpers\Url::to(['default/session-encode']);
@@ -275,7 +287,6 @@ $this->title = "Annual GAD Accomplishment Reports";
             });
         ");
     ?>
-    <br/> <br/>
     <div class="row">
         <div class="col-sm-8">
         </div>
@@ -439,15 +450,25 @@ $this->title = "Annual GAD Accomplishment Reports";
                         <p class="sub-title"><span class="glyphicon glyphicon-th"></span> Tabular Report</p>
                     </div>
                     <div class="col-sm-6">
-                        <div class="btn-group pull-right">
-                            <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Preview Client / Org. Focused',['print/ar-client-organization-focused','region' => $recRegion,'province' => $recProvince, 'citymun' => $recCitymun, 'grand_total' => $grand_total_ar, 'total_lgu_budget' => $recTotalLguBudget,'ruc' => $ruc],['class'=>'btn btn-md btn-default','target'=>'_blank']);  ?>
-                            <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Preview Attributed Programs',['print/ar-attributed-program'],['class'=>'btn btn-md btn-default','target'=>'_blank']);  ?>
-                            <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Preview Accomplishment Report',['print/accomplishment-report','region' => $recRegion,'province' => $recProvince, 'citymun' => $recCitymun, 'grand_total' => $grand_total_ar, 'total_lgu_budget' => $recTotalLguBudget,'ruc' => $ruc],['class'=>'btn btn-md btn-default','target'=>'_blank']);  ?>
+                        <div class="dropdown pull-right" style="margin-bottom: 10px;">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Print Preview
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Client / Org. Focused',['print/ar-client-organization-focused','region' => $recRegion,'province' => $recProvince, 'citymun' => $recCitymun, 'grand_total' => $grand_total_ar, 'total_lgu_budget' => $recTotalLguBudget,'ruc' => $ruc],['class'=>'','target'=>'_blank']);  ?>
+                                </li>
+                                <li>
+                                    <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Attributed Programs',['print/ar-attributed-program'],['class'=>'','target'=>'_blank']);  ?>
+                                </li>
+                                <li>
+                                    <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Accomplishment Report',['print/accomplishment-report','region' => $recRegion,'province' => $recProvince, 'citymun' => $recCitymun, 'grand_total' => $grand_total_ar, 'total_lgu_budget' => $recTotalLguBudget,'ruc' => $ruc],['class'=>'','target'=>'_blank']);  ?>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="cust-panel-inner-body">
+            <div class="cust-panel-inner-body" style="overflow-y: scroll; max-height: 700px;">
                 <table class="table ar table-responsive table-bordered" style="border: 2px solid black;">
                     <thead>
                         <tr>

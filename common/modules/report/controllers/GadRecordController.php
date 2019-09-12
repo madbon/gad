@@ -14,10 +14,11 @@ use niksko12\user\models\Citymun;
 use yii\helpers\ArrayHelper;
 use common\models\GadStatus;
 use common\models\GadYear;
+use niksko12\auditlogs\classes\ControllerAudit;
 /**
  * GadRecordController implements the CRUD actions for GadRecord model.
  */
-class GadRecordController extends Controller
+class GadRecordController extends ControllerAudit
 {
     /**
      * {@inheritdoc}

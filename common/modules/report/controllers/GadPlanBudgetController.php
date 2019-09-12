@@ -24,14 +24,14 @@ use common\models\GadFileAttached;
 use common\models\GadAttributedProgram;
 use yii\db\Expression;
 use common\modules\report\controllers\DefaultController;
-
+use niksko12\auditlogs\classes\ControllerAudit;
 
 
 
 /**
  * GadPlanBudgetController implements the CRUD actions for GadPlanBudget model.
  */
-class GadPlanBudgetController extends Controller
+class GadPlanBudgetController extends ControllerAudit
 {
     /**
      * {@inheritdoc}

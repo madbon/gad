@@ -6,38 +6,38 @@ use yii\helpers\Html;
 ?>
 
 <div class="panel panel-default">
-	<div class="panel-heading"><p style="font-size: 15px; margin:0px; font-weight: bold; text-transform: uppercase;"><i class="glyphicon glyphicon-stats"></i> Total of Reports Based on Status</p></div>
+	<div class="panel-heading"><p style="font-size: 15px; margin:0px; font-weight: bold; text-transform: uppercase;"><i class="glyphicon glyphicon-stats"></i> LGU<span style="text-transform: lowercase;">s</span> Report Status</p></div>
   	<div class="panel-body">
   		<?php
   		// echo "<pre>";
   		// print_r($product_status); exit;
-  			echo 	Highcharts::widget([
-				    'htmlOptions' => [
-				        'style'=> ['height' => '468px']
-				    ],
-			      	'options' => [
-					      'title' => ['text' => ''],
-					      'xAxis' => [
-					       		'categories' => $category_status,
-					      	],
-					      	'yAxis' => [
-						       'title' => ['text' => ''],
-						       'stackLabels' => [
-						                  'enabled' => true,
-						        ],
-					      	],
-					      'plotOptions' => [
-				              	'column' => [
-				                  	'dataLabels' => [
-				                      'enabled' => true,
-				                      // 'format' => '{point.y:1f}%',
-				                  	],
-				                  	'colorByPoint' => true,
-				              	]
-					        ],
-					    'series' => $product_status
-			     	]
-			  	]);
+  			// echo 	Highcharts::widget([
+				 //    'htmlOptions' => [
+				 //        'style'=> ['height' => '468px']
+				 //    ],
+			  //     	'options' => [
+					//       'title' => ['text' => ''],
+					//       'xAxis' => [
+					//        		'categories' => $category_status,
+					//       	],
+					//       	'yAxis' => [
+					// 	       'title' => ['text' => ''],
+					// 	       'stackLabels' => [
+					// 	                  'enabled' => true,
+					// 	        ],
+					//       	],
+					//       'plotOptions' => [
+				 //              	'column' => [
+				 //                  	'dataLabels' => [
+				 //                      'enabled' => true,
+				 //                      // 'format' => '{point.y:1f}%',
+				 //                  	],
+				 //                  	'colorByPoint' => true,
+				 //              	]
+					//         ],
+					//     'series' => $product_status
+			  //    	]
+			  // 	]);
   		?>
 
   		<table class="table table-responsive table-hover table-bordered">

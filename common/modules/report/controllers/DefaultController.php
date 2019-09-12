@@ -26,10 +26,11 @@ use common\modules\report\controllers\GadPlanBudgetController;
 use common\modules\report\controllers\GadAccomplishmentReportController;
 use common\modules\report\controllers\GadRecordController;
 use yii\web\UploadedFile;
+use niksko12\auditlogs\classes\ControllerAudit;
 /**
  * Default controller for the `report` module
  */
-class DefaultController extends Controller
+class DefaultController extends ControllerAudit
 {
     public function HasBeenAttachedToGpb($ar_ruc)
     {
