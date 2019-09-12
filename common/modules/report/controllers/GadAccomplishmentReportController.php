@@ -15,11 +15,12 @@ use yii\filters\VerbFilter;
 use common\models\GadRecord;
 use yii\helpers\ArrayHelper;
 use yii\db\Query;
+use niksko12\auditlogs\classes\ControllerAudit;
 
 /**
  * GadAccomplishmentReportController implements the CRUD actions for GadAccomplishmentReport model.
  */
-class GadAccomplishmentReportController extends Controller
+class GadAccomplishmentReportController extends ControllerAudit
 {
     /**
      * {@inheritdoc}

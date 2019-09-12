@@ -111,7 +111,7 @@ use common\modules\report\controllers\DefaultController;
                         'autoclose' => true,
                         'minViewMode' => 'years',
                         'viewmode' => 'years',
-                        'endDate' => "-0d",
+                        // 'endDate' => "-0d",
                         'orientation' => 'bottom',
                     ],
                 ]);

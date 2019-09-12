@@ -63,7 +63,7 @@ class PlanController extends \yii\web\Controller
                         'type' => $ext,
                     ])
                 ->execute();
-                unlink('uploads/'. $session['excelFile']);
+                // unlink('uploads/'. $session['excelFile']);
             }
         }
 
@@ -121,7 +121,7 @@ class PlanController extends \yii\web\Controller
             }
         }
         $session['excelDataPlan'] = null;
-        // unlink('uploads/'. $session['excelFile']);
+        unlink('uploads/'. $session['excelFile']);
         $session['excelFile'] = null;
         \Yii::$app->getSession()->setFlash('success', 'Excel data successfully uploaded.');
         return $this->redirect(['/report/gad-plan-budget/index', 'ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate]);

@@ -4,8 +4,9 @@ namespace common\modules\report\controllers;
 use common\models\GadStatus;
 use common\models\GadRecord;
 use Yii;
+use niksko12\auditlogs\classes\ControllerAudit;
 
-class DashboardController extends \yii\web\Controller
+class DashboardController extends ControllerAudit
 {
     public function actionIndex()
     {

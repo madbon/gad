@@ -18,28 +18,6 @@ use yii\helpers\Url;
 $this->title = "Annual GAD Plan and Budget";
 ?>
 <style>
-    /*div.input-form
-    {
-        background-color: skyblue !important;
-    }*/
-    .dropdown {
-      position: relative;
-      display: inline-block;
-    }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #f9f9f9;
-      min-width: 160px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      padding: 12px 16px;
-      z-index: 1;
-    }
-
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
 </style>
 
 <div class="gad-plan-budget-index">
@@ -216,19 +194,28 @@ $this->title = "Annual GAD Plan and Budget";
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <div class="btn-group" style="margin-top: 20px;">
-                <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-                    <br/>
+            <div class="dropdown" style="margin-top: 10px;">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Encode Plan
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
+                    
                     <?php if($qryReportStatus == 0 || $qryReportStatus == 5 || $qryReportStatus == 6 || $qryReportStatus == 7 || $qryReportStatus == 9 || $qryReportStatus == 8){ ?>
-                        <button type="button" class="btn btn-success" id="btn-encode" style="border-radius: 5px 0px 0px 5px; margin-bottom: 20px;">
-                            <span class="glyphicon glyphicon-pencil"></span> Encode Plan
-                        </button>
-                        <?php 
-                            echo Html::a('<span class="glyphicon glyphicon-cloud-upload"></span> Upload Plan & Budget (excel)',['/upload/plan/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'btn btn-success btn-md','style' => '']);
-                        ?>
-                        <?php 
-                            echo Html::a('<span class="glyphicon glyphicon-cloud-upload"></span> Upload Attrbiuted Programs (excel)',['/upload/plan-attributed/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'btn btn-success btn-md','style' => '']);
-                        ?>
+                        <li>
+                            <a href="#" class="" id="btn-encode">
+                                <span class="glyphicon glyphicon-pencil"></span> Input Form
+                            </a>
+                        </li>
+                        <li>
+                            <?php 
+                                echo Html::a('<span class="glyphicon glyphicon-cloud-upload"></span> Upload Plan & Budget (excel)',['/upload/plan/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '']);
+                            ?>
+                        </li>
+                        <li>
+                            <?php 
+                                echo Html::a('<span class="glyphicon glyphicon-cloud-upload"></span> Upload Attrbiuted Programs (excel)',['/upload/plan-attributed/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '']);
+                            ?>
+                        </li>
                     <?php } ?>
                 <?php } ?>
 
@@ -236,7 +223,8 @@ $this->title = "Annual GAD Plan and Budget";
                     if(Yii::$app->user->can("gad_create_letter_menu"))
                     {
                         // echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Letter of Review / Endorsement',['/cms/document/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-primary','style' => '']); 
-                        echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Create General Observation/Recommendation',['/cms/document/form-view', 'category_id' => 7, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-primary','style' => '']);
+
+                        echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create General Observation/Recommendation',['/cms/document/form-view', 'category_id' => 7, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
                         // echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Create General Observation/Recommendation',['/cms/document/form-view', 'category_id' => 7, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-primary','style' => '']);
                     }
                 ?>
@@ -245,6 +233,10 @@ $this->title = "Annual GAD Plan and Budget";
                     // echo Html::button('<span class="glyphicon glyphicon-search"> </span> Search', ['value'=>Url::to($urlsearchplan),
                     //         'class' => 'btn btn-default btn-md modalButton ','title' => '','style' => '']);
                 ?>
+                </ul>
+            </div>
+            <div class="btn-group" style="margin-top: 20px;">
+                
             </div>
         </div>
         <div class="col-sm-6">
@@ -408,17 +400,21 @@ $this->title = "Annual GAD Plan and Budget";
                         <p class="sub-title"><span class="glyphicon glyphicon-th"></span> Tabular Report</p>
                     </div>
                     <div class="col-sm-6">
-                        <div class="dropdown">
-                            <button class="btn btn-default btn-md"> More Actions</button>
-                            <div class="dropdown-content">
-                                <div class="btn-group-vertical">
-                                    <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Preview Client / Org. Focused',['print/gpb-client-organization-focused','region' => $recRegion,'province' => $recProvince, 'citymun' => $recCitymun, 'grand_total' => $grand_total_pb, 'total_lgu_budget' => $recTotalLguBudget,'ruc' => $ruc],['class'=>'btn btn-md btn-default','target'=>'_blank']);  ?>
-                                    <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Preview Attributed Program',['print/gpb-attributed-program'],['class'=>'btn btn-md btn-default','target'=>'_blank']);  ?>
-                                    <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Preview GAD Plan and Budget',['print/gad-plan-budget','region' => $recRegion,'province' => $recProvince, 'citymun' => $recCitymun, 'grand_total' => $grand_total_pb, 'total_lgu_budget' => $recTotalLguBudget,'ruc' => $ruc],['class'=>'btn btn-md btn-default','target'=>'_blank']);  ?>
-                                </div>
-                            </div>
+                        <div class="dropdown pull-right">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Print Preview
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbspClient / Org. Focused',['print/gpb-client-organization-focused','region' => $recRegion,'province' => $recProvince, 'citymun' => $recCitymun, 'grand_total' => $grand_total_pb, 'total_lgu_budget' => $recTotalLguBudget,'ruc' => $ruc],['class'=>'','target'=>'_blank']);  ?>
+                                </li>
+                                <li>
+                                    <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;Attributed Program',['print/gpb-attributed-program'],['class'=>'','target'=>'_blank']);  ?>
+                                </li>
+                                <li>
+                                    <?php echo Html::a('<span class="glyphicon glyphicon-print"></span> &nbsp;GAD Plan and Budget',['print/gad-plan-budget','region' => $recRegion,'province' => $recProvince, 'citymun' => $recCitymun, 'grand_total' => $grand_total_pb, 'total_lgu_budget' => $recTotalLguBudget,'ruc' => $ruc],['class'=>'','target'=>'_blank']);  ?>
+                                </li>
+                              </ul>
                         </div>
-                        
                     </div>
                 </div>
             </div>

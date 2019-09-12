@@ -57,7 +57,7 @@ class AccomplishmentController extends \yii\web\Controller
                         'type' => $ext,
                     ])
                 ->execute();
-                unlink('uploads/'. $session['excelFile']);
+                // unlink('uploads/'. $session['excelFile']);
             }
         }
 
@@ -114,7 +114,7 @@ class AccomplishmentController extends \yii\web\Controller
             }
         }
         $session['excelDataAccomplishment'] = null;
-        // unlink('uploads/'. $session['excelFile']);
+        unlink('uploads/'. $session['excelFile']);
         $session['excelFile'] = null;
         \Yii::$app->getSession()->setFlash('success', 'Excel data successfully uploaded.');
         return $this->redirect(['/report/gad-accomplishment-report/index', 'ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate]);

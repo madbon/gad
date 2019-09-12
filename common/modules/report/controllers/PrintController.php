@@ -2,10 +2,11 @@
 
 namespace common\modules\report\controllers;
 use common\modules\report\controllers\DefaultController;
+use niksko12\auditlogs\classes\ControllerAudit;
 
 use Yii;
 
-class PrintController extends \yii\web\Controller
+class PrintController extends ControllerAudit
 {
     public function actionGadPlanBudget($region,$province,$citymun,$grand_total,$total_lgu_budget,$ruc)
     {

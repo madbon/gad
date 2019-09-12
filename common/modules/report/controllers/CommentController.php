@@ -9,10 +9,11 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\modules\report\controllers\DefaultController;
+use niksko12\auditlogs\classes\ControllerAudit;
 /**
  * CommentController implements the CRUD actions for GadComment model.
  */
-class CommentController extends Controller
+class CommentController extends ControllerAudit
 {
     /**
      * {@inheritdoc}
