@@ -195,7 +195,7 @@ $this->title = "Annual GAD Plan and Budget";
     <div class="row">
         <div class="col-sm-6">
             <div class="dropdown" style="margin-top: 10px;">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Encode Plan
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
                     <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
