@@ -468,7 +468,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                     </div>
                 </div>
             </div>
-            <div class="cust-panel-inner-body" style="overflow-y: scroll; max-height: 700px;">
+            <div class="cust-panel-inner-body">
                 <table class="table ar table-responsive table-bordered" style="border: 2px solid black;">
                     <thead>
                         <tr>
