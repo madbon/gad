@@ -418,7 +418,7 @@ $this->title = "Annual GAD Plan and Budget";
                     </div>
                 </div>
             </div>
-            <div class="cust-panel-inner-body" style="overflow-y: scroll; max-height: 700px;">
+            <div class="cust-panel-inner-body">
                 <table class="table table-responsive table-bordered gad-plan-budget table-hover">
                     <thead>
                         <tr>
