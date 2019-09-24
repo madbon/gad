@@ -402,6 +402,14 @@ $this->title = $index_title;
                                     }
                                 ],
                                 [
+                                    'label' => 'Date',
+                                    'value' => function($model)
+                                    {
+                                        
+                                        return !empty(GadRecordController::GenerateLatestDate($model['record_tuc'])) ? GadRecordController::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
+                                    }
+                                ],
+                                [
                                     'label' => 'Remarks',
                                     'contentOptions' => ['class' => 'remarks_class'],
                                     'value' => function($model)
@@ -438,7 +446,7 @@ $this->title = $index_title;
                                                     'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                     'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                                 ], 
-                                                    ['class'=>'btn btn-default btn-sm btn-view-report']);
+                                                    ['class'=>'btn btn-info btn-xs']);
                                             }
                                         },
                                         'track' => function($url, $model) use ($urlReport,$report_type){
@@ -651,7 +659,7 @@ $this->title = $index_title;
                                                     'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                     'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                                 ], 
-                                                    ['class'=>'btn btn-default btn-sm btn-view-report']);
+                                                    ['class'=>'btn btn-info btn-xs']);
                                             }
                                             else
                                             {
@@ -767,7 +775,7 @@ $this->title = $index_title;
                                                     'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                     'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                                 ], 
-                                                    ['class'=>'btn btn-default btn-sm btn-view-report']);
+                                                    ['class'=>'btn btn-info btn-xs']);
                                             }
                                             else
                                             {

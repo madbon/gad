@@ -101,7 +101,8 @@ class GadRecordSearch extends GadRecord
             'GR.form_type as record_form_type',
             'CONCAT(UI.FIRST_M, " ",UI.LAST_M) as responsbile',
             'GR.id as record_id',
-            'OFC.OFFICE_M as office_name'
+            'OFC.OFFICE_M as office_name',
+            'GR.date_created'
             // 'HIST.remarks as remarks'
         ])
         ->from('gad_record GR')

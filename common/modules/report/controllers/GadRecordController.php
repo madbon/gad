@@ -73,6 +73,14 @@ class GadRecordController extends ControllerAudit
         return $value;
     }
 
+    public function GenerateLatestDate($tuc)
+    {
+        $qryModel = \common\models\GadReportHistory::find()->where(['tuc' => $tuc])->orderBy(['id'=>SORT_DESC])->one();
+        
+
+        return !empty($qryModel->date_created) ? date("F j, Y", strtotime(date($qryModel->date_created))) : "";
+    }
+
     public function actionMultipleSubmit($report_type)
     {
         if($report_type == "plan_budget")
