@@ -203,17 +203,31 @@ $this->title = "Annual GAD Plan and Budget";
                     <?php if($qryReportStatus == 0 || $qryReportStatus == 5 || $qryReportStatus == 6 || $qryReportStatus == 7 || $qryReportStatus == 9 || $qryReportStatus == 8){ ?>
                         <li>
                             <a href="#" class="" id="btn-encode">
-                                <span class="glyphicon glyphicon-pencil"></span> Input Form
+                                <span class="glyphicon glyphicon-pencil" style="color: #7e57b1;"></span> Input Form
                             </a>
                         </li>
                         <li>
                             <?php 
-                                echo Html::a('<span class="glyphicon glyphicon-cloud-upload"></span> Upload Plan & Budget (excel)',['/upload/plan/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '']);
+                                echo Html::a('<span class="glyphicon glyphicon-cloud-upload" style="color:#5cb85c;"></span> Upload Plan & Budget (excel)',['/upload/plan/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '']);
                             ?>
                         </li>
                         <li>
                             <?php 
-                                echo Html::a('<span class="glyphicon glyphicon-cloud-upload"></span> Upload Attrbiuted Programs (excel)',['/upload/plan-attributed/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '']);
+                                echo Html::a('<span class="glyphicon glyphicon-cloud-upload" style="color:#5cb85c;"></span> Upload Attrbiuted Programs (excel)',['/upload/plan-attributed/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '']);
+                            ?>
+                        </li>
+                        <li>
+                            <?php 
+                                echo Html::a('<span class="glyphicon glyphicon-trash" style="color:red;"></span>  Delete All Rows (Client/Org.focused)',['delete-all','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '','data' => [
+                                                      'confirm' => 'Are you sure you want to delete all rows of client/org. focused?',
+                                                      'method' => 'post']]);
+                            ?>
+                        </li>
+                        <li>
+                            <?php 
+                                echo Html::a('<span class="glyphicon glyphicon-trash" style="color:red;"></span>  Delete All Rows (Attributed Program)',['delete-all-attrib','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '','data' => [
+                                                      'confirm' => 'Are you sure you want to delete all rows of attributed program?',
+                                                      'method' => 'post']]);
                             ?>
                         </li>
                     <?php } ?>

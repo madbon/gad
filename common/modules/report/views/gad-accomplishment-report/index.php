@@ -88,6 +88,20 @@ $this->title = "Annual GAD Accomplishment Reports";
                                     'class' => 'btn-link modalButton ','title' => 'Copy GAD Plan and Budget','style' => 'text-decoration:none; padding-left:17px; color:black;']);
                         ?>
                     </li>
+                    <li>
+                        <?php 
+                            echo Html::a('<span class="glyphicon glyphicon-trash" style="color:red;"></span>  Delete All Rows (Client/Org.focused)',['delete-all','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '','data' => [
+                                                  'confirm' => 'Are you sure you want to delete all rows of client/org. focused?',
+                                                  'method' => 'post']]);
+                        ?>
+                    </li>
+                    <li>
+                        <?php 
+                            echo Html::a('<span class="glyphicon glyphicon-trash" style="color:red;"></span>  Delete All Rows (Attributed Program)',['delete-all-attrib','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '','data' => [
+                                                  'confirm' => 'Are you sure you want to delete all rows of attributed program?',
+                                                  'method' => 'post']]);
+                        ?>
+                    </li>
                 <?php } ?>
             <?php } ?>
         </ul>

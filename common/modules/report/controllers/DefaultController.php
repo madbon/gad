@@ -395,6 +395,12 @@ class DefaultController extends ControllerAudit
         $model->status = $valueReportStatus;
         $model->date_created = date('Y-m-d');
         $model->time_created = date("h:i:sa");
+        $model->responsible_user_id = !empty(Yii::$app->user->identity->id) ? Yii::$app->user->identity->id : "";
+        $model->responsible_region_c = !empty(Yii::$app->user->identity->userinfo->REGION_C) ? Yii::$app->user->identity->userinfo->REGION_C : "";
+        $model->responsible_province_c = !empty(Yii::$app->user->identity->userinfo->PROVINCE_C) ? Yii::$app->user->identity->userinfo->PROVINCE_C : "";
+        $model->responsible_citymun_c = !empty(Yii::$app->user->identity->userinfo->CITYMUN_C) ? Yii::$app->user->identity->userinfo->CITYMUN_C : "";
+        $model->fullname = Yii::$app->user->identity->userinfo->FIRST_M." ".Yii::$app->user->identity->userinfo->LAST_M;
+        $model->responsible_office_c = !empty(Yii::$app->user->identity->userinfo->OFFICE_C) ? Yii::$app->user->identity->userinfo->OFFICE_C : "";
         $model->save();
 
         // \Yii::$app->getSession()->setFlash('success', "Action has been performed");

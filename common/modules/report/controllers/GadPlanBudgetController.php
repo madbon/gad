@@ -48,6 +48,18 @@ class GadPlanBudgetController extends ControllerAudit
         ];
     }
 
+    public function actionDeleteAll($ruc,$onstep,$tocreate)
+    {
+        GadPlanBudget::deleteAll(['record_tuc' => $ruc]);
+        return $this->redirect(['index', 'ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate]);
+    }
+
+    public function actionDeleteAllAttrib($ruc,$onstep,$tocreate)
+    {
+        GadAttributedProgram::deleteAll(['record_tuc' => $ruc]);
+        return $this->redirect(['index', 'ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate]);
+    }
+
     public function actionLoadAr($ruc,$recordOne_attached_ar_record_id)
     {
         $condition = [];
