@@ -37,6 +37,18 @@ class GadAccomplishmentReportController extends ControllerAudit
         ];
     }
 
+    public function actionDeleteAll($ruc,$onstep,$tocreate)
+    {
+        GadAccomplishmentReport::deleteAll(['record_tuc' => $ruc]);
+        return $this->redirect(['index', 'ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate]);
+    }
+
+    public function actionDeleteAllAttrib($ruc,$onstep,$tocreate)
+    {
+        GadArAttributedProgram::deleteAll(['record_tuc' => $ruc]);
+        return $this->redirect(['index', 'ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate]);
+    }
+
     public function actionCopyInsertPlan($ruc,$onstep,$tocreate,$selected_plan_ruc)
     {
         $query = GadPlanBudget::find()->where(['record_tuc' => $selected_plan_ruc])->groupBy(['id'])->all();

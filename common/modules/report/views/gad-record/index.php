@@ -150,6 +150,14 @@ $this->title = $index_title;
                                         return $report_type == "plan_budget" ? DefaultController::DisplayStatus($model["record_status"]) : false;
                                     }
                                 ],
+                                [
+                                    'label' => 'Date',
+                                    'value' => function($model)
+                                    {
+                                        
+                                        return !empty(GadRecordController::GenerateLatestDate($model['record_tuc'])) ? GadRecordController::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
+                                    }
+                                ],
                                 // [
                                 //     'label' => 'Plan Category',
                                 //     'attribute' => 'create_status_id',
@@ -187,7 +195,7 @@ $this->title = $index_title;
                                 ],
 
                                 ['class' => 'yii\grid\ActionColumn',
-                                    'template' => '{view} {delete}',
+                                    'template' => '{view} {track} {delete}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
                                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
@@ -196,6 +204,10 @@ $this->title = $index_title;
                                                     'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                                 ], 
                                                     ['class'=>'btn btn-info btn-xs btn-block']);
+                                        },
+                                        'track' => function($url, $model) use ($urlReport,$report_type){
+                                            $url_track = '@web/report/gad-record/track?ruc='.$model['record_tuc'];
+                                            return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
                                         },
                                         'delete'=>function ($url, $model) {
                                             if($model['record_status'] == 0 || $model['record_status'] == 6 || $model['record_status'] == 7 || $model['record_status'] == 8 || $model['record_status'] == 9)
@@ -274,6 +286,14 @@ $this->title = $index_title;
                                     }
                                 ],
                                 [
+                                    'label' => 'Date',
+                                    'value' => function($model)
+                                    {
+                                        
+                                        return !empty(GadRecordController::GenerateLatestDate($model['record_tuc'])) ? GadRecordController::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
+                                    }
+                                ],
+                                [
                                     'label' => 'Remarks',
                                     'contentOptions' => ['class' => 'remarks_class'],
                                     'value' => function($model)
@@ -300,7 +320,7 @@ $this->title = $index_title;
                                 ],
 
                                 ['class' => 'yii\grid\ActionColumn',
-                                    'template' => Yii::$app->user->can("gad_delete_plan_budget") ? '{delete} {view}' : '{view}',
+                                    'template' => Yii::$app->user->can("gad_delete_plan_budget") ? '{delete} {view} {track}' : '{view} {track}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
                                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
@@ -309,6 +329,10 @@ $this->title = $index_title;
                                                     'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                                 ], 
                                                     ['class'=>'btn btn-info btn-xs btn-view-report btn-block']);
+                                        },
+                                        'track' => function($url, $model) use ($urlReport,$report_type){
+                                            $url_track = '@web/report/gad-record/track?ruc='.$model['record_tuc'];
+                                            return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
                                         },
                                         'delete'=>function ($url, $model) {
                                             if($model['record_status'] == 0 || $model['record_status'] == 6 || $model['record_status'] == 7 || $model['record_status'] == 8 || $model['record_status'] == 9)
@@ -394,6 +418,14 @@ $this->title = $index_title;
                                     }
                                 ],
                                 [
+                                    'label' => 'Date',
+                                    'value' => function($model)
+                                    {
+                                        
+                                        return !empty(GadRecordController::GenerateLatestDate($model['record_tuc'])) ? GadRecordController::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
+                                    }
+                                ],
+                                [
                                     'label' => 'Remarks',
                                     'contentOptions' => ['class' => 'remarks_class'],
                                     'value' => function($model)
@@ -420,7 +452,7 @@ $this->title = $index_title;
                                 ],
 
                                 ['class' => 'yii\grid\ActionColumn',
-                                    'template' => '{view}',
+                                    'template' => '{view} {track}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
                                             if($model['record_status'] == 3 || $model['record_status'] == 6 || $model['record_status'] == 10)
@@ -430,9 +462,12 @@ $this->title = $index_title;
                                                     'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                     'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                                 ], 
-                                                    ['class'=>'btn btn-default btn-sm btn-view-report']);
+                                                    ['class'=>'btn btn-info btn-xs']);
                                             }
-                                            
+                                        },
+                                        'track' => function($url, $model) use ($urlReport,$report_type){
+                                            $url_track = '@web/report/gad-record/track?ruc='.$model['record_tuc'];
+                                            return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
                                         },
                                     ],
                                 ],
@@ -495,6 +530,14 @@ $this->title = $index_title;
                                     }
                                 ],
                                 [
+                                    'label' => 'Date',
+                                    'value' => function($model)
+                                    {
+                                        
+                                        return !empty(GadRecordController::GenerateLatestDate($model['record_tuc'])) ? GadRecordController::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
+                                    }
+                                ],
+                                [
                                     'label' => 'Remarks',
                                     'contentOptions' => ['class' => 'remarks_class'],
                                     'value' => function($model)
@@ -521,7 +564,7 @@ $this->title = $index_title;
                                 ],
 
                                 ['class' => 'yii\grid\ActionColumn',
-                                    'template' => '{view}',
+                                    'template' => '{view} {track}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
                                             if($model['record_status'] == 1 || $model['record_status'] == 2 || $model['record_status'] == 5 ||  $model['record_status'] == 4)
@@ -531,13 +574,17 @@ $this->title = $index_title;
                                                     'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                     'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                                 ], 
-                                                    ['class'=>'btn btn-default btn-sm btn-view-report']);
+                                                    ['class'=>'btn btn-info btn-xs']);
                                             }
                                             else
                                             {
                                                 return false;
                                             }
                                             
+                                        },
+                                        'track' => function($url, $model) use ($urlReport,$report_type){
+                                            $url_track = '@web/report/gad-record/track?ruc='.$model['record_tuc'];
+                                            return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
                                         },
                                     ],
                                 ],
@@ -600,6 +647,14 @@ $this->title = $index_title;
                                     }
                                 ],
                                 [
+                                    'label' => 'Date',
+                                    'value' => function($model)
+                                    {
+                                        
+                                        return !empty(GadRecordController::GenerateLatestDate($model['record_tuc'])) ? GadRecordController::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
+                                    }
+                                ],
+                                [
                                     'label' => 'Remarks',
                                     'contentOptions' => ['class' => 'remarks_class'],
                                     'value' => function($model)
@@ -626,7 +681,7 @@ $this->title = $index_title;
                                 ],
 
                                 ['class' => 'yii\grid\ActionColumn',
-                                    'template' => '{view}',
+                                    'template' => '{view} {track}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
                                             if($model['record_status'] == 2 || $model['record_status'] == 5 || $model['record_status'] == 4)
@@ -636,13 +691,16 @@ $this->title = $index_title;
                                                     'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                     'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                                 ], 
-                                                    ['class'=>'btn btn-default btn-sm btn-view-report']);
+                                                    ['class'=>'btn btn-info btn-xs']);
                                             }
                                             else
                                             {
                                                 return false;
                                             }
-                                            
+                                        },
+                                        'track' => function($url, $model) use ($urlReport,$report_type){
+                                            $url_track = '@web/report/gad-record/track?ruc='.$model['record_tuc'];
+                                            return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
                                         },
                                     ],
                                 ],
@@ -713,6 +771,14 @@ $this->title = $index_title;
                                     }
                                 ],
                                 [
+                                    'label' => 'Date',
+                                    'value' => function($model)
+                                    {
+                                        
+                                        return !empty(GadRecordController::GenerateLatestDate($model['record_tuc'])) ? GadRecordController::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
+                                    }
+                                ],
+                                [
                                     'label' => 'Remarks',
                                     'contentOptions' => ['class' => 'remarks_class'],
                                     'value' => function($model)
@@ -739,7 +805,7 @@ $this->title = $index_title;
                                 ],
 
                                 ['class' => 'yii\grid\ActionColumn',
-                                    'template' => '{view}',
+                                    'template' => '{view} {track}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
                                             if($model['record_status'] == 4 || $model['record_status'] == 10)
@@ -749,12 +815,16 @@ $this->title = $index_title;
                                                     'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                     'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                                 ], 
-                                                    ['class'=>'btn btn-default btn-sm btn-view-report']);
+                                                    ['class'=>'btn btn-info btn-xs']);
                                             }
                                             else
                                             {
                                                 return false;
                                             }
+                                        },
+                                        'track' => function($url, $model) use ($urlReport,$report_type){
+                                            $url_track = '@web/report/gad-record/track?ruc='.$model['record_tuc'];
+                                            return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
                                         },
                                     ],
                                 ],

@@ -4,6 +4,7 @@ namespace common\modules\report\controllers;
 
 use Yii;
 use common\models\GadRecord;
+use common\models\GadReportHistory;
 use common\modules\report\models\GadRecordSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -35,12 +36,49 @@ class GadRecordController extends ControllerAudit
         ];
     }
 
+    public function actionTrack($ruc)
+    {
+        
+        $qry = (new \yii\db\Query())
+        ->select([
+            'REG.abbreviation as region',
+            'PRV.province_m as province',
+            'CTC.citymun_m as citymun',
+            'OFF.OFFICE_M as office',
+            'HIS.fullname',
+            'HIS.date_created',
+            'HIS.time_created',
+            'HIS.remarks',
+            'HIS.status'
+        ])
+        ->from('gad_report_history HIS')
+        ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = HIS.responsible_region_c')
+        ->leftJoin(['PRV' => 'tblprovince'], 'PRV.province_c = HIS.responsible_province_c')
+        ->leftJoin(['OFF' => 'tbloffice'], 'OFF.OFFICE_C = HIS.responsible_office_c')
+        ->leftJoin(['CTC' => 'tblcitymun'], 'CTC.citymun_c = HIS.responsible_citymun_c AND CTC.province_c = HIS.responsible_province_c')
+        ->where(['HIS.tuc' => $ruc])
+        ->groupBy(['HIS.id'])
+        ->all();
+
+        return $this->renderAjax('_track', [
+            'qry' => $qry,
+        ]);
+    }
+
     public function GenerateRemarks($tuc)
     {
         $qryModel = \common\models\GadReportHistory::find()->where(['tuc' => $tuc])->orderBy(['id'=>SORT_DESC])->one();
         $value = !empty($qryModel->remarks) ? $qryModel->remarks : "";
 
         return $value;
+    }
+
+    public function GenerateLatestDate($tuc)
+    {
+        $qryModel = \common\models\GadReportHistory::find()->where(['tuc' => $tuc])->orderBy(['id'=>SORT_DESC])->one();
+        
+
+        return !empty($qryModel->date_created) ? date("F j, Y", strtotime(date($qryModel->date_created))) : "";
     }
 
     public function actionMultipleSubmit($report_type)

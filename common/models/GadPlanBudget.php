@@ -53,7 +53,7 @@ class GadPlanBudget extends \yii\db\ActiveRecord
     {
         return [
             [['focused_id','inner_category_id','user_id','ppa_focused_id'], 'integer'],
-            [['cause_gender_issue', 'objective', 'relevant_lgu_program_project', 'activity', 'performance_target','performance_indicator','gi_sup_data','source'], 'string'],
+            // [['cause_gender_issue', 'objective', 'relevant_lgu_program_project', 'activity', 'performance_target','performance_indicator'], 'string'],
             [['budget_mooe', 'budget_ps', 'budget_co', 'sort'], 'number'],
             // [['cause_gender_issue','ppa_value','objective','relevant_lgu_program_project','activity','performance_target'], 'required'],
             [['ppa_value','relevant_lgu_program_project','objective','activity','performance_target','lead_responsible_office','activity_category_id'],'required'],
@@ -77,10 +77,10 @@ class GadPlanBudget extends \yii\db\ActiveRecord
             // [['ppa_value'], 'safe'],
             // [['cause_gender_issue'], 'required', 'when' => function ($model) { return $model->ppa_focused_id == 0; }],
             // [['budget_mooe','budget_ps','budget_co'],Yii::$app->controller->action->id == "create-gad-plan-budget" ? 'required' : 'safe',  'when' => function ($model) { return $model->budget_mooe == null && $model->budget_ps == null && $model->budget_co == null; }, 'message' => 'Please fill up atleast 1 from MOOE, PS, & CO '],
-            [['gi_sup_data'],  
-            Yii::$app->controller->id == "plan" || 
-            Yii::$app->controller->action->id == "create-gad-plan-budget" || 
-            Yii::$app->controller->action->id == "update-gender-issue-sup-data" ? 'required' : "safe", 'when' => function ($model) { return $model->inner_category_id == 1; }],
+            // [['gi_sup_data'],  
+            // Yii::$app->controller->id == "plan" || 
+            // Yii::$app->controller->action->id == "create-gad-plan-budget" || 
+            // Yii::$app->controller->action->id == "update-gender-issue-sup-data" ? 'required' : "safe", 'when' => function ($model) { return $model->inner_category_id == 1; }],
             // [['ppa_value'], 'required'],
         ];
     }
