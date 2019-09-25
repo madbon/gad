@@ -282,14 +282,34 @@ $this->title = "Annual GAD Plan and Budget";
                         }
                         else
                         {
-                            echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel',['delete-all','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 12],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
-                                                          'confirm' => 'Are you sure you want to perform this action?',
-                                                          'method' => 'post']]);
+                            // echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel',['delete-all','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 12],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
+                            //                               'confirm' => 'Are you sure you want to perform this action?',
+                            //                               'method' => 'post']]);
                         }
                     }
                     else
                     {
+                        if($qryReportStatus == 0 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 6)
+                        {
+                            if(!empty($recordOne_attached_ar_record_id) && ($grand_total_pb > $fivePercentTotalLguBudget))
+                            {
+                                if($grand_total_pb > $recTotalLguBudget)
+                                {
 
+                                }
+                                else
+                                {
+                                    echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
+                                'class' => 'btn btn-info btn-md modalButton pull-right']);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel',['delete-all','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 12],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
+                            //                               'confirm' => 'Are you sure you want to perform this action?',
+                            //                               'method' => 'post']]);
+                        }
                     }
                    
                 }
