@@ -27,11 +27,24 @@ use common\modules\report\controllers\GadAccomplishmentReportController;
 use common\modules\report\controllers\GadRecordController;
 use yii\web\UploadedFile;
 use niksko12\auditlogs\classes\ControllerAudit;
+use yii\helpers\ArrayHelper;
+use common\models\GadStatusAssignment;
 /**
  * Default controller for the `report` module
  */
 class DefaultController extends ControllerAudit
 {
+    public function ViewStatus($role)
+    {
+        $tags_status = GadStatusAssignment::find()->select(['status'])->where(['role' => $role])->all();
+        $array = [];
+        foreach ($tags_status as $key => $row) {
+            $array[] = $row['status'];
+        }
+
+        return explode(",",$array[0]);
+    }
+
     public function HasBeenAttachedToGpb($ar_ruc)
     {
         if(GadRecord::find()->where(['attached_ar_record_id' => DefaultController::GetRecordIdByRuc($ar_ruc)])->exists())
@@ -372,6 +385,26 @@ class DefaultController extends ControllerAudit
         else if($value == 7)
         {
             $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-flag'></i> ".$title."</span>";
+        }
+        else if($value == 11)
+        {
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
+        }
+        else if($value == 12)
+        {
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
+        }
+        else if($value == 13)
+        {
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
+        }
+        else if($value == 14)
+        {
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
+        }
+        else if($value == 15)
+        {
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
         }
 
 

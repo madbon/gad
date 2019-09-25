@@ -262,27 +262,36 @@ $this->title = "Annual GAD Plan and Budget";
 
                 if(Yii::$app->user->can("gad_lgu_permission"))
                 {
-                    // show in encoding process || returned to LGU || encoding process huc || returned by region
-                    if($qryReportStatus == 0 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 6)
+                    if(Yii::$app->user->identity->userinfo->REGION_C == "13" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC")
                     {
-                        // if(DefaultController::CreatePlanStatusCode($ruc) != 1)
-                        // {
-                            // echo Html::a('<span class="glyphicon glyphicon-refresh"></span> Load Plan',['load-plan','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate],['class' => 'btn btn-success'])."&nbsp;";
-                            // echo Html::a('<span class="glyphicon glyphicon-refresh"></span> Load Uploaded Files',['load-file','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate],['class' => 'btn btn-success']);
-                        // }
-                        if(!empty($recordOne_attached_ar_record_id) && ($grand_total_pb > $fivePercentTotalLguBudget))
+                         // show in encoding process || returned to LGU || encoding process huc || returned by region
+                        if($qryReportStatus == 0 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 6)
                         {
-                            if($grand_total_pb > $recTotalLguBudget)
+                            if(!empty($recordOne_attached_ar_record_id) && ($grand_total_pb > $fivePercentTotalLguBudget))
                             {
+                                if($grand_total_pb > $recTotalLguBudget)
+                                {
 
-                            }
-                            else
-                            {
-                                echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
-                            'class' => 'btn btn-info btn-md modalButton pull-right']);
+                                }
+                                else
+                                {
+                                    echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
+                                'class' => 'btn btn-info btn-md modalButton pull-right']);
+                                }
                             }
                         }
+                        else
+                        {
+                            echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel',['delete-all','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 12],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
+                                                          'confirm' => 'Are you sure you want to perform this action?',
+                                                          'method' => 'post']]);
+                        }
                     }
+                    else
+                    {
+
+                    }
+                   
                 }
                 else if(Yii::$app->user->can("gad_lgu_province_permission"))
                 {   
@@ -1103,8 +1112,13 @@ $this->title = "Annual GAD Plan and Budget";
             </div>
         </div>
     </div>
-
-    
 </div>
+
+<?php
+$this->registerJs('
+
+
+');
+?>
 
 

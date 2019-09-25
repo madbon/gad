@@ -48,6 +48,12 @@ class GadPlanBudgetController extends ControllerAudit
         ];
     }
 
+    public function actionCancel($ruc,$status)
+    {
+        GadRecord::updateAll(['status' => $status], 'tuc = '.$ruc.' ');
+        return $this->redirect(['index', 'ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate]);
+    }
+
     public function actionDeleteAll($ruc,$onstep,$tocreate)
     {
         GadPlanBudget::deleteAll(['record_tuc' => $ruc]);

@@ -8,6 +8,7 @@ use common\models\GadRecord;
 use yii\db\Query;
 use Yii;
 use yii\db\Expression;
+use \common\modules\report\controllers\DefaultController;
 /**
  * GadRecordSearch represents the model behind the search form of `common\models\GadRecord`.
  */
@@ -47,15 +48,17 @@ class GadRecordSearch extends GadRecord
         $this->load($params);
 
         $filteredByRole = [];
+        // echo "<pre>";
+        // print_r([3,6,8,9,10,11,14]); exit;
         if(Yii::$app->user->can("gad_lgu_permission"))
         {
             if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
             {
-                $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'GR.status'=>[3,6,8,10]];
+                $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'GR.status'=>DefaultController::ViewStatus('gad_lgu_huc')];
             }
             else
             {
-                $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'GR.status'=>[0,1,2,4,5,7]];
+                $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'GR.status' => DefaultController::ViewStatus('gad_lgu_non_huc')];
             }
         }
         elseif(Yii::$app->user->can("gad_field_permission"))
@@ -64,20 +67,20 @@ class GadRecordSearch extends GadRecord
         }
         else if(Yii::$app->user->can("gad_province_permission")) // all lower level lgu under its province
         {
-            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.status'=>[0,1,2,4,5,7]];
+            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.status'=>DefaultController::ViewStatus('gad_province_dilg')];
         }
         else if(Yii::$app->user->can("gad_lgu_province_permission")) // all plan submitted by this province
         {
             $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,
-            'GR.status' => [3,6,9,10],'GR.office_c' => 2];
+            'GR.status' => DefaultController::ViewStatus('gad_province_lgu'),'GR.office_c' => 2];
         }
         else if(Yii::$app->user->can("gad_region_permission"))
         {
-            $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,'GR.status' => [0,1,2,3,4,5,6,7,8,9,10]];
+            $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,'GR.status' =>  DefaultController::ViewStatus('gad_region_dilg')];
         }
         else if(Yii::$app->user->can("gad_ppdo_permission"))
         {
-            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.status'=>[0,1,2,4,5,7]];
+            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.status'=> DefaultController::ViewStatus('gad_ppdo')];
         }
         else
         {
@@ -112,8 +115,8 @@ class GadRecordSearch extends GadRecord
         ->leftJoin(['CTY' => 'tblcitymun'], 'CTY.citymun_c = GR.citymun_c and CTY.province_c = GR.province_c')
         ->leftJoin(['OFC' => 'tbloffice'], 'OFC.OFFICE_C = GR.office_c')
         // ->leftJoin(['HIST' => 'gad_report_history'],'HIST.tuc = GR.tuc')
+        ->where($filteredByRole)
         ->andFilterWhere(['LIKE','GR.tuc',$this->record_tuc])
-        ->andFilterWhere($filteredByRole)
         ->andFilterWhere(['GR.region_c' => $this->region_c])
         ->andFilterWhere(['GR.province_c' => $this->province_c])
         ->andFilterWhere(['GR.citymun_c' => $this->citymun_c])
