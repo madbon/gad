@@ -12,7 +12,6 @@ class m190925_005945_remove_child_permission_attach_ar_reg extends Migration
      */
     public function safeUp()
     {
-        // $this->delete('auth_item_child', 'parent = "gad_region_permission" AND child = "gad_attach_accomplishment',['gad_region_permission','gad_attach_accomplishment']);
         $this->delete('auth_item_child',['parent' => 'gad_region_permission', 'child' => 'gad_attach_accomplishment']);
     }
 
