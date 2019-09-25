@@ -230,6 +230,8 @@ $this->title = "Annual GAD Plan and Budget";
                                                       'method' => 'post']]);
                             ?>
                         </li>
+                    <?php }else{ ?>
+                        <li><a href="#">No Available Actions</a></li>
                     <?php } ?>
                 <?php } ?>
 
