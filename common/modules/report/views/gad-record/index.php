@@ -150,6 +150,14 @@ $this->title = $index_title;
                                         return $report_type == "plan_budget" ? DefaultController::DisplayStatus($model["record_status"]) : false;
                                     }
                                 ],
+                                [
+                                    'label' => 'Date',
+                                    'value' => function($model)
+                                    {
+                                        
+                                        return !empty(GadRecordController::GenerateLatestDate($model['record_tuc'])) ? GadRecordController::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
+                                    }
+                                ],
                                 // [
                                 //     'label' => 'Plan Category',
                                 //     'attribute' => 'create_status_id',
@@ -275,6 +283,14 @@ $this->title = $index_title;
                                     {
 
                                         return $report_type == "plan_budget" ? DefaultController::DisplayStatus($model["record_status"]) : false;
+                                    }
+                                ],
+                                [
+                                    'label' => 'Date',
+                                    'value' => function($model)
+                                    {
+                                        
+                                        return !empty(GadRecordController::GenerateLatestDate($model['record_tuc'])) ? GadRecordController::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
                                     }
                                 ],
                                 [
@@ -514,6 +530,14 @@ $this->title = $index_title;
                                     }
                                 ],
                                 [
+                                    'label' => 'Date',
+                                    'value' => function($model)
+                                    {
+                                        
+                                        return !empty(GadRecordController::GenerateLatestDate($model['record_tuc'])) ? GadRecordController::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
+                                    }
+                                ],
+                                [
                                     'label' => 'Remarks',
                                     'contentOptions' => ['class' => 'remarks_class'],
                                     'value' => function($model)
@@ -620,6 +644,14 @@ $this->title = $index_title;
                                     {
 
                                         return $report_type == "plan_budget" ? DefaultController::DisplayStatus($model["record_status"]) : false;
+                                    }
+                                ],
+                                [
+                                    'label' => 'Date',
+                                    'value' => function($model)
+                                    {
+                                        
+                                        return !empty(GadRecordController::GenerateLatestDate($model['record_tuc'])) ? GadRecordController::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
                                     }
                                 ],
                                 [
@@ -736,6 +768,14 @@ $this->title = $index_title;
                                     {
 
                                         return $report_type == "plan_budget" ? DefaultController::DisplayStatus($model["record_status"]) : false;
+                                    }
+                                ],
+                                [
+                                    'label' => 'Date',
+                                    'value' => function($model)
+                                    {
+                                        
+                                        return !empty(GadRecordController::GenerateLatestDate($model['record_tuc'])) ? GadRecordController::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
                                     }
                                 ],
                                 [
