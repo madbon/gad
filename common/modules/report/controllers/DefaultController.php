@@ -406,6 +406,34 @@ class DefaultController extends ControllerAudit
         {
             $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
         }
+        else if($value == 16)
+        {
+            $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-thumbs-down'></i> ".$title."</span>";
+        }
+        else if($value == 17)
+        {
+            $returnValue = "<span class='label label-info'><i class='glyphicon glyphicon-send'></i> ".$title."</span>";
+        }
+        else if($value == 18)
+        {
+            $returnValue = "<span class='label label-info'><i class='glyphicon glyphicon-send'></i> ".$title."</span>";
+        }
+        else if($value == 19)
+        {
+            $returnValue = "<span class='label label-success'><i class='glyphicon glyphicon-search'></i> ".$title."</span>";
+        }
+        else if($value == 20)
+        {
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
+        }
+        else if($value == 21)
+        {
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
+        }
+        else if($value == 22)
+        {
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
+        }
 
 
         return $returnValue;

@@ -5,6 +5,7 @@ use common\models\GadStatus;
 use common\models\GadRecord;
 use Yii;
 use niksko12\auditlogs\classes\ControllerAudit;
+use common\modules\report\controllers\DefaultController;
 
 class DashboardController extends ControllerAudit
 {
@@ -18,25 +19,25 @@ class DashboardController extends ControllerAudit
 
         if(Yii::$app->user->can('gad_ppdo_permission'))
         {
-            $condition_rec_status = [0,1,2,4,5,7,12,13,15];
+            $condition_rec_status = DefaultController::ViewStatus("gad_ppdo");
             $andFilterWhere = ['REC.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C];
             $groupByValue = ['REC.status','CIT.citymun_m'];
         }
         else if(Yii::$app->user->can('gad_province_permission')) // dilg province
         {
-            $condition_rec_status = [0,1,2,4,5,7,12,13,15];
+            $condition_rec_status = DefaultController::ViewStatus("gad_province_dilg");
             $andFilterValue = ['REC.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C];
             $groupByValue = ['REC.status','CIT.citymun_m'];
         }
         else if(Yii::$app->user->can('gad_region_permission'))
         {
-            $condition_rec_status = [3,6,8,9,10,11,14];
+            $condition_rec_status = DefaultController::ViewStatus("gad_region_dilg");
             $andFilterValue = ['REC.region_c' => Yii::$app->user->identity->userinfo->REGION_C];
             $groupByValue = ['REC.status','REC.province_c'];
         }
         else
         {
-            $condition_rec_status = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+            $condition_rec_status = DefaultController::ViewStatus("gad_all_status");
             $andFilterValue = [];
             $groupByValue = ['REC.status','REC.region_c'];
         }

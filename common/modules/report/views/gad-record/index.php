@@ -567,7 +567,7 @@ $this->title = $index_title;
                                     'template' => '{view} {track}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
-                                            if($model['record_status'] == 4 || $model['record_status'] == 5 || $model['record_status'] == 13 ||  $model['record_status'] == 19)
+                                            if($model['record_status'] == 1 || $model['record_status'] == 4 || $model['record_status'] == 5 || $model['record_status'] == 13 ||  $model['record_status'] == 19)
                                             {
                                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
                                                     'ruc' => $model['record_tuc'], 
@@ -684,7 +684,7 @@ $this->title = $index_title;
                                     'template' => '{view} {track}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
-                                            if($model['record_status'] == 2 || $model['record_status'] == 4 || $model['record_status'] == 15)
+                                            if($model['record_status'] == 2 || $model['record_status'] == 4 || $model['record_status'] == 15 || $model['record_status'] == 17)
                                             {
                                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
                                                     'ruc' => $model['record_tuc'], 

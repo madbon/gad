@@ -200,7 +200,7 @@ $this->title = "Annual GAD Plan and Budget";
                 <ul class="dropdown-menu">
                     <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
                     
-                    <?php if($qryReportStatus == 0 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21){ ?>
+                    <?php if($qryReportStatus == 0 || $qryReportStatus == 6 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21){ ?>
                         <li>
                             <a href="#" class="" id="btn-encode">
                                 <span class="glyphicon glyphicon-pencil" style="color: #7e57b1;"></span> Input Form
@@ -265,14 +265,13 @@ $this->title = "Annual GAD Plan and Budget";
                     if(Yii::$app->user->identity->userinfo->REGION_C == "13" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC")
                     {
                          // show in encoding process || returned to LGU || encoding process huc || returned by region
-                        
                         if($qryReportStatus == 6 || $qryReportStatus == 8 || $qryReportStatus == 11 || $qryReportStatus == 21)
                         {
                             if(!empty($recordOne_attached_ar_record_id) && ($grand_total_pb > $fivePercentTotalLguBudget))
                             {
                                 if($grand_total_pb > $recTotalLguBudget)
                                 {
-
+                                    
                                 }
                                 else
                                 {
@@ -283,7 +282,7 @@ $this->title = "Annual GAD Plan and Budget";
                         }
                         else
                         {
-                            // pending submission to regional office
+                            // // pending submission to regional office
                             // echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 11],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
                             //                               'confirm' => 'Are you sure you want to perform this action?',
                             //                               'method' => 'post']]);
@@ -410,7 +409,7 @@ $this->title = "Annual GAD Plan and Budget";
 
             <!-- /////////////////////////////////////////////////////////////// Remarks Form End -->
     <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-       <?php if($qryReportStatus == 0 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21){ ?>
+       <?php if($qryReportStatus == 0 || $qryReportStatus == 6 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21){ ?>
             <?php if(Yii::$app->session["encode_gender_pb"] == "open"){  ?>
             <div class="cust-panel input-form" id="inputFormPlan">
             <?php }else{ ?>
@@ -588,7 +587,7 @@ $this->title = "Annual GAD Plan and Budget";
                                     <?php
                                         if(Yii::$app->user->can("gad_delete_rowplanbudget"))
                                         {
-                                            if($qryReportStatus == 0 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21)
+                                            if($qryReportStatus == 0 || $qryReportStatus == 6 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21)
                                             {
                                                 echo "<button class='btn btn-danger btn-xs' title='Delete' id='delete_plan_".$plan['id']."'><span class='glyphicon glyphicon-trash'></span></button>";
                                             }
@@ -631,7 +630,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         if(Yii::$app->user->can("gad_upload_files_row"))
                                         {
                                             $t = '@web/report/gad-plan-budget/update?id='.$plan['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
-                                            if($qryReportStatus == 0 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21){
+                                            if($qryReportStatus == 0 || $qryReportStatus == 6 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21){
                                                 echo "&nbsp;".Html::button('<span class="glyphicon glyphicon-paperclip"></span> ', ['value'=>Url::to($t),
                                                 'class' => 'btn btn-default btn-xs modalButton','title' => 'Upload File(s)',]);
                                             }
@@ -758,7 +757,7 @@ $this->title = "Annual GAD Plan and Budget";
                             <td colspan="5">
                                 <b>ATTRIBUTED PROGRAMS</b> 
                                 <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-                                    <?php if($qryReportStatus == 0 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21){ ?>
+                                    <?php if($qryReportStatus == 0 || $qryReportStatus == 6 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21){ ?>
                                         <button id="btn_encode_attributed_program" type="button" class="btn btn-success btn-sm">
                                             <span class="glyphicon glyphicon-pencil"></span>
                                             Encode
@@ -792,7 +791,7 @@ $this->title = "Annual GAD Plan and Budget";
                             <td style="border-top: none; border-bottom: none;"></td>
                         </tr>
                         <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-                            <?php if($qryReportStatus == 0 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21){ ?>
+                            <?php if($qryReportStatus == 0 || $qryReportStatus == 6 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21){ ?>
                                 <?php if(Yii::$app->session["encode_attribute_pb"] == "open"){ ?>
                                     <tr class="attributed_program_form">
                                 <?php }else{ ?>
@@ -847,7 +846,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'padding-top:13px;',
                                         'enableComment' => Yii::$app->user->can("gad_comment_lgu_program") ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && ($dap["record_status"] == 0 || $dap["record_status"] == 7 || $dap["record_status"] == 8 || $dap["record_status"] == 9 || $dap["record_status"] == 11 || $dap["record_status"] == 12 || $dap["record_status"] == 16 || $dap["record_status"] == 20 || $dap["record_status"] == 21) ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && ($dap["record_status"] == 0 || $qryReportStatus == 6 || $dap["record_status"] == 7 || $dap["record_status"] == 8 || $dap["record_status"] == 9 || $dap["record_status"] == 11 || $dap["record_status"] == 12 || $dap["record_status"] == 16 || $dap["record_status"] == 20 || $dap["record_status"] == 21) ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                         'countRow' => $countRowAttribute,
                                         'columnNumber' => 1,
@@ -914,7 +913,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; padding-top:13px;',
                                         'enableComment' => Yii::$app->user->can("gad_comment_hgdg_score") ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && ($dap["record_status"] == 0 || $dap["record_status"] == 7 || $dap["record_status"] == 8 || $dap["record_status"] == 9 || $dap["record_status"] == 11 || $dap["record_status"] == 12 || $dap["record_status"] == 16 || $dap["record_status"] == 20 || $dap["record_status"] == 21) ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && ($dap["record_status"] == 0 || $qryReportStatus == 6 || $dap["record_status"] == 7 || $dap["record_status"] == 8 || $dap["record_status"] == 9 || $dap["record_status"] == 11 || $dap["record_status"] == 12 || $dap["record_status"] == 16 || $dap["record_status"] == 20 || $dap["record_status"] == 21) ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                         'countRow' => $countRowAttribute,
                                         'columnNumber' => 2,
@@ -935,7 +934,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:right;',
                                         'enableComment' => Yii::$app->user->can("gad_comment_total_annual_pro_budget") ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && ($dap["record_status"] == 0 || $dap["record_status"] == 7 || $dap["record_status"] == 8 || $dap["record_status"] == 9 || $dap["record_status"] == 11 || $dap["record_status"] == 12 || $dap["record_status"] == 16 || $dap["record_status"] == 20 || $dap["record_status"] == 21) ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && ($dap["record_status"] == 0 || $qryReportStatus == 6 || $dap["record_status"] == 7 || $dap["record_status"] == 8 || $dap["record_status"] == 9 || $dap["record_status"] == 11 || $dap["record_status"] == 12 || $dap["record_status"] == 16 || $dap["record_status"] == 20 || $dap["record_status"] == 21) ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                         'countRow' => $countRowAttribute,
                                         'columnNumber' => 3,
@@ -972,7 +971,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; padding-top:13px;',
                                         'enableComment' => Yii::$app->user->can("gad_comment_lead") ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && ($dap["record_status"] == 0 || $dap["record_status"] == 7 || $dap["record_status"] == 8 || $dap["record_status"] == 9 || $dap["record_status"] == 11 || $dap["record_status"] == 12 || $dap["record_status"] == 16 || $dap["record_status"] == 20 || $dap["record_status"] == 21) ? 'true' : 'false',
+                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && ($dap["record_status"] == 0 || $qryReportStatus == 6 || $dap["record_status"] == 7 || $dap["record_status"] == 8 || $dap["record_status"] == 9 || $dap["record_status"] == 11 || $dap["record_status"] == 12 || $dap["record_status"] == 16 || $dap["record_status"] == 20 || $dap["record_status"] == 21) ? 'true' : 'false',
                                         'enableViewComment' => 'true',
                                         'countRow' => $countRowAttribute,
                                         'columnNumber' => 5,
@@ -999,7 +998,7 @@ $this->title = "Annual GAD Plan and Budget";
                                             //         'confirm' => 'Are you sure you want to perform this action?',
                                             //         'method' => 'post']
                                             // ]);
-                                            if($qryReportStatus == 0 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21)
+                                            if($qryReportStatus == 0 || $qryReportStatus == 6 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21)
                                             {
                                                 echo "<button class='btn btn-danger btn-xs' title='Delete' id='delete_ap_".$dap['id']."'><span class='glyphicon glyphicon-trash'></span></button>";
                                             }
@@ -1030,7 +1029,7 @@ $this->title = "Annual GAD Plan and Budget";
                                     </script>
                                     <?php JSRegister::end() ?>
                                     <?php
-                                        if($qryReportStatus == 0 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21){
+                                        if($qryReportStatus == 0 || $qryReportStatus == 6 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21){
                                             if(Yii::$app->user->can("gad_upload_files_row"))
                                             {
                                                 $t = '@web/report/gad-plan-budget/update-upload-form-attributed-program?id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
