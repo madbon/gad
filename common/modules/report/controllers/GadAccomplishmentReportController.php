@@ -212,7 +212,7 @@ class GadAccomplishmentReportController extends ControllerAudit
         ->from('gad_ar_attributed_program AP')
         ->leftJoin(['PAP' => 'gad_ppa_attributed_program'], 'PAP.id = AP.ppa_attributed_program_id')
         ->where(['AP.record_tuc' => $ruc])
-        ->groupBy(['AP.lgu_program_project','AP.id'])
+        ->groupBy(['AP.id'])
         ->orderBy(['AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
         ->all();
 
@@ -293,7 +293,7 @@ class GadAccomplishmentReportController extends ControllerAudit
         ->leftJoin(['REC' => 'gad_record'], 'REC.id = AR.record_id')
         ->where(['AR.record_tuc' => $ruc])
         ->orderBy(['AR.focused_id' => SORT_ASC,'AR.inner_category_id' => SORT_ASC,'AR.ppa_value' => SORT_ASC,'AR.id' => SORT_ASC])
-        ->groupBy(['AR.focused_id','AR.inner_category_id','AR.ppa_value','AR.cause_gender_issue','AR.objective','AR.relevant_lgu_ppa','AR.activity','AR.performance_indicator','AR.target','AR.actual_results','AR.id'])
+        ->groupBy(['AR.id'])
         ->all();
 
         $sum_ar_ace = 0;

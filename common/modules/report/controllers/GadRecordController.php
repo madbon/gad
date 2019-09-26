@@ -412,7 +412,17 @@ class GadRecordController extends ControllerAudit
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index','report_type' => 'plan_budget']);
+        $qry = GadRecord::find()->where(['id' => $id])->one();
+        $report_type = !empty($qry->report_type_id) ? $qry->report_type_id : "";
+
+        if($report_type == 1)
+        {
+            return $this->redirect(['index','report_type' => 'plan_budget']);
+        }
+        else
+        {
+            return $this->redirect(['index','report_type' => 'accomplishment']);
+        }
     }
 
     /**

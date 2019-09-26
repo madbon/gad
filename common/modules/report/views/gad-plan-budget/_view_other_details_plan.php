@@ -45,7 +45,7 @@ use kartik\date\DatePicker;
 </table>
 
 <?php if(Yii::$app->user->can("gad_update_other_details")){ ?>
-	<?php if($status == 0 || $status == 6 || $status == 7 || $status == 8 || $status == 9) { ?>
+	<?php if($status == 0 || $status == 7 || $status == 8 || $status == 9 || $status == 11 || $status == 12 || $status == 16 || $status == 20 || $status == 21){ ?>
 <div class="panel panel-primary">
 	<div class="panel-heading">
 		Update Other Details Form

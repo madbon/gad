@@ -22,7 +22,7 @@ use yii\helpers\Html;
             else
             {
                 $reportStatus = 1;
-                if($qryReportStatus == 0) // encoding process
+                if($qryReportStatus == 0 || $qryReportStatus == 12) // encoding process
                 {
                     $reportStatus = 1;
                     $sendTo = 'Submit to PPDO';

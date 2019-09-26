@@ -210,7 +210,7 @@ $this->title = $index_title;
                                             return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
                                         },
                                         'delete'=>function ($url, $model) {
-                                            if($model['record_status'] == 0 || $model['record_status'] == 6 || $model['record_status'] == 7 || $model['record_status'] == 8 || $model['record_status'] == 9)
+                                            if($model['record_status'] == 0 || $model['record_status'] == 6 || $model['record_status'] == 7 || $model['record_status'] == 8 || $model['record_status'] == 11 || $model['record_status'] == 16 || $model['record_status'] == 20)
                                             {
                                                 return Html::a('<i class="glyphicon glyphicon-trash"></i> Delete', 
                                                 [
@@ -320,7 +320,7 @@ $this->title = $index_title;
                                 ],
 
                                 ['class' => 'yii\grid\ActionColumn',
-                                    'template' => Yii::$app->user->can("gad_delete_plan_budget") ? '{delete} {view} {track}' : '{view} {track}',
+                                    'template' => Yii::$app->user->can("gad_delete_plan_budget") ? '{view} {track} {delete} ' : '{view} {track}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
                                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
@@ -328,14 +328,14 @@ $this->title = $index_title;
                                                     'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                     'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                                 ], 
-                                                    ['class'=>'btn btn-info btn-xs btn-view-report btn-block']);
+                                                    ['class'=>'btn btn-info btn-xs btn-block']);
                                         },
                                         'track' => function($url, $model) use ($urlReport,$report_type){
                                             $url_track = '@web/report/gad-record/track?ruc='.$model['record_tuc'];
                                             return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
                                         },
                                         'delete'=>function ($url, $model) {
-                                            if($model['record_status'] == 0 || $model['record_status'] == 6 || $model['record_status'] == 7 || $model['record_status'] == 8 || $model['record_status'] == 9)
+                                            if($model['record_status'] == 6 || $model['record_status'] == 9 || $model['record_status'] == 11 || $model['record_status'] == 21)
                                             {
                                                 return Html::a('<i class="glyphicon glyphicon-trash"></i> Delete', 
                                             [
@@ -455,7 +455,7 @@ $this->title = $index_title;
                                     'template' => '{view} {track}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
-                                            if($model['record_status'] == 3 || $model['record_status'] == 6 || $model['record_status'] == 10)
+                                            if($model['record_status'] == 3 || $model['record_status'] == 10 || $model['record_status'] == 14 || $model['record_status'] == 18)
                                             {
                                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
                                                     'ruc' => $model['record_tuc'], 
@@ -567,7 +567,7 @@ $this->title = $index_title;
                                     'template' => '{view} {track}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
-                                            if($model['record_status'] == 1 || $model['record_status'] == 2 || $model['record_status'] == 5 ||  $model['record_status'] == 4)
+                                            if($model['record_status'] == 4 || $model['record_status'] == 5 || $model['record_status'] == 13 ||  $model['record_status'] == 19)
                                             {
                                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
                                                     'ruc' => $model['record_tuc'], 
@@ -684,7 +684,7 @@ $this->title = $index_title;
                                     'template' => '{view} {track}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
-                                            if($model['record_status'] == 2 || $model['record_status'] == 5 || $model['record_status'] == 4)
+                                            if($model['record_status'] == 2 || $model['record_status'] == 4 || $model['record_status'] == 15)
                                             {
                                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
                                                     'ruc' => $model['record_tuc'], 
