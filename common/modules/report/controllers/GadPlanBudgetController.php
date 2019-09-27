@@ -454,15 +454,19 @@ class GadPlanBudgetController extends ControllerAudit
         }
         
 
+        // updating footer date
         if($status == 1)
         {
-            if(!empty($qry->attached_ar_record_id))
-            {
-                $queryAr = GadRecord::updateAll(['footer_date' => date("Y-m-d"), 'status' => $status], 'id = '.$qry->attached_ar_record_id.' ');
-            }
+            // exit;
+            // if(!empty($qry->attached_ar_record_id))
+            // {
+            //     $queryAr = GadRecord::updateAll(['footer_date' => date("Y-m-d"), 'status' => $status], 'id = '.$qry->attached_ar_record_id.' ');
+            // }
+            // $queryAr = GadRecord::updateAll(['footer_date' => date("Y-m-d"), 'status' => $status], 'tuc = "'.$tuc.'" ');
             $qry->status = $status;
+            $qry->footer_date = date("Y-m-d");
         }
-        else if($status == 2 || $status == 3)
+        else if($status == 3)
         {
             // if gpb is submit to dilg field office
             $qry->footer_date = date("Y-m-d");
