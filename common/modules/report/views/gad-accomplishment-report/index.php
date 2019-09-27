@@ -870,6 +870,48 @@ $this->title = "Annual GAD Accomplishment Reports";
                                     </script>
                                     <?php JSRegister::end() ?>
                                     <?php
+                                        if(Yii::$app->user->can("gad_upload_files_row"))
+                                        {
+                                            if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadArAttributedProgram",1) == 0)
+                                            {
+                                                $t = '@web/report/gad-plan-budget/update-upload-form-attributed-program?id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&file_cat=1&model_name=GadArAttributedProgram";
+                                                echo Html::button('<span class="glyphicon glyphicon-paperclip"></span> Project Accomplishment Report', ['value'=>Url::to($t),
+                                                    'class' => 'btn btn-default btn-xs modalButton btn-block','title' => 'Upload Files',]);
+                                            }
+                                            
+                                            if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadArAttributedProgram",7) == 0)
+                                            {
+                                                $t2 = '@web/report/gad-plan-budget/update-upload-form-attributed-program?id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&file_cat=7&model_name=GadArAttributedProgram";
+                                                echo Html::button('<span class="glyphicon glyphicon-paperclip"></span> PIMME/FIMME Result', ['value'=>Url::to($t2),
+                                                'class' => 'btn btn-default btn-xs modalButton btn-block','title' => 'Upload Files',]);
+                                            }
+                                        }
+
+                                        if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadArAttributedProgram",1) == 1)
+                                        { // if has uploaded files show button to view file
+                                            $t3 = '@web/report/gad-plan-budget/view?row_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadArAttributedProgram"."&file_cat=1";
+                                            echo Html::button('<span class="glyphicon glyphicon-file"></span> Project Accomplishment Report', ['value'=>Url::to($t3),
+                                            'class' => 'btn btn-info btn-xs modalButton btn-block','title' => 'View Uploaded Files',]);
+                                        }
+                                        else
+                                        { // else no uploaded file yet
+                                            
+                                            echo "<label class='label label-warning '>No Project Accomplishment Report Attachment</label> ";
+                                        }
+
+                                        if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadArAttributedProgram",7) == 1)
+                                        { // if has uploaded files show button to view file
+                                            $t4 = '@web/report/gad-plan-budget/view?row_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadArAttributedProgram"."&file_cat=7";
+                                            echo Html::button('<span class="glyphicon glyphicon-file"></span> PIMME/FIMME Result', ['value'=>Url::to($t4),
+                                            'class' => 'btn btn-info btn-xs modalButton btn-block','title' => 'View Uploaded Files',]);
+                                        }
+                                        else
+                                        { // else no uploaded file yet
+                                            
+                                            echo "<label class='label label-warning btn-block'>No PIMME/FIMME Result Attachment</label>";
+                                        }
+                                    ?>
+                                    <?php
                                         $url_viewDetailsAttributed = '@web/report/gad-accomplishment-report/view-other-details-attributed?model_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
                                             echo "&nbsp;".Html::button('<span class="glyphicon glyphicon-info-sign"></span> Other details', ['value'=>Url::to($url_viewDetailsAttributed),
                                             'class' => 'btn btn-default btn-xs modalButton','title' => 'View other details',]);

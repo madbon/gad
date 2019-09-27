@@ -681,7 +681,7 @@ class GadPlanBudgetController extends ControllerAudit
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($row_id,$model_name,$ruc,$onstep,$tocreate)
+    public function actionView($row_id,$model_name,$ruc,$onstep,$tocreate,$file_cat)
     {
         $qry = (new \yii\db\Query())
         ->select([
@@ -700,6 +700,7 @@ class GadPlanBudgetController extends ControllerAudit
         ->groupBy(['FA.file_folder_type_id','FA.id'])
         ->orderBy(['FA.file_folder_type_id' => SORT_ASC,'FA.id' => SORT_ASC])
         ->where(['FA.model_id' => $row_id, 'FA.model_name' => $model_name])
+        ->andWhere(['FA.file_folder_type_id' => $file_cat])
         ->all();
         // ->createCommand()->rawSql;
         // print_r($qry); exit;
@@ -938,7 +939,7 @@ class GadPlanBudgetController extends ControllerAudit
         return $this->redirect(['index','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
     }
 
-    public function actionUpdateUploadFormAttributedProgram($id,$ruc,$onstep,$tocreate){
+    public function actionUpdateUploadFormAttributedProgram($id,$ruc,$onstep,$tocreate,$file_cat,$model_name){
        $upload = new GadFileAttached();
        $folder_type = ArrayHelper::map(\common\models\GadFileFolderType::find()->all(), 'id', 'title');
        $attributed = GadAttributedProgram::find()->where(['record_tuc' => $ruc])->orderBy(['id' => SORT_DESC])->one();
@@ -953,7 +954,7 @@ class GadPlanBudgetController extends ControllerAudit
                 
                 $countLoop = 0;
                 foreach ($upload->file_name as $image) {
-                    $modelName = "GadAttributedProgram";
+                    $modelName = $model_name;
                     $countLoop += 1;
                     $model = new GadFileAttached();
                     $model->user_id = Yii::$app->user->identity->id;
@@ -966,7 +967,7 @@ class GadPlanBudgetController extends ControllerAudit
                     $hash =  md5(date('Y-m-d')."-".date("h-i-sa")."-".$miliseconds.$rand_name.$countLoop.$modelName.$id);
                     $model->hash = $hash; 
                     $model->extension = $image->extension;
-                    $model->file_folder_type_id = $upload->file_folder_type_id;
+                    $model->file_folder_type_id = $file_cat;
 
 
                     if($model->save(false))
@@ -975,13 +976,22 @@ class GadPlanBudgetController extends ControllerAudit
                     }
                 }
                 $qry = GadAttributedProgram::updateAll(['upload_status' => 2],'id = '.$id.' ');
-                return $this->redirect(['index','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
+                if(Yii::$app->controller->id == "gad-plan-budget")
+                {
+                    return $this->redirect(['/report/gad-plan-budget/index','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
+                }
+                else
+                {
+                    return $this->redirect(['/report/gad-accomplishment-report/index','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
+                }
+                
             }
        }
         
        return $this->renderAjax('_upload_form_attributed_program',[
             'upload'=>$upload,
             'folder_type' => $folder_type,
+            'file_cat' => $file_cat
         ]);
     }
 

@@ -235,6 +235,26 @@ class DefaultController extends ControllerAudit
         return 1;
     }
 
+    public function FileCatName($id)
+    {
+        $qry = \common\models\GadFileFolderType::find()->where(['id' => $id])->one();
+
+        return !empty($qry->title) ? $qry->title : "";
+    }
+
+    public  function GetUploadStatusByFileCat($row_id,$model_name,$file_cat)
+    {
+        $qry = GadFileAttached::find()->where(['model_id' => $row_id, 'model_name' => $model_name,'file_folder_type_id' => $file_cat]);
+
+        if($qry->exists())
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
     public  function GetUploadStatus($row_id,$model_name)
     {
         $qry = GadFileAttached::find()->where(['model_id' => $row_id, 'model_name' => $model_name]);

@@ -1000,7 +1000,7 @@ $this->title = "Annual GAD Plan and Budget";
                                             // ]);
                                             if($qryReportStatus == 0 || $qryReportStatus == 6 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21)
                                             {
-                                                echo "<button class='btn btn-danger btn-xs' title='Delete' id='delete_ap_".$dap['id']."'><span class='glyphicon glyphicon-trash'></span></button>";
+                                                echo "<button class='btn btn-danger btn-block btn-xs' title='Delete' id='delete_ap_".$dap['id']."'><span class='glyphicon glyphicon-trash'></span> Delete Row</button>";
                                             }
                                         }
                                     ?>
@@ -1032,31 +1032,52 @@ $this->title = "Annual GAD Plan and Budget";
                                         if($qryReportStatus == 0 || $qryReportStatus == 6 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21){
                                             if(Yii::$app->user->can("gad_upload_files_row"))
                                             {
-                                                $t = '@web/report/gad-plan-budget/update-upload-form-attributed-program?id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
-                                               echo Html::button('<span class="glyphicon glyphicon-paperclip"></span>', ['value'=>Url::to($t),
-                                                    'class' => 'btn btn-default btn-xs modalButton ','title' => 'Upload Files',]);
+                                                if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadAttributedProgram",5) == 0)
+                                                {
+                                                    $t = '@web/report/gad-plan-budget/update-upload-form-attributed-program?id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&file_cat=5&model_name=GadAttributedProgram";
+                                                    echo Html::button('<span class="glyphicon glyphicon-paperclip"></span> Project Proposal', ['value'=>Url::to($t),
+                                                        'class' => 'btn btn-default btn-xs modalButton btn-block','title' => 'Upload Files',]);
+                                                }
+                                                
+                                                if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadAttributedProgram",2) == 0)
+                                                {
+                                                    $t2 = '@web/report/gad-plan-budget/update-upload-form-attributed-program?id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&file_cat=2&model_name=GadAttributedProgram";
+                                                    echo Html::button('<span class="glyphicon glyphicon-paperclip"></span> HGDG Result', ['value'=>Url::to($t2),
+                                                    'class' => 'btn btn-default btn-xs modalButton btn-block','title' => 'Upload Files',]);
+                                                }
+                                                
                                             }
+
                                         }
 
-                                        if(DefaultController::GetUploadStatus($dap["id"],"GadAttributedProgram") == 1)
+                                        if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadAttributedProgram",5) == 1)
                                         { // if has uploaded files show button to view file
-                                            $t = '@web/report/gad-plan-budget/view?row_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadAttributedProgram";
-                                            echo "&nbsp;".Html::button('<span class="glyphicon glyphicon-file"></span> ', ['value'=>Url::to($t),
-                                            'class' => 'btn btn-info btn-xs modalButton','title' => 'View Uploaded Files',]);
+                                            $t3 = '@web/report/gad-plan-budget/view?row_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadAttributedProgram"."&file_cat=5";
+                                            echo Html::button('<span class="glyphicon glyphicon-file"></span> Project Proposal', ['value'=>Url::to($t3),
+                                            'class' => 'btn btn-info btn-xs modalButton btn-block','title' => 'View Uploaded Files',]);
                                         }
                                         else
                                         { // else no uploaded file yet
-                                            // if(DefaultController::PlanUploadStatusAttrib($dap['id']) == 1)
-                                            // {
-                                            //     echo "<span class='label label-warning btn-block' id='label_nuf_".$dap['id']."'>Upload later </span>";
-                                            // }
-                                            echo "<label class='label label-warning'>No file(s) uploaded</label>";
+                                            
+                                            echo "<label class='label label-warning '>No Project Proposal Attachment</label> ";
+                                        }
+
+                                        if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadAttributedProgram",2) == 1)
+                                        { // if has uploaded files show button to view file
+                                            $t4 = '@web/report/gad-plan-budget/view?row_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadAttributedProgram"."&file_cat=2";
+                                            echo Html::button('<span class="glyphicon glyphicon-file"></span> HGDG Result', ['value'=>Url::to($t4),
+                                            'class' => 'btn btn-info btn-xs modalButton btn-block','title' => 'View Uploaded Files',]);
+                                        }
+                                        else
+                                        { // else no uploaded file yet
+                                            
+                                            echo "<label class='label label-warning btn-block'>No HGDG Result Attachment</label>";
                                         }
                                     ?>
                                     <?php
                                         $url_viewDetailsAttributed = '@web/report/gad-plan-budget/view-other-details-attributed?model_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
-                                            echo "&nbsp;".Html::button('<span class="glyphicon glyphicon-info-sign"></span> Other details', ['value'=>Url::to($url_viewDetailsAttributed),
-                                            'class' => 'btn btn-default btn-xs modalButton','title' => 'View other details',]);
+                                            echo Html::button('<span class="glyphicon glyphicon-info-sign"></span> Other details', ['value'=>Url::to($url_viewDetailsAttributed),
+                                            'class' => 'btn btn-default btn-xs modalButton btn-block','title' => 'View other details',]);
                                     ?>
                                 </td>
                             </tr>
