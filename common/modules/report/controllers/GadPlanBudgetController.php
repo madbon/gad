@@ -976,7 +976,8 @@ class GadPlanBudgetController extends ControllerAudit
                     }
                 }
                 $qry = GadAttributedProgram::updateAll(['upload_status' => 2],'id = '.$id.' ');
-                if(Yii::$app->controller->id == "gad-plan-budget")
+                
+                if($model_name == "GadAttributedProgram")
                 {
                     return $this->redirect(['/report/gad-plan-budget/index','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
                 }
