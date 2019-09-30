@@ -25,7 +25,7 @@ use common\models\GadAttributedProgram;
 use yii\db\Expression;
 use common\modules\report\controllers\DefaultController;
 use niksko12\auditlogs\classes\ControllerAudit;
-
+use common\models\GadReportHistory;
 
 
 /**
@@ -46,6 +46,28 @@ class GadPlanBudgetController extends ControllerAudit
                 ],
             ],
         ];
+    }
+
+    public function actionCancel($ruc,$status,$onstep,$tocreate)
+    {
+        GadRecord::updateAll(['status' => $status], 'tuc = "'.$ruc.'" ');
+
+        date_default_timezone_set("Asia/Manila");
+        $model = new GadReportHistory();
+        $model->remarks = "";
+        $model->tuc = $ruc;
+        $model->status = $status;
+        $model->date_created = date('Y-m-d');
+        $model->time_created = date("h:i:sa");
+        $model->responsible_user_id = !empty(Yii::$app->user->identity->id) ? Yii::$app->user->identity->id : "";
+        $model->responsible_region_c = !empty(Yii::$app->user->identity->userinfo->REGION_C) ? Yii::$app->user->identity->userinfo->REGION_C : "";
+        $model->responsible_province_c = !empty(Yii::$app->user->identity->userinfo->PROVINCE_C) ? Yii::$app->user->identity->userinfo->PROVINCE_C : "";
+        $model->responsible_citymun_c = !empty(Yii::$app->user->identity->userinfo->CITYMUN_C) ? Yii::$app->user->identity->userinfo->CITYMUN_C : "";
+        $model->fullname = Yii::$app->user->identity->userinfo->FIRST_M." ".Yii::$app->user->identity->userinfo->LAST_M;
+        $model->responsible_office_c = !empty(Yii::$app->user->identity->userinfo->OFFICE_C) ? Yii::$app->user->identity->userinfo->OFFICE_C : "";
+        $model->save();
+
+        return $this->redirect(['index', 'ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate]);
     }
 
     public function actionDeleteAll($ruc,$onstep,$tocreate)
@@ -235,7 +257,7 @@ class GadPlanBudgetController extends ControllerAudit
         ->from('gad_attributed_program AP')
         ->leftJoin(['PAP' => 'gad_ppa_attributed_program'], 'PAP.id = AP.ppa_attributed_program_id')
         ->where(['AP.record_tuc' => $ruc])
-        ->groupBy(['AP.lgu_program_project','AP.id'])
+        ->groupBy(['AP.id'])
         ->orderBy(['AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
         ->all();
 
@@ -309,7 +331,7 @@ class GadPlanBudgetController extends ControllerAudit
         ->leftJoin(['IC' => 'gad_inner_category'], 'IC.id = PB.inner_category_id')
         ->where(['PB.record_tuc' => $ruc])
         ->orderBy(['PB.focused_id' => SORT_ASC,'PB.inner_category_id' => SORT_ASC,'PB.ppa_value' => SORT_ASC,'PB.id' => SORT_ASC])
-        ->groupBy(['PB.focused_id','PB.inner_category_id','PB.ppa_value','PB.objective','PB.relevant_lgu_program_project','PB.activity','PB.performance_target'])
+        ->groupBy(['PB.id'])
         ->all();
         // echo "<pre>";
         // print_r($dataPlanBudget); exit;
@@ -432,15 +454,19 @@ class GadPlanBudgetController extends ControllerAudit
         }
         
 
+        // updating footer date
         if($status == 1)
         {
-            if(!empty($qry->attached_ar_record_id))
-            {
-                $queryAr = GadRecord::updateAll(['footer_date' => date("Y-m-d"), 'status' => $status], 'id = '.$qry->attached_ar_record_id.' ');
-            }
+            // exit;
+            // if(!empty($qry->attached_ar_record_id))
+            // {
+            //     $queryAr = GadRecord::updateAll(['footer_date' => date("Y-m-d"), 'status' => $status], 'id = '.$qry->attached_ar_record_id.' ');
+            // }
+            // $queryAr = GadRecord::updateAll(['footer_date' => date("Y-m-d"), 'status' => $status], 'tuc = "'.$tuc.'" ');
             $qry->status = $status;
+            $qry->footer_date = date("Y-m-d");
         }
-        else if($status == 2 || $status == 3)
+        else if($status == 3)
         {
             // if gpb is submit to dilg field office
             $qry->footer_date = date("Y-m-d");
@@ -472,6 +498,7 @@ class GadPlanBudgetController extends ControllerAudit
      */
     public function actionIndex($ruc,$onstep,$tocreate)
     {
+
         Yii::$app->session["record_tuc"] = $ruc;
         $searchModel = new GadPlanBudgetSearch();
 
@@ -654,7 +681,7 @@ class GadPlanBudgetController extends ControllerAudit
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($row_id,$model_name,$ruc,$onstep,$tocreate)
+    public function actionView($row_id,$model_name,$ruc,$onstep,$tocreate,$file_cat)
     {
         $qry = (new \yii\db\Query())
         ->select([
@@ -673,6 +700,7 @@ class GadPlanBudgetController extends ControllerAudit
         ->groupBy(['FA.file_folder_type_id','FA.id'])
         ->orderBy(['FA.file_folder_type_id' => SORT_ASC,'FA.id' => SORT_ASC])
         ->where(['FA.model_id' => $row_id, 'FA.model_name' => $model_name])
+        ->andWhere(['FA.file_folder_type_id' => $file_cat])
         ->all();
         // ->createCommand()->rawSql;
         // print_r($qry); exit;
@@ -911,7 +939,7 @@ class GadPlanBudgetController extends ControllerAudit
         return $this->redirect(['index','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
     }
 
-    public function actionUpdateUploadFormAttributedProgram($id,$ruc,$onstep,$tocreate){
+    public function actionUpdateUploadFormAttributedProgram($id,$ruc,$onstep,$tocreate,$file_cat,$model_name){
        $upload = new GadFileAttached();
        $folder_type = ArrayHelper::map(\common\models\GadFileFolderType::find()->all(), 'id', 'title');
        $attributed = GadAttributedProgram::find()->where(['record_tuc' => $ruc])->orderBy(['id' => SORT_DESC])->one();
@@ -926,7 +954,7 @@ class GadPlanBudgetController extends ControllerAudit
                 
                 $countLoop = 0;
                 foreach ($upload->file_name as $image) {
-                    $modelName = "GadAttributedProgram";
+                    $modelName = $model_name;
                     $countLoop += 1;
                     $model = new GadFileAttached();
                     $model->user_id = Yii::$app->user->identity->id;
@@ -939,7 +967,7 @@ class GadPlanBudgetController extends ControllerAudit
                     $hash =  md5(date('Y-m-d')."-".date("h-i-sa")."-".$miliseconds.$rand_name.$countLoop.$modelName.$id);
                     $model->hash = $hash; 
                     $model->extension = $image->extension;
-                    $model->file_folder_type_id = $upload->file_folder_type_id;
+                    $model->file_folder_type_id = $file_cat;
 
 
                     if($model->save(false))
@@ -948,13 +976,23 @@ class GadPlanBudgetController extends ControllerAudit
                     }
                 }
                 $qry = GadAttributedProgram::updateAll(['upload_status' => 2],'id = '.$id.' ');
-                return $this->redirect(['index','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
+                
+                if($model_name == "GadAttributedProgram")
+                {
+                    return $this->redirect(['/report/gad-plan-budget/index','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
+                }
+                else
+                {
+                    return $this->redirect(['/report/gad-accomplishment-report/index','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
+                }
+                
             }
        }
         
        return $this->renderAjax('_upload_form_attributed_program',[
             'upload'=>$upload,
             'folder_type' => $folder_type,
+            'file_cat' => $file_cat
         ]);
     }
 

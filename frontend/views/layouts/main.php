@@ -402,9 +402,9 @@ nav.navbar-default div.navbar-header a
                     ;
                   });
                 });
-                $("#side-menu").click(function(){
-                    $(".navbar-static-side").css({'margin-top':'0'});
-                });
+                // $("#side-menu").click(function(){
+                //     $(".navbar-static-side").css({'margin-top':'0'});
+                // });
             </script>
         <?php richardfan\widget\JSRegister::end(); ?>
         <!-- /#page-wrapper -->

@@ -64,8 +64,8 @@ $this->title = "Annual GAD Accomplishment Reports";
         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
         <span class="caret"></span></button>
         <ul class="dropdown-menu">
-            <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-                <?php if($qryReportStatus == 8 || $qryReportStatus == 10 || $qryReportStatus == 6 || $qryReportStatus == 0){ ?>
+            <?php if(Yii::$app->user->can("gad_create_accomplishment")){ ?>
+                <?php if($qryReportStatus == 0 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21){ ?>
                     <li>
                         <a href="#" id="btn-encode">
                             <span class="glyphicon glyphicon-pencil" style='color:blue;'></span> Encode Accomplishment Report
@@ -129,299 +129,8 @@ $this->title = "Annual GAD Accomplishment Reports";
         ");
     ?>
 
-    <?php
-        $sendTo = "";
-        $reportStatus = 0;
-        $defaultRemarks = "";
-        $returnTo = "";
-        $returnStatus = 0;
-        if(Yii::$app->user->can("gad_lgu_province_permission"))
-        {
-            $reportStatus = 3;
-            $sendTo = "Endorse to DILG Regional Office";
-        }
-        else if(Yii::$app->user->can("gad_lgu_permission"))
-        {
-            if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
-            {
-
-                $reportStatus = 3;
-                $sendTo = "Endorse to DILG Regional Office";
-            }
-            else
-            {
-                $reportStatus = 1;
-                if($qryReportStatus == 0)
-                {
-                    $reportStatus = 1;
-                    $sendTo = 'Mark as "For Review by PPDO"';
-                    $defaultRemarks = "For Review by PPDO";
-                }
-                else if($qryReportStatus == 1)
-                {
-                    $reportStatus = 2;
-                    $sendTo = 'Endorse to DILG Office (C/MLGOO)';
-                    $defaultRemarks = "Endorsed to DILG Office (C/MLGOO)";
-                }
-                
-            }
-           
-        }
-        else if(Yii::$app->user->can("gad_field"))
-        {
-            $reportStatus = 4;
-            $sendTo = "Endorse to Central Office";
-            $returnStatus = 5;
-            $returnTo = "Return to LGU";
-        }
-        else if(Yii::$app->user->can("gad_province"))
-        {
-            $sendTo = "Submit to Regional Office";
-        }
-        else if(Yii::$app->user->can("gad_region"))
-        {
-            $reportStatus = 4;
-            $sendTo = "Submit to Central Office";
-            $returnStatus = 6;
-            $returnTo = "Return to LGU";
-        }
-        else
-        {
-            $sendTo = null;
-        }
-    ?>
-
-    <?php 
-    if(Yii::$app->user->can("gad_region_permission"))
-    {
-        if($qryReportStatus == 3)
-        {
-            echo '<br/><a class="btn btn-danger pull-right" id="return_to" style="border-radius:0px 5px 5px 0px;">'.$returnTo.'</a><a class="btn btn-success pull-right" id="endorse_to" style="border-radius:5px 0px 0px 5px;">'.$sendTo.'</a>';
-        }
-    }
-    else if(Yii::$app->user->can("gad_lgu_province_permission"))
-    {
-        if($qryReportStatus == 3)
-        {
-
-        }
-        else
-        {
-            echo '<a class="btn btn-success pull-right" id="endorse_to">'.$sendTo.'</a>';
-        }
-        
-    }
-    else if(Yii::$app->user->can("gad_lgu_permission"))
-    {
-        // if(!empty($sendTo) && $qryReportStatus == 0 || $qryReportStatus == 1 || $qryReportStatus == 5 || $qryReportStatus == 6)
-        // { 
-        //     if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS" && $qryReportStatus == 0)
-        //     { 
-        //         echo '<a class="btn btn-success pull-right" id="endorse_to">'.$sendTo.'</a>';
-            
-        //     }
-        //     else
-        //     {
-        //         if($qryReportStatus == 0)
-        //         {
-        //             echo Html::a($sendTo,
-        //             [
-        //                 'gad-plan-budget/change-report-status',
-        //                 'status' => $reportStatus,
-        //                 'tuc' => $ruc,
-        //                 'onstep' => $onstep,
-        //                 'tocreate' => $tocreate
-        //             ],
-        //             [
-        //                 'class' => 'btn btn-success pull-right',
-        //                 'id'=>"submit_to",
-        //                 'style' => '',
-        //                 'data' => [
-        //                     'confirm' => 'Are you sure you want to perform this action?',
-        //                     'method' => 'post']
-        //             ]);
-        //         }
-        //         else
-        //         {
-        //             echo '<a class="btn btn-success pull-right" id="endorse_to">'.$sendTo.'</a>';
-        //         }
-        //     }
-        // } 
-    }
-    else if(Yii::$app->user->can("gad_field_permission"))
-    { 
-        if(!empty($sendTo) && $qryReportStatus == 2)
-        { 
-            if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS" && $qryReportStatus == 0)
-            { 
-                echo '<br/><a class="btn btn-danger pull-right" id="return_to" style="border-radius:0px 5px 5px 0px;">'.$returnTo.'</a><a class="btn btn-success pull-right" id="endorse_to" style="border-radius:5px 0px 0px 5px;">'.$sendTo.'</a>';
-            
-            }
-            else
-            {
-                if($qryReportStatus == 0)
-                {
-                    echo "<br/>".Html::a($sendTo,
-                    [
-                        'gad-plan-budget/change-report-status',
-                        'status' => $reportStatus,
-                        'tuc' => $ruc,
-                        'onstep' => $onstep,
-                        'tocreate' => $tocreate
-                    ],
-                    [
-                        'class' => 'btn btn-success pull-right',
-                        'id'=>"submit_to",
-                        'style' => '',
-                        'data' => [
-                            'confirm' => 'Are you sure you want to perform this action?',
-                            'method' => 'post']
-                    ]);
-                }
-                else
-                {
-                    echo '<br/><a class="btn btn-danger pull-right" id="return_to" style="border-radius:0px 5px 5px 0px;">'.$returnTo.'</a><a class="btn btn-success pull-right" id="endorse_to" style="border-radius:5px 0px 0px 5px;">'.$sendTo.'</a>';
-                }
-            }
-        }
-    } 
-    ?>
-    <?php
-        $this->registerJs("
-            $('#endorse_to').click(function(){
-                $('#text_remarks').slideDown(300);
-                $('#submitAsReturn').hide();
-                $('#submit_to').show();
-            });
-
-            $('#return_to').click(function(){
-                $('#text_remarks').slideDown(300);
-                $('#submit_to').hide();
-                $('#submitAsReturn').show();
-            });
-        ");
-    ?>
-    <div class="row">
-        <div class="col-sm-8">
-        </div>
-        <div class="col-sm-4">
-            <!-- //////////////////////////////////////////////////////////// Remarks Form Start -->
-            <textarea class="form-control" rows='3' placeholder="Remarks (optional)" id="text_remarks" style="display: none;"></textarea>
-            <?php
-                echo Html::a('<i class="glyphicon glyphicon-send"></i> Submit',
-                  [
-                    'gad-plan-budget/change-report-status',
-                    'status' => $reportStatus,
-                    'tuc' => $ruc,
-                    'onstep' => $onstep,
-                    'tocreate' => $tocreate
-                  ],
-                  [
-                    'class' => 'btn btn-success btn-sm pull-right',
-                    'id'=>"submit_to",
-                    'style' => 'margin-bottom:5px; margin-top:5px; display:none;',
-                  ]);
-            ?>
-            <?php
-                echo Html::a('<i class="glyphicon glyphicon-send"></i> Return',
-                  [
-                    'gad-plan-budget/change-report-status',
-                    'status' => $returnStatus,
-                    'tuc' => $ruc,
-                    'onstep' => $onstep,
-                    'tocreate' => $tocreate
-                  ],
-                  [
-                    'class' => 'btn btn-danger btn-sm pull-right',
-                    'id'=>"submitAsReturn",
-                    'style' => 'margin-bottom:5px; margin-top:5px; display:none;',
-                  ]);
-            ?>
-            <?php
-                $urlSaveReportValidationHistory =  \yii\helpers\Url::to(['/report/default/create-report-history']);
-                $this->registerJs("
-                    $('#submit_to').click(function(){
-                        var valQryReportStatus = '".$qryReportStatus."';
-                        var valueTextRemarks;
-                        if($('#text_remarks').val() == '')
-                        {
-                            valueTextRemarks = '".$defaultRemarks."';
-                        }
-                        else
-                        {
-                            valueTextRemarks = $.trim($('#text_remarks').val());
-                        }
-                        
-                        var valueReportStatus = '".$reportStatus."';
-                        var tuc = '".$ruc."';
-                        var valueOnStep = '".$onstep."';
-                        var valueToCreate = '".$tocreate."';
-                        if (confirm('Are you sure you want Submit this Report?')) {
-                            $.ajax({
-                                url: '".$urlSaveReportValidationHistory."',
-                                data: { 
-                                        valueTextRemarks:valueTextRemarks,
-                                        valueReportStatus:valueReportStatus,
-                                        tuc:tuc,
-                                        valueOnStep:valueOnStep,
-                                        valueToCreate:valueToCreate
-                                        }
-                                
-                                }).done(function(result) {
-                                    
-                            });
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    });
-                ");
-                $this->registerJs("
-                    $('#submitAsReturn').click(function(){
-                        var valQryReportStatus = '".$qryReportStatus."';
-                        var valueTextRemarks;
-                        if($('#text_remarks').val() == '')
-                        {
-                            valueTextRemarks = '".$defaultRemarks."';
-                        }
-                        else
-                        {
-                            valueTextRemarks = $.trim($('#text_remarks').val());
-                        }
-                        
-                        var valueReportStatus = '".$returnStatus."';
-                        var tuc = '".$ruc."';
-                        var valueOnStep = '".$onstep."';
-                        var valueToCreate = '".$tocreate."';
-                        
-                        if (confirm('Are you sure you want Return this Report?')) {
-                            $.ajax({
-                                url: '".$urlSaveReportValidationHistory."',
-                                data: { 
-                                        valueTextRemarks:valueTextRemarks,
-                                        valueReportStatus:valueReportStatus,
-                                        tuc:tuc,
-                                        valueOnStep:valueOnStep,
-                                        valueToCreate:valueToCreate
-                                        }
-                                
-                                }).done(function(result) {
-                                    
-                            });
-                        } else {
-                          return false;
-                        }
-                        
-                    });
-                ");
-            ?>
-            <!-- /////////////////////////////////////////////////////////////// Remarks Form End -->
-        </div>
-    </div>
-
-    <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-        <?php if($qryReportStatus == 8 || $qryReportStatus == 10 || $qryReportStatus == 6 || $qryReportStatus == 0){ ?>
+    <?php if(Yii::$app->user->can("gad_create_accomplishment")){ ?>
+        <?php if($qryReportStatus == 0 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21){ ?>
             <?php if(Yii::$app->session["encode_gender_ar"] == "open") {  ?>
                 <div class="cust-panel input-form" id="input-form-gender">
             <?php }else{ ?>
@@ -1160,6 +869,48 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         });
                                     </script>
                                     <?php JSRegister::end() ?>
+                                    <?php
+                                        if(Yii::$app->user->can("gad_upload_files_row"))
+                                        {
+                                            if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadArAttributedProgram",1) == 0)
+                                            {
+                                                $t = '@web/report/gad-plan-budget/update-upload-form-attributed-program?id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&file_cat=1&model_name=GadArAttributedProgram";
+                                                echo Html::button('<span class="glyphicon glyphicon-paperclip"></span> Project Accomplishment Report', ['value'=>Url::to($t),
+                                                    'class' => 'btn btn-default btn-xs modalButton btn-block','title' => 'Upload Files',]);
+                                            }
+                                            
+                                            if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadArAttributedProgram",7) == 0)
+                                            {
+                                                $t2 = '@web/report/gad-plan-budget/update-upload-form-attributed-program?id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&file_cat=7&model_name=GadArAttributedProgram";
+                                                echo Html::button('<span class="glyphicon glyphicon-paperclip"></span> PIMME/FIMME Result', ['value'=>Url::to($t2),
+                                                'class' => 'btn btn-default btn-xs modalButton btn-block','title' => 'Upload Files',]);
+                                            }
+                                        }
+
+                                        if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadArAttributedProgram",1) == 1)
+                                        { // if has uploaded files show button to view file
+                                            $t3 = '@web/report/gad-plan-budget/view?row_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadArAttributedProgram"."&file_cat=1";
+                                            echo Html::button('<span class="glyphicon glyphicon-file"></span> Project Accomplishment Report', ['value'=>Url::to($t3),
+                                            'class' => 'btn btn-info btn-xs modalButton btn-block','title' => 'View Uploaded Files',]);
+                                        }
+                                        else
+                                        { // else no uploaded file yet
+                                            
+                                            echo "<label class='label label-warning '>No Project Accomplishment Report Attachment</label> ";
+                                        }
+
+                                        if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadArAttributedProgram",7) == 1)
+                                        { // if has uploaded files show button to view file
+                                            $t4 = '@web/report/gad-plan-budget/view?row_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadArAttributedProgram"."&file_cat=7";
+                                            echo Html::button('<span class="glyphicon glyphicon-file"></span> PIMME/FIMME Result', ['value'=>Url::to($t4),
+                                            'class' => 'btn btn-info btn-xs modalButton btn-block','title' => 'View Uploaded Files',]);
+                                        }
+                                        else
+                                        { // else no uploaded file yet
+                                            
+                                            echo "<label class='label label-warning btn-block'>No PIMME/FIMME Result Attachment</label>";
+                                        }
+                                    ?>
                                     <?php
                                         $url_viewDetailsAttributed = '@web/report/gad-accomplishment-report/view-other-details-attributed?model_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
                                             echo "&nbsp;".Html::button('<span class="glyphicon glyphicon-info-sign"></span> Other details', ['value'=>Url::to($url_viewDetailsAttributed),

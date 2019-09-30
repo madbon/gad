@@ -22,7 +22,7 @@ use yii\helpers\Html;
             else
             {
                 $reportStatus = 1;
-                if($qryReportStatus == 0) // encoding process
+                if($qryReportStatus == 0 || $qryReportStatus == 12) // encoding process
                 {
                     $reportStatus = 1;
                     $sendTo = 'Submit to PPDO';
@@ -34,14 +34,20 @@ use yii\helpers\Html;
                     $sendTo = 'Submit to PPDO';
                     $defaultRemarks = "Default Remarks : Submitted to PPDO";
                 }
+                else if($qryReportStatus == 16) // submitted to PPDO
+                {
+                    $reportStatus = 17;
+                    $sendTo = 'Submit to DILG Provincial Office';
+                    $defaultRemarks = "Default Remarks : Submitted to DILG Provincial Office";
+                }
             }
         }
         else if(Yii::$app->user->can("gad_province_permission"))
         {
             $reportStatus = 4;
             $sendTo = "Endorse LGU";
-            $returnTo = "Return to PPDO";
-            $returnStatus = 5;
+            $returnTo = "Return to LGU";
+            $returnStatus = 16;
         }
         else if(Yii::$app->user->can("gad_ppdo_permission"))
         {

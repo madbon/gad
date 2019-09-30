@@ -16,7 +16,7 @@ return [
             // 'identityClass' => 'common\models\User',
             // 'enableAutoLogin' => true,
             // 'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
-            'as frontend' => 'niksko12\user\filters\FrontendFilter',
+            // 'as frontend' => 'niksko12\user\filters\FrontendFilter',
         ],
         
         // 'file' => [

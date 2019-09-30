@@ -27,11 +27,24 @@ use common\modules\report\controllers\GadAccomplishmentReportController;
 use common\modules\report\controllers\GadRecordController;
 use yii\web\UploadedFile;
 use niksko12\auditlogs\classes\ControllerAudit;
+use yii\helpers\ArrayHelper;
+use common\models\GadStatusAssignment;
 /**
  * Default controller for the `report` module
  */
 class DefaultController extends ControllerAudit
 {
+    public function ViewStatus($role)
+    {
+        $tags_status = GadStatusAssignment::find()->select(['status'])->where(['role' => $role])->all();
+        $array = [];
+        foreach ($tags_status as $key => $row) {
+            $array[] = $row['status'];
+        }
+
+        return explode(",",$array[0]);
+    }
+
     public function HasBeenAttachedToGpb($ar_ruc)
     {
         if(GadRecord::find()->where(['attached_ar_record_id' => DefaultController::GetRecordIdByRuc($ar_ruc)])->exists())
@@ -222,6 +235,26 @@ class DefaultController extends ControllerAudit
         return 1;
     }
 
+    public function FileCatName($id)
+    {
+        $qry = \common\models\GadFileFolderType::find()->where(['id' => $id])->one();
+
+        return !empty($qry->title) ? $qry->title : "";
+    }
+
+    public  function GetUploadStatusByFileCat($row_id,$model_name,$file_cat)
+    {
+        $qry = GadFileAttached::find()->where(['model_id' => $row_id, 'model_name' => $model_name,'file_folder_type_id' => $file_cat]);
+
+        if($qry->exists())
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
     public  function GetUploadStatus($row_id,$model_name)
     {
         $qry = GadFileAttached::find()->where(['model_id' => $row_id, 'model_name' => $model_name]);
@@ -372,6 +405,54 @@ class DefaultController extends ControllerAudit
         else if($value == 7)
         {
             $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-flag'></i> ".$title."</span>";
+        }
+        else if($value == 11)
+        {
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
+        }
+        else if($value == 12)
+        {
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
+        }
+        else if($value == 13)
+        {
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
+        }
+        else if($value == 14)
+        {
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
+        }
+        else if($value == 15)
+        {
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
+        }
+        else if($value == 16)
+        {
+            $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-thumbs-down'></i> ".$title."</span>";
+        }
+        else if($value == 17)
+        {
+            $returnValue = "<span class='label label-info'><i class='glyphicon glyphicon-send'></i> ".$title."</span>";
+        }
+        else if($value == 18)
+        {
+            $returnValue = "<span class='label label-info'><i class='glyphicon glyphicon-send'></i> ".$title."</span>";
+        }
+        else if($value == 19)
+        {
+            $returnValue = "<span class='label label-success'><i class='glyphicon glyphicon-search'></i> ".$title."</span>";
+        }
+        else if($value == 20)
+        {
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
+        }
+        else if($value == 21)
+        {
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
+        }
+        else if($value == 22)
+        {
+            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
         }
 
 
