@@ -20,7 +20,7 @@ class DashboardController extends ControllerAudit
         if(Yii::$app->user->can('gad_ppdo_permission'))
         {
             $condition_rec_status = DefaultController::ViewStatus("gad_ppdo");
-            $andFilterWhere = ['REC.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C];
+            $andFilterValue = ['REC.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C];
             $groupByValue = ['REC.status','CIT.citymun_m'];
         }
         else if(Yii::$app->user->can('gad_province_permission')) // dilg province
