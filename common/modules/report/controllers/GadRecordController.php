@@ -3,6 +3,7 @@
 namespace common\modules\report\controllers;
 
 use Yii;
+use common\modules\report\controllers\DefaultController;
 use common\models\GadRecord;
 use common\models\GadReportHistory;
 use common\modules\report\models\GadRecordSearch;
@@ -16,6 +17,7 @@ use yii\helpers\ArrayHelper;
 use common\models\GadStatus;
 use common\models\GadYear;
 use niksko12\auditlogs\classes\ControllerAudit;
+
 /**
  * GadRecordController implements the CRUD actions for GadRecord model.
  */
@@ -343,6 +345,21 @@ class GadRecordController extends ControllerAudit
                 $hash =  md5(date('Y-m-d')."-".date("h-i-sa")."-".$miliseconds);
                 $model->tuc = $hash;
                 $model->save();
+                // Storing History after Creating GPB
+                if(Yii::$app->user->can("gad_lgu_province_permission"))
+                {
+                    DefaultController::actionCreateReportHistory("Default Remarks : Encoded Primary Information",9,$hash,"","");
+                }
+                else if(Yii::$app->user->can("gad_lgu_permission"))
+                {
+                    if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS"){ 
+                        DefaultController::actionCreateReportHistory("Default Remarks : Encoded Primary Information",8,$hash,"","");
+                    }
+                    else
+                    {
+                        DefaultController::actionCreateReportHistory("Default Remarks : Encoded Primary Information",0,$hash,"","");
+                    }
+                }
             }
 
             $urlReportIndex = "";
@@ -410,17 +427,17 @@ class GadRecordController extends ControllerAudit
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
         $qry = GadRecord::find()->where(['id' => $id])->one();
         $report_type = !empty($qry->report_type_id) ? $qry->report_type_id : "";
 
         if($report_type == 1)
         {
+            $this->findModel($id)->delete();
             return $this->redirect(['index','report_type' => 'plan_budget']);
         }
         else
         {
+            $this->findModel($id)->delete();
             return $this->redirect(['index','report_type' => 'accomplishment']);
         }
     }

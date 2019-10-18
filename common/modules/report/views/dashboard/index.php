@@ -4,41 +4,17 @@ use miloschuman\highcharts\Highcharts;
 use miloschuman\highcharts\HighchartsAsset;
 use yii\helpers\Html;
 ?>
-
+<style type="text/css">
+	table.table-responsive thead tr th 
+	{
+		background-color:black;
+		font-weight: normal;
+		color: white;
+	}
+</style>
 <div class="panel panel-default">
 	<div class="panel-heading"><p style="font-size: 15px; margin:0px; font-weight: bold; text-transform: uppercase;"><i class="glyphicon glyphicon-stats"></i> LGU<span style="text-transform: lowercase;">s</span> Report Status</p></div>
   	<div class="panel-body">
-  		<?php
-  		// echo "<pre>";
-  		// print_r($product_status); exit;
-  			// echo 	Highcharts::widget([
-				 //    'htmlOptions' => [
-				 //        'style'=> ['height' => '468px']
-				 //    ],
-			  //     	'options' => [
-					//       'title' => ['text' => ''],
-					//       'xAxis' => [
-					//        		'categories' => $category_status,
-					//       	],
-					//       	'yAxis' => [
-					// 	       'title' => ['text' => ''],
-					// 	       'stackLabels' => [
-					// 	                  'enabled' => true,
-					// 	        ],
-					//       	],
-					//       'plotOptions' => [
-				 //              	'column' => [
-				 //                  	'dataLabels' => [
-				 //                      'enabled' => true,
-				 //                      // 'format' => '{point.y:1f}%',
-				 //                  	],
-				 //                  	'colorByPoint' => true,
-				 //              	]
-					//         ],
-					//     'series' => $product_status
-			  //    	]
-			  // 	]);
-  		?>
 
   		<table class="table table-responsive table-hover table-bordered">
 	  		<thead>
@@ -194,14 +170,6 @@ use yii\helpers\Html;
 			  			<td><?= implode(", ", $submit_province) ?></td>
 			  		</tr>
 			  		<tr>
-			  			<td><i class='glyphicon glyphicon-flag' style="color: red;"></i> 
-			  				<?php
-			  					echo Html::a('Returned to PPDO by DILG Province </span>', ['/report/gad-record', 'GadRecordSearch[status]'=> 5, 'report_type' => 'plan_budget' ]);
-			  				?>
-			  			</td>
-			  			<td><?= implode(", ", $return_ppdo) ?></td>
-			  		</tr>
-			  		<tr>
 			  			<td><i class='glyphicon glyphicon-flag' style="color:red;"></i>  
 			  				<?php
 			  					echo Html::a('Returned to LGU by PPDO </span>', ['/report/gad-record', 'GadRecordSearch[status]'=> 7, 'report_type' => 'plan_budget' ]);
@@ -281,14 +249,7 @@ use yii\helpers\Html;
 			  			</td>
 			  			<td><?= implode(", ", $for_review) ?></td>
 			  		</tr>
-			  		<tr>
-			  			<td><i class='glyphicon glyphicon-flag' style="color: red;"></i> 
-			  				<?php
-			  					echo Html::a('Returned to PPDO by DILG Province </span>', ['/report/gad-record', 'GadRecordSearch[status]'=> 5, 'report_type' => 'plan_budget' ]);
-			  				?>
-			  			</td>
-			  			<td><?= implode(", ", $return_ppdo) ?></td>
-			  		</tr>
+			  		
 			  		<tr>
 			  			<td><i class='glyphicon glyphicon-flag' style="color:red;"></i>  
 			  				<?php
