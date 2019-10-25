@@ -5,17 +5,18 @@ use miloschuman\highcharts\HighchartsAsset;
 use yii\helpers\Html;
 ?>
 <style type="text/css">
-	table.table-responsive thead tr th 
+	/*table.table-responsive thead tr th 
 	{
 		background-color:black;
 		font-weight: normal;
 		color: white;
-	}
+	}*/
 </style>
-<div class="panel panel-default">
-	<div class="panel-heading"><p style="font-size: 15px; margin:0px; font-weight: bold; text-transform: uppercase;"><i class="glyphicon glyphicon-stats"></i> LGU<span style="text-transform: lowercase;">s</span> Report Status</p></div>
-  	<div class="panel-body">
-
+<div class="cust-panel">
+		<div class="cust-panel-header gad-color">
+		</div>
+	    <div class="cust-panel-body">
+	    	<br/>
   		<table class="table table-responsive table-hover table-bordered">
 	  		<thead>
 	  			<tr>
