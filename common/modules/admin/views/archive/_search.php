@@ -10,7 +10,7 @@ use kartik\select2\Select2;/* @var $this yii\web\View */
 <div class="gad-record-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => [Yii::$app->controller->action->id,'report_type' => $report_type],
+        'action' => [Yii::$app->controller->action->id],
         'method' => 'get',
     ]); ?>
 
@@ -114,7 +114,6 @@ use kartik\select2\Select2;/* @var $this yii\web\View */
                 'options' => ['placeholder' => 'Report Status'],
                 'pluginOptions' => [
                     'allowClear' => true,
-                    'multiple' => true,
                 ],
                 'pluginEvents'=>[
                         'select2:select'=>'
@@ -146,7 +145,7 @@ use kartik\select2\Select2;/* @var $this yii\web\View */
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-       <?= Html::a('<span class="glyphicon glyphicon-refresh"></span> Reset', ['index','report_type' => $report_type], ['class' => 'btn btn-default','title' => 'Reset']) ?>
+       <?= Html::a('<span class="glyphicon glyphicon-refresh"></span> Reset', ['index'], ['class' => 'btn btn-default','title' => 'Reset']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

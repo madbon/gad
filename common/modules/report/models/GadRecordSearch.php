@@ -105,7 +105,8 @@ class GadRecordSearch extends GadRecord
             'CONCAT(UI.FIRST_M, " ",UI.LAST_M) as responsbile',
             'GR.id as record_id',
             'OFC.OFFICE_M as office_name',
-            'GR.date_created'
+            'GR.date_created',
+            'GR.report_type_id'
             // 'HIST.remarks as remarks'
         ])
         ->from('gad_record GR')
@@ -116,6 +117,7 @@ class GadRecordSearch extends GadRecord
         ->leftJoin(['OFC' => 'tbloffice'], 'OFC.OFFICE_C = GR.office_c')
         // ->leftJoin(['HIST' => 'gad_report_history'],'HIST.tuc = GR.tuc')
         ->where($filteredByRole)
+        ->andWhere(['GR.is_archive' => Yii::$app->controller->id == "archive" ? 1 : 0])
         ->andFilterWhere(['LIKE','GR.tuc',$this->record_tuc])
         ->andFilterWhere(['GR.region_c' => $this->region_c])
         ->andFilterWhere(['GR.province_c' => $this->province_c])
@@ -133,6 +135,8 @@ class GadRecordSearch extends GadRecord
                     'pageSize' =>  10,
                 ],
         ]);
+
+        Yii::$app->session["GadRecordSearch"] = $dataProvider;
 
         return $dataProvider;
     }

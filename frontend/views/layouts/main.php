@@ -10,6 +10,7 @@ use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use yii\bootstrap\Modal;
+use yii\helpers\Url;
 
 AppAsset::register($this);
 ?>
@@ -56,7 +57,8 @@ AppAsset::register($this);
 }
 .gad-color
 {
-    background-color: #29012cc4 !important;
+    /* background-color: #29012cc4 !important; */
+    background-color: #7e57b1 !important;
     height: 3px;
 }
 
@@ -154,7 +156,6 @@ nav.navbar-default div.navbar-header a
         echo '<div id="modalContent"></div>';
     Modal::end();
 ?>
-
         <?php if (Yii::$app->user->isGuest) { ?>
 
             <?php
@@ -174,7 +175,7 @@ nav.navbar-default div.navbar-header a
                 <?php
                     $logo =  Html::img('@web/images/dilg-logo.png',['class', 'style' => 'height:35px; width:35px; margin-top:-8px;']);
                 ?>
-                <a class="navbar-brand" href="#"><i><?= $logo ?></i> GAD Plan and Budget Monitoring System </a>
+                <a class="navbar-brand customactive" href="#"><i><?= $logo ?></i> GAD Plan and Budget Monitoring System </a>
                 <ul class="nav navbar-top-links navbar-right">
                     <!-- /.dropdown -->
                     <li class="dropdown">
@@ -189,6 +190,21 @@ nav.navbar-default div.navbar-header a
             </div>
         </nav>
         <?php }else{ 
+
+        // $this->registerJs("
+        //     $('.navbar-brand').click(function(){
+        //         if($('.navbar-brand').hasClass('customactive')){
+        //             $('#side-menu').hide();
+        //             $('#page-wrapper').css({'margin':'0'});
+        //         }
+        //         else
+        //         {
+        //             $('#side-menu').show();
+        //         }
+        //     });
+            
+        // ");
+            
         echo '<div id="wrapper">';
             $officer_role = "";
             $location_name = "";
@@ -350,14 +366,23 @@ nav.navbar-default div.navbar-header a
                         ?>
 
                         <?php if(Yii::$app->user->can("gad_cms_super_admin")){ ?>
-                            <?php if(Yii::$app->controller->id == "settings" || Yii::$app->session["activelink"] == "settings"){ ?>
-                            <li class="activelink">
-                            <?php }else{ ?>
-                                <li>
-                            <?php } ?>
-                                <?php echo Html::a("<span class='fa fa-cogs'></span> Settings",['/admin/settings']); ?>
+                            <li>
+                                <a href="#"><i class="fa fa-cogs"></i> Settings<span class="fa arrow"></span></a>
+                                <?php
+                                    if(Yii::$app->controller->id == "settings" || Yii::$app->controller->id == "archive" || Yii::$app->controller->module->id == "admin" )
+                                    {
+                                        echo '<ul class="nav nav-second-level collapse in">';
+                                    }
+                                    else
+                                    {
+                                        echo '<ul class="nav nav-second-level collapse">';
+                                    }
+                                ?>
+                                    <li <?= Yii::$app->controller->id == "settings" || Yii::$app->controller->id == "archive" || Yii::$app->controller->module->id == "admin"  ? "class = activelink" : "" ?>><?=  Html::a('<span class="fa fa-cog"></span> CMS', ['/admin/settings'],['title' => 'Content Management System'])  ?></li>
+                                </ul>
                             </li>
                         <?php } ?>
+                        <li <?= Yii::$app->controller->id == "archive" ? "class = activelink" : "" ?>><?=  Html::a('<span class="fa fa-archive"></span> Archived', ['/admin/archive'])  ?></li>
 
                         <li>
                             <?php
@@ -379,12 +404,20 @@ nav.navbar-default div.navbar-header a
                     <h1 class="page-header">Blank</h1>
                 </div> -->
                 <!-- /.col-lg-12 -->
-            <!-- </div> --> ,
+            <!-- </div> --> 
+            <br/>
             <!-- /.row -->
             <?php
-            //  Breadcrumbs::widget([
-            //     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-            // ]) 
+                if(Yii::$app->controller->module->id == "admin")
+                {
+                    echo Breadcrumbs::widget([
+                        'homeLink' => [
+                            'label' => 'Home',
+                            'url' => Yii::getAlias('@web')."/admin/settings",
+                        ],
+                        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                    ]); 
+                }
             ?>
             <?= Alert::widget() ?>
             <?= $content; ?>

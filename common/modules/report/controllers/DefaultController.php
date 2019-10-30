@@ -34,6 +34,20 @@ use common\models\GadStatusAssignment;
  */
 class DefaultController extends ControllerAudit
 {
+    public function HasStatus($param)
+    {
+        $tags_status = GadStatusAssignment::find()->select(['status'])->where(['role' => $param])->all();
+        $array = [];
+        foreach ($tags_status as $key => $row) {
+            $array[] = $row['status'];
+        }
+
+        $string = implode(",",$array);
+        $array_val = explode(",",$string);
+        
+        return $array_val;
+    }
+
     public function ViewStatus($role)
     {
         $tags_status = GadStatusAssignment::find()->select(['status'])->where(['role' => $role])->all();
