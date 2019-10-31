@@ -283,7 +283,7 @@ $this->title = "Annual GAD Plan and Budget";
                         else
                         {
                             // // pending submission to regional office
-                            // echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 11],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
+                            // echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 11],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
                             //                               'confirm' => 'Are you sure you want to perform this action?',
                             //                               'method' => 'post']]);
                         }
@@ -308,7 +308,7 @@ $this->title = "Annual GAD Plan and Budget";
                         else
                         {  // pending submission to ppdo
                            
-                            // echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 12],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
+                            // echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 12],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
                             //                               'confirm' => 'Are you sure you want to perform this action?',
                             //                               'method' => 'post']]);
                         }
@@ -336,7 +336,7 @@ $this->title = "Annual GAD Plan and Budget";
                     else
                     {
                         
-                        // echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 11],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
+                        // echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 11],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
                         //                                   'confirm' => 'Are you sure you want to perform this action?',
                         //                                   'method' => 'post']]);
                     }
@@ -360,7 +360,7 @@ $this->title = "Annual GAD Plan and Budget";
                     }
                     else
                     {
-                        echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 15],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
+                        echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 15],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
                                                           'confirm' => 'Are you sure you want to perform this action?',
                                                           'method' => 'post']]);
                     }
@@ -375,7 +375,7 @@ $this->title = "Annual GAD Plan and Budget";
                     }
                     else
                     {
-                        echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 14],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
+                        echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 14],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
                                                           'confirm' => 'Are you sure you want to perform this action?',
                                                           'method' => 'post']]);
                     }
