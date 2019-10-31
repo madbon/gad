@@ -12,6 +12,7 @@ use common\models\GadStatus;
 use common\models\GadYear;
 use common\models\ArchiveHistory;
 use common\models\GadRecord;
+use common\modules\report\controllers\DefaultController;
 
 class ArchiveController extends \yii\web\Controller
 {
@@ -33,18 +34,18 @@ class ArchiveController extends \yii\web\Controller
 
             if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
             {
-                $statusCondition = [3,6,8,10];
+                $statusCondition = DefaultController::ViewStatus("gad_lgu_huc");
             }
             else
             {
-                $statusCondition = [0,1,2,4,5,7];
+                $statusCondition = DefaultController::ViewStatus("gad_lgu_non_huc");
             }
         }
         else if(Yii::$app->user->can("gad_region_permission")) // Regional Office
         {
             $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
             $provinceCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
-            $statusCondition = [3,6,8,9,10];
+            $statusCondition = DefaultController::ViewStatus("gad_region_dilg");
 
             if(!empty($searchModel->citymun_c) || !empty($searchModel->province_c))
             {
@@ -60,34 +61,35 @@ class ArchiveController extends \yii\web\Controller
             $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
             $provinceCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
             $citymunCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
-            $statusCondition = [0,1,2,4,5,7];
+            $statusCondition = DefaultController::ViewStatus("gad_province_dilg");
         } 
         else if(Yii::$app->user->can("gad_lgu_province_permission"))
         {
             $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
             $provinceCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
             $citymunCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
-            $statusCondition = [3,6,9,10];
+            $statusCondition = DefaultController::ViewStatus("gad_province_dilg");
         }
         else if(Yii::$app->user->can("gad_ppdo_permission"))
         {
             $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
             $provinceCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
             $citymunCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
-            $statusCondition = [0,1,2,4,5,7];
+            $statusCondition = DefaultController::ViewStatus("gad_ppdo");
         }
         else if(Yii::$app->user->can("gad_central_permission") || Yii::$app->user->can("gad_admin_permission"))
         {
             $provinceCondition = ['region_c' => $searchModel->region_c];
             $citymunCondition = ['province_c' => $searchModel->province_c];
-            $statusCondition = [0,1,2,3,4,5,6,7,8,9,10];
+            $statusCondition = DefaultController::ViewStatus("gad_all_status");
         }
         else
         {
             $provinceCondition = ['region_c' => $searchModel->region_c];
             $citymunCondition = ['province_c' => $searchModel->province_c];
-            $statusCondition = [0,1,2,3,4,5,6,7,8,9,10];
+            $statusCondition = DefaultController::ViewStatus("gad_all_status");
         }
+
 
         $region = ArrayHelper::map(Region::find()->where($regionCondition)->all(), 'region_c', 'region_m');
         $province = ArrayHelper::map(Province::find()->where($provinceCondition)->all(), 'province_c', 'province_m');

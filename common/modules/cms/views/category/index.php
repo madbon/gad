@@ -11,15 +11,8 @@ $this->title = 'Categories';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="category-index"> 
-    <div class="box box-primary">
-        <div class="box-header">
-              <!-- <h3 class="box-title"><strong><?php // Html::encode($this->title) ?></strong></h3> -->
-            <div class="form-group">
-                <?= Html::a('<span class="glyphicon glyphicon-pencil"> </span> &nbsp;Create', ['create'], ['class' => 'btn btn-success']) ?>
-            </div>
-        </div>
-
-         <?php echo $this->render('_search', ['model' => $searchModel,'category' => $category,]); ?>
+    <?= Html::a('<span class="glyphicon glyphicon-pencil"> </span> &nbsp;Create Category', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php echo $this->render('_search', ['model' => $searchModel,'category' => $category,]); ?>
         
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
@@ -91,5 +84,4 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],'layout' => "{items}\n<div class='text-info text-right'>{summary}</div>\n{pager}",
     ]); ?>
-    </div>
 </div>

@@ -24,6 +24,7 @@ use kartik\select2\Select2;/* @var $this yii\web\View */
                 'options' => ['placeholder' => 'Select Region',],
                 'pluginOptions' => [
                     'allowClear' => true,
+
                 ],
                 'pluginEvents'=>[
                         'select2:select'=>'
@@ -96,6 +97,7 @@ use kartik\select2\Select2;/* @var $this yii\web\View */
                 'options' => ['placeholder' => 'City/Municipality'],
                 'pluginOptions' => [
                     'allowClear' => true,
+
                 ],
                 'pluginEvents'=>[
                         'select2:select'=>'
@@ -114,6 +116,7 @@ use kartik\select2\Select2;/* @var $this yii\web\View */
                 'options' => ['placeholder' => 'Report Status'],
                 'pluginOptions' => [
                     'allowClear' => true,
+                    'multiple' => true,
                 ],
                 'pluginEvents'=>[
                         'select2:select'=>'
@@ -131,6 +134,7 @@ use kartik\select2\Select2;/* @var $this yii\web\View */
                 'options' => ['placeholder' => 'Year'],
                 'pluginOptions' => [
                     'allowClear' => true,
+                    'multiple' => true,
                 ],
                 'pluginEvents'=>[
                         'select2:select'=>'
