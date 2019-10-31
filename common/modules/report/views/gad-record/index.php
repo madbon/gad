@@ -518,7 +518,7 @@ $this->title = $index_title;
                                                     'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                     'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                                 ], 
-                                                    ['class'=>'btn btn-info btn-xs']);
+                                                    ['class'=>'btn btn-info btn-xs btn-block']);
                                             }
                                         },
                                         'track' => function($url, $model) use ($urlReport,$report_type){
@@ -533,7 +533,7 @@ $this->title = $index_title;
                                                 '/report/gad-record/archive','report_type' => $report_type,'record_id' => $model['record_id']
                                                 ], 
                                                 [
-                                                'class' => 'btn btn-xs btn-warning pull-right',
+                                                'class' => 'btn btn-xs btn-warning',
                                                 'data' => [
                                                     'confirm' => 'Are you sure you want to perform this action?',
                                                     'method' => 'post'

@@ -128,6 +128,26 @@ nav.navbar-default div.navbar-header a
 {
     color: #7e57b1;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgb(248,248,248); 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
 /*.clearfix
 {
     min-height: 1000px;
@@ -283,11 +303,11 @@ nav.navbar-default div.navbar-header a
             </ul>
             <!-- /.navbar-top-links -->
 
-            <div class="navbar-default navbar-static-side" role="navigation">
-                <div class="sidebar-collapse">
-                    <ul class="nav" id="side-menu">
+            <div class="navbar-default navbar-static-side" role="navigation" >
+                <div class="sidebar-collapse" >
+                    <ul class="nav" id="side-menu" style="overflow-y: scroll; max-height: 600px;">
                         <?php if(Yii::$app->user->can('gad_dashboard_menu')){ ?>
-                            <?= Yii::$app->session["activelink"] == "dashboard" ? "<li class='activelink'>" : "<li>" ?>
+                            <?= Yii::$app->controller->id == "dashboard" ? "<li class='activelink'>" : "<li>" ?>
                                 <?= Html::a('<i class="fa fa-dashboard fa-fw"></i> Dashboard',['/report/dashboard']); ?>
                             </li>
                         <?php } ?>
@@ -381,8 +401,10 @@ nav.navbar-default div.navbar-header a
                                         echo '<ul class="nav nav-second-level collapse">';
                                     }
                                 ?>
-                                    <?php if(Yii::$app->user->can("gad_cms_super_admin")){ ?>
+                                    <?php if(Yii::$app->user->can('RegionalAdministrator') || Yii::$app->user->can('SuperAdministrator') || Yii::$app->user->can('Administrator') || Yii::$app->user->can('gad_admin') || Yii::$app->user->can('gad_central')){ ?>
                                         <li <?= Yii::$app->controller->module->id == "user"  ? "class = activelink" : "" ?>><?=  Html::a('<span class="fa fa-users"></span> User Management', ['/user/admin'],['title' => 'Content Management System'])  ?></li>
+                                    <?php } ?>
+                                    <?php if(Yii::$app->user->can("gad_cms_super_admin")){ ?>
                                         <li <?= Yii::$app->controller->id == "category"  ? "class = activelink" : "" ?>><?=  Html::a('<span class="fa fa-list"></span> Dynamic Form (category)', ['/cms/category'],['title' => 'Content Management System'])  ?></li>
                                         <li <?= Yii::$app->controller->id == "indicator"  ? "class = activelink" : "" ?>><?=  Html::a('<span class="fa fa-list"></span> Dynamic Form (indicator)', ['/cms/indicator'],['title' => 'Content Management System'])  ?></li>
                                         <li <?= Yii::$app->controller->id == "status"  ? "class = activelink" : "" ?>><?=  Html::a('<span class="fa fa-cog"></span> Status', ['/admin/status'],['title' => 'Content Management System'])  ?></li>
@@ -395,6 +417,7 @@ nav.navbar-default div.navbar-header a
                                         <li <?= Yii::$app->controller->id == "gad-inner-category"  ? "class = activelink" : "" ?>><?=  Html::a('<span class="fa fa-cog"></span> Inner Category After Focus', ['/admin/gad-inner-category'],['title' => 'Content Management System'])  ?></li>
                                         <li <?= Yii::$app->controller->id == "score-type"  ? "class = activelink" : "" ?>><?=  Html::a('<span class="fa fa-cog"></span> Score Type', ['/admin/score-type'],['title' => 'Content Management System'])  ?></li>
                                         <li <?= Yii::$app->controller->id == "year"  ? "class = activelink" : "" ?>><?=  Html::a('<span class="fa fa-cog"></span> Year', ['/admin/year'],['title' => 'Content Management System'])  ?></li>
+
                                     <?php } ?>
                                     <li <?= Yii::$app->controller->id == "archive" ? "class = activelink" : "" ?>><?=  Html::a('<span class="fa fa-archive"></span> Archived', ['/admin/archive'])  ?></li>
                                  </ul>
@@ -418,7 +441,7 @@ nav.navbar-default div.navbar-header a
            
             <br/>
             <?php
-                if(Yii::$app->controller->module->id == "admin" || Yii::$app->controller->module->id == "cms" || Yii::$app->controller->module->id == "user")
+                if(Yii::$app->controller->module->id == "admin" || Yii::$app->controller->module->id == "cms" || Yii::$app->controller->module->id == "user" || Yii::$app->controller->module->id == "rbac" || Yii::$app->controller->module->id == "rbac")
                 {
                     if(Yii::$app->controller->action->id == "login" || Yii::$app->controller->action->id == "register")
                     {
@@ -435,8 +458,8 @@ nav.navbar-default div.navbar-header a
                             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                         ]); 
                         $this->registerJs("
-                            $('div.cust-panel-body div').css({'padding-top':'10px'});
-                            $('div.cust-panel-body ul').css({'padding-top':'10px'});
+                            $('div.cust-panel-body>div').css({'padding-top':'10px'});
+                            $('div.cust-panel-body>ul').css({'padding-top':'10px'});
                         ");
                         echo '
                             <div class="cust-panel">
