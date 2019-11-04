@@ -15,6 +15,8 @@ use kartik\select2\Select2;
 
     <?= $form->field($model, 'role')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'description')->textInput() ?>
+
     <?php
 		echo $form->field($model, 'status')->widget(Select2::classname(), [
 		    'data' => $tags_status,

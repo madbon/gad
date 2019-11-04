@@ -377,7 +377,9 @@ class GadPlanBudgetController extends ControllerAudit
         ]);
     }
 
-    public function actionChangeReportStatus($status,$tuc,$onstep,$tocreate)
+    // public function actionSubmitReport($)
+
+    public function ChangeReportStatus($status,$tuc)
     {
         $qry = GadRecord::find()->where(['tuc' => $tuc])->one();
         $qryStatus = \common\models\GadStatus::find()->where(['code' => $status])->one();
@@ -461,12 +463,6 @@ class GadPlanBudgetController extends ControllerAudit
         // updating footer date
         if($status == 1)
         {
-            // exit;
-            // if(!empty($qry->attached_ar_record_id))
-            // {
-            //     $queryAr = GadRecord::updateAll(['footer_date' => date("Y-m-d"), 'status' => $status], 'id = '.$qry->attached_ar_record_id.' ');
-            // }
-            // $queryAr = GadRecord::updateAll(['footer_date' => date("Y-m-d"), 'status' => $status], 'tuc = "'.$tuc.'" ');
             $qry->status = $status;
             $qry->footer_date = date("Y-m-d");
         }
@@ -482,18 +478,22 @@ class GadPlanBudgetController extends ControllerAudit
         }
 
         $qry->save(false);
-
-        if($onstep == "to_create_ar")
+        /*if(!$qry->save())
         {
-            $redirectTo = "gad-accomplishment-report/index";
-        }
-        else
-        {
-            $redirectTo = "gad-plan-budget/index";
-        }
+            // print_r($qry->errors); exit;
+        }*/
 
-        \Yii::$app->getSession()->setFlash('success', "Action has been performed");
-        return $this->redirect([$redirectTo, 'ruc' => $tuc,'onstep' => $onstep, 'tocreate' => $tocreate]);
+        // if($onstep == "to_create_ar")
+        // {
+        //     $redirectTo = "gad-accomplishment-report/index";
+        // }
+        // else
+        // {
+        //     $redirectTo = "gad-plan-budget/index";
+        // }
+
+        // \Yii::$app->getSession()->setFlash('success', "Action has been performed");
+        // return $this->redirect([$redirectTo, 'ruc' => $tuc,'onstep' => $onstep, 'tocreate' => $tocreate]);
     }
 
     /**

@@ -27,9 +27,9 @@ class GadStatus extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code'], 'required'],
+            [['code','title'], 'required'],
             [['code'], 'integer'],
-            [['title'], 'string'],
+            [['future_tense'], 'safe'],
         ];
     }
 

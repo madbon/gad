@@ -18,7 +18,7 @@ class GadStatusAssignmentSearch extends GadStatusAssignment
     {
         return [
             [['id'], 'integer'],
-            [['role', 'status'], 'safe'],
+            [['role', 'status','description'], 'safe'],
         ];
     }
 
@@ -62,7 +62,8 @@ class GadStatusAssignmentSearch extends GadStatusAssignment
         ]);
 
         $query->andFilterWhere(['like', 'role', $this->role])
-            ->andFilterWhere(['like', 'status', $this->status]);
+            ->andFilterWhere(['like', 'status', $this->status])
+            ->orderBy(['id' => SORT_DESC]);
 
         return $dataProvider;
     }

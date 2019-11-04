@@ -441,7 +441,7 @@ nav.navbar-default div.navbar-header a
            
             <br/>
             <?php
-                if(Yii::$app->controller->module->id == "admin" || Yii::$app->controller->module->id == "cms" || Yii::$app->controller->module->id == "user" || Yii::$app->controller->module->id == "rbac" || Yii::$app->controller->module->id == "rbac")
+                if(Yii::$app->controller->module->id == "admin" || Yii::$app->controller->module->id == "cms" || Yii::$app->controller->module->id == "user" || Yii::$app->controller->module->id == "rbac" || Yii::$app->controller->module->id == "rbac" || Yii::$app->controller->id == "report-history")
                 {
                     if(Yii::$app->controller->action->id == "login" || Yii::$app->controller->action->id == "register")
                     {

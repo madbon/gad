@@ -258,128 +258,131 @@ $this->title = "Annual GAD Plan and Budget";
         <div class="col-sm-6">
             <br/>
             <?php
-                $t = '@web/report/gad-plan-budget/form-change-report-status?qryReportStatus='.$qryReportStatus."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."";
+                // $t = '@web/report/gad-plan-budget/form-change-report-status?qryReportStatus='.$qryReportStatus."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."";
+                $t = '@web/report/report-history/create?qryReportStatus='.$qryReportStatus."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."";
+                echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
+                                'class' => 'btn btn-info btn-md modalButton pull-right']);
 
-                if(Yii::$app->user->can("gad_lgu_permission"))
-                {
-                    if(Yii::$app->user->identity->userinfo->REGION_C == "13" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC")
-                    {
-                         // show in encoding process || returned to LGU || encoding process huc || returned by region
-                        if($qryReportStatus == 6 || $qryReportStatus == 8 || $qryReportStatus == 11 || $qryReportStatus == 21)
-                        {
-                            if(!empty($recordOne_attached_ar_record_id) && ($grand_total_pb > $fivePercentTotalLguBudget))
-                            {
-                                if($grand_total_pb > $recTotalLguBudget)
-                                {
+                // if(Yii::$app->user->can("gad_lgu_permission"))
+                // {
+                //     if(Yii::$app->user->identity->userinfo->REGION_C == "13" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC")
+                //     {
+                //          // show in encoding process || returned to LGU || encoding process huc || returned by region
+                //         if($qryReportStatus == 6 || $qryReportStatus == 8 || $qryReportStatus == 11 || $qryReportStatus == 21)
+                //         {
+                //             if(!empty($recordOne_attached_ar_record_id) && ($grand_total_pb > $fivePercentTotalLguBudget))
+                //             {
+                //                 if($grand_total_pb > $recTotalLguBudget)
+                //                 {
                                     
-                                }
-                                else
-                                {
-                                    echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
-                                'class' => 'btn btn-info btn-md modalButton pull-right']);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            // // pending submission to regional office
-                            // echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 11],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
-                            //                               'confirm' => 'Are you sure you want to perform this action?',
-                            //                               'method' => 'post']]);
-                        }
-                    }
-                    else // NON HUC
-                    {
-                        if($qryReportStatus == 0  || $qryReportStatus == 7 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20)
-                        {
-                            if(!empty($recordOne_attached_ar_record_id) && ($grand_total_pb > $fivePercentTotalLguBudget))
-                            {
-                                if($grand_total_pb > $recTotalLguBudget)
-                                {
+                //                 }
+                //                 else
+                //                 {
+                //                     echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
+                //                 'class' => 'btn btn-info btn-md modalButton pull-right']);
+                //                 }
+                //             }
+                //         }
+                //         else
+                //         {
+                //             // // pending submission to regional office
+                //             // echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 11],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
+                //             //                               'confirm' => 'Are you sure you want to perform this action?',
+                //             //                               'method' => 'post']]);
+                //         }
+                //     }
+                //     else // NON HUC
+                //     {
+                //         if($qryReportStatus == 0  || $qryReportStatus == 7 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20)
+                //         {
+                //             if(!empty($recordOne_attached_ar_record_id) && ($grand_total_pb > $fivePercentTotalLguBudget))
+                //             {
+                //                 if($grand_total_pb > $recTotalLguBudget)
+                //                 {
 
-                                }
-                                else
-                                {
-                                    echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
-                                'class' => 'btn btn-info btn-md modalButton pull-right']);
-                                }
-                            }
-                        }
-                        else
-                        {  // pending submission to ppdo
+                //                 }
+                //                 else
+                //                 {
+                //                     echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
+                //                 'class' => 'btn btn-info btn-md modalButton pull-right']);
+                //                 }
+                //             }
+                //         }
+                //         else
+                //         {  // pending submission to ppdo
                            
-                            // echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 12],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
-                            //                               'confirm' => 'Are you sure you want to perform this action?',
-                            //                               'method' => 'post']]);
-                        }
-                    }
+                //             // echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 12],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
+                //             //                               'confirm' => 'Are you sure you want to perform this action?',
+                //             //                               'method' => 'post']]);
+                //         }
+                //     }
                    
-                }
-                else if(Yii::$app->user->can("gad_lgu_province_permission"))
-                {   
-                    // encoding process || returned by dilg region 
-                    if($qryReportStatus == 9 || $qryReportStatus == 6 || $qryReportStatus == 11 || $qryReportStatus == 21)
-                    {
-                        if(!empty($recordOne_attached_ar_record_id) && ($grand_total_pb > $fivePercentTotalLguBudget))
-                        {
-                            if($grand_total_pb > $recTotalLguBudget)
-                            {
+                // }
+                // else if(Yii::$app->user->can("gad_lgu_province_permission"))
+                // {   
+                //     // encoding process || returned by dilg region 
+                //     if($qryReportStatus == 9 || $qryReportStatus == 6 || $qryReportStatus == 11 || $qryReportStatus == 21)
+                //     {
+                //         if(!empty($recordOne_attached_ar_record_id) && ($grand_total_pb > $fivePercentTotalLguBudget))
+                //         {
+                //             if($grand_total_pb > $recTotalLguBudget)
+                //             {
 
-                            }
-                            else
-                            {
-                                echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
-                                'class' => 'btn btn-info btn-md modalButton pull-right']);
-                            }
-                        }
-                    }
-                    else
-                    {
+                //             }
+                //             else
+                //             {
+                //                 echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
+                //                 'class' => 'btn btn-info btn-md modalButton pull-right']);
+                //             }
+                //         }
+                //     }
+                //     else
+                //     {
                         
-                        // echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 11],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
-                        //                                   'confirm' => 'Are you sure you want to perform this action?',
-                        //                                   'method' => 'post']]);
-                    }
-                }
-                else if(Yii::$app->user->can("gad_ppdo_permission"))
-                {
-                    // for review || returned by dilg province
-                    if($qryReportStatus == 1 || $qryReportStatus == 5)
-                    {
-                        echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
-                        'class' => 'btn btn-info btn-md modalButton pull-right']);
-                    }
-                }
-                else if(Yii::$app->user->can("gad_province_permission"))
-                {
-                    // for review of dilg province || returned by dilg province
-                    if($qryReportStatus == 2 || $qryReportStatus == 17 || $qryReportStatus == 15)
-                    {
-                        echo Html::button('<span class="fa fa-paper-plane-o"></span> Process', ['value'=>Url::to($t),
-                        'class' => 'btn btn-info btn-md modalButton pull-right']);
-                    }
-                    else
-                    {
-                        echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 15],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
-                                                          'confirm' => 'Are you sure you want to perform this action?',
-                                                          'method' => 'post']]);
-                    }
-                }
-                else if(Yii::$app->user->can("gad_region_permission"))
-                {
-                    // for review of dilg region
-                    if($qryReportStatus == 3 || $qryReportStatus == 18 || $qryReportStatus == 14)
-                    {
-                        echo Html::button('<span class="fa fa-paper-plane-o"></span> Process', ['value'=>Url::to($t),
-                        'class' => 'btn btn-info btn-md modalButton pull-right']);
-                    }
-                    else
-                    {
-                        echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 14],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
-                                                          'confirm' => 'Are you sure you want to perform this action?',
-                                                          'method' => 'post']]);
-                    }
-                }
+                //         // echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 11],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
+                //         //                                   'confirm' => 'Are you sure you want to perform this action?',
+                //         //                                   'method' => 'post']]);
+                //     }
+                // }
+                // else if(Yii::$app->user->can("gad_ppdo_permission"))
+                // {
+                //     // for review || returned by dilg province
+                //     if($qryReportStatus == 1 || $qryReportStatus == 5)
+                //     {
+                //         echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
+                //         'class' => 'btn btn-info btn-md modalButton pull-right']);
+                //     }
+                // }
+                // else if(Yii::$app->user->can("gad_province_permission"))
+                // {
+                //     // for review of dilg province || returned by dilg province
+                //     if($qryReportStatus == 2 || $qryReportStatus == 17 || $qryReportStatus == 15)
+                //     {
+                //         echo Html::button('<span class="fa fa-paper-plane-o"></span> Process', ['value'=>Url::to($t),
+                //         'class' => 'btn btn-info btn-md modalButton pull-right']);
+                //     }
+                //     else
+                //     {
+                //         echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 15],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
+                //                                           'confirm' => 'Are you sure you want to perform this action?',
+                //                                           'method' => 'post']]);
+                //     }
+                // }
+                // else if(Yii::$app->user->can("gad_region_permission"))
+                // {
+                //     // for review of dilg region
+                //     if($qryReportStatus == 3 || $qryReportStatus == 18 || $qryReportStatus == 14)
+                //     {
+                //         echo Html::button('<span class="fa fa-paper-plane-o"></span> Process', ['value'=>Url::to($t),
+                //         'class' => 'btn btn-info btn-md modalButton pull-right']);
+                //     }
+                //     else
+                //     {
+                //         echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 14],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
+                //                                           'confirm' => 'Are you sure you want to perform this action?',
+                //                                           'method' => 'post']]);
+                //     }
+                // }
             ?>
         </div>
     </div>

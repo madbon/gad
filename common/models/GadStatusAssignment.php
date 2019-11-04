@@ -28,6 +28,7 @@ class GadStatusAssignment extends \yii\db\ActiveRecord
     {
         return [
             [['role','status'], 'required'],
+            [['description'],'safe'],
         ];
     }
 

@@ -30,10 +30,10 @@ class GadReportHistory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['remarks'], 'string'],
-            [['status'], 'integer'],
+            [['remarks'], 'safe'],
+            [['status'], 'required'],
             [['date_created', 'time_created','responsible_office_c','responsible_user_id'], 'safe'],
-            [['tuc'], 'string', 'max' => 100],
+            [['tuc'], 'safe'],
         ];
     }
 
@@ -46,7 +46,7 @@ class GadReportHistory extends \yii\db\ActiveRecord
             'id' => 'ID',
             'remarks' => 'Remarks',
             'tuc' => 'Tuc',
-            'status' => 'Status',
+            'status' => 'Action',
             'date_created' => 'Date Created',
             'time_created' => 'Time Created',
         ];

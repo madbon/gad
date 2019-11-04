@@ -18,7 +18,7 @@ class GadStatusSearch extends GadStatus
     {
         return [
             [['id', 'code'], 'integer'],
-            [['title'], 'safe'],
+            [['title','future_tense'], 'safe'],
         ];
     }
 
