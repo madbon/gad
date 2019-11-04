@@ -11,10 +11,6 @@ $this->title = 'Status Assignments';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="gad-status-assignment-index">
-
-    <h1><?php // Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
         <?= Html::a('Create Status Assignment', ['create'], ['class' => 'btn btn-success']) ?>
     </p>

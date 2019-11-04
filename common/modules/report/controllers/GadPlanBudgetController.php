@@ -125,6 +125,7 @@ class GadPlanBudgetController extends ControllerAudit
 
         $qry = (new \yii\db\Query())
         ->select([
+            'OFF.OFFICE_M as office_name',
             'PRV.province_m as province_name',
             'CTC.citymun_m as citymun_name',
             'REC.status as record_status',
@@ -140,11 +141,14 @@ class GadPlanBudgetController extends ControllerAudit
         ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = REC.region_c')
         ->leftJoin(['PRV' => 'tblprovince'], 'PRV.province_c = REC.province_c')
         ->leftJoin(['CTC' => 'tblcitymun'], 'CTC.citymun_c = REC.citymun_c AND CTC.province_c = REC.province_c')
+        ->leftJoin(['OFF' => 'tbloffice'], 'OFF.OFFICE_C = REC.office_c')
         ->where(['REC.report_type_id' => 2])
         ->andWhere($condition)
+        ->andWhere(['REC.is_archive' => 0])
         // ->andWhere($condition3)
         ->andFilterWhere($condition2)
-        ->andWhere(['REC.is_archive' => 0])
+        ->andFilterWhere(['REC.id' => $recordOne_attached_ar_record_id])
+        
         // ->andFilterWhere(['REC.id' => ])
         ->groupBy(['REC.id'])
         ->orderBy(['REC.id' => SORT_DESC])

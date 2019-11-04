@@ -59,6 +59,34 @@ $this->title = $index_title;
         font-size:12px;
         font-style: italic;
     }
+    .btn-block
+    {
+        margin-bottom:5px;
+    }
+    .zui-wrapper {
+    	position: relative;
+	}
+	.zui-scroller {
+	    margin-left: 0px;
+	    overflow-x: scroll;
+	    overflow-y: hidden;
+
+	    padding-bottom: 5px;
+	    /*height: 500px;*/
+	    /*width: 300px;*/
+	}
+	.zui-table .zui-sticky-col {
+	    border-left: solid 1px #DDEFEF;
+	    border-right: solid 1px black;
+	    left: 0;
+	    /*margin-left: -80px;*/
+	    /*height: 100%;*/
+	    position: absolute;
+	    top: auto;
+	    width: 300px;
+	    background-color: white;
+	    font-size: 12px;
+	}
 </style>
 <div class="gad-record-index">
 
@@ -72,31 +100,28 @@ $this->title = $index_title;
         
         </div>
         <div class="cust-panel-body">
+        <br/>
+            <?php
+                // $function = new DefaultController();
+                echo $this->render('_search', ['model' => $searchModel, 'region' => $region,'province' => $province,'citymun' => $citymun,'report_type' => $report_type,'statusList' => $statusList,'arrayYear' => $arrayYear]);
+            ?>
+            <?php
+                if(Yii::$app->user->can("gad_archive_filtered_result"))
+                {
+                    echo Html::a('<i class="fa fa-archive"></i> &nbsp;Archive all filtered result', 
+                    [
+                        '/report/gad-record/archive','report_type' => $report_type,'record_id' => ""
+                    ], 
+                    [
+                        'class' => 'btn btn-md btn-warning',
+                        'data' => [
+                            'confirm' => 'Are you sure you want to perform this action?',
+                            'method' => 'post'
+                            ]
+                    ]);
+                }
+            ?>
             <div class="table-responsive">
-            <br/>
-                <?php
-                    echo $this->render('_search', ['model' => $searchModel, 'region' => $region,'province' => $province,'citymun' => $citymun,'report_type' => $report_type,'statusList' => $statusList,'arrayYear' => $arrayYear]);
-                ?>
-                <?php
-                    if(Yii::$app->user->can("gad_submit_all_to_central"))
-                    {
-                        // echo Html::a('<i class="glyphicon glyphicon-send"></i> Submit All Endorsed Reports to Central Office',
-                        //   [
-                        //     'multiple-submit','report_type' => $report_type
-
-                        //   ],
-                        //   [
-                        //     'class' => 'btn btn-primary btn-sm pull-right',
-                        //     'id'=>"submitAll",
-                        //     'style' => ' margin-top:5px;',
-                        //     'data' => [
-                        //         'confirm' => 'Are you sure you want Submit All Endorsed Reports to Central Office?',
-                        //         'method' => 'post',
-                        //     ],
-                        //   ]);
-                    }
-                ?>
-                <br/>
                 <?php
                     if(Yii::$app->user->can("gad_lgu_permission"))
                     {
@@ -195,7 +220,7 @@ $this->title = $index_title;
                                 ],
 
                                 ['class' => 'yii\grid\ActionColumn',
-                                    'template' => '{view} {track} {delete}',
+                                    'template' => '{view} {track} {delete} {archive}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
                                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
@@ -210,7 +235,7 @@ $this->title = $index_title;
                                             return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
                                         },
                                         'delete'=>function ($url, $model) {
-                                            if($model['record_status'] == 0 || $model['record_status'] == 6 || $model['record_status'] == 7 || $model['record_status'] == 8 || $model['record_status'] == 11 || $model['record_status'] == 16 || $model['record_status'] == 20)
+                                            if(in_array($model['record_status'],DefaultController::HasStatus("delete_report_for_lgu")) || in_array($model['record_status'],DefaultController::HasStatus("delete_report_for_huc")))
                                             {
                                                 return Html::a('<i class="glyphicon glyphicon-trash"></i> Delete', 
                                                 [
@@ -227,7 +252,22 @@ $this->title = $index_title;
                                             {
                                                 return false;
                                             }
-                                            
+                                        },
+                                        'archive' => function($url,$model) use ($urlReport,$report_type){
+                                            if(in_array($model['record_status'],DefaultController::HasStatus("archive_report_for_lgu")) || in_array($model['record_status'],DefaultController::HasStatus("archive_report_for_huc")))
+                                            {
+                                                return Html::a('<i class="fa fa-archive"></i> &nbsp;Archive ', 
+                                                [
+                                                '/report/gad-record/archive','report_type' => $report_type,'record_id' => $model['record_id']
+                                                ], 
+                                                [
+                                                'class' => 'btn btn-xs btn-warning pull-right',
+                                                'data' => [
+                                                    'confirm' => 'Are you sure you want to perform this action?',
+                                                    'method' => 'post'
+                                                    ]
+                                                ]);
+                                            }
                                         },
                                     ],
                                 ],
@@ -320,7 +360,7 @@ $this->title = $index_title;
                                 ],
 
                                 ['class' => 'yii\grid\ActionColumn',
-                                    'template' => Yii::$app->user->can("gad_delete_plan_budget") ? '{view} {track} {delete} ' : '{view} {track}',
+                                    'template' => Yii::$app->user->can("gad_delete_plan_budget") ? '{view} {track} {delete} {archive}' : '{view} {track} {archive}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
                                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
@@ -335,7 +375,7 @@ $this->title = $index_title;
                                             return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
                                         },
                                         'delete'=>function ($url, $model) {
-                                            if($model['record_status'] == 6 || $model['record_status'] == 9 || $model['record_status'] == 11 || $model['record_status'] == 21)
+                                            if(in_array($model['record_status'],DefaultController::HasStatus("delete_report_for_lgu_province")))
                                             {
                                                 return Html::a('<i class="glyphicon glyphicon-trash"></i> Delete', 
                                             [
@@ -351,6 +391,22 @@ $this->title = $index_title;
                                             else
                                             {
                                                 return false;
+                                            }
+                                        },
+                                        'archive' => function($url,$model) use ($urlReport,$report_type){
+                                            if(in_array($model['record_status'],DefaultController::HasStatus("archive_report_for_lgu_province")))
+                                            {
+                                                return Html::a('<i class="fa fa-archive"></i> &nbsp;Archive ', 
+                                                [
+                                                '/report/gad-record/archive','report_type' => $report_type,'record_id' => $model['record_id']
+                                                ], 
+                                                [
+                                                'class' => 'btn btn-xs btn-warning pull-right',
+                                                'data' => [
+                                                    'confirm' => 'Are you sure you want to perform this action?',
+                                                    'method' => 'post'
+                                                    ]
+                                                ]);
                                             }
                                         },
                                     ],
@@ -452,22 +508,38 @@ $this->title = $index_title;
                                 ],
 
                                 ['class' => 'yii\grid\ActionColumn',
-                                    'template' => '{view} {track}',
+                                    'template' => '{view} {track} {archive}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
-                                            if($model['record_status'] == 3 || $model['record_status'] == 10 || $model['record_status'] == 14 || $model['record_status'] == 18)
+                                            if(in_array($model['record_status'],DefaultController::HasStatus("view_report_for_region")))
                                             {
                                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
                                                     'ruc' => $model['record_tuc'], 
                                                     'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                     'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                                 ], 
-                                                    ['class'=>'btn btn-info btn-xs']);
+                                                    ['class'=>'btn btn-info btn-xs btn-block']);
                                             }
                                         },
                                         'track' => function($url, $model) use ($urlReport,$report_type){
                                             $url_track = '@web/report/gad-record/track?ruc='.$model['record_tuc'];
                                             return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
+                                        },
+                                        'archive' => function($url,$model) use ($urlReport,$report_type){
+                                            if(in_array($model['record_status'],DefaultController::HasStatus("archive_report_for_region")))
+                                            {
+                                                return Html::a('<i class="fa fa-archive"></i> &nbsp;Archive ', 
+                                                [
+                                                '/report/gad-record/archive','report_type' => $report_type,'record_id' => $model['record_id']
+                                                ], 
+                                                [
+                                                'class' => 'btn btn-xs btn-warning',
+                                                'data' => [
+                                                    'confirm' => 'Are you sure you want to perform this action?',
+                                                    'method' => 'post'
+                                                    ]
+                                                ]);
+                                            }
                                         },
                                     ],
                                 ],
@@ -564,17 +636,17 @@ $this->title = $index_title;
                                 ],
 
                                 ['class' => 'yii\grid\ActionColumn',
-                                    'template' => '{view} {track}',
+                                    'template' => '{view} {track} {archive}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
-                                            if($model['record_status'] == 1 || $model['record_status'] == 4 || $model['record_status'] == 5 || $model['record_status'] == 13 ||  $model['record_status'] == 19)
+                                            if(in_array($model['record_status'],DefaultController::HasStatus("view_report_for_ppdo")))
                                             {
                                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
                                                     'ruc' => $model['record_tuc'], 
                                                     'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                     'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                                 ], 
-                                                    ['class'=>'btn btn-info btn-xs']);
+                                                    ['class'=>'btn btn-info btn-xs btn-block']);
                                             }
                                             else
                                             {
@@ -585,6 +657,22 @@ $this->title = $index_title;
                                         'track' => function($url, $model) use ($urlReport,$report_type){
                                             $url_track = '@web/report/gad-record/track?ruc='.$model['record_tuc'];
                                             return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
+                                        },
+                                        'archive' => function($url,$model) use ($urlReport,$report_type){
+                                            if(in_array($model['record_status'],DefaultController::HasStatus("archive_report_for_ppdo")))
+                                            {
+                                                return Html::a('<i class="fa fa-archive"></i> &nbsp;Archive ', 
+                                                [
+                                                '/report/gad-record/archive','report_type' => $report_type,'record_id' => $model['record_id']
+                                                ], 
+                                                [
+                                                'class' => 'btn btn-xs btn-warning pull-right',
+                                                'data' => [
+                                                    'confirm' => 'Are you sure you want to perform this action?',
+                                                    'method' => 'post'
+                                                    ]
+                                                ]);
+                                            }
                                         },
                                     ],
                                 ],
@@ -681,17 +769,17 @@ $this->title = $index_title;
                                 ],
 
                                 ['class' => 'yii\grid\ActionColumn',
-                                    'template' => '{view} {track}',
+                                    'template' => '{view} {track} {archive}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
-                                            if($model['record_status'] == 2 || $model['record_status'] == 4 || $model['record_status'] == 15 || $model['record_status'] == 17)
+                                            if(in_array($model['record_status'],DefaultController::HasStatus("view_report_for_province")))
                                             {
                                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
                                                     'ruc' => $model['record_tuc'], 
                                                     'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                     'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                                 ], 
-                                                    ['class'=>'btn btn-info btn-xs']);
+                                                    ['class'=>'btn btn-info btn-xs btn-block']);
                                             }
                                             else
                                             {
@@ -702,12 +790,28 @@ $this->title = $index_title;
                                             $url_track = '@web/report/gad-record/track?ruc='.$model['record_tuc'];
                                             return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
                                         },
+                                        'archive' => function($url,$model) use ($urlReport,$report_type){
+                                            if(in_array($model['record_status'],DefaultController::HasStatus("archive_report_for_province")))
+                                            {
+                                                return Html::a('<i class="fa fa-archive"></i> &nbsp;Archive ', 
+                                                [
+                                                '/report/gad-record/archive','report_type' => $report_type,'record_id' => $model['record_id']
+                                                ], 
+                                                [
+                                                'class' => 'btn btn-xs btn-warning pull-right',
+                                                'data' => [
+                                                    'confirm' => 'Are you sure you want to perform this action?',
+                                                    'method' => 'post'
+                                                    ]
+                                                ]);
+                                            }
+                                        },
                                     ],
                                 ],
                             ],
                         ]);
                     }
-                    else
+                    else if(Yii::$app->user->can("SuperAdministrator") || Yii::$app->user->can("RegionalAdministrator") || Yii::$app->user->can("Administrator") || Yii::$app->user->can("gad_admin") || Yii::$app->user->can("gad_central"))
                     {
                         echo GridView::widget([
                             'dataProvider' => $dataProvider,
@@ -805,17 +909,17 @@ $this->title = $index_title;
                                 ],
 
                                 ['class' => 'yii\grid\ActionColumn',
-                                    'template' => '{view} {track}',
+                                    'template' => '{view} {track} {archive}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
-                                            if($model['record_status'] == 4 || $model['record_status'] == 10)
+                                            if(in_array($model['record_status'],DefaultController::HasStatus("gad_all_status")))
                                             {
                                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
                                                     'ruc' => $model['record_tuc'], 
                                                     'onstep' => $report_type == "accomplishment" ? 'to_create_ar' : 'to_create_gpb',
                                                     'tocreate'=> $report_type == "accomplishment" ? 'accomp_report' : 'gad_plan_budget',
                                                 ], 
-                                                    ['class'=>'btn btn-info btn-xs']);
+                                                    ['class'=>'btn btn-info btn-xs btn-block']);
                                             }
                                             else
                                             {
@@ -826,15 +930,35 @@ $this->title = $index_title;
                                             $url_track = '@web/report/gad-record/track?ruc='.$model['record_tuc'];
                                             return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
                                         },
+                                        'archive' => function($url,$model) use ($urlReport,$report_type){
+                                            return Html::a('<i class="fa fa-archive"></i> &nbsp;Archive ', 
+                                            [
+                                            '/report/gad-record/archive','report_type' => $report_type,'record_id' => $model['record_id']
+                                            ], 
+                                            [
+                                            'class' => 'btn btn-xs btn-warning pull-right',
+                                            'data' => [
+                                                'confirm' => 'Are you sure you want to perform this action?',
+                                                'method' => 'post'
+                                                ]
+                                            ]);
+                                        },
                                     ],
                                 ],
                             ],
                         ]);
                     }
+                    else
+                    {
+                        echo "No Role";
+                    }
                 ?>
                 <?php
                     $this->registerJs("
                         $('table.table').addClass('table-hover');
+                        $('.table-responsive').addClass('zui-wrapper');
+                        $('.grid-view').addClass('zui-scroller dragscroll');
+                        $('table.table').addClass('zui-table');
                     ");
                 ?>
             </div>

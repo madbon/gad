@@ -4,10 +4,13 @@ use yii\helpers\Html;
 use common\modules\report\controllers\GadAccomplishmentReportController;
 ?>
 <h3 style="padding-top: 0; margin-top: 0;">Accomplishment Report(s)</h3>
+<div class="table-responsive" style="overflow-y: scroll; max-height: 300px;">
 <table class="table table-responsive table-hover">
 	<thead>
 		<tr>
-			<th>CITY/MUNICIPALITY</th>
+			<th>OFFICE</th>
+			<th>PROVINCE</th>
+			<th>CITY / MUNICIPALITY</th>
 			<th>TOTAL LGU BUDGET</th>
 			<th>TOTAL GAD EXPENDITURE</th>
 			<th>YEAR</th>
@@ -49,8 +52,10 @@ use common\modules\report\controllers\GadAccomplishmentReportController;
 
 				echo "
 				<tr>
+					<td>".($row['office_name'])."</td>
+					<td>".($row['province_name'])."</td>
 					<td>".($row['citymun_name'])."</td>
-					<td>".($row['total_lgu_budget'])."</td>
+					<td> Php ".(number_format($row['total_lgu_budget'],2))."</td>
 					<td>".(GadAccomplishmentReportController::ComputeAccomplishment($row['ruc']))."</td>
 					<td>".($row['year'])."</td>
 					<td>".($row['prepared_by'])."</td>
@@ -63,3 +68,4 @@ use common\modules\report\controllers\GadAccomplishmentReportController;
 		?>
 	</tbody>
 </table>
+</div>
