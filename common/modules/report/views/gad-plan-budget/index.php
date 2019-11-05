@@ -260,8 +260,18 @@ $this->title = "Annual GAD Plan and Budget";
             <?php
                 // $t = '@web/report/gad-plan-budget/form-change-report-status?qryReportStatus='.$qryReportStatus."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."";
                 $t = '@web/report/report-history/create?qryReportStatus='.$qryReportStatus."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."";
-                echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
+                if(!empty($recordOne_attached_ar_record_id) && ($grand_total_pb > $fivePercentTotalLguBudget))
+                {
+                    if($grand_total_pb > $recTotalLguBudget)
+                    {
+                        
+                    }
+                    else
+                    {
+                        echo Html::button('Process <span class="glyphicon glyphicon-share-alt"></span> ', ['value'=>Url::to($t),
                                 'class' => 'btn btn-info btn-md modalButton pull-right']);
+                    }
+                }
 
                 // if(Yii::$app->user->can("gad_lgu_permission"))
                 // {

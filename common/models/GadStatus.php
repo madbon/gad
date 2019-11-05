@@ -29,7 +29,7 @@ class GadStatus extends \yii\db\ActiveRecord
         return [
             [['code','title'], 'required'],
             [['code'], 'integer'],
-            [['future_tense'], 'safe'],
+            [['future_tense','class'], 'safe'],
         ];
     }
 

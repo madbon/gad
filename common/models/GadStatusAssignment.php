@@ -28,7 +28,7 @@ class GadStatusAssignment extends \yii\db\ActiveRecord
     {
         return [
             [['role','status'], 'required'],
-            [['description'],'safe'],
+            [['description','rbac_role'],'safe'],
         ];
     }
 
@@ -41,6 +41,7 @@ class GadStatusAssignment extends \yii\db\ActiveRecord
             'id' => 'ID',
             'role' => 'Role',
             'status' => 'Status',
+            'rbac_role' => 'RBAC Role',
         ];
     }
 }

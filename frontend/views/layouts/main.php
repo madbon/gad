@@ -27,7 +27,10 @@ AppAsset::register($this);
     <?php $this->head() ?>
 </head>
 <style>
-
+.select2-container--krajee .select2-selection--single .select2-selection__rendered
+{
+    width: 100%;
+}
 .cust-panel .cust-panel-body
 {
     background-color: white;

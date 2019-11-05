@@ -23,6 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             // 'id',
             'role',
+            'rbac_role',
             'description',
             // 'status',
 

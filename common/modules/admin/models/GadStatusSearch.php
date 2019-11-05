@@ -62,7 +62,8 @@ class GadStatusSearch extends GadStatus
             'code' => $this->code,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title]);
+        $query->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'future_tense', $this->future_tense]);
 
         return $dataProvider;
     }

@@ -65,11 +65,16 @@ class ReportHistoryController extends Controller
      */
     public function actionCreate($qryReportStatus,$ruc,$onstep,$tocreate)
     {
-        $model = new GadReportHistory();
+        $arrayRole = [];
+        $arrayRole = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id));
 
+        $model = new GadReportHistory();
         $model->tuc = $ruc;
         $model->status = $qryReportStatus;
-        $qryAssignedStatus = \common\models\GadStatusAssignment::find()->select(['status'])->where(['role' => $qryReportStatus])->one();
+        $qryAssignedStatus = \common\models\GadStatusAssignment::find()
+        ->select(['status'])
+        ->where(['role' => $qryReportStatus,'rbac_role' => $arrayRole])
+        ->one();
 
         if(empty($qryAssignedStatus->status))
         {
@@ -92,6 +97,7 @@ class ReportHistoryController extends Controller
 
             if ($model->load(Yii::$app->request->post())) {
                 GadPlanBudgetController::ChangeReportStatus($model->status,$ruc);
+                $model->save();
                 \Yii::$app->getSession()->setFlash('success', "Action has been performed");
                 return $this->redirect(['/report/gad-plan-budget/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate]);
             }

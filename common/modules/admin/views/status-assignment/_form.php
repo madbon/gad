@@ -15,6 +15,8 @@ use kartik\select2\Select2;
 
     <?= $form->field($model, 'role')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'rbac_role')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'description')->textInput() ?>
 
     <?php
