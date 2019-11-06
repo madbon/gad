@@ -13,6 +13,7 @@ class m191105_070410_truncate_status_assignment_tables extends Migration
     public function safeUp()
     {
         $this->addColumn('gad_status_assignment', 'rbac_role', 'VARCHAR(150) NULL AFTER `role` ');
+        $this->addColumn('gad_status_assignment', 'status_code', 'INT(11) NULL AFTER `rbac_role` ');
         $this->addColumn('gad_status', 'class', 'VARCHAR(250) NULL AFTER `future_tense` ');
 
         Yii::$app->db->createCommand()->truncateTable('gad_status')->execute();  

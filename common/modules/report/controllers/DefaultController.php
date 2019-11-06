@@ -34,6 +34,26 @@ use common\models\GadStatusAssignment;
  */
 class DefaultController extends ControllerAudit
 {
+    public function Can($param)
+    {
+        $arrayRole = [];
+        $arrayRole = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id));
+        $tags_status = GadStatusAssignment::find()
+            ->select(['status'])
+            ->where(['role' => $param])
+            ->andFilterWhere(['rbac_role' => $arrayRole])
+            ->all();
+        $array = [];
+        foreach ($tags_status as $key => $row) {
+            $array[] = $row['status'];
+        }
+
+        $string = implode(",",$array);
+        $array_val = explode(",",$string);
+        
+        return $array_val;
+    }
+
     public function HasStatus($param)
     {
         $tags_status = GadStatusAssignment::find()->select(['status'])->where(['role' => $param])->all();
@@ -352,10 +372,8 @@ class DefaultController extends ControllerAudit
     public function GetStatusByRuc($ruc)
     {
         $model = GadRecord::find()->where(['tuc' => $ruc])->one();
-        return !empty($model->status) ? $model->status : "";
-
-        // \Yii::$app->getSession()->setFlash('success', "Data has been deleted");
-        // return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
+        $sam =  $model->status;
+        return $sam;
     }
 
     public function actionDeletePlanBudgetGenderIssue($plan_id)
@@ -368,6 +386,19 @@ class DefaultController extends ControllerAudit
        {
             return 0; // not
        }
+    }
+
+    public  function DisplayStatusWithCode($value)
+    {
+        $returnValue = "";
+        $query  = \common\models\GadStatus::find()->where(['code' => $value])->one();
+        $title  = !empty($query->title) ? $query->title : "";
+        $class  = !empty($query->class) ? $query->class : '';
+        $code   = !empty($query->code) ? $query->code : "";
+
+        $returnValue = "<span class='".($class)."'>".$code." - ".$title."</span>";
+        // print_r($class); exit;
+        return $returnValue;
     }
 
     public  function DisplayStatus($value)

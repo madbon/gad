@@ -736,6 +736,7 @@ class GadPlanBudgetController extends ControllerAudit
             }
         }
 
+        // print_r($ruc); exit;
         return $this->renderAjax('_view_other_details_plan',[
             'model' => $model,
             'modelUpdate' => $modelUpdate,

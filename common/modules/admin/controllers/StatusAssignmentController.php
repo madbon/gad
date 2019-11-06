@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use common\models\AuthItem;
 
 /**
  * StatusAssignmentController implements the CRUD actions for GadStatusAssignment model.
@@ -66,7 +67,11 @@ class StatusAssignmentController extends Controller
     public function actionCreate()
     {
         $model = new GadStatusAssignment();
-        $tags_status = ArrayHelper::map(\common\models\GadStatus::find()->all(), 'code', 'title');
+        $tags_status = ArrayHelper::map(\common\models\GadStatus::find()
+            ->select(['code','CONCAT(code," - ",title," - ",future_tense) as title'])
+            ->orderBy(['code' => SORT_ASC])
+            ->all(), 'code', 'title');
+        $auth_item = ArrayHelper::map(\common\models\AuthItem::find()->where(['type' => 1])->all(), 'name', 'name');
 
         if ($model->load(Yii::$app->request->post())) {
             $model->status = implode(",",$model->status);
@@ -78,6 +83,7 @@ class StatusAssignmentController extends Controller
         return $this->render('create', [
             'model' => $model,
             'tags_status' => $tags_status,
+            'auth_item' => $auth_item
         ]);
     }
 
@@ -91,7 +97,11 @@ class StatusAssignmentController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $tags_status = ArrayHelper::map(\common\models\GadStatus::find()->all(), 'code', 'title');
+        $tags_status = ArrayHelper::map(\common\models\GadStatus::find()
+            ->select(['code','CONCAT(code," - ",title," - ",future_tense) as title'])
+            ->orderBy(['code' => SORT_ASC])
+            ->all(), 'code', 'title');
+        $auth_item = ArrayHelper::map(\common\models\AuthItem::find()->where(['type' => 1])->all(), 'name', 'name');
         $model->status = explode(",",$model->status);
         if ($model->load(Yii::$app->request->post())) {
             $model->status = implode(",",$model->status);
@@ -102,7 +112,8 @@ class StatusAssignmentController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'tags_status' => $tags_status
+            'tags_status' => $tags_status,
+            'auth_item' => $auth_item
         ]);
     }
 

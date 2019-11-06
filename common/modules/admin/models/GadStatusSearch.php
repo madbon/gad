@@ -63,7 +63,8 @@ class GadStatusSearch extends GadStatus
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'future_tense', $this->future_tense]);
+            ->andFilterWhere(['like', 'future_tense', $this->future_tense])
+            ->orderBy(['code' => SORT_DESC]);
 
         return $dataProvider;
     }

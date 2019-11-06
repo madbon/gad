@@ -367,7 +367,14 @@ class GadRecordController extends ControllerAudit
             $model->citymun_c = NULL;
             $model->isdilg = 0;
             $model->office_c = 2;
-            $model->status = 9;
+            if($tocreate == "gad_plan_budget")
+            {
+                $model->status = 9;
+            }
+            else // AR
+            {
+                $model->status = 37;
+            }
         }
         else if(Yii::$app->user->can("gad_lgu_permission"))
         {
@@ -375,12 +382,26 @@ class GadRecordController extends ControllerAudit
             $model->isdilg = 0;
             if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS"){ 
                 $model->office_c = 4; //city office
-                $model->status = 8; // encoding HUC
+                if($tocreate == "gad_plan_budget")
+                {
+                    $model->status = 8; 
+                }
+                else // AR
+                {
+                    $model->status = 35; 
+                }
             }
-            else
+            else // CC/M
             {
                 $model->office_c = 3;
-                $model->status = 0; // encoding non HUC
+                if($tocreate == "gad_plan_budget")
+                {
+                    $model->status = 0; // encoding non HUC
+                }
+                else // AR
+                {
+                    $model->status = 36; 
+                }
             }
         }
         
@@ -404,7 +425,6 @@ class GadRecordController extends ControllerAudit
             }
             else
             {
-
                 $miliseconds = round(microtime(true) * 1000);
                 $hash =  md5(date('Y-m-d')."-".date("h-i-sa")."-".$miliseconds);
                 $model->tuc = $hash;
@@ -412,16 +432,38 @@ class GadRecordController extends ControllerAudit
                 // Storing History after Creating GPB
                 if(Yii::$app->user->can("gad_lgu_province_permission"))
                 {
-                    DefaultController::actionCreateReportHistory("Default Remarks : Encoded Primary Information",9,$hash,"","");
+                    if($tocreate == "gad_plan_budget")
+                    {
+                        DefaultController::actionCreateReportHistory("Default Remarks : Encoded Primary Information",9,$hash,"","");
+                    }
+                    else
+                    {
+                        DefaultController::actionCreateReportHistory("Default Remarks : Encoded Primary Information",37,$hash,"","");
+                    }
                 }
                 else if(Yii::$app->user->can("gad_lgu_permission"))
                 {
                     if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS"){ 
-                        DefaultController::actionCreateReportHistory("Default Remarks : Encoded Primary Information",8,$hash,"","");
+                        
+                        if($tocreate == "gad_plan_budget")
+                        {
+                            DefaultController::actionCreateReportHistory("Default Remarks : Encoded Primary Information",8,$hash,"","");
+                        }
+                        else
+                        {
+                            DefaultController::actionCreateReportHistory("Default Remarks : Encoded Primary Information",35,$hash,"","");
+                        }
                     }
                     else
                     {
-                        DefaultController::actionCreateReportHistory("Default Remarks : Encoded Primary Information",0,$hash,"","");
+                        if($tocreate == "gad_plan_budget")
+                        {
+                            DefaultController::actionCreateReportHistory("Default Remarks : Encoded Primary Information",0,$hash,"","");
+                        }
+                        else
+                        {
+                            DefaultController::actionCreateReportHistory("Default Remarks : Encoded Primary Information",36,$hash,"","");
+                        }
                     }
                 }
             }

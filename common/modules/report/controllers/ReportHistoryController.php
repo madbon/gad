@@ -73,7 +73,7 @@ class ReportHistoryController extends Controller
         $model->status = $qryReportStatus;
         $qryAssignedStatus = \common\models\GadStatusAssignment::find()
         ->select(['status'])
-        ->where(['role' => $qryReportStatus,'rbac_role' => $arrayRole])
+        ->where(['status_code' => $qryReportStatus,'rbac_role' => $arrayRole])
         ->one();
 
         if(empty($qryAssignedStatus->status))

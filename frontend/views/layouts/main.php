@@ -151,6 +151,7 @@ nav.navbar-default div.navbar-header a
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
 }
+
 /*.clearfix
 {
     min-height: 1000px;

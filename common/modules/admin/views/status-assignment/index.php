@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use common\modules\report\controllers\DefaultController;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\modules\admin\models\GadStatusAssignmentSearch */
@@ -18,12 +19,22 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'options' => ['class' => 'table-responsive'],
         'columns' => [
             // ['class' => 'yii\grid\SerialColumn'],
 
             // 'id',
             'role',
             'rbac_role',
+            // 'status_code',
+            [
+                'attribute' => 'status_code',
+                'format' => 'raw',
+                'value' => function($model)
+                {
+                    return DefaultController::DisplayStatusWithCode($model->status_code);
+                }
+            ],
             'description',
             // 'status',
 

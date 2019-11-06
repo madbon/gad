@@ -22,7 +22,7 @@ $this->title = "Annual GAD Accomplishment Reports";
         </div> -->
         <div class="cust-panel-body">
             <div class="cust-panel-title">
-                <p class="sub-title"><span class="glyphicon glyphicon-info-sign"></span> Primary Information </p>
+                <p class="sub-title"><span class="glyphicon glyphicon-info-sign"></span> Primary Information <?= DefaultController::DisplayStatusByTuc($ruc); ?></p>
             </div>
             <div class="cust-panel-inner-body">
                 <table class="table table-responsive table-hover table-bordered basic-information">
@@ -65,7 +65,7 @@ $this->title = "Annual GAD Accomplishment Reports";
         <span class="caret"></span></button>
         <ul class="dropdown-menu">
             <?php if(Yii::$app->user->can("gad_create_accomplishment")){ ?>
-                <?php if($qryReportStatus == 0 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21){ ?>
+                <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_ar"))){ ?>
                     <li>
                         <a href="#" id="btn-encode">
                             <span class="glyphicon glyphicon-pencil" style='color:blue;'></span> Encode Accomplishment Report
@@ -130,7 +130,7 @@ $this->title = "Annual GAD Accomplishment Reports";
     ?>
 
     <?php if(Yii::$app->user->can("gad_create_accomplishment")){ ?>
-        <?php if($qryReportStatus == 0 || $qryReportStatus == 7 || $qryReportStatus == 8 || $qryReportStatus == 9 || $qryReportStatus == 11 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20 || $qryReportStatus == 21){ ?>
+        <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_ar"))){ ?>
             <?php if(Yii::$app->session["encode_gender_ar"] == "open") {  ?>
                 <div class="cust-panel input-form" id="input-form-gender">
             <?php }else{ ?>
@@ -608,7 +608,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                         
                         <tr class="ar_attributed_program">
                             <td colspan="5">ATTRIBUTED PROGRAMS 
-                                <?php if($qryReportStatus == 8 || $qryReportStatus == 10 || $qryReportStatus == 6 || $qryReportStatus == 0){ ?>
+                                <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_ar"))){ ?>
                                     <button id="btnEncodeAP" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-pencil"></span> Encode
                                     </button>
                                 </td><?php } ?>
@@ -640,7 +640,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                             ");
                         ?>
 
-                        <?php if($qryReportStatus == 8 || $qryReportStatus == 10 || $qryReportStatus == 6 || $qryReportStatus == 0){ ?>
+                        <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_ar"))){ ?>
                             <?php if(Yii::$app->session["encode_attribute_ar"] == "open") {  ?>
                                 <tr class="attributed_program_form" id="attributed_program_anchor">
                             <?php }else{ ?>

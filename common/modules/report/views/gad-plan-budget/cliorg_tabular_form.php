@@ -1,4 +1,6 @@
-
+<?php
+use common\modules\report\controllers\DefaultController;
+?>
 <?php
     $sup_data_value = "";
     $source_value = "";
@@ -27,7 +29,7 @@
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
         'enableComment' => Yii::$app->user->can('gad_comment_gender_issue') ? 'true' : 'false',
-        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && ($plan["record_status"] == 0 || $plan["record_status"] == 6 || $plan["record_status"] == 7 || $plan["record_status"] == 8 || $plan["record_status"] == 9 || $plan["record_status"] == 11 || $plan["record_status"] == 12 || $plan["record_status"] == 16 || $plan["record_status"] == 20 || $plan["record_status"] == 21) ? 'true' : 'false',
+        'enableEdit' => in_array($plan['record_status'],DefaultController::Can("edit_plan")) ? "true" : "false",
         'enableViewComment' => 'true',
         'countRow' => $countRow,
         'columnNumber' => 1,
@@ -48,7 +50,7 @@
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
         'enableComment' => Yii::$app->user->can('gad_comment_objective') ? 'true' : 'false',
-        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && ($plan["record_status"] == 0 || $plan["record_status"] == 6 || $plan["record_status"] == 7 || $plan["record_status"] == 8 || $plan["record_status"] == 9 || $plan["record_status"] == 11 || $plan["record_status"] == 12 || $plan["record_status"] == 16 || $plan["record_status"] == 20 || $plan["record_status"] == 21) ? 'true' : 'false',
+        'enableEdit' => in_array($plan['record_status'],DefaultController::Can("edit_plan")) ? "true" : "false",
         'enableViewComment' => 'true',
         'countRow' => $countRow,
         'columnNumber' => 2,
@@ -70,7 +72,7 @@
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
         'enableComment' => Yii::$app->user->can('gad_comment_relevant') ? 'true' : 'false',
-        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && ($plan["record_status"] == 0 || $plan["record_status"] == 6 || $plan["record_status"] == 7 || $plan["record_status"] == 8 || $plan["record_status"] == 9 || $plan["record_status"] == 11 || $plan["record_status"] == 12 || $plan["record_status"] == 16 || $plan["record_status"] == 20 || $plan["record_status"] == 21) ? 'true' : 'false',
+        'enableEdit' => in_array($plan['record_status'],DefaultController::Can("edit_plan")) ? "true" : "false",
         'enableViewComment' => 'true',
         'countRow' => $countRow,
         'columnNumber' => 3
@@ -92,7 +94,7 @@
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
         'enableComment' => Yii::$app->user->can('gad_comment_activity') ? 'true' : 'false',
-        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && ($plan["record_status"] == 0 || $plan["record_status"] == 6 || $plan["record_status"] == 7 || $plan["record_status"] == 8 || $plan["record_status"] == 9 || $plan["record_status"] == 11 || $plan["record_status"] == 12 || $plan["record_status"] == 16 || $plan["record_status"] == 20 || $plan["record_status"] == 21) ? 'true' : 'false',
+        'enableEdit' => in_array($plan['record_status'],DefaultController::Can("edit_plan")) ? "true" : "false",
         'enableViewComment' => 'true',
         'countRow' => $countRow,
         'columnNumber' => 4,
@@ -114,7 +116,7 @@
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
         'enableComment' => Yii::$app->user->can('gad_comment_performance') ? 'true' : 'false',
-        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && ($plan["record_status"] == 0 || $plan["record_status"] == 6 || $plan["record_status"] == 7 || $plan["record_status"] == 8 || $plan["record_status"] == 9 || $plan["record_status"] == 11 || $plan["record_status"] == 12 || $plan["record_status"] == 16 || $plan["record_status"] == 20 || $plan["record_status"] == 21) ? 'true' : 'false',
+        'enableEdit' => in_array($plan['record_status'],DefaultController::Can("edit_plan")) ? "true" : "false",
         'enableViewComment' => 'true',
         'countRow' => $countRow,
         'columnNumber' => 5,
@@ -154,7 +156,7 @@
         'form_id' => 'cli-org-focused-form',
         'customStyle' => 'text-align:right;',
         'enableComment' => Yii::$app->user->can('gad_comment_mooe') ? 'true' : 'false',
-        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && ($plan["record_status"] == 0 || $plan["record_status"] == 6 || $plan["record_status"] == 7 || $plan["record_status"] == 8 || $plan["record_status"] == 9 || $plan["record_status"] == 11 || $plan["record_status"] == 12 || $plan["record_status"] == 16 || $plan["record_status"] == 20 || $plan["record_status"] == 21) ? 'true' : 'false',
+        'enableEdit' => in_array($plan['record_status'],DefaultController::Can("edit_plan")) ? "true" : "false",
         'enableViewComment' => 'true',
         'countRow' => $countRow,
         'columnNumber' => 6,
@@ -176,7 +178,7 @@
         'form_id' => 'cli-org-focused-form',
         'customStyle' => 'text-align:right;',
         'enableComment' => Yii::$app->user->can('gad_comment_ps') ? 'true' : 'false',
-        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && ($plan["record_status"] == 0 || $plan["record_status"] == 6 || $plan["record_status"] == 7 || $plan["record_status"] == 8 || $plan["record_status"] == 9 || $plan["record_status"] == 11 || $plan["record_status"] == 12 || $plan["record_status"] == 16 || $plan["record_status"] == 20 || $plan["record_status"] == 21) ? 'true' : 'false',
+        'enableEdit' => in_array($plan['record_status'],DefaultController::Can("edit_plan")) ? "true" : "false",
         'enableViewComment' => 'true',
         'countRow' => $countRow,
         'columnNumber' => 7,
@@ -198,7 +200,7 @@
         'form_id' => 'cli-org-focused-form',
         'customStyle' => 'text-align:right;',
         'enableComment' => Yii::$app->user->can('gad_comment_co') ? 'true' : 'false',
-        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && ($plan["record_status"] == 0 || $plan["record_status"] == 6 || $plan["record_status"] == 7 || $plan["record_status"] == 8 || $plan["record_status"] == 9 || $plan["record_status"] == 11 || $plan["record_status"] == 12 || $plan["record_status"] == 16 || $plan["record_status"] == 20 || $plan["record_status"] == 21) ? 'true' : 'false',
+        'enableEdit' => in_array($plan['record_status'],DefaultController::Can("edit_plan")) ? "true" : "false",
         'enableViewComment' => 'true',
         'countRow' => $countRow,
         'columnNumber' => 8,
@@ -220,7 +222,7 @@
         'form_id' => 'cli-org-focused-form',
         'customStyle' => 'border-bottom:none;',
         'enableComment' => Yii::$app->user->can('gad_comment_lead') ? 'true' : 'false',
-        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && ($plan["record_status"] == 0 || $plan["record_status"] == 6 || $plan["record_status"] == 7 || $plan["record_status"] == 8 || $plan["record_status"] == 9 || $plan["record_status"] == 11 || $plan["record_status"] == 12 || $plan["record_status"] == 16 || $plan["record_status"] == 20 || $plan["record_status"] == 21) ? 'true' : 'false',
+        'enableEdit' => in_array($plan['record_status'],DefaultController::Can("edit_plan")) ? "true" : "false",
         'enableViewComment' => 'true',
         'countRow' => $countRow,
         'columnNumber' => 9,
