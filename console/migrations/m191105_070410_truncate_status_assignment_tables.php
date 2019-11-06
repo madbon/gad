@@ -87,8 +87,8 @@ class m191105_070410_truncate_status_assignment_tables extends Migration
         $this->insert('{{%gad_status_assignment}}',['id'=>'31','role'=>'3','rbac_role'=>'gad_region','description'=>'Submitted to DILG Region (by huc/icc lgu)','status'=>'6,10']);
         $this->insert('{{%gad_status_assignment}}',['id'=>'32','role'=>'4','rbac_role'=>'gad_province','description'=>'Endorsed By DILG (provincial office)','status'=>'15']);
         $this->insert('{{%gad_status_assignment}}',['id'=>'33','role'=>'5','rbac_role'=>'gad_ppdo','description'=>'Returned to PPDO (by dilg province)','status'=>'2,7']);
-        $this->insert('{{%gad_status_assignment}}',['id'=>'34','role'=>'10','rbac_role'=>'gad_region','description'=>'Endorsed by DILG (regional office)','status'=>'14,29']);
-        $this->insert('{{%gad_status_assignment}}',['id'=>'35','role'=>'14','rbac_role'=>'gad_region','description'=>'Pending endorsement of LGU HUC/ICC (by dilg region)','status'=>'10,29']);
+        $this->insert('{{%gad_status_assignment}}',['id'=>'34','role'=>'10','rbac_role'=>'gad_region','description'=>'LGU HUC/ICC ENDORSED BY DILG REGION','status'=>'14']);
+        $this->insert('{{%gad_status_assignment}}',['id'=>'35','role'=>'14','rbac_role'=>'gad_region','description'=>'Pending endorsement of LGU HUC/ICC (by dilg region)','status'=>'6,10']);
         $this->insert('{{%gad_status_assignment}}',['id'=>'36','role'=>'15','rbac_role'=>'gad_province','description'=>'Pending endorsement of LGU CC/M (by dilg province)','status'=>'4,16']);
         $this->insert('{{%gad_status_assignment}}',['id'=>'37','role'=>'16','rbac_role'=>'gad_lgu','description'=>'Returned to LGU (by dilg province) (for revision)','status'=>'17,19']);
         $this->insert('{{%gad_status_assignment}}',['id'=>'38','role'=>'18','rbac_role'=>'gad_region','description'=>'Submitted to DILG Region (by lgu province) (revised)','status'=>'28,30']);
