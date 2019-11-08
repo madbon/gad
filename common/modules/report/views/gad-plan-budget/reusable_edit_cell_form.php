@@ -92,13 +92,14 @@ use common\modules\report\controllers\DefaultController;
                     var attr_name = "'.$attribute_name.'";
                     var cell_value =  $("#content-"+attr_name+"-'.$row_id.'").text();
                     $(".div-tooltip-form").hide();
-                    $("#txt-edit-'.$attribute_name.'-'.$row_id.'").val("'.$cell_value.'");
+
+                    $("#txt-edit-'.$attribute_name.'-'.$row_id.'").val("'.trim($cell_value).'");
                     $("#div-edit-"+attr_name+"-'.$row_id.'").slideDown(300);
                 });
             ');
         ?>
         <div id="div-edit-<?= $attribute_name ?>-<?= $row_id ?>" class="bubble div-tooltip-form unik-div-tooltip-form-<?= $row_id ?>">
-            <textarea id="txt-edit-<?= $attribute_name ?>-<?= $row_id ?>" rows="3" class="form-control tooltip-form"></textarea>
+            <input id="txt-edit-<?= $attribute_name ?>-<?= $row_id ?>"  class="form-control tooltip-form">
             <button id="btn-upd8-<?= $attribute_name ?>-<?= $row_id ?>" type="button" class="btn btn-xs btn-default upd8-button pull-left ">
                 <span class="glyphicon glyphicon-floppy-disk"></span> Update
             </button>

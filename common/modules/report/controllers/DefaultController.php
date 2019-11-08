@@ -34,6 +34,19 @@ use common\models\GadStatusAssignment;
  */
 class DefaultController extends ControllerAudit
 {
+    public function HasAction($param)
+    {
+        $arrayRole = [];
+        $arrayRole = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id));
+        $tags_status = GadStatusAssignment::find()
+            ->select(['status'])
+            ->where(['role' => $param])
+            ->andFilterWhere(['rbac_role' => $arrayRole])
+            ->one();
+        
+        return count($tags_status) > 0 ? 1 : 0;
+    }
+
     public function Can($param)
     {
         $arrayRole = [];

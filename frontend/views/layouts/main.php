@@ -11,7 +11,7 @@ use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
-
+use common\modules\report\controllers\DefaultController;
 AppAsset::register($this);
 ?>
 
@@ -379,9 +379,10 @@ nav.navbar-default div.navbar-header a
                         <?php } ?>
                         
                         <?php 
-                            if(Yii::$app->user->can("gad_document_menu"))
+
+                            if(DefaultController::HasAction("menu_document"))
                             {
-                                if(Yii::$app->session["activelink"] == "created_document")
+                                if(Yii::$app->controller->id == "document")
                                 {
                                     echo "<li class='activelink'>".Html::a('<span class="fa fa-file"></span> Documents', ['/cms/document/created-document'])."</li>";
                                 }

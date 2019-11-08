@@ -74,7 +74,7 @@ class StatusAssignmentController extends Controller
         $auth_item = ArrayHelper::map(\common\models\AuthItem::find()->where(['type' => 1])->all(), 'name', 'name');
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->status = implode(",",$model->status);
+            $model->status = !empty($model->status) ? implode(",",$model->status) : null;
             $model->save();
             \Yii::$app->getSession()->setFlash('success', "Data has been saved");
             return $this->redirect(['update', 'id' => $model->id]);
@@ -104,7 +104,7 @@ class StatusAssignmentController extends Controller
         $auth_item = ArrayHelper::map(\common\models\AuthItem::find()->where(['type' => 1])->all(), 'name', 'name');
         $model->status = explode(",",$model->status);
         if ($model->load(Yii::$app->request->post())) {
-            $model->status = implode(",",$model->status);
+            $model->status = !empty($model->status) ? implode(",",$model->status) : null;
             $model->save();
             \Yii::$app->getSession()->setFlash('success', "Changes has been saved");
             return $this->redirect(['update', 'id' => $model->id]);

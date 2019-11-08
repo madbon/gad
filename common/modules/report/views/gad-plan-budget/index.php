@@ -236,12 +236,13 @@ $this->title = "Annual GAD Plan and Budget";
                 <?php } ?>
 
                 <?php 
-                    if(Yii::$app->user->can("gad_create_letter_menu"))
+                    if(in_array($qryReportStatus, DefaultController::Can("create_general_observation")))
                     {
-                        // echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Letter of Review / Endorsement',['/cms/document/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-primary','style' => '']); 
-
                         echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create General Observation/Recommendation',['/cms/document/form-view', 'category_id' => 7, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
-                        // echo Html::a('<span class="glyphicon glyphicon-pencil"></span> Create General Observation/Recommendation',['/cms/document/form-view', 'category_id' => 7, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-primary','style' => '']);
+                    }
+                    else
+                    {
+                        echo "<li><a href='#'>No Available Action(s)</a></li>";
                     }
                 ?>
                 <?php

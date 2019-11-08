@@ -862,10 +862,6 @@ $this->title = "Annual GAD Accomplishment Reports";
                                                         }
                                                 });
                                             }
-                                            else
-                                            {
-
-                                            }
                                         });
                                     </script>
                                     <?php JSRegister::end() ?>
