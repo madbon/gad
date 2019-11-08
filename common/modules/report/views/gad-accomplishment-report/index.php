@@ -60,52 +60,66 @@ $this->title = "Annual GAD Accomplishment Reports";
     </div>
 
     <br/>
-    <div class="dropdown" style="margin-bottom: 10px;">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
-        <span class="caret"></span></button>
-        <ul class="dropdown-menu">
-            <?php if(Yii::$app->user->can("gad_create_accomplishment")){ ?>
-                <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_ar"))){ ?>
-                    <li>
-                        <a href="#" id="btn-encode">
-                            <span class="glyphicon glyphicon-pencil" style='color:blue;'></span> Encode Accomplishment Report
-                        </a>
-                    </li>
-                    <li>
-                        <?php 
-                            echo Html::a('<span class="glyphicon glyphicon-cloud-upload" style="color:green;"></span> Upload Accomplishment Report (excel)',['/upload/accomplishment/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'']);
-                        ?>
-                    </li>
-                    <li>
-                        <?php 
-                            echo Html::a('<span class="glyphicon glyphicon-cloud-upload" style="color:green;"></span> Upload Attrbiuted Programs (excel)',['/upload/accomplishment-attributed/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'']);
-                        ?>
-                    </li>
-                    <li>
-                        <?php
-                            $urlCopyPlan = '@web/report/gad-accomplishment-report/copy-plan?ruc='.$ruc."&onstep=".$onstep."&tocreate=".$tocreate;;
-                            echo Html::button('<span class="glyphicon glyphicon-copy" style="color:#3a96e5;"> </span> Copy Plan', ['value'=>Url::to($urlCopyPlan),
-                                    'class' => 'btn-link modalButton ','title' => 'Copy GAD Plan and Budget','style' => 'text-decoration:none; padding-left:17px; color:black;']);
-                        ?>
-                    </li>
-                    <li>
-                        <?php 
-                            echo Html::a('<span class="glyphicon glyphicon-trash" style="color:red;"></span>  Delete All Rows (Client/Org.focused)',['delete-all','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '','data' => [
-                                                  'confirm' => 'Are you sure you want to delete all rows of client/org. focused?',
-                                                  'method' => 'post']]);
-                        ?>
-                    </li>
-                    <li>
-                        <?php 
-                            echo Html::a('<span class="glyphicon glyphicon-trash" style="color:red;"></span>  Delete All Rows (Attributed Program)',['delete-all-attrib','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '','data' => [
-                                                  'confirm' => 'Are you sure you want to delete all rows of attributed program?',
-                                                  'method' => 'post']]);
-                        ?>
-                    </li>
-                <?php } ?>
-            <?php } ?>
-        </ul>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="dropdown" style="margin-bottom: 10px;">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <?php if(Yii::$app->user->can("gad_create_accomplishment")){ ?>
+                        <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_ar"))){ ?>
+                            <li>
+                                <a href="#" id="btn-encode">
+                                    <span class="glyphicon glyphicon-pencil" style='color:blue;'></span> Encode Accomplishment Report
+                                </a>
+                            </li>
+                            <li>
+                                <?php 
+                                    echo Html::a('<span class="glyphicon glyphicon-cloud-upload" style="color:green;"></span> Upload Accomplishment Report (excel)',['/upload/accomplishment/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'']);
+                                ?>
+                            </li>
+                            <li>
+                                <?php 
+                                    echo Html::a('<span class="glyphicon glyphicon-cloud-upload" style="color:green;"></span> Upload Attrbiuted Programs (excel)',['/upload/accomplishment-attributed/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'']);
+                                ?>
+                            </li>
+                            <li>
+                                <?php
+                                    $urlCopyPlan = '@web/report/gad-accomplishment-report/copy-plan?ruc='.$ruc."&onstep=".$onstep."&tocreate=".$tocreate;;
+                                    echo Html::button('<span class="glyphicon glyphicon-copy" style="color:#3a96e5;"> </span> Copy Plan', ['value'=>Url::to($urlCopyPlan),
+                                            'class' => 'btn-link modalButton ','title' => 'Copy GAD Plan and Budget','style' => 'text-decoration:none; padding-left:17px; color:black;']);
+                                ?>
+                            </li>
+                            <li>
+                                <?php 
+                                    echo Html::a('<span class="glyphicon glyphicon-trash" style="color:red;"></span>  Delete All Rows (Client/Org.focused)',['delete-all','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '','data' => [
+                                                          'confirm' => 'Are you sure you want to delete all rows of client/org. focused?',
+                                                          'method' => 'post']]);
+                                ?>
+                            </li>
+                            <li>
+                                <?php 
+                                    echo Html::a('<span class="glyphicon glyphicon-trash" style="color:red;"></span>  Delete All Rows (Attributed Program)',['delete-all-attrib','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '','data' => [
+                                                          'confirm' => 'Are you sure you want to delete all rows of attributed program?',
+                                                          'method' => 'post']]);
+                                ?>
+                            </li>
+                        <?php } ?>
+                    <?php } ?>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <?php
+                $t = '@web/report/report-history/create?qryReportStatus='.$qryReportStatus."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."";
+                echo Html::button('Process <span class="glyphicon glyphicon-share-alt"></span> ', ['value'=>Url::to($t),
+                                'class' => 'btn btn-info btn-md modalButton pull-right']);
+            ?>
+        </div>
     </div>
+    
+
+
     <?php
         $urlSetSession = \yii\helpers\Url::to(['default/session-encode']);
         $this->registerJs("
