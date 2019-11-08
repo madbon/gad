@@ -19,7 +19,7 @@ return [
             'enableUnconfirmedLogin'=> true,
             'enableConfirmation' => false,
             'enableFlashMessages'=> false,
-            'admins' => ['dilg_@markbon', 'dilg_@akesandiego'],
+            'admins' => ['dilg_@markbon', 'dilg_@akesandiego','markbon'],
             'generalApp'=>true,
         ],
         'gii' => [
