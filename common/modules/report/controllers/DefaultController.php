@@ -34,6 +34,39 @@ use common\models\GadStatusAssignment;
  */
 class DefaultController extends ControllerAudit
 {
+    public function HasAction($param)
+    {
+        $arrayRole = [];
+        $arrayRole = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id));
+        $tags_status = GadStatusAssignment::find()
+            ->select(['status'])
+            ->where(['role' => $param])
+            ->andFilterWhere(['rbac_role' => $arrayRole])
+            ->one();
+        
+        return count($tags_status) > 0 ? 1 : 0;
+    }
+
+    public function Can($param)
+    {
+        $arrayRole = [];
+        $arrayRole = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id));
+        $tags_status = GadStatusAssignment::find()
+            ->select(['status'])
+            ->where(['role' => $param])
+            ->andFilterWhere(['rbac_role' => $arrayRole])
+            ->all();
+        $array = [];
+        foreach ($tags_status as $key => $row) {
+            $array[] = $row['status'];
+        }
+
+        $string = implode(",",$array);
+        $array_val = explode(",",$string);
+        
+        return $array_val;
+    }
+
     public function HasStatus($param)
     {
         $tags_status = GadStatusAssignment::find()->select(['status'])->where(['role' => $param])->all();
@@ -352,10 +385,8 @@ class DefaultController extends ControllerAudit
     public function GetStatusByRuc($ruc)
     {
         $model = GadRecord::find()->where(['tuc' => $ruc])->one();
-        return !empty($model->status) ? $model->status : "";
-
-        // \Yii::$app->getSession()->setFlash('success', "Data has been deleted");
-        // return $this->redirect(['gad-plan-budget/index','ruc' => $ruc,'onstep'=>$onstep,'tocreate'=>$tocreate]);
+        $sam =  $model->status;
+        return $sam;
     }
 
     public function actionDeletePlanBudgetGenderIssue($plan_id)
@@ -370,106 +401,28 @@ class DefaultController extends ControllerAudit
        }
     }
 
+    public  function DisplayStatusWithCode($value)
+    {
+        $returnValue = "";
+        $query  = \common\models\GadStatus::find()->where(['code' => $value])->one();
+        $title  = !empty($query->title) ? $query->title : "";
+        $class  = !empty($query->class) ? $query->class : '';
+        $code   = !empty($query->code) ? $query->code : "";
+
+        $returnValue = "<span class='".($class)."'>".$code." - ".$title."</span>";
+        // print_r($class); exit;
+        return $returnValue;
+    }
+
     public  function DisplayStatus($value)
     {
         $returnValue = "";
         $query = \common\models\GadStatus::find()->where(['code' => $value])->one();
         $title = !empty($query->title) ? $query->title : "";
+        $class = !empty($query->class) ? $query->class : '';
 
-        if($value == 0)
-        {
-            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-pencil'></i> ".$title."</span>";
-        }
-        else if($value == 8)
-        {
-            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-pencil'></i> ".$title."</span>";
-        }
-        else if($value == 9)
-        {
-            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-pencil'></i> ".$title."</span>";
-        }
-        else if($value == 1)
-        {
-            $returnValue = "<span class='label label-success'><i class='glyphicon glyphicon-search'></i> ".$title."</span>";
-        }
-        else if($value == 2)
-        {
-            $returnValue = "<span class='label label-info'><i class='glyphicon glyphicon-thumbs-up'></i> ".$title."</span>";
-        }
-        else if($value == 3)
-        {
-            $returnValue = "<span class='label label-info'><i class='glyphicon glyphicon-thumbs-up'></i> ".$title."</span>";
-        }
-        else if($value == 4)
-        {
-            $returnValue = "<span class='label label-primary'><i class='glyphicon glyphicon-flag'></i> ".$title."</span>";
-        }
-        else if($value == 10)
-        {
-            $returnValue = "<span class='label label-primary'><i class='glyphicon glyphicon-flag'></i> ".$title."</span>";
-        }
-        else if($value == 5)
-        {
-            $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-flag'></i> ".$title."</span>";
-        }
-        else if($value == 6)
-        {
-            $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-flag'></i> ".$title."</span>";
-        }
-        else if($value == 7)
-        {
-            $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-flag'></i> ".$title."</span>";
-        }
-        else if($value == 11)
-        {
-            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
-        }
-        else if($value == 12)
-        {
-            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
-        }
-        else if($value == 13)
-        {
-            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
-        }
-        else if($value == 14)
-        {
-            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
-        }
-        else if($value == 15)
-        {
-            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
-        }
-        else if($value == 16)
-        {
-            $returnValue = "<span class='label label-danger'><i class='glyphicon glyphicon-thumbs-down'></i> ".$title."</span>";
-        }
-        else if($value == 17)
-        {
-            $returnValue = "<span class='label label-info'><i class='glyphicon glyphicon-send'></i> ".$title."</span>";
-        }
-        else if($value == 18)
-        {
-            $returnValue = "<span class='label label-info'><i class='glyphicon glyphicon-send'></i> ".$title."</span>";
-        }
-        else if($value == 19)
-        {
-            $returnValue = "<span class='label label-success'><i class='glyphicon glyphicon-search'></i> ".$title."</span>";
-        }
-        else if($value == 20)
-        {
-            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
-        }
-        else if($value == 21)
-        {
-            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
-        }
-        else if($value == 22)
-        {
-            $returnValue = "<span class='label label-warning'><i class='glyphicon glyphicon-time'></i> ".$title."</span>";
-        }
-
-
+        $returnValue = "<span class='".($class)."'>".$title."</span>";
+        // print_r($class); exit;
         return $returnValue;
     }
 

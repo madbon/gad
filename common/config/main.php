@@ -19,7 +19,8 @@ return [
             'enableUnconfirmedLogin'=> true,
             'enableConfirmation' => false,
             'enableFlashMessages'=> false,
-            'admins' => ['markbon'],
+            'admins' => ['dilg_@markbon', 'dilg_@akesandiego'],
+            'generalApp'=>true,
         ],
         'gii' => [
             'class' => 'yii\gii\Module',

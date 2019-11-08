@@ -18,7 +18,7 @@ class GadStatusSearch extends GadStatus
     {
         return [
             [['id', 'code'], 'integer'],
-            [['title'], 'safe'],
+            [['title','future_tense'], 'safe'],
         ];
     }
 
@@ -62,7 +62,9 @@ class GadStatusSearch extends GadStatus
             'code' => $this->code,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title]);
+        $query->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'future_tense', $this->future_tense])
+            ->orderBy(['code' => SORT_DESC]);
 
         return $dataProvider;
     }

@@ -44,8 +44,7 @@ use kartik\date\DatePicker;
 	</tbody>
 </table>
 
-<?php if(Yii::$app->user->can("gad_update_other_details")){ ?>
-	<?php if($status == 0 || $status == 7 || $status == 6 ||  $status == 8 || $status == 9 || $status == 11 || $status == 12 || $status == 16 || $status == 20 || $status == 21){ ?>
+<?php if(in_array($status,DefaultController::Can("edit_plan"))) { ?>
 <div class="panel panel-primary">
 	<div class="panel-heading">
 		Update Other Details Form
@@ -114,5 +113,4 @@ use kartik\date\DatePicker;
 		<?php ActiveForm::end(); ?>
 	</div>
 </div>
-<?php } ?>
 <?php } ?>

@@ -11,7 +11,7 @@ use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
-
+use common\modules\report\controllers\DefaultController;
 AppAsset::register($this);
 ?>
 
@@ -27,7 +27,10 @@ AppAsset::register($this);
     <?php $this->head() ?>
 </head>
 <style>
-
+.select2-container--krajee .select2-selection--single .select2-selection__rendered
+{
+    width: 100%;
+}
 .cust-panel .cust-panel-body
 {
     background-color: white;
@@ -148,6 +151,7 @@ nav.navbar-default div.navbar-header a
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
 }
+
 /*.clearfix
 {
     min-height: 1000px;
@@ -375,9 +379,10 @@ nav.navbar-default div.navbar-header a
                         <?php } ?>
                         
                         <?php 
-                            if(Yii::$app->user->can("gad_document_menu"))
+
+                            if(DefaultController::HasAction("menu_document"))
                             {
-                                if(Yii::$app->session["activelink"] == "created_document")
+                                if(Yii::$app->controller->id == "document")
                                 {
                                     echo "<li class='activelink'>".Html::a('<span class="fa fa-file"></span> Documents', ['/cms/document/created-document'])."</li>";
                                 }
@@ -441,7 +446,7 @@ nav.navbar-default div.navbar-header a
            
             <br/>
             <?php
-                if(Yii::$app->controller->module->id == "admin" || Yii::$app->controller->module->id == "cms" || Yii::$app->controller->module->id == "user" || Yii::$app->controller->module->id == "rbac" || Yii::$app->controller->module->id == "rbac")
+                if(Yii::$app->controller->module->id == "admin" || Yii::$app->controller->module->id == "cms" || Yii::$app->controller->module->id == "user" || Yii::$app->controller->module->id == "rbac" || Yii::$app->controller->module->id == "rbac" || Yii::$app->controller->id == "report-history")
                 {
                     if(Yii::$app->controller->action->id == "login" || Yii::$app->controller->action->id == "register")
                     {

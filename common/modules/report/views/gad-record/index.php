@@ -166,13 +166,13 @@ $this->title = $index_title;
                                     }
                                 ],
                                 [
-                                    'label' => $report_type == "plan_budget" ? 'Status' : false,
+                                    'label' => 'Status',
                                     'attribute' => 'record_status',
                                     'format' => 'raw',
                                     'value' => function($model) use ($report_type)
                                     {
 
-                                        return $report_type == "plan_budget" ? DefaultController::DisplayStatus($model["record_status"]) : false;
+                                        return DefaultController::DisplayStatus($model["record_status"]);
                                     }
                                 ],
                                 [
@@ -316,13 +316,13 @@ $this->title = $index_title;
                                     }
                                 ],
                                 [
-                                    'label' => $report_type == "plan_budget" ? 'Status' : false,
+                                    'label' => 'Status',
                                     'attribute' => 'record_status',
                                     'format' => 'raw',
                                     'value' => function($model) use ($report_type)
                                     {
 
-                                        return $report_type == "plan_budget" ? DefaultController::DisplayStatus($model["record_status"]) : false;
+                                        return DefaultController::DisplayStatus($model["record_status"]);
                                     }
                                 ],
                                 [
@@ -464,13 +464,13 @@ $this->title = $index_title;
                                     }
                                 ],
                                 [
-                                    'label' => $report_type == "plan_budget" ? 'Status' : false,
+                                    'label' => 'Status',
                                     'attribute' => 'record_status',
                                     'format' => 'raw',
                                     'value' => function($model) use ($report_type)
                                     {
 
-                                        return $report_type == "plan_budget" ? DefaultController::DisplayStatus($model["record_status"]) : false;
+                                        return DefaultController::DisplayStatus($model["record_status"]);
                                     }
                                 ],
                                 [
@@ -592,13 +592,13 @@ $this->title = $index_title;
                                     }
                                 ],
                                 [
-                                    'label' => $report_type == "plan_budget" ? 'Status' : false,
+                                    'label' => 'Status',
                                     'attribute' => 'record_status',
                                     'format' => 'raw',
                                     'value' => function($model) use ($report_type)
                                     {
 
-                                        return $report_type == "plan_budget" ? DefaultController::DisplayStatus($model["record_status"]) : false;
+                                        return DefaultController::DisplayStatus($model["record_status"]);
                                     }
                                 ],
                                 [
@@ -725,13 +725,13 @@ $this->title = $index_title;
                                     }
                                 ],
                                 [
-                                    'label' => $report_type == "plan_budget" ? 'Status' : false,
+                                    'label' => 'Status',
                                     'attribute' => 'record_status',
                                     'format' => 'raw',
                                     'value' => function($model) use ($report_type)
                                     {
 
-                                        return $report_type == "plan_budget" ? DefaultController::DisplayStatus($model["record_status"]) : false;
+                                        return DefaultController::DisplayStatus($model["record_status"]);
                                     }
                                 ],
                                 [
@@ -865,13 +865,13 @@ $this->title = $index_title;
                                     }
                                 ],
                                 [
-                                    'label' => $report_type == "plan_budget" ? 'Status' : false,
+                                    'label' => 'Status',
                                     'attribute' => 'record_status',
                                     'format' => 'raw',
                                     'value' => function($model) use ($report_type)
                                     {
 
-                                        return $report_type == "plan_budget" ? DefaultController::DisplayStatus($model["record_status"]) : false;
+                                        return DefaultController::DisplayStatus($model["record_status"]);
                                     }
                                 ],
                                 [
