@@ -58,7 +58,7 @@ class GadRecordSearch extends GadRecord
             }
             else
             {
-                $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'GR.status' => DefaultController::ViewStatus($this->report_type_id == 1 ? 'gad_lgu_non_huc' : 'ar_filtered_status_huc')];
+                $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'GR.status' => DefaultController::ViewStatus($this->report_type_id == 1 ? 'gad_lgu_non_huc' : 'ar_filtered_status_lgu_ccm')];
             }
         }
         else if(Yii::$app->user->can("gad_field_permission"))

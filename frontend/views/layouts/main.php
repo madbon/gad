@@ -214,6 +214,9 @@ nav.navbar-default div.navbar-header a
                     </ul>
                 </div>
             </nav>
+
+
+            
         <?php }else{ 
 
         echo '<div id="wrapper">';
