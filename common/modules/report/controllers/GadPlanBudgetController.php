@@ -97,16 +97,27 @@ class GadPlanBudgetController extends ControllerAudit
         }
 
         $arrComma = [];
-        $QueryComma = GadRecord::find()->select(['attached_ar_record_id'])->where(['not',['attached_ar_record_id' => null]])->all();
+        $QueryComma = GadRecord::find()
+        ->select(['attached_ar_record_id'])
+        ->where(['not',['attached_ar_record_id' => null]])
+        ->andWhere(['is_archive' => 0])
+        ->all();
+
         foreach ($QueryComma as $key => $row) {
             # code...
             $arrComma[] = $row["attached_ar_record_id"];
         }
 
-        $QueryGetArId = GadRecord::find()->where(['tuc' => $ruc])->one();
+        $QueryGetArId = GadRecord::find()->where(['tuc' => $ruc])->andWhere(['is_archive' => 0])->one();
 
         $arrComma2 = [];
-        $QueryComma2 = GadRecord::find()->select(["id"])->where(['not',['id' => $arrComma]])->andWhere(['report_type_id' => 2])->orWhere(['id' => $QueryGetArId->attached_ar_record_id])->all();
+        $QueryComma2 = GadRecord::find()
+        ->select(["id"])
+        ->where(['not',['id' => $arrComma]])
+        ->andWhere(['report_type_id' => 2])
+        ->andWhere(['is_archive' => 0])
+        ->orWhere(['id' => $QueryGetArId->attached_ar_record_id])
+        ->all();
 
         foreach ($QueryComma2 as $key => $row2) {
             $arrComma2[] = $row2["id"];
@@ -142,19 +153,15 @@ class GadPlanBudgetController extends ControllerAudit
         ->leftJoin(['PRV' => 'tblprovince'], 'PRV.province_c = REC.province_c')
         ->leftJoin(['CTC' => 'tblcitymun'], 'CTC.citymun_c = REC.citymun_c AND CTC.province_c = REC.province_c')
         ->leftJoin(['OFF' => 'tbloffice'], 'OFF.OFFICE_C = REC.office_c')
-        ->where(['REC.report_type_id' => 2])
+        ->where(['REC.report_type_id' => 2,'REC.is_archive' => 0])
         ->andWhere($condition)
         ->andWhere(['REC.is_archive' => 0])
-        // ->andWhere($condition3)
         ->andFilterWhere($condition2)
         ->andFilterWhere(['REC.id' => $recordOne_attached_ar_record_id])
-        
-        // ->andFilterWhere(['REC.id' => ])
         ->groupBy(['REC.id'])
         ->orderBy(['REC.id' => SORT_DESC])
         ->all();
-        // ->createCommand()->rawSql;
-        // print_r($qry); /exit;
+
         return $this->renderAjax('_view_list_accomplishment',[
             'qry' => $qry,
             'recordOne_attached_ar_record_id' => $recordOne_attached_ar_record_id,

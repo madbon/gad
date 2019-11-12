@@ -122,7 +122,7 @@ class GadAccomplishmentReportController extends ControllerAudit
         ->leftJoin(['PROV' => 'tblprovince'], 'PROV.province_c = GR.province_c')
         ->leftJoin(['CTY' => 'tblcitymun'], 'CTY.citymun_c = GR.citymun_c and CTY.province_c = GR.province_c')
         ->leftJoin(['OFC' => 'tbloffice'], 'OFC.OFFICE_C = GR.office_c')
-        ->andWhere(['GR.report_type_id' => 1])
+        ->andWhere(['GR.report_type_id' => 1, 'GR.is_archive' => 0])
         ->andFilterWhere($filter)
         ->groupBy(['GR.id'])
         ->orderBy(['GR.id' => SORT_DESC])

@@ -48,8 +48,7 @@ class GadRecordSearch extends GadRecord
         $this->load($params);
 
         $filteredByRole = [];
-        // echo "<pre>";
-        // print_r([3,6,8,9,10,11,14]); exit;
+        
         if(Yii::$app->user->can("gad_lgu_permission"))
         {
             if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
@@ -107,7 +106,6 @@ class GadRecordSearch extends GadRecord
             'OFC.OFFICE_M as office_name',
             'GR.date_created',
             'GR.report_type_id'
-            // 'HIST.remarks as remarks'
         ])
         ->from('gad_record GR')
         ->leftJoin(['UI' => 'user_info'], 'UI.user_id = GR.user_id')
@@ -116,7 +114,7 @@ class GadRecordSearch extends GadRecord
         ->leftJoin(['CTY' => 'tblcitymun'], 'CTY.citymun_c = GR.citymun_c and CTY.province_c = GR.province_c')
         ->leftJoin(['OFC' => 'tbloffice'], 'OFC.OFFICE_C = GR.office_c')
         // ->leftJoin(['HIST' => 'gad_report_history'],'HIST.tuc = GR.tuc')
-        ->where($filteredByRole)
+        ->where(Yii::$app->controller->id == "archive" ? [] : $filteredByRole)
         ->andWhere(['GR.is_archive' => Yii::$app->controller->id == "archive" ? 1 : 0])
         ->andFilterWhere(['LIKE','GR.tuc',$this->record_tuc])
         ->andFilterWhere(['GR.region_c' => $this->region_c])
