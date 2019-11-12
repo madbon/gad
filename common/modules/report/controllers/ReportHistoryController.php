@@ -113,8 +113,7 @@ class ReportHistoryController extends Controller
                 'model' => $model,
                 'status' => $status
             ]);
-        }        
-        
+        }   
     }
 
     /**

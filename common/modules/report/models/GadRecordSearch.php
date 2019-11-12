@@ -23,7 +23,7 @@ class GadRecordSearch extends GadRecord
         return [
             [['id', 'user_id', 'region_c', 'province_c', 'citymun_c', 'year', 'form_type', 'status', 'is_archive'], 'integer'],
             [['total_lgu_budget', 'total_gad_budget'], 'number'],
-            [['date_created', 'time_created','record_tuc'], 'safe'],
+            [['date_created', 'time_created','record_tuc','report_type_id'], 'safe'],
         ];
     }
 
@@ -54,33 +54,33 @@ class GadRecordSearch extends GadRecord
         {
             if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
             {
-                $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'GR.status'=>DefaultController::ViewStatus('gad_lgu_huc')];
+                $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'GR.status'=>DefaultController::ViewStatus($this->report_type_id == 1 ? 'gad_lgu_huc' : 'ar_filtered_status_huc')];
             }
             else
             {
-                $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'GR.status' => DefaultController::ViewStatus('gad_lgu_non_huc')];
+                $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'GR.status' => DefaultController::ViewStatus($this->report_type_id == 1 ? 'gad_lgu_non_huc' : 'ar_filtered_status_huc')];
             }
         }
-        elseif(Yii::$app->user->can("gad_field_permission"))
+        else if(Yii::$app->user->can("gad_field_permission"))
         {
             $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C];
         }
         else if(Yii::$app->user->can("gad_province_permission")) // all lower level lgu under its province
         {
-            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.status'=>DefaultController::ViewStatus('gad_province_dilg')];
+            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.status'=>DefaultController::ViewStatus($this->report_type_id == 1 ? 'gad_province_dilg' : 'ar_filtered_status_province_dilg')];
         }
         else if(Yii::$app->user->can("gad_lgu_province_permission")) // all plan submitted by this province
         {
             $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,
-            'GR.status' => DefaultController::ViewStatus('gad_province_lgu'),'GR.office_c' => 2];
+            'GR.status' => DefaultController::ViewStatus($this->report_type_id == 1 ? 'gad_province_lgu' : 'ar_filtered_status_lgu_province'),'GR.office_c' => 2];
         }
         else if(Yii::$app->user->can("gad_region_permission"))
         {
-            $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,'GR.status' =>  DefaultController::ViewStatus('gad_region_dilg')];
+            $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,'GR.status' =>  DefaultController::ViewStatus($this->report_type_id == 1 ? 'gad_region_dilg' : 'ar_filtered_status_region')];
         }
         else if(Yii::$app->user->can("gad_ppdo_permission"))
         {
-            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.status'=> DefaultController::ViewStatus('gad_ppdo')];
+            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.status'=> DefaultController::ViewStatus($this->report_type_id ? 'gad_ppdo' : 'ar_filtered_status_ppdo')];
         }
         else
         {
