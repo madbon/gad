@@ -91,19 +91,22 @@ use kartik\select2\Select2;/* @var $this yii\web\View */
     </div>
      <div class="col-sm-4">
         <?php
-            echo $form->field($model, 'citymun_c')->widget(Select2::classname(), [
-                'data' => $citymun,
-                'options' => ['placeholder' => 'City/Municipality'],
-                'pluginOptions' => [
-                    'allowClear' => true,
-                ],
-                'pluginEvents'=>[
-                        'select2:select'=>'
-                            function(){
-                                
-                            }',
-                ]
-            ])->label(false);
+            if(!Yii::$app->user->can("gad_lgu_province_permission"))
+            {
+                echo $form->field($model, 'citymun_c')->widget(Select2::classname(), [
+                    'data' => $citymun,
+                    'options' => ['placeholder' => 'City/Municipality'],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],
+                    'pluginEvents'=>[
+                            'select2:select'=>'
+                                function(){
+                                    
+                                }',
+                    ]
+                ])->label(false);
+            }
         ?>
     </div>
     <div class="col-sm-4">

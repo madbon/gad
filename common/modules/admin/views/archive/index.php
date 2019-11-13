@@ -107,11 +107,11 @@ table thead tr th
                     {
                         if($model["report_type_id"] == 2)
                         {
-                            return "GAD Accomplishment Report";
+                            return "Accomplishment Report";
                         }
                         else
                         {
-                            return "GAD Plan and Budget";
+                            return "Plan and Budget";
                         }
                     }
                 ],
@@ -149,7 +149,7 @@ table thead tr th
                     'value' => function($model)
                     {
 
-                        return $model["report_type_id"] == 1 ? DefaultController::DisplayStatus($model["record_status"]) : false;
+                        return DefaultController::DisplayStatus($model["record_status"]);
                     }
                 ],
                 [

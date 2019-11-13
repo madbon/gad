@@ -448,7 +448,36 @@ class DefaultController extends ControllerAudit
         $model->responsible_province_c = !empty(Yii::$app->user->identity->userinfo->PROVINCE_C) ? Yii::$app->user->identity->userinfo->PROVINCE_C : "";
         $model->responsible_citymun_c = !empty(Yii::$app->user->identity->userinfo->CITYMUN_C) ? Yii::$app->user->identity->userinfo->CITYMUN_C : "";
         $model->fullname = Yii::$app->user->identity->userinfo->FIRST_M." ".Yii::$app->user->identity->userinfo->LAST_M;
-        $model->responsible_office_c = !empty(Yii::$app->user->identity->userinfo->OFFICE_C) ? Yii::$app->user->identity->userinfo->OFFICE_C : "";
+
+
+        if(Yii::$app->user->can("gad_lgu_permission"))
+        {
+            if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->REGION_C == 13)
+            {
+                $model->responsible_office_c = 4; // City Office
+            }
+            else
+            {
+                $model->responsible_office_c = 3; // Municipal Office
+            }
+        }
+        else if(Yii::$app->user->can("gad_lgu_province_permission"))
+        {
+            $model->responsible_office_c = 2;
+        }
+        else if(Yii::$app->user->can("gad_province_permission"))
+        {
+            $model->responsible_office_c = 2;
+        }
+        else if(Yii::$app->user->can("gad_ppdo_permission"))
+        {
+            $model->responsible_office_c = 2;
+        }
+        else if(Yii::$app->user->can("gad_region_permission"))
+        {
+            $model->responsible_office_c = 1;
+        }
+
         $model->save();
 
         // \Yii::$app->getSession()->setFlash('success', "Action has been performed");

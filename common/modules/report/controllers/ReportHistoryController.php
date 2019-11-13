@@ -99,15 +99,21 @@ class ReportHistoryController extends Controller
                 GadPlanBudgetController::ChangeReportStatus($model->status,$ruc);
                 $model->save();
                 \Yii::$app->getSession()->setFlash('success', "Action has been performed");
-                return $this->redirect(['/report/gad-plan-budget/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate]);
+                if($tocreate == "accomp_report")
+                {
+                    return $this->redirect(['/report/gad-accomplishment-report/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate]);
+                }
+                else
+                {
+                    return $this->redirect(['/report/gad-plan-budget/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate]);
+                }
             }
 
             return $this->renderAjax('create', [
                 'model' => $model,
                 'status' => $status
             ]);
-        }        
-        
+        }   
     }
 
     /**

@@ -221,6 +221,9 @@ class GadRecordController extends ControllerAudit
     public function actionIndex($report_type)
     {
         $searchModel = new GadRecordSearch();
+
+        $searchModel->report_type_id = $report_type == "plan_budget" ? 1 : 2;
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $regionCondition = [];
         $provinceCondition = [];
@@ -239,7 +242,7 @@ class GadRecordController extends ControllerAudit
                 $dataProvider->query->andWhere(['GR.report_type_id' => 1]);
                 $index_title = "List of GAD Plan and Budget";
                 $urlReport = "gad-plan-budget/index";
-
+                
             break;
             case 'accomplishment':
                 $dataProvider->query->andWhere(['GR.report_type_id' => 2]);
@@ -261,18 +264,18 @@ class GadRecordController extends ControllerAudit
 
             if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
             {
-                $statusCondition = DefaultController::ViewStatus("gad_lgu_huc");
+                $statusCondition = DefaultController::ViewStatus($report_type == "plan_budget" ? "gad_lgu_huc" : "ar_filtered_status_huc");
             }
             else
             {
-                $statusCondition = DefaultController::ViewStatus("gad_lgu_non_huc");
+                $statusCondition = DefaultController::ViewStatus($report_type == "plan_budget" ? "gad_lgu_non_huc" : "ar_filtered_status_lgu_ccm");
             }
         }
         else if(Yii::$app->user->can("gad_region_permission")) // Regional Office
         {
             $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
             $provinceCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
-            $statusCondition = DefaultController::ViewStatus("gad_region_dilg");
+            $statusCondition = DefaultController::ViewStatus($report_type == "plan_budget" ? "gad_region_dilg" : "ar_filtered_status_region");
 
             if(!empty($searchModel->citymun_c) || !empty($searchModel->province_c))
             {
@@ -288,21 +291,21 @@ class GadRecordController extends ControllerAudit
             $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
             $provinceCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
             $citymunCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
-            $statusCondition = DefaultController::ViewStatus("gad_province_dilg");
+            $statusCondition = DefaultController::ViewStatus($report_type == "plan_budget" ? "gad_province_dilg" : "ar_filtered_status_province_dilg");
         } 
         else if(Yii::$app->user->can("gad_lgu_province_permission"))
         {
             $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
             $provinceCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
-            $citymunCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
-            $statusCondition = DefaultController::ViewStatus("gad_province_dilg");
+            $citymunCondition = ['citymun_c' => 'none'];
+            $statusCondition = DefaultController::ViewStatus($report_type == "plan_budget" ? "gad_province_lgu" : "ar_filtered_status_lgu_province");
         }
         else if(Yii::$app->user->can("gad_ppdo_permission"))
         {
             $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
             $provinceCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
             $citymunCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
-            $statusCondition = DefaultController::ViewStatus("gad_ppdo");
+            $statusCondition = DefaultController::ViewStatus($report_type == "plan_budget" ? "gad_ppdo" : "ar_filtered_status_ppdo");
         }
         else if(Yii::$app->user->can("gad_central_permission") || Yii::$app->user->can("gad_admin_permission"))
         {
@@ -314,7 +317,7 @@ class GadRecordController extends ControllerAudit
         {
             $provinceCondition = ['region_c' => $searchModel->region_c];
             $citymunCondition = ['province_c' => $searchModel->province_c];
-            $statusCondition = DefaultController::ViewStatus("gad_all_status");
+            $statusCondition = DefaultController::ViewStatus($report_type == "plan_budget" ? "gad_all_status" : "ar_filtered_all_status");
         }
 
         $region = ArrayHelper::map(Region::find()->where($regionCondition)->all(), 'region_c', 'region_m');
