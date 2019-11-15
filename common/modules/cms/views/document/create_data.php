@@ -11,7 +11,7 @@ use yii\helpers\Html;
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style type="text/css">
-    #headerIcon {
+    /*#headerIcon {
         font-size: 30px;
         margin-top: -5px;
     }
@@ -27,14 +27,11 @@ use yii\helpers\Html;
         border-radius: 50%;
         padding: 22px 18px 15px 18px;
         margin-top: -22px;
-    }
+    }*/
 </style>
-<div class="survey-create">
-   
-    <div class="box-body">    
-        <?= $this->render('_form_content', [
-			// 'contentExtension' => $contentExtension,
-			// 'contentValue' => $contentValue,
+<?= $this->render('_form_content', [
+            // 'contentExtension' => $contentExtension,
+            // 'contentValue' => $contentValue,
             // 'session' => $session,
             'data' => $data,
             'data2' => $data2,
@@ -45,5 +42,3 @@ use yii\helpers\Html;
             // 'model' => $model,
             // 'withData' => $withData,
         ]) ?>
-    </div>
-</div>

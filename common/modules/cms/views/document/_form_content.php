@@ -27,7 +27,7 @@ use common\modules\rms\controllers\DynamicViewController;
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
     <?php /*"<pre>"; print_r($data); exit;*/ ?>
    
-
+<div class="row">
     	<div class="col-md-12">
 		    <div class="box box-primary">   
 		        <!-- <h4>&nbsp;&nbsp;Online Survey</h4> -->
@@ -243,18 +243,17 @@ use common\modules\rms\controllers\DynamicViewController;
 			        </table>
 		        </div>
 		    </div>
-		        <div>
-				    <div class="btn-group pull-left">
-                        <?php // Html::a('<span class="glyphicon glyphicon-triangle-left" style="font-size:12px;"></span> Return', ["create"], ['class' => 'btn btn-flat btn-default']) ?>
-				    </div>
-			        
-				    <div class="btn-group pull-right">
-				        <?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk" style="font-size:12px;"></span> Save ',['class' => 'btn btn-flat btn-success']) ?>
-				    </div>
-			    </div>
+			<div>
+				<div class="btn-group pull-left">
+					<?php // Html::a('<span class="glyphicon glyphicon-triangle-left" style="font-size:12px;"></span> Return', ["create"], ['class' => 'btn btn-flat btn-default']) ?>
+				</div>
+				
+				<div class="btn-group pull-right">
+					<?= Html::submitButton('<span class="glyphicon glyphicon-floppy-disk" style="font-size:12px;"></span> Save ',['class' => 'btn btn-flat btn-success']) ?>
+				</div>
+			</div>
         </div>
-    </div>
-
+	</div>
     <?php ActiveForm::end(); ?>
 
 </div>
