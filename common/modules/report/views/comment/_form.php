@@ -36,7 +36,7 @@ use richardfan\widget\JSRegister;
     table#comment_list  tbody{
       display:block;
       min-height:200px;
-      max-height: 500px;
+      max-height: 300px;
       overflow:auto;
     }
     div.mess-success
@@ -46,17 +46,19 @@ use richardfan\widget\JSRegister;
     }
     div.confirm
     {
-        height: 50px;
+        height: 30px;
         width: 100%;     
-        border-radius: 2px;   
-        padding-top: 15px;
+        /*border-radius: 2px;   */
+        padding-top: 5px;
         padding-left: 10px;
+        text-align: center;
+        /*padding:5px;*/
     }
 
 </style>
 
 <div class="gad-comment-form">
-<div class="confirm" style="display: none;"></div>
+
     <?php $form = ActiveForm::begin(); ?>
     <?= $form->field($model, 'plan_budget_id')->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'attribute_name')->hiddenInput()->label(false) ?>
@@ -64,9 +66,9 @@ use richardfan\widget\JSRegister;
     <?= $form->field($model, 'record_id')->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
 
-    <div class="row" style="margin-top: -45px;">
+    <div class="row" style="margin-top: -30px;">
         <div class="col-sm-4">
-            <h3>
+            <h4 style="font-weight: bold;">
                 <?php
                     if(Yii::$app->user->can("gad_letter_endorsement_ppdo"))
                     {
@@ -77,10 +79,10 @@ use richardfan\widget\JSRegister;
                         echo "SECTION";
                     }
                 ?>
-                
-            </h3>
-            <?= $form->field($model, 'row_no')->textInput() ?>
-            <?= $form->field($model, 'row_value')->textarea(['rows' => 3]) ?>
+            </h4>
+            <hr/>
+            <?= $form->field($model, 'row_no')->textInput(['disabled' => true]) ?>
+            <?= $form->field($model, 'row_value')->textarea(['rows' => 3, 'disabled' => true]) ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Downloadable(s)
@@ -90,7 +92,7 @@ use richardfan\widget\JSRegister;
                     <?php 
                         if(Yii::$app->user->can("gad_letter_endorsement_ppdo"))
                         {
-                            echo Html::a('<span class="glyphicon glyphicon-download"></span> Letter of Review for PPDO (.docx)',
+                            echo Html::a('<span class="glyphicon glyphicon-download"></span> Letter of Review by PPDO (.docx)',
                             [
                                 '/cms/document/download-specific-observation',
                                 'ruc' => $ruc,
@@ -120,8 +122,8 @@ use richardfan\widget\JSRegister;
             </div>
             
         </div>
-        <div class="col-sm-8">
-            <h3>
+        <div class="col-sm-8" style="border-left: 1px solid #e3e3e3;">
+            <h4 style="font-weight: bold;">
                 <?php
                     if(Yii::$app->user->can("gad_letter_endorsement_ppdo"))
                     {
@@ -132,17 +134,19 @@ use richardfan\widget\JSRegister;
                         echo "SPECIFIC OBSERVATION & RECOMMENDATION";
                     }
                 ?>
-            </h3>
+            </h4>
+            <hr/>
             <div class="row">
                 <div class="col-sm-6">
-                    <?= $form->field($model, 'column_no')->textInput() ?>
+                    <?= $form->field($model, 'column_no')->textInput(['disabled' => true]) ?>
                 </div>
                 <div class="col-sm-6">
-                    <?= $form->field($model, 'column_title')->textInput()->label("Column Title") ?>
+                    <?= $form->field($model, 'column_title')->textInput(['disabled' => true])->label("Column Title") ?>
                 </div>
             </div>
-            <?= $form->field($model, 'column_value')->textarea(['rows' => 3]); ?>
-            <?= $form->field($model, 'comment')->textarea(['rows' => 6])->label("Observation & Recommendation <i style='color:red; font-weight:normal;'>(Important Note: Avoid using ampersand(&) in comment box it causes error when downloading .docx)</i>"); ?>
+            <?= $form->field($model, 'column_value')->textarea(['rows' => 3, 'disabled' => true]); ?>
+            <div class="confirm" style="display: none;"></div>
+            <?= $form->field($model, 'comment')->textarea(['rows' => 6])->label("Input your observation(s) / recommendation(s) inside the box"); ?>
 
             <div class="form-group pull-right">
                 
@@ -352,14 +356,14 @@ use richardfan\widget\JSRegister;
                                         }
                                         loadcomment();
 
-                                        $("#gadcomment-row_no").val("");
-                                        $("#gadcomment-row_value").val("");
-                                        $("#gadcomment-column_no").val("");
-                                        $("#gadcomment-column_value").val("");
-                                        $("#gadcomment-column_title").val("");
-                                        $("#gadcomment-attribute_name").val("");
+                                        // $("#gadcomment-row_no").val("");
+                                        // $("#gadcomment-row_value").val("");
+                                        // $("#gadcomment-column_no").val("");
+                                        // $("#gadcomment-column_value").val("");
+                                        // $("#gadcomment-column_title").val("");
+                                        // $("#gadcomment-attribute_name").val("");
                                         $("#gadcomment-comment").val("");
-                                        $("#gadcomment-plan_budget_id").val("");
+                                        // $("#gadcomment-plan_budget_id").val("");
                                 });
                             }
                         });

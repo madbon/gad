@@ -20,7 +20,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'tableOptions' =>['class' => 'table table-responsive table-hover'],
             'options' => ['width:100%;'],
             'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
+                // ['class' => 'yii\grid\SerialColumn'],
+                'id',
                 'title:ntext',
                  
                 // [
@@ -50,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                
                 [
                     'class' => 'yii\grid\ActionColumn',
-                    'template' => Yii::$app->user->can("bpls_super_admin") ? '{view} {update} {delete}' : '{view} {update}',   
+                    'template' => Yii::$app->user->can("gad_admin") ? '{view} {update} {delete}' : '{view} {update}',   
                     'buttons'=>[    
                         'view'=>function ($url, $model) {
                             

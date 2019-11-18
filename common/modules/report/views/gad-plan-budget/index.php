@@ -239,6 +239,7 @@ $this->title = "Annual GAD Plan and Budget";
                     if(in_array($qryReportStatus, DefaultController::Can("create_general_observation")))
                     {
                         echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create General Observation/Recommendation',['/cms/document/form-view', 'category_id' => 7, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
+                        echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Certificate of Review and Endorsement',['/cms/document/form-view', 'category_id' => 9, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
                     }
                     else
                     {

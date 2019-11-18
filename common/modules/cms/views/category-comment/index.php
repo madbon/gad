@@ -92,13 +92,14 @@ use common\modules\report\controllers\DefaultController as Tools;
                 echo $this->render('create', ['model' => $model]);
             ?>
 
-            <div style="overflow-y: scroll; max-height: 300px;">
+            <div style="overflow-y: scroll; max-height: 300px; border:2px solid black; padding:5px;">
+                <!-- <br/> -->
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'options' => ['table-responsive'],
                     // 'filterModel' => $searchModel,
                     'columns' => [
-                        // ['class' => 'yii\grid\SerialColumn'],
+                        ['class' => 'yii\grid\SerialColumn'],
 
                         // 'id',
                         // 'category_id',
