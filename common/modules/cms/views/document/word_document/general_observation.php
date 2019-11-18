@@ -1,6 +1,14 @@
 <?php
 use common\modules\cms\controllers\DocumentController;
+use common\modules\report\controllers\DefaultController as Tools;
+// echo "<pre>";
+// print_r($arrCategory7); exit;
     /* Note: any element you append to a document must reside inside of a Section. */
+        // Note (arrCategory7) :
+        // 0 - Date
+        // 1 - Regional/Provincial Director Name
+        // 2 - Regional or Provincial Director?
+        // 3 - Governor or Mayor?
 
         // Adding an empty Section to the document...
         $section = $phpWord->createSection();
@@ -23,6 +31,7 @@ use common\modules\cms\controllers\DocumentController;
           $section->addText('',
             $fontStyleName,'docsTitle'
         );
+        // Date
         $phpWord->addParagraphStyle('dateStyle', ['align'=>'right']);
         $section->addText($arrCategory7[0],
             $fontStyleName,'dateStyle'
@@ -33,13 +42,19 @@ use common\modules\cms\controllers\DocumentController;
             array('name' => 'Verdana', 'size' => 11, 'color' => 'black')
         );
         $phpWord->addParagraphStyle('letterTo', ['align'=>'left','spacing' => 120,'lineHeight'=>1,'spaceAfter' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(0)]);
+        // name of mayor/governor
         $section->addText("Hon. ".$approvedBy,
             'letterToFontStyle','letterTo'
         );
-        $section->addText("Mayor",
+        // mayor or governor
+        $section->addText($arrCategory7[3],
             'letterToFontStyle','letterTo'
         );
-        $section->addText($arrCategory7[2],
+        // address of LGU
+        $city_lgu = !empty(Tools::GetCitymunName($ruc)) ? ucwords(strtolower(Tools::GetCitymunName($ruc))).", " : "";
+        $province_name = ucwords(strtolower(Tools::GetProvinceName($ruc)));
+
+        $section->addText($city_lgu.$province_name,
             'letterToFontStyle','letterTo'
         );
 
@@ -50,7 +65,8 @@ use common\modules\cms\controllers\DocumentController;
             $fontStyleName,'docsTitle'
         );
 
-        $section->addText("Dear ".$arrCategory7[1],
+        // name of LCE
+        $section->addText("Dear ".$approvedBy.",",
             'letterToFontStyle','letterTo'
         );
         $section->addText('',
@@ -58,7 +74,7 @@ use common\modules\cms\controllers\DocumentController;
         );
 
         $phpWord->addParagraphStyle('bodyParaStyle',[]);
-        $section->addText("        This Office acknowledges receipt of the GAD Plan and Budget (GPB) FY ".$arrCategory7[3]." of your LGU. We, however, defer endorsement of the same due to the following general observations and recommendations and enclosed/attached specific observations and recommendations:",
+        $section->addText("        This Office acknowledges receipt of the GAD Plan and Budget (GPB) FY ".$year." of your LGU. We, however, defer endorsement of the same due to the following general observations and recommendations and enclosed/attached specific observations and recommendations:",
             'letterToFontStyle','bodyParaStyle'
         );
         $section->addText('',
@@ -113,10 +129,10 @@ use common\modules\cms\controllers\DocumentController;
         );
         $phpWord->addParagraphStyle('signatory', ['spacing' => 120,'lineHeight'=>1,'spaceAfter' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(0)]);
 
-        $section->addText("                                                              ".$arrCategory7[4]." ",
+        $section->addText("                                                                         ".$arrCategory7[1]." ",
             'letterToFontStyle','bodyParaStyle','signatory'
         );
-        $section->addText('                                                        '.$arrCategory7[5],
+        $section->addText('                                                        '.$arrCategory7[2],
             $fontStyleName,'docsTitle','signatory'
         );
          

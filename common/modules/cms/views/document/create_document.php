@@ -12,19 +12,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="category-index">
 
-    
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
         <?php //echo Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Back to Plan', ['/report/gad-plan-budget/index/','ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h2><?= Html::encode($this->title) ?></h2>
-        </div>
-        <div class="panel-body">
-            <?= GridView::widget([
+    <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 // 'filterModel' => $searchModel,
                 'options' => ['table-responsive'],
@@ -34,35 +26,35 @@ $this->params['breadcrumbs'][] = $this->title;
                     // 'id',
                     // 'office_name',
                     [
-                        'label' => 'Letter/Certificate',
+                        'label' => 'Documents Title',
                         'value' => function($model)
                         {
                             return $model['category_name'];
                         }
                     ],
                     [
-                        'label' => 'OFFICE',
+                        'label' => 'Office',
                         'value' => function($model)
                         {
                             return $model['office_name'];
                         }
                     ],
                     [
-                        'label' => 'PROVINCE',
+                        'label' => 'Province/District',
                         'value' => function($model)
                         {
                             return $model['province_name'];
                         }
                     ],
                     [
-                        'label' => 'CITY/MUNICIPALITY',
+                        'label' => 'City/Municipality',
                         'value' => function($model)
                         {
                             return !empty($model['citymun_name']) ? $model['citymun_name'] : "";
                         }
                     ],
                     [
-                        'label' => 'REPORT',
+                        'label' => 'Report',
                         'value' => function($model)
                         {
                             if($model["report_type"] == 1)
@@ -92,23 +84,46 @@ $this->params['breadcrumbs'][] = $this->title;
                     // 'add_comment',
 
                     ['class' => 'yii\grid\ActionColumn',
-                        'template' => '{create} {update}',
+                        'template' => '{create} {update} {download} {delete}',
                         'buttons' => [
                             'create' => function($url,$model) 
                             {
                                 if($model['category_id'] == 7)
                                 {
-                                    return Html::a('Add comments/recommendations', ['/cms/category-comment', 'ruc' => $model['ruc']],['class' => 'btn btn-success btn-sm']);
+                                    return Html::a('<span class="fa fa-pencil"></span> Edit Comment', ['/cms/category-comment', 'ruc' => $model['ruc']],['class' => 'btn btn-success btn-sm btn-block']);
                                 }
                             },
                             'update' => function($url,$model) 
                             {
-                                return Html::a('Edit', ['edit-form-view','category_id' => $model['category_id'], 'ruc' => $model['ruc'], 'onstep' => 'to_create_gpb', 'tocreate' => 'gad_plan_budget'],['class' => 'btn btn-primary btn-sm']);
-                            }
-                        ]
+                                return Html::a('<span class="fa fa-edit"></span> Edit Primary Details', ['edit-form-view','category_id' => $model['category_id'], 'ruc' => $model['ruc'], 'onstep' => 'to_create_gpb', 'tocreate' => 'gad_plan_budget'],['class' => 'btn btn-default btn-sm btn-block']);
+                            },
+                            'delete'=>function ($url, $model) {
+                                return Html::a('<i class="glyphicon glyphicon-trash"></i> Delete', 
+                                [
+                                  '/cms/document/delete-values', 'ruc' => $model['ruc']
+                                ], 
+                                [
+                                  'class' => 'btn btn-sm btn-danger btn-block',
+                                  'data' => [
+                                      'confirm' => 'Are you sure you want to delete this item?',
+                                      'method' => 'post']
+                                ]);
+                            },
+                            'download' => function($url,$model)
+                            {
+                                return Html::a('<span class="fa fa-download"> </span> Download (.docx)',
+                                [
+                                    '/cms/document/download-word',
+                                    'category_id' => $model['category_id'], 
+                                    'ruc' => $model['ruc'],
+                                ],
+                                [
+                                    'class' => 'btn btn-sm btn-primary btn-block',
+                                    'title' => 'Download',
+                                ]);
+                            },
+                        ],
                     ],
                 ],
             ]); ?>
-        </div>
-    </div>
 </div>

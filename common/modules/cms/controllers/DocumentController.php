@@ -17,6 +17,7 @@ use common\models\GadRecord;
 use niksko12\user\models\Region;
 use niksko12\user\models\Province;
 use niksko12\user\models\Citymun;
+use common\modules\report\controllers\DefaultController as Tools;
 
 /**
  * DocumentController implements the CRUD actions for Category model.
@@ -185,7 +186,8 @@ class DocumentController extends Controller
             'CAT.id as category_id',
             'REC.id as record_id',
             'IND.id as indicator_id',
-            'REC.approved_by as record_approved_by'
+            'REC.approved_by as record_approved_by',
+            'REC.year'
         ])
         ->from('gad_cms_values VAL')
         ->leftJoin(['REC' => 'gad_record'], 'REC.id = VAL.yearly_record_id')
@@ -208,6 +210,7 @@ class DocumentController extends Controller
                 $approvedBy = $row["record_approved_by"];
                 $record_id = $row["record_id"];
                 $category_id = $row["category_id"];
+                $year = $row["year"];
             }
         }
 
@@ -219,6 +222,8 @@ class DocumentController extends Controller
                 'arrCategory7' => $arrCategory7,
                 'approvedBy' => $approvedBy,
                 'queryCatCom' =>$queryCatCom, 
+                'year' => $year,
+                'ruc' => $ruc
             ]);
     }
 
@@ -591,6 +596,16 @@ class DocumentController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
+
+    public function actionDeleteValues($ruc)
+    {
+        // print_r(Tools::GetRecordIdByRuc($ruc)); exit;
+        Value::deleteAll(['yearly_record_id' => Tools::GetRecordIdByRuc($ruc)]);
+        \Yii::$app->getSession()->setFlash('success', 'Data has been deleted.');
+        return $this->redirect(['created-document']);
+    }
+
+
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();

@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'value')->textarea(['rows' => 6])->label("Input your comments/recommendations inside the box.") ?>
+    <?= $form->field($model, 'value')->textarea(['rows' => 3])->label("Input your comment(s) / recommendation(s) inside the box.") ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::$app->controller->action->id == "update" ? "Update" : "Add", ['class' => 'btn btn-success']) ?>

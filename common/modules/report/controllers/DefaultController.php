@@ -315,6 +315,13 @@ class DefaultController extends ControllerAudit
             return 0;
         }
     }
+
+    public function GetOfficeId($ruc)
+    {
+        $Record = GadRecord::find()->where(['tuc' => $ruc])->one();
+
+        return $Record->office_c;
+    }
     public function GetProvinceName($ruc)
     {
         $Record = GadRecord::find()->where(['tuc' => $ruc])->one();

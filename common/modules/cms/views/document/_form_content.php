@@ -9,6 +9,7 @@ use kartik\file\FileInput;
 use kartik\date\DatePicker;
 use kartik\checkbox\CheckboxX;
 use common\modules\rms\controllers\DynamicViewController;
+use common\modules\report\controllers\DefaultController as Tools;
 /* @var $this yii\web\View */
 /* @var $model common\modules\drugaffectation\models\DrugAffectationBarangay */
 /* @var $form yii\widgets\ActiveForm */
@@ -26,14 +27,16 @@ use common\modules\rms\controllers\DynamicViewController;
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
     <?php /*"<pre>"; print_r($data); exit;*/ ?>
-   
 <div class="row">
     	<div class="col-md-12">
 		    <div class="box box-primary">   
 		        <!-- <h4>&nbsp;&nbsp;Online Survey</h4> -->
 		        <div class="box-body">		 
 
-				    <h1>GAD Plan and Budget FY <?= \common\modules\report\controllers\DefaultController::GetPlanYear($ruc);  ?></h1>
+				    <h3>GAD Plan and Budget FY <?= Tools::GetPlanYear($ruc);  ?> : 
+				    	<b><?= !empty(Tools::GetCitymunName($ruc)) ? ucwords(strtolower(Tools::GetCitymunName($ruc))).", " : "" ?> 
+				    	<?= ucwords(strtolower(Tools::GetProvinceName($ruc))); ?></b>
+				    </h3>
 				    <table class="table table-responsive" style="font-size:15px;">
 			            <?php $cat = "";
 			            foreach($data as $d){ ?>
@@ -42,7 +45,7 @@ use common\modules\rms\controllers\DynamicViewController;
 			            ?>
 			            	<?php if($cat != $d->category_title) { ?>
 				            	<tr style="background:#3c8dbc; color:#000;">
-				               		<th colspan="2" style="text-align:left;color:#fff;padding-bottom: 8px; font-size: 20px;"><span class="fa fa-file"></span> <?= $d->category_title; ?></th>
+				               		<th colspan="2" style="text-align:left;color:#fff;padding-bottom: 8px; font-size: 20px; font-weight: normal;"><span class="fa fa-file"></span> <?= $d->category_title; ?></th>
 				            	</tr>
 				            	<tr><th></th></tr>
 			            	<?php } ?>
