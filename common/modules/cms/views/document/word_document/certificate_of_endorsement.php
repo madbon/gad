@@ -11,136 +11,72 @@ use common\modules\report\controllers\DefaultController as Tools;
         // 3 - Regional or Proivincial Director?
         // 4 - Day
 
+        $city_lgu = !empty(Tools::GetCitymunName($ruc)) ? ucwords(strtolower(Tools::GetCitymunName($ruc))).", " : "";
+        $province_name = ucwords(strtolower(Tools::GetProvinceName($ruc)));
         // Adding an empty Section to the document...
         $section = $phpWord->createSection();
+        $phpWord->setDefaultFontSize(11);
+        $phpWord->setDefaultFontName('Calibri');
         // Adding Text element with font customized using named font style...
         $fontStyleName = 'oneUserDefinedStyle';
         $phpWord->addFontStyle(
             $fontStyleName,
-            array('name' => 'Verdana', 'size' => 11, 'color' => 'black')
-        );
-        $phpWord->addParagraphStyle('docsTitle', ['align'=>'center']);
-        $section->addText('',
-            $fontStyleName,'docsTitle'
-        );
-        $section->addText('',
-            $fontStyleName,'docsTitle'
-        );
-         $section->addText('',
-            $fontStyleName,'docsTitle'
-        );
-          $section->addText('',
-            $fontStyleName,'docsTitle'
-        );
-        // Date
-        $phpWord->addParagraphStyle('dateStyle', ['align'=>'right']);
-        $section->addText($arrCategory7[0],
-            $fontStyleName,'dateStyle'
-        );
-
-        $phpWord->addFontStyle(
-            'letterToFontStyle',
-            array('name' => 'Verdana', 'size' => 11, 'color' => 'black')
-        );
-        $phpWord->addParagraphStyle('letterTo', ['align'=>'left','spacing' => 120,'lineHeight'=>1,'spaceAfter' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(0)]);
-        // name of mayor/governor
-        $section->addText("Hon. ".$approvedBy,
-            'letterToFontStyle','letterTo'
-        );
-        // mayor or governor
-        $section->addText($arrCategory7[3],
-            'letterToFontStyle','letterTo'
-        );
-        // address of LGU
-        $city_lgu = !empty(Tools::GetCitymunName($ruc)) ? ucwords(strtolower(Tools::GetCitymunName($ruc))).", " : "";
-        $province_name = ucwords(strtolower(Tools::GetProvinceName($ruc)));
-
-        $section->addText($city_lgu.$province_name,
-            'letterToFontStyle','letterTo'
-        );
-
-        $section->addText('',
-            $fontStyleName,'docsTitle'
-        );
-        $section->addText('',
-            $fontStyleName,'docsTitle'
-        );
-
-        // name of LCE
-        $section->addText("Dear ".$approvedBy.",",
-            'letterToFontStyle','letterTo'
-        );
-        $section->addText('',
-            $fontStyleName,'docsTitle'
-        );
-
-        $phpWord->addParagraphStyle('bodyParaStyle',[]);
-        $section->addText("        This Office acknowledges receipt of the GAD Plan and Budget (GPB) FY ".$year." of your LGU. We, however, defer endorsement of the same due to the following general observations and recommendations and enclosed/attached specific observations and recommendations:",
-            'letterToFontStyle','bodyParaStyle'
-        );
-        $section->addText('',
-            $fontStyleName,'docsTitle'
+            array('color' => 'black')
         );
         
-        $cellstyle= array('align'=>'center','name' => 'Verdana', 'size' => 11);
-        $header = array('size' => 16, 'bold' => true);
-        // -------------------- Table Start
-        // $section->addTextBreak(1);
-        $fancyTableStyleName = 'Fancy Table';
-        $fancyTableStyle = array('borderSize' => 6, 'borderColor' => 'black', 'cellMargin' => 50, 'alignment' => \PhpOffice\PhpWord\SimpleType\JcTable::CENTER, 'cellSpacing' => 1);
-        $fancyTableFirstRowStyle = array('borderBottomSize' => 18, 'borderBottomColor' => 'black', 'bgColor' => 'white');
-        $fancyTableCellStyle = array('valign' => 'center');
-        $fancyTableCellBtlrStyle = array('valign' => 'center', 'textDirection' => \PhpOffice\PhpWord\Style\Cell::TEXT_DIR_BTLR);
-        $fancyTableFontStyle = array('bold' => true);
-        $phpWord->addTableStyle($fancyTableStyleName, $fancyTableStyle, $fancyTableFirstRowStyle);
-        $table = $section->addTable($fancyTableStyleName);
-        $table->addRow(900);
-        $table->addCell(500, $fancyTableCellStyle)->addText('No.', $fancyTableFontStyle,$cellstyle);
-        $table->addCell(8500, $fancyTableCellStyle)->addText('General Observations and Recommendations', $fancyTableFontStyle,$cellstyle);
+        // --------------------- TITLE part
+        $phpWord->addParagraphStyle('docsTitle', ['align'=>'center']);
+        $section->addText('CERTIFICATE OF REVEIW AND ENDORSEMENT', ['bold' => true, 'align' => 'center'],'docsTitle');
 
-        $count_table_row = 0;
-        foreach ($queryCatCom as $key => $row) {
-            $count_table_row += 1;
-            $table->addRow();
-            $table->addCell(500)->addText("{$count_table_row}");
-            $table->addCell(8500)->addText(DocumentController::WrapText(DocumentController::ChangeAmpersand("{$row['value']}")));
-        }
-        // --------------------- Table End
+        // --------------------- 1st paragraph
+        $section->addTextBreak(1);
+        $phpWord->addFontStyle(
+            'letterToFontStyle',
+            array('color' => 'black')
+        );
+        $phpWord->addParagraphStyle('textJustify', ['align'=>'both','spacing' => 120,'lineHeight'=>1.3,'spaceAfter' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(0)]);
+        $section->addText("               This is to certify that the GAD Plan and Budget (GPB) for FY  ".(Tools::GetPlanYear($ruc))." of ".($city_lgu.$province_name)." has been reviewed and was found fully compliant in form and contents  with the provisions of Republic Act No. 9710 and its Implementing Rules and Regulations, and PCW-DILG-DBM-NEDA Joint Memorandum Circular Nos. 2013-01 and 2016-01. Per DILG’s review, the GPB of ".($city_lgu.$province_name)." was found complaint with the following:",
+            'letterToFontStyle','textJustify'
+        );
 
-        $section->addText('',
-            $fontStyleName,'docsTitle'
+        // --------------------- Listing  part
+        $section->addTextBreak(1);
+        $phpWord->addNumberingStyle(
+            'multilevel',
+            [
+                'type' => 'multilevel',
+                'levels' => array(
+                    array('format' => 'upperLetter','text' => '-', 'left' => 1000, 'hanging' => 360, 'tabPos' => 700),
+                )
+            ]
         );
-        $section->addText("        In consultation with your GFPS (GAD Focal Point System), we strongly urge your   LGU to please comply with the indicated deficiencies within ten (10) working days after receipt of this letter or as soon as possible to give us time to review and issue a Certificate of Endorsement.",
-            'letterToFontStyle','bodyParaStyle'
+        $phpWord->addFontStyle(
+            'listingStyle',
+            array('color' => 'black')
         );
-        $section->addText('',
-            $fontStyleName,'docsTitle'
-        );
-        $section->addText('',
-            $fontStyleName,'docsTitle'
-        );
-        $section->addText("                                                                         Very truly yours,",
-            'letterToFontStyle','bodyParaStyle'
-        );
-         $section->addText('',
-            $fontStyleName,'docsTitle'
-        );
-        $section->addText('',
-            $fontStyleName,'docsTitle'
-        );
-        $phpWord->addParagraphStyle('signatory', ['spacing' => 120,'lineHeight'=>1,'spaceAfter' => \PhpOffice\PhpWord\Shared\Converter::pointToTwip(0)]);
+        $section->addListItem('At least five (5%) of LGUs’ total annual budget was allocated to GAD PPAs addressing gender issues;', 0, null, 'multilevel','listingStyle');
+        $section->addListItem('ALL Programs, Projects and Activities (PPAs) are responsive to LGUs identified Gender Issues and /or GAD Mandate', 0, null, 'multilevel','listingStyle');
 
-        $section->addText("                                                                         ".$arrCategory7[1]." ",
-            'letterToFontStyle','bodyParaStyle','signatory'
+        // --------------------- 2nd paragraph
+        $section->addTextBreak(1);
+        $section->addText("               Thus, said GPB of ".($city_lgu.$province_name)." is hereby officially endorsed for incorporation in the Provincial / City / Municipal’s Annual Investment Program (AIP) and Annual Budget.",
+            'letterToFontStyle','textJustify'
         );
-        $section->addText('                                                        '.$arrCategory7[2],
-            $fontStyleName,'docsTitle','signatory'
+
+        $section->addTextBreak(1);
+        $section->addText("               Issued this ".$arrCategory7[4]." day of ".$arrCategory7[0].", ".(date("Y"))." at the Office of the ".($arrCategory7[1])." ",
+            'letterToFontStyle','textJustify'
         );
-         
+
+        
+        $section->addTextBreak(4);
+        $section->addText(strtoupper($arrCategory7[2]), ['align' => 'center'],'docsTitle');
+        $section->addText($arrCategory7[3], ['align' => 'center'],'docsTitle');
+        
 
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
         $objWriter->save('Letter1.docx');
         $path = Yii::getAlias('@webroot').'/Letter1.docx';
-        $name = 'General Observations and Recommendations.docx';
+        $name = 'Certificate of Review and Endorsement ('.($city_lgu.$province_name).').docx';
         return Yii::$app->response->sendFile($path, $name);
 ?>
