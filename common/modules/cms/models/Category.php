@@ -18,6 +18,7 @@ class Category extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public $report_type_id;
     public static function tableName()
     {
         return 'gad_cms_category';
@@ -53,6 +54,7 @@ class Category extends \yii\db\ActiveRecord
             'lgup_content_width_id' => 'Content Width',
             'applicable_to' => 'Form Type',
             'frequencyRelation.title' => 'Frequency',
+            'report_type_id' => 'Report Type'
         ];
     }
 

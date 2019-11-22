@@ -111,23 +111,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                             'download' => function($url,$model)
                             {
-                                $action = "";
-                                if($model['category_id'] == 7) // General Observations and Recommendations
-                                {
-                                    $action = "download-word";
-                                }
-                                else if($model['category_id'] == 8) // PPDO Letter of Review and Endorsement 
-                                {
-                                    $action = "";
-                                }
-                                else if($model['category_id'] == 9) // Certificate of Review and Endorsement from DILG Region/Province 
-                                {
-                                    $action = "download-certificate-endorsement";
-                                }
-
                                 return Html::a('<span class="fa fa-download"> </span> Download (.docx)',
                                 [
-                                    '/cms/document/'.$action,
+                                    '/cms/document/download-word',
                                     'category_id' => $model['category_id'], 
                                     'ruc' => $model['ruc'],
                                 ],

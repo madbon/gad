@@ -198,9 +198,14 @@ $this->title = "Annual GAD Plan and Budget";
                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
+                    <?php
+                        $available_actions = 0;
+                    ?>
                     <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
                     
-                    <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_plan"))){ ?>
+                    <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_plan"))){ 
+                            $available_actions = 1;
+                        ?>
                         <li>
                             <a href="#" class="" id="btn-encode">
                                 <span class="glyphicon glyphicon-pencil" style="color: #7e57b1;"></span> Input Form
@@ -230,18 +235,31 @@ $this->title = "Annual GAD Plan and Budget";
                                                       'method' => 'post']]);
                             ?>
                         </li>
-                    <?php }else{ ?>
-                        <li><a href="#">No Available Actions</a></li>
+                    <?php }else{ 
+                            $available_actions = 0;
+                        ?>
+                        
                     <?php } ?>
                 <?php } ?>
 
                 <?php 
                     if(in_array($qryReportStatus, DefaultController::Can("create_general_observation")))
                     {
+                        $available_actions = 1;
                         echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create General Observation/Recommendation',['/cms/document/form-view', 'category_id' => 7, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
                         echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Certificate of Review and Endorsement',['/cms/document/form-view', 'category_id' => 9, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
                     }
+                    else if(in_array($qryReportStatus, DefaultController::Can("create_letter_review_endorsement_ppdo")))
+                    {
+                        $available_actions = 1;
+                        echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Letter of Review and Endorsement from the Provincial Planning and Coordinating Office ',['/cms/document/form-view', 'category_id' => 8, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
+                    }
                     else
+                    {
+                        $available_actions = 0;
+                    }
+
+                    if($available_actions == 0)
                     {
                         echo "<li><a href='#'>No Available Action(s)</a></li>";
                     }

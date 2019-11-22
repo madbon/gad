@@ -198,25 +198,36 @@ class DocumentController extends Controller
         ->all();
 
         
-
+        $document_name = "";
         $arrCategory7 = [];
         $approvedBy = "";
         $record_id = null;
         $category_id = null;
+        $year = 0;
         foreach ($queryValues as $key => $row) {
-            if($row["category_id"] == 7)
-            {
-                $arrCategory7[] = $row["value"];
-                $approvedBy = $row["record_approved_by"];
-                $record_id = $row["record_id"];
-                $category_id = $row["category_id"];
-                $year = $row["year"];
-            }
+            $arrCategory7[] = $row["value"];
+            $approvedBy = $row["record_approved_by"];
+            $record_id = $row["record_id"];
+            $category_id = $row["category_id"];
+            $year = $row["year"];
         }
 
         $queryCatCom = GadCategoryComment::find()->where(['record_id' => $record_id, 'category_id' => $category_id])->all();
 
-        return $this->render('word_document/general_observation',
+        if($category_id == 7) // general observation
+        {
+            $document_name = "general_observation";
+        }
+        else if($category_id == 8) // Letter of Review and Endorsement from PPDO
+        {
+            $document_name = "letter_of_review_from_ppdo";
+        }
+        else if($category_id == 9) // Certificate of Review and Endorsement from DILG Region/Province
+        {
+            $document_name = "certificate_of_endorsement";
+        }
+
+        return $this->render('word_document/'.$document_name,
             [
                 'phpWord' => $phpWord, 
                 'arrCategory7' => $arrCategory7,
@@ -226,61 +237,6 @@ class DocumentController extends Controller
                 'ruc' => $ruc
             ]);
     }
-
-    public function actionDownloadCertificateEndorsement($ruc,$category_id)
-    {
-        $phpWord = new \PhpOffice\PhpWord\PhpWord();
-
-        $queryValues = (new \yii\db\Query())
-        ->select([
-            'IND.title as indicator_title',
-            'VAL.value',
-            'CAT.title as category_title',
-            'CAT.id as category_id',
-            'REC.id as record_id',
-            'IND.id as indicator_id',
-            'REC.approved_by as record_approved_by',
-            'REC.year'
-        ])
-        ->from('gad_cms_values VAL')
-        ->leftJoin(['REC' => 'gad_record'], 'REC.id = VAL.yearly_record_id')
-        ->leftJoin(['IND' => 'gad_cms_indicator'], 'IND.id = VAL.indicator_id')
-        ->leftJoin(['CAT' => 'gad_cms_category'], 'CAT.id = IND.category_id')
-        ->where(['REC.tuc' => $ruc, 'VAL.category_id' => $category_id])
-        ->groupBy(['IND.id','VAL.id'])
-        ->all();
-
-        
-
-        $arrCategory7 = [];
-        $approvedBy = "";
-        $record_id = null;
-        $category_id = null;
-        foreach ($queryValues as $key => $row) {
-            if($row["category_id"] == 9)
-            {
-                $arrCategory7[] = $row["value"];
-                $approvedBy = $row["record_approved_by"];
-                $record_id = $row["record_id"];
-                $category_id = $row["category_id"];
-                $year = $row["year"];
-            }
-        }
-
-        $queryCatCom = GadCategoryComment::find()->where(['record_id' => $record_id, 'category_id' => $category_id])->all();
-
-        return $this->render('word_document/certificate_of_endorsement',
-            [
-                'phpWord' => $phpWord, 
-                'arrCategory7' => $arrCategory7,
-                'approvedBy' => $approvedBy,
-                'queryCatCom' =>$queryCatCom, 
-                'year' => $year,
-                'ruc' => $ruc
-            ]);
-    }
-
-
 
     /**
      * Displays a single Record model.

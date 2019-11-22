@@ -33,7 +33,7 @@ use common\modules\report\controllers\DefaultController as Tools;
 		        <!-- <h4>&nbsp;&nbsp;Online Survey</h4> -->
 		        <div class="box-body">		 
 
-				    <h3>GAD Plan and Budget FY <?= Tools::GetPlanYear($ruc);  ?> : 
+				    <h3>GAD <?= Tools::GetReportTitle($ruc) ?> FY <?= Tools::GetPlanYear($ruc);  ?> : 
 				    	<b><?= !empty(Tools::GetCitymunName($ruc)) ? ucwords(strtolower(Tools::GetCitymunName($ruc))).", " : "" ?> 
 				    	<?= ucwords(strtolower(Tools::GetProvinceName($ruc))); ?></b>
 				    </h3>

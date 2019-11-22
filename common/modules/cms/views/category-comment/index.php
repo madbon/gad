@@ -16,15 +16,42 @@ use common\modules\report\controllers\DefaultController as Tools;
 
 <?php
     $category_title = null;
+    $category_id = null;
     foreach ($queryValues as $key => $row) {
         if($category_title != $row['category_title'])
         {
             $category_title = $row['category_title'];
+            $category_id = $row['category_id'];
         }
+        $category_id = $row['category_id'];
         $category_title = $row['category_title'];
     }
 ?>
-<h4 style="font-weight: bold; color:rgb(60,141,188); font-size: 20px;"><?= $category_title ?> : GPB <?= Tools::GetPlanYear($ruc) ?></h4>
+
+<h4 style="font-weight: bold; color:rgb(60,141,188); font-size: 20px;">
+    <?= $category_title ?> : 
+    <?php
+        if(Tools::GetReportAcronym($ruc) == "GPB")
+        {
+            echo Html::a(Tools::GetReportTitle($ruc)." ".Tools::GetPlanYear($ruc),
+                [
+                    '/report/gad-plan-budget/index',
+                    'ruc' => $ruc, 
+                    'onstep'=>'to_create_gpb',
+                    'tocreate'=>'gad_plan_budget'
+                ],
+                ['style' => 'text-decoration:underline; margin-top:0;']
+            );
+        }
+        else
+        {
+            echo Html::a(Tools::GetReportTitle($ruc)." ".Tools::GetPlanYear($ruc),['/report/gad-accomplishment-report/index','ruc' => $ruc, 'onstep'=>'to_create_ar','tocreate'=>'accomp_report']);
+        }  
+    ?>
+</h4>
+<?php
+    echo Html::a('<span class="fa fa-home"></span> List of Created Document(s)',['/cms/document/created-document'],['style' => 'font-size:15px;']);
+?>
 <hr/>
     <div class="row" style="margin-top: -20px;">
         <div class="col-sm-6">
@@ -73,7 +100,7 @@ use common\modules\report\controllers\DefaultController as Tools;
             <br/>
             <h3><span class="fa fa-download"></span> Download Section</h3>
             <hr/>
-            <?= Html::a('<span class="fa fa-download"> </span> '.($category_title).".docx",
+            <?= Html::a('<span class="fa fa-file"> </span> '.($category_title).".docx",
             [
                 '/cms/document/download-word',
                 'category_id' => $category_id, 
@@ -86,49 +113,50 @@ use common\modules\report\controllers\DefaultController as Tools;
             ])  ?>
         </div>
         <div class="col-sm-6">
-            <h3><span class="fa fa-comment"></span> Comment Section</h3>
-            <hr/>
-            <?php 
-                echo $this->render('create', ['model' => $model]);
-            ?>
+            <?php if($category_id == 7){ ?>
+                <h3><span class="fa fa-comment"></span> Comment Section</h3>
+                <hr/>
+                <?php 
+                    echo $this->render('create', ['model' => $model]);
+                ?>
+                <div style="overflow-y: scroll; max-height: 300px; border:2px solid black; padding:5px;">
+                    <!-- <br/> -->
+                    <?= GridView::widget([
+                        'dataProvider' => $dataProvider,
+                        'options' => ['table-responsive'],
+                        // 'filterModel' => $searchModel,
+                        'columns' => [
+                            ['class' => 'yii\grid\SerialColumn'],
 
-            <div style="overflow-y: scroll; max-height: 300px; border:2px solid black; padding:5px;">
-                <!-- <br/> -->
-                <?= GridView::widget([
-                    'dataProvider' => $dataProvider,
-                    'options' => ['table-responsive'],
-                    // 'filterModel' => $searchModel,
-                    'columns' => [
-                        ['class' => 'yii\grid\SerialColumn'],
-
-                        // 'id',
-                        // 'category_id',
-                        // 'record_id',
-                        // 'value:ntext',
-                        [
-                            'label' => 'Comment(s) / Recommendation(s)',
-                            'value' => function($model)
-                            {
-                                return $model->value;
-                            }
-                        ],
-
-                        ['class' => 'yii\grid\ActionColumn',
-                            'template' => '{update} {delete}',
-                            'buttons' => [
-                                'update' => function($url,$model) use ($ruc)
+                            // 'id',
+                            // 'category_id',
+                            // 'record_id',
+                            // 'value:ntext',
+                            [
+                                'label' => 'Comment(s) / Recommendation(s)',
+                                'value' => function($model)
                                 {
-                                    return Html::a('<span class="glyphicon glyphicon-edit"></span>', ['update', 'id' => $model->id,'ruc' => $ruc],['class' => '', 'title' => 'Edit']);
-                                },
-                                'delete' => function($url,$model) use ($ruc)
-                                {
-                                    return Html::a('<span class="glyphicon glyphicon-trash" style="color:red;"></span>', ['delete', 'id' => $model->id, 'ruc' => $ruc],['title' => 'Delete','class' => '', 'data' => ['confirm' => 'Are you sure you want to delete this item?','method' => 'post']]);
+                                    return $model->value;
                                 }
-                            ]
+                            ],
+
+                            ['class' => 'yii\grid\ActionColumn',
+                                'template' => '{update} {delete}',
+                                'buttons' => [
+                                    'update' => function($url,$model) use ($ruc)
+                                    {
+                                        return Html::a('<span class="glyphicon glyphicon-edit"></span>', ['update', 'id' => $model->id,'ruc' => $ruc],['class' => '', 'title' => 'Edit']);
+                                    },
+                                    'delete' => function($url,$model) use ($ruc)
+                                    {
+                                        return Html::a('<span class="glyphicon glyphicon-trash" style="color:red;"></span>', ['delete', 'id' => $model->id, 'ruc' => $ruc],['title' => 'Delete','class' => '', 'data' => ['confirm' => 'Are you sure you want to delete this item?','method' => 'post']]);
+                                    }
+                                ]
+                            ],
                         ],
-                    ],
-                ]); ?>
-            </div>
+                    ]); ?>
+                </div>
+            <?php } ?>
         </div>
     </div>
 </div>
