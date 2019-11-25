@@ -65,6 +65,7 @@ class DocumentController extends Controller
     
     public function actionDownloadSpecificObservation($ruc,$type)
     {
+        // print_r($ruc); exit;
         $phpWord = new \PhpOffice\PhpWord\PhpWord();
         $office_c = "";
         $address_lgu = "";
@@ -157,6 +158,7 @@ class DocumentController extends Controller
             'qryCommentGadPlan' => $qryCommentGadPlan,
             'qryCommentAttributed' => $qryCommentAttributed,
             'qryComment' => $qryCommentPpdo,
+            'ruc' => $ruc,
         ]);
         
     }
@@ -220,7 +222,7 @@ class DocumentController extends Controller
         }
         else if($category_id == 8) // Letter of Review and Endorsement from PPDO
         {
-            $document_name = "letter_of_review_from_ppdo";
+            $document_name = "letter_of_endorsement_ppdo";
         }
         else if($category_id == 9) // Certificate of Review and Endorsement from DILG Region/Province
         {

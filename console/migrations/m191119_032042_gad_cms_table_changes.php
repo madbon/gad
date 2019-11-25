@@ -12,24 +12,28 @@ class m191119_032042_gad_cms_table_changes extends Migration
      */
     public function safeUp()
     {
-
  
 Yii::$app->db->createCommand()->truncateTable('gad_cms_indicator')->execute();   
 Yii::$app->db->createCommand()->truncateTable('gad_cms_category')->execute();
 Yii::$app->db->createCommand()->truncateTable('gad_cms_ind_choices')->execute();
  
 $this->execute('SET foreign_key_checks = 0');
+$this->insert('{{%gad_cms_category}}',['id'=>'7','title'=>'General Observations and Recommendations (Letter of Deficiencies and GPB Review Form)','frequency'=>'','frequency_id'=>'','lgup_content_type_id'=>'1','lgup_content_width_id'=>'','applicable_to'=>'0','left_or_right'=>'0','sort'=>'','add_comment'=>'0']);
+$this->insert('{{%gad_cms_category}}',['id'=>'8','title'=>'Letter of Review and Endorsement from Provincial Planning and Development Coordinating Office (PPDO)','frequency'=>'','frequency_id'=>'','lgup_content_type_id'=>'1','lgup_content_width_id'=>'','applicable_to'=>'0','left_or_right'=>'0','sort'=>'','add_comment'=>'0']);
+$this->insert('{{%gad_cms_category}}',['id'=>'9','title'=>'Certificate of Review and Endorsement from DILG Region/Province','frequency'=>'','frequency_id'=>'','lgup_content_type_id'=>'1','lgup_content_width_id'=>'','applicable_to'=>'0','left_or_right'=>'0','sort'=>'','add_comment'=>'0']);
+$this->insert('{{%gad_cms_category}}',['id'=>'10','title'=>'Project Implementation and Management, and Monitoring and Evaluation','frequency'=>'','frequency_id'=>'','lgup_content_type_id'=>'1','lgup_content_width_id'=>'','applicable_to'=>'0','left_or_right'=>'0','sort'=>'','add_comment'=>'0']);
 $this->insert('{{%gad_cms_indicator}}',['id'=>'156','category_id'=>'7','title'=>'Date: _____________','type_id'=>'2','frequency_id'=>'','unit_id'=>'6','default_choice_id'=>'','parent'=>'0','in_chart'=>'','sort'=>'1','is_required'=>'2']);
 $this->insert('{{%gad_cms_indicator}}',['id'=>'161','category_id'=>'7','title'=>'Very truly yours,','type_id'=>'2','frequency_id'=>'','unit_id'=>'6','default_choice_id'=>'','parent'=>'0','in_chart'=>'','sort'=>'5','is_required'=>'2']);
 $this->insert('{{%gad_cms_indicator}}',['id'=>'162','category_id'=>'7','title'=>'Signatory Title','type_id'=>'2','frequency_id'=>'','unit_id'=>'7','default_choice_id'=>'1','parent'=>'0','in_chart'=>'','sort'=>'6','is_required'=>'2']);
-$this->insert('{{%gad_cms_indicator}}',['id'=>'163','category_id'=>'8','title'=>'Date','type_id'=>'2','frequency_id'=>'','unit_id'=>'6','default_choice_id'=>'','parent'=>'0','in_chart'=>'','sort'=>'','is_required'=>'2']);
-$this->insert('{{%gad_cms_indicator}}',['id'=>'164','category_id'=>'8','title'=>'(Name of the Provincial Director)','type_id'=>'2','frequency_id'=>'','unit_id'=>'6','default_choice_id'=>'','parent'=>'0','in_chart'=>'','sort'=>'2','is_required'=>'2']);
+$this->insert('{{%gad_cms_indicator}}',['id'=>'163','category_id'=>'8','title'=>'Date','type_id'=>'2','frequency_id'=>'','unit_id'=>'6','default_choice_id'=>'','parent'=>'0','in_chart'=>'','sort'=>'1','is_required'=>'2']);
+$this->insert('{{%gad_cms_indicator}}',['id'=>'164','category_id'=>'8','title'=>'Name of the Provincial Director','type_id'=>'2','frequency_id'=>'','unit_id'=>'6','default_choice_id'=>'','parent'=>'0','in_chart'=>'','sort'=>'2','is_required'=>'2']);
 $this->insert('{{%gad_cms_indicator}}',['id'=>'174','category_id'=>'9','title'=>'day of ___________, ','type_id'=>'2','frequency_id'=>'','unit_id'=>'7','default_choice_id'=>'1','parent'=>'0','in_chart'=>'','sort'=>'6','is_required'=>'2']);
 $this->insert('{{%gad_cms_indicator}}',['id'=>'176','category_id'=>'9','title'=>'at the Office of the ______________','type_id'=>'2','frequency_id'=>'','unit_id'=>'6','default_choice_id'=>'','parent'=>'0','in_chart'=>'','sort'=>'8','is_required'=>'2']);
 $this->insert('{{%gad_cms_indicator}}',['id'=>'177','category_id'=>'9','title'=>'Signed by:','type_id'=>'2','frequency_id'=>'','unit_id'=>'6','default_choice_id'=>'','parent'=>'0','in_chart'=>'','sort'=>'9','is_required'=>'2']);
 $this->insert('{{%gad_cms_indicator}}',['id'=>'178','category_id'=>'9','title'=>'Designation','type_id'=>'2','frequency_id'=>'','unit_id'=>'7','default_choice_id'=>'1','parent'=>'0','in_chart'=>'','sort'=>'10','is_required'=>'2']);
 $this->insert('{{%gad_cms_indicator}}',['id'=>'180','category_id'=>'7','title'=>'Mayor/Governor','type_id'=>'2','frequency_id'=>'','unit_id'=>'7','default_choice_id'=>'1','parent'=>'0','in_chart'=>'','sort'=>'3','is_required'=>'2']);
 $this->insert('{{%gad_cms_indicator}}',['id'=>'181','category_id'=>'9','title'=>'Issued this _____________','type_id'=>'2','frequency_id'=>'','unit_id'=>'7','default_choice_id'=>'1','parent'=>'0','in_chart'=>'','sort'=>'5','is_required'=>'2']);
+$this->insert('{{%gad_cms_indicator}}',['id'=>'182','category_id'=>'8','title'=>'Name of PPDO','type_id'=>'2','frequency_id'=>'','unit_id'=>'6','default_choice_id'=>'','parent'=>'0','in_chart'=>'','sort'=>'3','is_required'=>'2']);
 $this->insert('{{%gad_cms_ind_choices}}',['id'=>'201','indicator_id'=>'162','default_choice_id'=>'','value'=>'Regional Director']);
 $this->insert('{{%gad_cms_ind_choices}}',['id'=>'202','indicator_id'=>'162','default_choice_id'=>'','value'=>'Provincial Director']);
 $this->insert('{{%gad_cms_ind_choices}}',['id'=>'203','indicator_id'=>'178','default_choice_id'=>'','value'=>'Regional Director']);
@@ -79,10 +83,6 @@ $this->insert('{{%gad_cms_ind_choices}}',['id'=>'246','indicator_id'=>'181','def
 $this->insert('{{%gad_cms_ind_choices}}',['id'=>'247','indicator_id'=>'181','default_choice_id'=>'','value'=>'29th']);
 $this->insert('{{%gad_cms_ind_choices}}',['id'=>'248','indicator_id'=>'181','default_choice_id'=>'','value'=>'30th']);
 $this->insert('{{%gad_cms_ind_choices}}',['id'=>'249','indicator_id'=>'181','default_choice_id'=>'','value'=>'31st']);
-$this->insert('{{%gad_cms_category}}',['id'=>'7','title'=>'General Observations and Recommendations (Letter of Deficiencies and GPB Review Form)','frequency'=>'','frequency_id'=>'','lgup_content_type_id'=>'1','lgup_content_width_id'=>'','applicable_to'=>'0','left_or_right'=>'0','sort'=>'','add_comment'=>'0']);
-$this->insert('{{%gad_cms_category}}',['id'=>'8','title'=>'Letter of Review and Endorsement from Provincial Planning and Development Coordinating Office (PPDO)','frequency'=>'','frequency_id'=>'','lgup_content_type_id'=>'1','lgup_content_width_id'=>'','applicable_to'=>'0','left_or_right'=>'0','sort'=>'','add_comment'=>'0']);
-$this->insert('{{%gad_cms_category}}',['id'=>'9','title'=>'Certificate of Review and Endorsement from DILG Region/Province','frequency'=>'','frequency_id'=>'','lgup_content_type_id'=>'1','lgup_content_width_id'=>'','applicable_to'=>'0','left_or_right'=>'0','sort'=>'','add_comment'=>'0']);
-$this->insert('{{%gad_cms_category}}',['id'=>'10','title'=>'Project Implementation and Management, and Monitoring and Evaluation','frequency'=>'','frequency_id'=>'','lgup_content_type_id'=>'1','lgup_content_width_id'=>'','applicable_to'=>'0','left_or_right'=>'0','sort'=>'','add_comment'=>'0']);
 $this->execute('SET foreign_key_checks = 1;');
     }
 
