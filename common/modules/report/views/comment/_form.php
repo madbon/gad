@@ -65,6 +65,7 @@ use richardfan\widget\JSRegister;
     <?= $form->field($model, 'record_tuc')->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'record_id')->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'model_name')->hiddenInput()->label(false) ?>
 
     <div class="row" style="margin-top: -30px;">
         <div class="col-sm-4">
@@ -314,6 +315,7 @@ use richardfan\widget\JSRegister;
                             var ruc = $.trim($("#gadcomment-record_tuc").val());
                             var id = $.trim($("#gadcomment-id").val());
                             var route = "";
+                            var model_name = $.trim($("#gadcomment-model_name").val());
 
                             if($("#saveObservation").text() == "Save")
                             {
@@ -343,7 +345,8 @@ use richardfan\widget\JSRegister;
                                             plan_budget_id:plan_budget_id,
                                             column_title:column_title,
                                             id:id,
-                                            ruc:ruc
+                                            ruc:ruc,
+                                            model_name:model_name
                                         }
                                     }).done(function(result) {
                                         if($("#saveObservation").text() == "Save")

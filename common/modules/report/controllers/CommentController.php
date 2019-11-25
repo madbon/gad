@@ -144,7 +144,7 @@ class CommentController extends ControllerAudit
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($plan_id,$row_no,$column_no,$attribute_name,$column_title,$ruc)
+    public function actionCreate($plan_id,$row_no,$column_no,$attribute_name,$column_title,$ruc,$controllerid)
     {
         $model = new GadComment();
         $searchModel = new GadCommentSearch();
@@ -158,13 +158,17 @@ class CommentController extends ControllerAudit
         $model->record_tuc = $ruc;
 
         $qry = \common\models\GadPlanBudget::find()->where(['id' => $plan_id])->one();
-        $project_title = !empty($qry->ppa_value) ? $qry->ppa_value : "";
-
         $qryAttributed = \common\models\GadAttributedProgram::find()->where(['id' => $plan_id])->one();
-        if($project_title == "")
+
+        if($controllerid == "GadPlanBudget")
         {
-            $project_title = !empty($qryAttributed->lgu_program_project) ? $qryAttributed->lgu_program_project : "";
+            $model->row_value = !empty($qry->ppa_value) ? $qry->ppa_value : "";
         }
+        else if($controllerid == "GadAttributedProgram")
+        {
+            $model->row_value = !empty($qryAttributed->lgu_program_project) ? $qryAttributed->lgu_program_project : "";
+        }
+
         // print_r($attribute_name); exit;
         if($attribute_name == "ppa_value")
         {
@@ -208,6 +212,7 @@ class CommentController extends ControllerAudit
         }
         else if($attribute_name == "hgdg")
         {
+
             $row_value = !empty($qryAttributed->hgdg) ? $qryAttributed->hgdg : "";
         }
         else if($attribute_name == "total_annual_pro_budget")
@@ -223,18 +228,17 @@ class CommentController extends ControllerAudit
             $row_value = "";
         }
         
-        $model->row_value = $project_title;
+        // $model->row_value = $project_title;
         $model->column_value = $row_value;
 
-        // if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        //     return $this->redirect(['view', 'id' => $model->id]);
-        // }
+        $model->model_name = $controllerid;
 
         return $this->renderAjax('create', [
             'model' => $model,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'ruc' => $ruc
+            'ruc' => $ruc,
+            'controllerid' => $controllerid
         ]);
     }
 
@@ -259,6 +263,7 @@ class CommentController extends ControllerAudit
         $plan_budget_id = $arrVal["plan_budget_id"];
         $column_title = $arrVal["column_title"];
         $ruc = $arrVal["ruc"];
+        $model_name = $arrVal["model_name"];
 
         $model->row_no = $row_no;
         $model->column_no = $column_no;
@@ -292,7 +297,7 @@ class CommentController extends ControllerAudit
         $model->resp_citymun_c = !empty(Yii::$app->user->identity->userinfo->CITYMUN_C) ? Yii::$app->user->identity->userinfo->CITYMUN_C : "";
 
         
-        $model->model_name = "GadAttributedProgram";
+        $model->model_name = $model_name;
 
         if(!$model->save())
         {
