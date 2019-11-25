@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $model common\models\GadCategoryComment */
 
 $this->title = 'Create Gad Category Comment';
-$this->params['breadcrumbs'][] = ['label' => 'Gad Category Comments', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+// $this->params['breadcrumbs'][] = ['label' => 'Gad Category Comments', 'url' => ['index']];
+// $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="gad-category-comment-create">
 

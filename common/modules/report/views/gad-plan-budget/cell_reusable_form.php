@@ -197,8 +197,9 @@ use yii\helpers\Url;
     <!-- button comment and textarea -->
         <!-- button comment -->
         <?php
+        // print_r($controller_id); exit;
             // $t = '@web/report/gad-plan-budget/create?row_id='."1"."&ruc="."ruc"."&onstep="."1"."&tocreate="."1"."&model_name=GadPlanBudget";
-            $urlCreateComment = '@web/report/comment/create?plan_id='.$row_id.'&row_no='.$countRow.'&column_no='.$columnNumber.'&attribute_name='.$attribute_name.'&column_title='.(urlencode($column_title)).'&ruc='.$record_unique_code.' ';
+            $urlCreateComment = '@web/report/comment/create?plan_id='.$row_id.'&row_no='.$countRow.'&column_no='.$columnNumber.'&attribute_name='.$attribute_name.'&column_title='.(urlencode($column_title)).'&ruc='.$record_unique_code.'&controllerid='.$controller_id;
             echo Html::button('<span class="glyphicon glyphicon-comment"></span>', ['value'=>Url::to($urlCreateComment),
             'class' => 'btn btn-info btn-xs modalButton btn-comment-cell', 'id' => 'btn-comment-'.$attribute_name.'-'.$row_id.'','style' => 'display:none;']);
         ?>

@@ -872,9 +872,9 @@ class GadPlanBudgetController extends ControllerAudit
 
     public function actionUploadFormEndorsementFile($ruc,$onstep,$tocreate){
        $upload = new GadFileAttached();
-       $folder_type = ArrayHelper::map(\common\models\GadFileFolderType::find()->all(), 'id', 'title');
+       $folder_type = ArrayHelper::map(\common\models\GadFileFolderType::find()->where(['id' => 3])->all(), 'id', 'title');
        $record = GadRecord::find()->where(['tuc' => $ruc])->one();
-
+       $upload->file_folder_type_id = 3;
        if($upload->load(Yii::$app->request->post()))
        {
             $last_id = $record->id;

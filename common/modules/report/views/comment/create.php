@@ -17,7 +17,8 @@ $this->title = "Create Specific Observations and Recommendations";
         'model' => $model,
         'searchModel' => $searchModel,
         'dataProvider' => $dataProvider,
-        'ruc' => $ruc
+        'ruc' => $ruc,
+        'controllerid' => $controllerid
     ]) ?>
 
 </div>

@@ -315,6 +315,13 @@ class DefaultController extends ControllerAudit
             return 0;
         }
     }
+
+    public function GetOfficeId($ruc)
+    {
+        $Record = GadRecord::find()->where(['tuc' => $ruc])->one();
+
+        return $Record->office_c;
+    }
     public function GetProvinceName($ruc)
     {
         $Record = GadRecord::find()->where(['tuc' => $ruc])->one();
@@ -342,6 +349,20 @@ class DefaultController extends ControllerAudit
         {
             return "";
         }
+    }
+
+    public function GetReportTitle($ruc)
+    {
+        $Query = GadRecord::find()->where(['tuc' => $ruc])->one();
+
+        return $Query->report_type_id == 1 ? "Plan and Budget" : "Accomplishment Report";
+    }
+
+    public function GetReportAcronym($ruc)
+    {
+        $Query = GadRecord::find()->where(['tuc' => $ruc])->one();
+
+        return $Query->report_type_id == 1 ? "GPB" : "AR";
     }
 
     public function GetPlanYear($ruc)

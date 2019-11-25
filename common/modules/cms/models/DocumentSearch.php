@@ -7,6 +7,7 @@ use yii\data\ActiveDataProvider;
 use common\modules\cms\models\Category;
 use yii\db\Query;
 use Yii;
+use \common\modules\report\controllers\DefaultController as Tools;
 
 /**
  * DocumentSearch represents the model behind the search form of `common\modules\cms\models\Category`.
@@ -17,11 +18,12 @@ class DocumentSearch extends Category
      * {@inheritdoc}
      */
     public $ruc;
+    public $report_type_id;
     public function rules()
     {
         return [
             [['id', 'frequency_id', 'lgup_content_type_id', 'lgup_content_width_id', 'applicable_to', 'left_or_right', 'add_comment'], 'integer'],
-            [['title', 'frequency','ruc'], 'safe'],
+            [['title', 'frequency','ruc','report_type_id'], 'safe'],
             [['sort'], 'number'],
         ];
     }
@@ -45,15 +47,39 @@ class DocumentSearch extends Category
     public function search_created_document($params)
     {
         $this->load($params);
+        $merged_array_region_dilg = array_merge(Tools::ViewStatus('gad_region_dilg'),Tools::ViewStatus('ar_filtered_status_region'));
+        $merged_array_province_dilg = array_merge(Tools::ViewStatus('gad_province_dilg'),Tools::ViewStatus('ar_filtered_status_province_dilg'));
+        $merged_array_ppdo = array_merge(Tools::ViewStatus('gad_ppdo'),Tools::ViewStatus('ar_filtered_status_ppdo'));
 
         $condition = [];
-        if(Yii::$app->user->can("gad_field_permission"))
+        
+        if(Yii::$app->user->can("gad_province_permission")) // all lower level lgu under its province
         {
-            $condition = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C, 'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C];
+            $condition = [
+                'GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,
+                'GR.status'=> $merged_array_province_dilg,
+                'CAT.id' => [7,9]
+            ];
         }
         else if(Yii::$app->user->can("gad_region_permission"))
         {
-            $condition = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C, 'GR.office_c' => [2,4]];
+            $condition = [
+                'GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,
+                'GR.status' =>  $merged_array_region_dilg, 
+                'CAT.id' => [7,9]
+            ];
+        }
+        else if(Yii::$app->user->can("gad_ppdo_permission"))
+        {
+            $condition = [
+                'GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,
+                'GR.status'=> $merged_array_ppdo, 
+                'CAT.id' => 8
+            ];
+        }
+        else
+        {
+            $condition = [];
         }
 
         $query = (new Query())
@@ -75,8 +101,10 @@ class DocumentSearch extends Category
         ->leftJoin(['OFF' => 'tbloffice'], 'OFF.OFFICE_C = GR.office_c')
         ->leftJoin(['CAT' => 'gad_cms_category'], 'CAT.id = GV.category_id')
         ->where($condition)
-        ->groupBy(['GV.yearly_record_id','GV.category_id']);
-        // ->orderBy(['GR.id' => ]);
+        ->groupBy(['GV.yearly_record_id','GV.category_id'])
+        ->orderBy(['GR.id' => SORT_DESC]);
+
+        // print_r($query->createCommand()->rawSql); exit;
 
         $dataProvider = new ActiveDataProvider([
                 'query' => $query,

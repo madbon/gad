@@ -198,9 +198,14 @@ $this->title = "Annual GAD Plan and Budget";
                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
+                    <?php
+                        $available_actions = 0;
+                    ?>
                     <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
                     
-                    <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_plan"))){ ?>
+                    <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_plan"))){ 
+                            $available_actions = 1;
+                        ?>
                         <li>
                             <a href="#" class="" id="btn-encode">
                                 <span class="glyphicon glyphicon-pencil" style="color: #7e57b1;"></span> Input Form
@@ -230,17 +235,31 @@ $this->title = "Annual GAD Plan and Budget";
                                                       'method' => 'post']]);
                             ?>
                         </li>
-                    <?php }else{ ?>
-                        <li><a href="#">No Available Actions</a></li>
+                    <?php }else{ 
+                            $available_actions = 0;
+                        ?>
+                        
                     <?php } ?>
                 <?php } ?>
 
                 <?php 
                     if(in_array($qryReportStatus, DefaultController::Can("create_general_observation")))
                     {
+                        $available_actions = 1;
                         echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create General Observation/Recommendation',['/cms/document/form-view', 'category_id' => 7, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
+                        echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Certificate of Review and Endorsement',['/cms/document/form-view', 'category_id' => 9, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
+                    }
+                    else if(in_array($qryReportStatus, DefaultController::Can("create_letter_review_endorsement_ppdo")))
+                    {
+                        $available_actions = 1;
+                        echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Letter of Review and Endorsement from the Provincial Planning and Coordinating Office ',['/cms/document/form-view', 'category_id' => 8, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
                     }
                     else
+                    {
+                        $available_actions = 0;
+                    }
+
+                    if($available_actions == 0)
                     {
                         echo "<li><a href='#'>No Available Action(s)</a></li>";
                     }
@@ -839,7 +858,7 @@ $this->title = "Annual GAD Plan and Budget";
 
                             <tr class="attributed_program_td" id="attributed_tr_<?= $dap['id'] ?>">
                                 <?php
-                                    echo $this->render('cell_reusable_form',[
+                                    echo $this->render('cell_reusable_form',[   
                                         'cell_value' => $dap["lgu_program_project"],
                                         'display_value' => $dap["lgu_program_project"],
                                         'row_id' => $dap["id"],
@@ -849,7 +868,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-ap-lgu-program-project']),
                                         'column_title' => 'Title of LGU Program or Project',
                                         'colspanValue' => '2',
-                                        'controller_id' => $dap['controller_id'],
+                                        'controller_id' => "GadAttributedProgram",
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'padding-top:13px;',
                                         'enableComment' => Yii::$app->user->can("gad_comment_lgu_program") ? 'true' : 'false',
@@ -905,7 +924,6 @@ $this->title = "Annual GAD Plan and Budget";
                                     }
                                 ?>
                                 <?php
-
                                     echo $this->render('cell_reusable_form',[
                                         'cell_value' => $dap["hgdg"],
                                         'display_value' => $HgdgWrongSign." ".$dap["hgdg"],
@@ -916,7 +934,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-hgdg']),
                                         'column_title' => 'HGDG Design/ Funding Facility/ Generic Checklist Score',
                                         'colspanValue' => '1',
-                                        'controller_id' => $dap['controller_id'],
+                                        'controller_id' => "GadAttributedProgram",
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; padding-top:13px;',
                                         'enableComment' => Yii::$app->user->can("gad_comment_hgdg_score") ? 'true' : 'false',
@@ -937,7 +955,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-total-annual-pro-budget']),
                                         'column_title' => 'Total Annual Program/ Project Budget',
                                         'colspanValue' => '2',
-                                        'controller_id' => $dap['controller_id'],
+                                        'controller_id' => "GadAttributedProgram",
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:right;',
                                         'enableComment' => Yii::$app->user->can("gad_comment_total_annual_pro_budget") ? 'true' : 'false',
@@ -974,7 +992,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-ap-lead-responsible-office']),
                                         'column_title' => 'Lead or Responsible Office',
                                         'colspanValue' => '',
-                                        'controller_id' => $dap['controller_id'],
+                                        'controller_id' => "GadAttributedProgram",
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; padding-top:13px;',
                                         'enableComment' => Yii::$app->user->can("gad_comment_lead") ? 'true' : 'false',

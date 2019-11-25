@@ -17,6 +17,7 @@ use common\models\GadRecord;
 use niksko12\user\models\Region;
 use niksko12\user\models\Province;
 use niksko12\user\models\Citymun;
+use common\modules\report\controllers\DefaultController as Tools;
 
 /**
  * DocumentController implements the CRUD actions for Category model.
@@ -64,6 +65,7 @@ class DocumentController extends Controller
     
     public function actionDownloadSpecificObservation($ruc,$type)
     {
+        // print_r($ruc); exit;
         $phpWord = new \PhpOffice\PhpWord\PhpWord();
         $office_c = "";
         $address_lgu = "";
@@ -156,6 +158,7 @@ class DocumentController extends Controller
             'qryCommentGadPlan' => $qryCommentGadPlan,
             'qryCommentAttributed' => $qryCommentAttributed,
             'qryComment' => $qryCommentPpdo,
+            'ruc' => $ruc,
         ]);
         
     }
@@ -185,7 +188,8 @@ class DocumentController extends Controller
             'CAT.id as category_id',
             'REC.id as record_id',
             'IND.id as indicator_id',
-            'REC.approved_by as record_approved_by'
+            'REC.approved_by as record_approved_by',
+            'REC.year'
         ])
         ->from('gad_cms_values VAL')
         ->leftJoin(['REC' => 'gad_record'], 'REC.id = VAL.yearly_record_id')
@@ -196,33 +200,45 @@ class DocumentController extends Controller
         ->all();
 
         
-
+        $document_name = "";
         $arrCategory7 = [];
         $approvedBy = "";
         $record_id = null;
         $category_id = null;
+        $year = 0;
         foreach ($queryValues as $key => $row) {
-            if($row["category_id"] == 7)
-            {
-                $arrCategory7[] = $row["value"];
-                $approvedBy = $row["record_approved_by"];
-                $record_id = $row["record_id"];
-                $category_id = $row["category_id"];
-            }
+            $arrCategory7[] = $row["value"];
+            $approvedBy = $row["record_approved_by"];
+            $record_id = $row["record_id"];
+            $category_id = $row["category_id"];
+            $year = $row["year"];
         }
 
         $queryCatCom = GadCategoryComment::find()->where(['record_id' => $record_id, 'category_id' => $category_id])->all();
 
-        return $this->render('word_document/general_observation',
+        if($category_id == 7) // general observation
+        {
+            $document_name = "general_observation";
+        }
+        else if($category_id == 8) // Letter of Review and Endorsement from PPDO
+        {
+            $document_name = "letter_of_endorsement_ppdo";
+        }
+        else if($category_id == 9) // Certificate of Review and Endorsement from DILG Region/Province
+        {
+            $document_name = "certificate_of_endorsement";
+        }
+
+        return $this->render('word_document/'.$document_name,
             [
                 'phpWord' => $phpWord, 
                 'arrCategory7' => $arrCategory7,
                 'approvedBy' => $approvedBy,
                 'queryCatCom' =>$queryCatCom, 
+                'year' => $year,
+                'ruc' => $ruc
             ]);
     }
-
-
 
     /**
      * Displays a single Record model.
@@ -591,6 +607,16 @@ class DocumentController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
+
+    public function actionDeleteValues($ruc)
+    {
+        // print_r(Tools::GetRecordIdByRuc($ruc)); exit;
+        Value::deleteAll(['yearly_record_id' => Tools::GetRecordIdByRuc($ruc)]);
+        \Yii::$app->getSession()->setFlash('success', 'Data has been deleted.');
+        return $this->redirect(['created-document']);
+    }
+
+
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();

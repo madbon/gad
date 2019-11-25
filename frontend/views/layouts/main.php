@@ -382,16 +382,15 @@ nav.navbar-default div.navbar-header a
                         <?php } ?>
                         
                         <?php 
-
                             if(DefaultController::HasAction("menu_document"))
                             {
                                 if(Yii::$app->controller->id == "document")
                                 {
-                                    echo "<li class='activelink'>".Html::a('<span class="fa fa-file"></span> Documents', ['/cms/document/created-document'])."</li>";
+                                    echo "<li class='activelink'>".Html::a('<span class="fa fa-file"></span> Created Documents', ['/cms/document/created-document'])."</li>";
                                 }
                                 else
                                 {
-                                    echo "<li>".Html::a('<span class="fa fa-file"></span> Documents', ['/cms/document/created-document'])."</li>";
+                                    echo "<li>".Html::a('<span class="fa fa-file"></span> Created Documents', ['/cms/document/created-document'])."</li>";
                                 }
                             }
                         ?>
