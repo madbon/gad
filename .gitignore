@@ -39,6 +39,7 @@ phpunit.phar
 /frontend/web/uploads/file_attached
 /frontend/web/uploads/system_generated
 /frontend/web/uploads
+/frontend/web/Letter1.docx
 
 # ignore generated file
 /frontend/web/index.php
