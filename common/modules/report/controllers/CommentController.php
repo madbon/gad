@@ -8,7 +8,7 @@ use common\modules\report\models\GadCommentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use common\modules\report\controllers\DefaultController;
+use common\modules\report\controllers\DefaultController as Tools;
 use niksko12\auditlogs\classes\ControllerAudit;
 /**
  * CommentController implements the CRUD actions for GadComment model.
@@ -30,7 +30,7 @@ class CommentController extends ControllerAudit
         ];
     }
 
-    public function actionLoadComment($record_tuc)
+    public function actionLoadComment($record_tuc,$plan_id,$attribute_name,$model_name)
     {
         $qry = (new \yii\db\Query())
         ->select([
@@ -48,7 +48,9 @@ class CommentController extends ControllerAudit
             'GC.row_no',
             'GC.column_no',
             'GC.column_title',
-            'GC.column_value'
+            'GC.column_value',
+            'GC.full_name as new_fullname',
+            'GC.role_name'
         ])
         ->from('gad_comment GC')
         ->leftJoin(['UI' => 'user_info'], 'UI.user_id = GC.resp_user_id')
@@ -57,7 +59,7 @@ class CommentController extends ControllerAudit
         ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = GC.resp_region_c')
         ->leftJoin(['PRV' => 'tblprovince'], 'PRV.province_c = GC.resp_province_c')
         ->leftJoin(['CTC' => 'tblcitymun'], 'CTC.citymun_c = GC.resp_citymun_c AND CTC.province_c = GC.resp_province_c')
-        ->where(['REC.tuc' => $record_tuc, 'GC.resp_user_id' => Yii::$app->user->identity->id])
+        ->where(['REC.tuc' => $record_tuc,'GC.plan_budget_id' => $plan_id,'GC.attribute_name' => $attribute_name, 'GC.model_name' => $model_name])
         ->groupBy(['GC.id'])
         ->orderBy(['GC.id' => SORT_ASC])
         ->all();
@@ -81,7 +83,9 @@ class CommentController extends ControllerAudit
                         'column_value' => $item["column_value"],
                         'row_no' => $item["row_no"],
                         'row_value' => $item["row_value"],
-                        'column_title' => $item["column_title"]
+                        'column_title' => $item["column_title"],
+                        'role_name' => $item["role_name"],
+                        'new_fullname' => $item["new_fullname"]
                      ];
         }
         
@@ -238,7 +242,12 @@ class CommentController extends ControllerAudit
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'ruc' => $ruc,
-            'controllerid' => $controllerid
+            'controllerid' => $controllerid,
+            'plan_id' => $plan_id,
+            'row_no' => $row_no,
+            'column_no' => $column_no,
+            'attribute_name' => $attribute_name,
+            'column_title' => $column_title,
         ]);
     }
 
@@ -289,13 +298,28 @@ class CommentController extends ControllerAudit
         $model->row_value = $project_title;
         $model->column_value = $column_value;
 
-        $model->record_id = DefaultController::GetRecordIdByRuc($ruc);
+        $model->record_id = Tools::GetRecordIdByRuc($ruc);
         $model->resp_user_id = Yii::$app->user->identity->id;
-        $model->resp_office_c = !empty(Yii::$app->user->identity->userinfo->OFFICE_C) ? Yii::$app->user->identity->userinfo->OFFICE_C : "";
+
+        if(Yii::$app->user->can("gad_ppdo") || Yii::$app->user->can("gad_province"))
+        {
+            $model->resp_office_c = 2;
+        }
+        else if(Yii::$app->user->can("gad_region"))
+        {
+            $model->resp_office_c = 1;
+        }
+        else
+        {
+            $model->resp_office_c = 0;
+        }
+
         $model->resp_region_c = !empty(Yii::$app->user->identity->userinfo->REGION_C) ? Yii::$app->user->identity->userinfo->REGION_C : "";
         $model->resp_province_c = !empty(Yii::$app->user->identity->userinfo->PROVINCE_C) ? Yii::$app->user->identity->userinfo->PROVINCE_C : "";
         $model->resp_citymun_c = !empty(Yii::$app->user->identity->userinfo->CITYMUN_C) ? Yii::$app->user->identity->userinfo->CITYMUN_C : "";
 
+        $model->full_name = Yii::$app->user->identity->userinfo->FIRST_M." ".Yii::$app->user->identity->userinfo->LAST_M;
+        $model->role_name = Tools::GetRoleName();
         
         $model->model_name = $model_name;
 

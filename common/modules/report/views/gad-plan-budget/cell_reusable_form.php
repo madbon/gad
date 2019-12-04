@@ -1,10 +1,13 @@
 <?php
 
 use yii\helpers\Html;
-use common\modules\report\controllers\DefaultController;
+use common\modules\report\controllers\DefaultController as Tools;
 use yii\helpers\Url;
 ?>
-<?php if(DefaultController::countComment2($controller_id,$form_id,$row_id,$attribute_name) > 0) { ?>
+<?php 
+$record_id = Tools::GetRecordIdByRuc($record_unique_code);
+
+if(Tools::HasComment($record_id,$row_id,$attribute_name,$controller_id) > 0) { ?>
 <td style="<?= $customStyle ?>" title="<?= $column_title ?>" colspan="<?= $colspanValue ?>" id="cell-<?= $attribute_name ?>-<?= $row_id ?>" class="common-cell-container has-comment"> <!-- put border if has comment  -->
 <?php } else{ ?>
 <td style="<?= $customStyle ?>" title="<?= $column_title ?>" colspan="<?= $colspanValue ?>" id="cell-<?= $attribute_name ?>-<?= $row_id ?>" class="common-cell-container"> <!-- remove border if no comment  -->
@@ -97,7 +100,7 @@ use yii\helpers\Url;
 
                 if(enableViewComment == "true")
                 {
-                    var countComment = '.(DefaultController::countComment2($controller_id,$form_id,$row_id,$attribute_name)).';
+                    var countComment = '.(Tools::countComment2($controller_id,$form_id,$row_id,$attribute_name)).';
                     $(".btn-view-comment-common").hide();
                     if(countComment > 0)
                     {

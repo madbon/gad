@@ -439,7 +439,6 @@ $this->title = "Annual GAD Plan and Budget";
             });
         ");
     ?>
-
             <!-- /////////////////////////////////////////////////////////////// Remarks Form End -->
     <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
        <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_plan"))){ ?>

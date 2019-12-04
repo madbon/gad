@@ -18,7 +18,12 @@ $this->title = "Create Specific Observations and Recommendations";
         'searchModel' => $searchModel,
         'dataProvider' => $dataProvider,
         'ruc' => $ruc,
-        'controllerid' => $controllerid
+        'controllerid' => $controllerid,
+        'plan_id' => $plan_id,
+        'row_no' => $row_no,
+        'column_no' => $column_no,
+        'attribute_name' => $attribute_name,
+        'column_title' => $column_title,
     ]) ?>
 
 </div>

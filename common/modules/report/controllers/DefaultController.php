@@ -34,6 +34,13 @@ use common\models\GadStatusAssignment;
  */
 class DefaultController extends ControllerAudit
 {
+    public function GetRoleName()
+    {
+        $arrayRole = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id));
+
+        return !empty($arrayRole[0]) ? $arrayRole[0] : "";
+    }
+
     public function HasAction($param)
     {
         $arrayRole = [];
@@ -1649,6 +1656,13 @@ class DefaultController extends ControllerAudit
 
         \Yii::$app->response->format = 'json';
         return $value;
+    }
+
+    public function HasComment($record_id,$plan_budget_id,$attribute_name,$model_name)
+    {
+        $count = \common\models\GadComment::find()->where(['record_id' => $record_id, 'plan_budget_id' => $plan_budget_id, 'attribute_name' => $attribute_name,'model_name' => $model_name])->count();
+
+        return $count;
     }
 
     public function countComment($id,$attribute)

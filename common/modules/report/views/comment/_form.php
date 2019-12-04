@@ -172,22 +172,59 @@ use richardfan\widget\JSRegister;
                                 $(".confirm").slideUp(300); 
                             }, 3000);
                         }
+
+
                         function loadcomment()
                         {
+                            var plan_id = $.trim($("#gadcomment-plan_budget_id").val());
+                            var attribute_name = $.trim($("#gadcomment-attribute_name").val());
+                            var model_name = $.trim($("#gadcomment-model_name").val()); 
                             $.ajax({
                                 url: "<?= $urlLoadComment ?>",
                                 data: { 
-                                        record_tuc:record_tuc
+                                        record_tuc:record_tuc,
+                                        plan_id:plan_id,
+                                        attribute_name:attribute_name,
+                                        model_name:model_name
+
                                     }
                                 }).done(function(data) {
                                     $("#comment_list tbody").html("");
                                     $.each(data, function(key, value){
                                         var cols = "";
+                                        var station_val = "";
+                                        var role = "";
+                                        if(value.office_name == "Provincial Office")
+                                        {
+                                            station_val = value.province_name;
+                                        }
+                                        else if(value.office_name == "Regional Office")
+                                        {
+                                            station_val = value.region_name;
+                                        }
+
+                                        if(value.role_name == "gad_ppdo")
+                                        {
+                                            role = "PPDO";
+                                        }
+                                        else if(value.role_name == "gad_province")
+                                        {
+                                            role = "DILG";
+                                        }
+                                        else if(value.role_name == "gad_region")
+                                        {
+                                            role = "DILG";
+                                        }
+
+
                                         cols += "<tr>"
                                         cols +=     "<td> Row "+value.row_no+"<br/>"+value.row_value+"</td>";
-                                        cols +=     "<td style='white-space:pre-line;'> Column "+value.column_no+". ("+value.column_title+") <i>"+value.column_value+"</i> <br/>"+value.comment+"</td>";
+                                        cols +=     "<td style='white-space:pre-line;'> Column "+value.column_no+". ("+value.column_title+") "+value.column_value+" <br/> <i><br/>"+value.comment+"</i> <br/><br/> <span style='font-size:10px;'>This comment was created by : "+role+" "+value.office_name+" of "+station_val+"</span> <br/> <i style='font-size:10px;'><span class='fa fa-calendar-o'></span> "+value.date_created+"&nbsp; <span class='fa fa-clock-o'></span> "+value.time_created+" </i></td>";
+
                                         cols +=     "<td><button class='btn btn-primary btn-xs' id='editcomment-"+value.comment_id+"'><span class='glyphicon glyphicon-edit'></span></button>";
+
                                         cols +=     "&nbsp;<button class='btn btn-danger btn-xs' id='deletecomment-"+value.comment_id+"'><span class='glyphicon glyphicon-trash'></span></button></td>";
+
                                         cols += "</tr>";
                                         $("#comment_list tbody").append(cols);
 
