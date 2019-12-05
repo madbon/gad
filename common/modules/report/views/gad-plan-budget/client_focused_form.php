@@ -252,6 +252,12 @@ HTML;
                             ],
                             'opens'=>'left'
                         ],
+                        'pluginEvents'=>[
+                            "changeDate" => "function(e) {  
+                                var value = this.val;
+                                $('#gadplanbudget-date_implement_start').val(value);
+                             }",
+                        ],  
                     ]);
                 ?>
                

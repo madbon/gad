@@ -176,6 +176,9 @@ class GadAccomplishmentReportController extends ControllerAudit
         $modelUpdate->cliorg_ppa_attributed_program_id = explode(",",$modelUpdate->cliorg_ppa_attributed_program_id);
         $modelUpdate->activity_category_id = explode(",",$modelUpdate->activity_category_id);
 
+        $opt_focused = ArrayHelper::map(\common\models\GadFocused::find()->all(), 'id', 'title');
+        $gender_issue = ArrayHelper::map(\common\models\GadInnerCategory::find()->all(), 'id', 'title');
+
         if ($modelUpdate->load(Yii::$app->request->post())) {
             $modelUpdate->cliorg_ppa_attributed_program_id = implode(",",$modelUpdate->cliorg_ppa_attributed_program_id);
             $modelUpdate->activity_category_id = implode(",",$modelUpdate->activity_category_id);
@@ -190,7 +193,9 @@ class GadAccomplishmentReportController extends ControllerAudit
             'modelUpdate' => $modelUpdate,
             'tags_ppaSectors' => $tags_ppaSectors,
             'tags_activityCategory' => $tags_activityCategory,
-            'status' => DefaultController::GetStatusByRuc($ruc)
+            'status' => DefaultController::GetStatusByRuc($ruc),
+            'opt_focused' => $opt_focused,
+            'gender_issue' => $gender_issue,
         ]);
     }
 

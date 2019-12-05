@@ -40,6 +40,7 @@ phpunit.phar
 /frontend/web/uploads/system_generated
 /frontend/web/uploads
 
+
 # ignore generated file
 /frontend/web/index.php
 /frontend/web/index-test.php
@@ -47,3 +48,4 @@ phpunit.phar
 /backend/web/index.php
 /backend/web/index-test.php
 /backend/web/robots.txt
+/frontend/web/Letter1.docx

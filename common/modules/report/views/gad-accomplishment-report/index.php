@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use common\modules\report\controllers\DefaultController;
+use common\modules\report\controllers\DefaultController as Tools;
 use richardfan\widget\JSRegister;
 use yii\helpers\Url;
 /* @var $this yii\web\View */
@@ -22,7 +22,7 @@ $this->title = "Annual GAD Accomplishment Reports";
         </div> -->
         <div class="cust-panel-body">
             <div class="cust-panel-title">
-                <p class="sub-title"><span class="glyphicon glyphicon-info-sign"></span> Primary Information <?= DefaultController::DisplayStatusByTuc($ruc); ?></p>
+                <p class="sub-title"><span class="glyphicon glyphicon-info-sign"></span> Primary Information <?= Tools::DisplayStatusByTuc($ruc); ?></p>
             </div>
             <div class="cust-panel-inner-body">
                 <table class="table table-responsive table-hover table-bordered basic-information">
@@ -48,11 +48,13 @@ $this->title = "Annual GAD Accomplishment Reports";
                                 }
                             ?>
                         </tr>
-                        <tr>
-                            <td>CITY/MUNICIPALITY </td>
-                            <td> : <?= $recCitymun ?></td>
-                            <td colspan="2"></td>
-                        </tr>
+                       <?php if(!empty($recCitymun)) { ?>
+                            <tr>
+                                <td>CITY/MUNICIPALITY </td>
+                                <td> : <?= $recCitymun ?></td>
+                                <td colspan="2"></td>
+                            </tr>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>
@@ -67,7 +69,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
                     <?php if(Yii::$app->user->can("gad_create_accomplishment")){ ?>
-                        <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_ar"))){ ?>
+                        <?php if(in_array($qryReportStatus,Tools::Can("encode_ar"))){ ?>
                             <li>
                                 <a href="#" id="btn-encode">
                                     <span class="glyphicon glyphicon-pencil" style='color:blue;'></span> Encode Accomplishment Report
@@ -92,14 +94,14 @@ $this->title = "Annual GAD Accomplishment Reports";
                             </li>
                             <li>
                                 <?php 
-                                    echo Html::a('<span class="glyphicon glyphicon-trash" style="color:red;"></span>  Delete All Rows (Client/Org.focused)',['delete-all','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '','data' => [
+                                    echo Html::a('<span class="glyphicon glyphicon-trash" style="color:red;"></span>  Delete All Rows (Client/Org.focused)',['delete-all','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'btn-block','style' => '','data' => [
                                                           'confirm' => 'Are you sure you want to delete all rows of client/org. focused?',
                                                           'method' => 'post']]);
                                 ?>
                             </li>
                             <li>
                                 <?php 
-                                    echo Html::a('<span class="glyphicon glyphicon-trash" style="color:red;"></span>  Delete All Rows (Attributed Program)',['delete-all-attrib','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '','data' => [
+                                    echo Html::a('<span class="glyphicon glyphicon-trash" style="color:red;"></span>  Delete All Rows (Attributed Program)',['delete-all-attrib','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'btn-block','style' => '','data' => [
                                                           'confirm' => 'Are you sure you want to delete all rows of attributed program?',
                                                           'method' => 'post']]);
                                 ?>
@@ -144,7 +146,7 @@ $this->title = "Annual GAD Accomplishment Reports";
     ?>
 
     <?php if(Yii::$app->user->can("gad_create_accomplishment")){ ?>
-        <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_ar"))){ ?>
+        <?php if(in_array($qryReportStatus,Tools::Can("encode_ar"))){ ?>
             <?php if(Yii::$app->session["encode_gender_ar"] == "open") {  ?>
                 <div class="cust-panel input-form" id="input-form-gender">
             <?php }else{ ?>
@@ -508,9 +510,9 @@ $this->title = "Annual GAD Accomplishment Reports";
                                 ?>
                                 <td>
                                     <?php
-                                        if(Yii::$app->user->can("gad_delete_rowaccomplishment"))
+                                        if(in_array($qryReportStatus,Tools::Can("delete_row_ar")))
                                         {
-                                            echo "<button class='btn btn-danger btn-xs' title='Delete' id='delete_ar_".$ar['id']."'><span class='glyphicon glyphicon-trash'></span></button>";
+                                            echo "<button class='btn btn-danger btn-xs btn-block' title='Delete' id='delete_ar_".$ar['id']."'><span class='glyphicon glyphicon-trash'></span> Delete row</button>";
                                         }
                                     ?>
                                     <?php JSRegister::begin() ?>
@@ -546,8 +548,8 @@ $this->title = "Annual GAD Accomplishment Reports";
                                     <?php JSRegister::end() ?>
                                     <?php
                                         $url_viewDetails = '@web/report/gad-accomplishment-report/view-other-details?model_id='.$ar['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
-                                            echo "&nbsp;".Html::button('<span class="glyphicon glyphicon-info-sign"></span> Other details', ['value'=>Url::to($url_viewDetails),
-                                            'class' => 'btn btn-default btn-xs modalButton','title' => 'View other details',]);
+                                            echo Html::button('<span class="glyphicon glyphicon-info-sign"></span> Other details', ['value'=>Url::to($url_viewDetails),
+                                            'class' => 'btn btn-default btn-xs modalButton btn-block','title' => 'View other details',]);
                                     ?>
                                 </td>
 
@@ -622,7 +624,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                         
                         <tr class="ar_attributed_program">
                             <td colspan="5">ATTRIBUTED PROGRAMS 
-                                <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_ar"))){ ?>
+                                <?php if(in_array($qryReportStatus,Tools::Can("encode_ar"))){ ?>
                                     <button id="btnEncodeAP" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-pencil"></span> Encode
                                     </button>
                                 </td><?php } ?>
@@ -654,7 +656,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                             ");
                         ?>
 
-                        <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_ar"))){ ?>
+                        <?php if(in_array($qryReportStatus,Tools::Can("encode_ar"))){ ?>
                             <?php if(Yii::$app->session["encode_attribute_ar"] == "open") {  ?>
                                 <tr class="attributed_program_form" id="attributed_program_anchor">
                             <?php }else{ ?>
@@ -708,7 +710,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => '',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $dap["record_status"] != 1 ? 'true' : 'false',
+                                        'enableEdit' => in_array($dap['record_status'],Tools::Can("edit_ar")) ? "true" : "false",
                                         'enableViewComment' => 'true',
                                         'countRow' => $count_rowAttributedProgram,
                                         'columnNumber' => 1,
@@ -773,7 +775,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; margin-top:15px;',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $dap["record_status"] != 1 ? 'true' : 'false',
+                                        'enableEdit' => in_array($dap['record_status'],Tools::Can("edit_ar")) ? "true" : "false",
                                         'enableViewComment' => 'true',
                                         'countRow' => $count_rowAttributedProgram,
                                         'columnNumber' => 2,
@@ -794,7 +796,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:right; margin-top:-5px;',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $dap["record_status"] != 1 ? 'true' : 'false',
+                                        'enableEdit' => in_array($dap['record_status'],Tools::Can("edit_ar")) ? "true" : "false",
                                         'enableViewComment' => 'true',
                                         'countRow' => $count_rowAttributedProgram,
                                         'columnNumber' => 3,
@@ -839,7 +841,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => '',
                                         'enableComment' => Yii::$app->user->can('gad_create_comment') ? 'true' : 'false',
-                                        'enableEdit' => Yii::$app->user->can('gad_edit_cell') && $dap["record_status"] != 1 ? 'true' : 'false',
+                                        'enableEdit' => in_array($dap['record_status'],Tools::Can("edit_ar")) ? "true" : "false",
                                         'enableViewComment' => 'true',
                                         'countRow' => $count_rowAttributedProgram,
                                         'columnNumber' => 5,
@@ -849,7 +851,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                                     <?php
                                         if(Yii::$app->user->can("gad_delete_accomplishment_report"))
                                         {
-                                            echo "<button class='btn btn-danger btn-xs' title='Delete' id='delete_ar_attrib_".$dap['id']."'><span class='glyphicon glyphicon-trash'></span></button>";
+                                            echo "<button class='btn btn-danger btn-xs btn-block' title='Delete' id='delete_ar_attrib_".$dap['id']."'><span class='glyphicon glyphicon-trash'></span> Delete row</button>";
                                         }
                                     ?>
                                     <?php JSRegister::begin() ?>
@@ -880,16 +882,16 @@ $this->title = "Annual GAD Accomplishment Reports";
                                     </script>
                                     <?php JSRegister::end() ?>
                                     <?php
-                                        if(Yii::$app->user->can("gad_upload_files_row"))
-                                        {
-                                            if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadArAttributedProgram",1) == 0)
+
+                                        if(in_array($qryReportStatus,Tools::Can("ar_upload_files_row"))){
+                                            if(Tools::GetUploadStatusByFileCat($dap["id"],"GadArAttributedProgram",1) == 0)
                                             {
                                                 $t = '@web/report/gad-plan-budget/update-upload-form-attributed-program?id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&file_cat=1&model_name=GadArAttributedProgram";
                                                 echo Html::button('<span class="glyphicon glyphicon-paperclip"></span> Project Accomplishment Report', ['value'=>Url::to($t),
                                                     'class' => 'btn btn-default btn-xs modalButton btn-block','title' => 'Upload Files',]);
                                             }
                                             
-                                            if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadArAttributedProgram",7) == 0)
+                                            if(Tools::GetUploadStatusByFileCat($dap["id"],"GadArAttributedProgram",7) == 0)
                                             {
                                                 $t2 = '@web/report/gad-plan-budget/update-upload-form-attributed-program?id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&file_cat=7&model_name=GadArAttributedProgram";
                                                 echo Html::button('<span class="glyphicon glyphicon-paperclip"></span> PIMME/FIMME Result', ['value'=>Url::to($t2),
@@ -897,7 +899,7 @@ $this->title = "Annual GAD Accomplishment Reports";
                                             }
                                         }
 
-                                        if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadArAttributedProgram",1) == 1)
+                                        if(Tools::GetUploadStatusByFileCat($dap["id"],"GadArAttributedProgram",1) == 1)
                                         { // if has uploaded files show button to view file
                                             $t3 = '@web/report/gad-plan-budget/view?row_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadArAttributedProgram"."&file_cat=1";
                                             echo Html::button('<span class="glyphicon glyphicon-file"></span> Project Accomplishment Report', ['value'=>Url::to($t3),
@@ -905,11 +907,10 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         }
                                         else
                                         { // else no uploaded file yet
-                                            
-                                            echo "<label class='label label-warning '>No Project Accomplishment Report Attachment</label> ";
+                                            echo "<span style='font-size:10px; color:red;'><i class='fa fa-question-circle'></i> No Project Accomplishment Report Attachment</span> <br/>";
                                         }
 
-                                        if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadArAttributedProgram",7) == 1)
+                                        if(Tools::GetUploadStatusByFileCat($dap["id"],"GadArAttributedProgram",7) == 1)
                                         { // if has uploaded files show button to view file
                                             $t4 = '@web/report/gad-plan-budget/view?row_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadArAttributedProgram"."&file_cat=7";
                                             echo Html::button('<span class="glyphicon glyphicon-file"></span> PIMME/FIMME Result', ['value'=>Url::to($t4),
@@ -917,14 +918,13 @@ $this->title = "Annual GAD Accomplishment Reports";
                                         }
                                         else
                                         { // else no uploaded file yet
-                                            
-                                            echo "<label class='label label-warning btn-block'>No PIMME/FIMME Result Attachment</label>";
+                                            echo "<span style='font-size:10px; color:red;'><i class='fa fa-question-circle'></i> No PIMME/FIMME Result Attachment</span> <br/>";
                                         }
                                     ?>
                                     <?php
                                         $url_viewDetailsAttributed = '@web/report/gad-accomplishment-report/view-other-details-attributed?model_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
-                                            echo "&nbsp;".Html::button('<span class="glyphicon glyphicon-info-sign"></span> Other details', ['value'=>Url::to($url_viewDetailsAttributed),
-                                            'class' => 'btn btn-default btn-xs modalButton','title' => 'View other details',]);
+                                            echo Html::button('<span class="glyphicon glyphicon-info-sign"></span> Other details', ['value'=>Url::to($url_viewDetailsAttributed),
+                                            'class' => 'btn btn-default btn-xs modalButton btn-block','title' => 'View other details',]);
                                     ?>
                                 </td>
                             </tr>

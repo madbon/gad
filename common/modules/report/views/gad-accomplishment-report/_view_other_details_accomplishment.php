@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use common\modules\report\controllers\DefaultController;
+use common\modules\report\controllers\DefaultController as Tools;
 use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
 use kartik\date\DatePicker;
@@ -19,6 +19,14 @@ use kartik\date\DatePicker;
 			foreach ($model as $key => $row) {
 				echo "
 					<tr>
+						<td>Focused</td>
+						<td>".(Tools::GetFocusedTitle($row['focused_id']))."</td>
+					</tr>
+					<tr>
+						<td>Gender Issue or GAD Mandate?</td>
+						<td>".(Tools::GetInnerCatTitle($row['inner_category_id']))."</td>
+					</tr>
+					<tr>
 						<td>Gender Issue/GAD Mandate Supporting Data</td>
 						<td>".($row['gi_sup_data'])."</td>
 					</tr>
@@ -28,11 +36,11 @@ use kartik\date\DatePicker;
 					</tr>
 					<tr>
 						<td>PPA Sectors</td>
-						<td>".(DefaultController::PpaSectorsTagView($row['cliorg_ppa_attributed_program_id']))."</td>
+						<td>".(Tools::PpaSectorsTagView($row['cliorg_ppa_attributed_program_id']))."</td>
 					</tr>
 					<tr>
 						<td>Activity Category</td>
-						<td>".(DefaultController::ActivityCategoryIdView($row['activity_category_id']))."</td>
+						<td>".(Tools::ActivityCategoryIdView($row['activity_category_id']))."</td>
 					</tr>
 				";
 			}
@@ -40,12 +48,35 @@ use kartik\date\DatePicker;
 	</tbody>
 </table>
 
+<?php if(in_array($status,Tools::Can("edit_ar"))) { ?>
 <div class="panel panel-primary">
 	<div class="panel-heading">
 		Update Other Details Form
 	</div>
 	<div class="panel-body">
 		<?php $form = ActiveForm::begin(); ?>
+
+		<?php
+			echo $form->field($modelUpdate, 'focused_id')->widget(Select2::classname(), [
+			    'data' => $opt_focused,
+			    'options' => ['placeholder' => 'Nothing selected'],
+			    'pluginOptions' => [
+			        'allowClear' => false,
+			        'multiple' => false,
+			    ],
+			]);
+		?>
+
+		<?php
+			echo $form->field($modelUpdate, 'inner_category_id')->widget(Select2::classname(), [
+			    'data' => $gender_issue,
+			    'options' => ['placeholder' => 'Nothing selected'],
+			    'pluginOptions' => [
+			        'allowClear' => false,
+			        'multiple' => false,
+			    ],
+			]);
+		?>
 
 		<?= $form->field($modelUpdate, 'source')->textInput() ?>
 
@@ -77,3 +108,4 @@ use kartik\date\DatePicker;
 		<?php ActiveForm::end(); ?>
 	</div>
 </div>
+<?php } ?>
