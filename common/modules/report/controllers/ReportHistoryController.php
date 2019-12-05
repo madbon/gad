@@ -4,6 +4,7 @@ namespace common\modules\report\controllers;
 
 use Yii;
 use common\models\GadReportHistory;
+use common\models\GadRecord;
 use common\modules\report\models\GadReportHistorySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -76,43 +77,59 @@ class ReportHistoryController extends Controller
         ->where(['status_code' => $qryReportStatus,'rbac_role' => $arrayRole])
         ->one();
 
+        $qry_record = GadRecord::find()->select(['prepared_by','approved_by'])->where(['tuc' => $ruc])->one();
+        $prepared_by = !empty($qry_record->prepared_by) ? $qry_record->prepared_by : "";
+        $approved_by = !empty($qry_record->approved_by) ? $qry_record->approved_by : "";
+
+
         if(empty($qryAssignedStatus->status))
         {
             echo "No Available Action";
         }
         else
         {
-            $arrStatusAssigned = explode(",",$qryAssignedStatus->status);
-            $status = ArrayHelper::map(\common\models\GadStatus::find()->where(['code' => $arrStatusAssigned])->all(), "code","future_tense");
-
-            date_default_timezone_set("Asia/Manila");
-            $model->date_created = date('Y-m-d');
-            $model->time_created = date("h:i:sa");
-            $model->responsible_user_id = !empty(Yii::$app->user->identity->id) ? Yii::$app->user->identity->id : "";
-            $model->responsible_region_c = !empty(Yii::$app->user->identity->userinfo->REGION_C) ? Yii::$app->user->identity->userinfo->REGION_C : "";
-            $model->responsible_province_c = !empty(Yii::$app->user->identity->userinfo->PROVINCE_C) ? Yii::$app->user->identity->userinfo->PROVINCE_C : "";
-            $model->responsible_citymun_c = !empty(Yii::$app->user->identity->userinfo->CITYMUN_C) ? Yii::$app->user->identity->userinfo->CITYMUN_C : "";
-            $model->fullname = Yii::$app->user->identity->userinfo->FIRST_M." ".Yii::$app->user->identity->userinfo->LAST_M;
-            $model->responsible_office_c = !empty(Yii::$app->user->identity->userinfo->OFFICE_C) ? Yii::$app->user->identity->userinfo->OFFICE_C : "";
-
-            if ($model->load(Yii::$app->request->post())) {
-                GadPlanBudgetController::ChangeReportStatus($model->status,$ruc);
-                $model->save();
-                \Yii::$app->getSession()->setFlash('success', "Action has been performed");
-                if($tocreate == "accomp_report")
-                {
-                    return $this->redirect(['/report/gad-accomplishment-report/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate]);
-                }
-                else
-                {
-                    return $this->redirect(['/report/gad-plan-budget/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate]);
-                }
+            if(empty($prepared_by))
+            {
+                echo 'Prepared by cannot be blank';
             }
+            else if(empty($approved_by))
+            {
+                echo 'Approved by cannot be blank';
+            }
+            else
+            {
+                $arrStatusAssigned = explode(",",$qryAssignedStatus->status);
+                $status = ArrayHelper::map(\common\models\GadStatus::find()->where(['code' => $arrStatusAssigned])->all(), "code","future_tense");
 
-            return $this->renderAjax('create', [
-                'model' => $model,
-                'status' => $status
-            ]);
+                date_default_timezone_set("Asia/Manila");
+                $model->date_created = date('Y-m-d');
+                $model->time_created = date("h:i:sa");
+                $model->responsible_user_id = !empty(Yii::$app->user->identity->id) ? Yii::$app->user->identity->id : "";
+                $model->responsible_region_c = !empty(Yii::$app->user->identity->userinfo->REGION_C) ? Yii::$app->user->identity->userinfo->REGION_C : "";
+                $model->responsible_province_c = !empty(Yii::$app->user->identity->userinfo->PROVINCE_C) ? Yii::$app->user->identity->userinfo->PROVINCE_C : "";
+                $model->responsible_citymun_c = !empty(Yii::$app->user->identity->userinfo->CITYMUN_C) ? Yii::$app->user->identity->userinfo->CITYMUN_C : "";
+                $model->fullname = Yii::$app->user->identity->userinfo->FIRST_M." ".Yii::$app->user->identity->userinfo->LAST_M;
+                $model->responsible_office_c = !empty(Yii::$app->user->identity->userinfo->OFFICE_C) ? Yii::$app->user->identity->userinfo->OFFICE_C : "";
+
+                if ($model->load(Yii::$app->request->post())) {
+                    GadPlanBudgetController::ChangeReportStatus($model->status,$ruc);
+                    $model->save();
+                    \Yii::$app->getSession()->setFlash('success', "Action has been performed");
+                    if($tocreate == "accomp_report")
+                    {
+                        return $this->redirect(['/report/gad-accomplishment-report/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate]);
+                    }
+                    else
+                    {
+                        return $this->redirect(['/report/gad-plan-budget/index', 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate]);
+                    }
+                }
+
+                return $this->renderAjax('create', [
+                    'model' => $model,
+                    'status' => $status
+                ]);
+            }
         }   
     }
 

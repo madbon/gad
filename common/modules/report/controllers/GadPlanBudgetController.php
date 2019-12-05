@@ -23,7 +23,7 @@ use yii\web\UploadedFile;
 use common\models\GadFileAttached;
 use common\models\GadAttributedProgram;
 use yii\db\Expression;
-use common\modules\report\controllers\DefaultController;
+use common\modules\report\controllers\DefaultController as Tools;
 use niksko12\auditlogs\classes\ControllerAudit;
 use common\models\GadReportHistory;
 
@@ -731,6 +731,9 @@ class GadPlanBudgetController extends ControllerAudit
         $tags_ppaSectors = ArrayHelper::map(\common\models\GadPpaAttributedProgram::find()->all(), 'id', 'title');
         $tags_activityCategory = ArrayHelper::map(\common\models\GadActivityCategory::find()->all(), 'id', 'title');
 
+        $opt_focused = ArrayHelper::map(\common\models\GadFocused::find()->all(), 'id', 'title');
+        $gender_issue = ArrayHelper::map(\common\models\GadInnerCategory::find()->all(), 'id', 'title');
+
         $modelUpdate->cliorg_ppa_attributed_program_id = explode(",",$modelUpdate->cliorg_ppa_attributed_program_id);
         $modelUpdate->activity_category_id = explode(",",$modelUpdate->activity_category_id);
 
@@ -749,7 +752,9 @@ class GadPlanBudgetController extends ControllerAudit
             'modelUpdate' => $modelUpdate,
             'tags_ppaSectors' => $tags_ppaSectors,
             'tags_activityCategory' => $tags_activityCategory,
-            'status' => DefaultController::GetStatusByRuc($ruc)
+            'status' => Tools::GetStatusByRuc($ruc),
+            'opt_focused' => $opt_focused,
+            'gender_issue' => $gender_issue,
         ]);
     }
 
@@ -776,7 +781,7 @@ class GadPlanBudgetController extends ControllerAudit
             'modelUpdate' => $modelUpdate,
             'tags_ppaSectors' => $tags_ppaSectors,
             'tags_checkList' => $tags_checkList,
-            'status' => DefaultController::GetStatusByRuc($ruc)
+            'status' => Tools::GetStatusByRuc($ruc)
         ]);
     }
 
@@ -803,7 +808,17 @@ class GadPlanBudgetController extends ControllerAudit
         // $qry->delete();
         GadFileAttached::deleteAll(['hash' => $hash]);
 
-        return $this->redirect(['index','ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
+        $link = "";
+        if(Tools::GetReportAcronym($ruc) == "GPB")
+        {
+            $link = "gad-plan-budget/index";
+        }
+        else
+        {
+            $link = "gad-accomplishment-report/index";
+        }
+
+        return $this->redirect([$link,'ruc' => $ruc,'onstep' => $onstep,'tocreate' => $tocreate]);
     }
 
     public function actionDownloadUploadedFile($hash,$extension)

@@ -1,5 +1,5 @@
 <?php
-use common\modules\report\controllers\DefaultController;
+use common\modules\report\controllers\DefaultController as Tools;
 ?>
 <?php
     $sup_data_value = "";
@@ -29,7 +29,7 @@ use common\modules\report\controllers\DefaultController;
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
         'enableComment' => Yii::$app->user->can('gad_comment_gender_issue') ? 'true' : 'false',
-        'enableEdit' => in_array($plan['record_status'],DefaultController::Can("edit_plan")) ? "true" : "false",
+        'enableEdit' => in_array($plan['record_status'],Tools::Can("edit_plan")) ? "true" : "false",
         'enableViewComment' => 'true',
         'countRow' => $countRow,
         'columnNumber' => 1,
@@ -50,7 +50,7 @@ use common\modules\report\controllers\DefaultController;
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
         'enableComment' => Yii::$app->user->can('gad_comment_objective') ? 'true' : 'false',
-        'enableEdit' => in_array($plan['record_status'],DefaultController::Can("edit_plan")) ? "true" : "false",
+        'enableEdit' => in_array($plan['record_status'],Tools::Can("edit_plan")) ? "true" : "false",
         'enableViewComment' => 'true',
         'countRow' => $countRow,
         'columnNumber' => 2,
@@ -72,7 +72,7 @@ use common\modules\report\controllers\DefaultController;
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
         'enableComment' => Yii::$app->user->can('gad_comment_relevant') ? 'true' : 'false',
-        'enableEdit' => in_array($plan['record_status'],DefaultController::Can("edit_plan")) ? "true" : "false",
+        'enableEdit' => in_array($plan['record_status'],Tools::Can("edit_plan")) ? "true" : "false",
         'enableViewComment' => 'true',
         'countRow' => $countRow,
         'columnNumber' => 3
@@ -94,7 +94,7 @@ use common\modules\report\controllers\DefaultController;
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
         'enableComment' => Yii::$app->user->can('gad_comment_activity') ? 'true' : 'false',
-        'enableEdit' => in_array($plan['record_status'],DefaultController::Can("edit_plan")) ? "true" : "false",
+        'enableEdit' => in_array($plan['record_status'],Tools::Can("edit_plan")) ? "true" : "false",
         'enableViewComment' => 'true',
         'countRow' => $countRow,
         'columnNumber' => 4,
@@ -116,7 +116,7 @@ use common\modules\report\controllers\DefaultController;
         'form_id' => 'cli-org-focused-form',
         'customStyle' => '',
         'enableComment' => Yii::$app->user->can('gad_comment_performance') ? 'true' : 'false',
-        'enableEdit' => in_array($plan['record_status'],DefaultController::Can("edit_plan")) ? "true" : "false",
+        'enableEdit' => in_array($plan['record_status'],Tools::Can("edit_plan")) ? "true" : "false",
         'enableViewComment' => 'true',
         'countRow' => $countRow,
         'columnNumber' => 5,
@@ -156,7 +156,7 @@ use common\modules\report\controllers\DefaultController;
         'form_id' => 'cli-org-focused-form',
         'customStyle' => 'text-align:right;',
         'enableComment' => Yii::$app->user->can('gad_comment_mooe') ? 'true' : 'false',
-        'enableEdit' => in_array($plan['record_status'],DefaultController::Can("edit_plan")) ? "true" : "false",
+        'enableEdit' => in_array($plan['record_status'],Tools::Can("edit_plan")) ? "true" : "false",
         'enableViewComment' => 'true',
         'countRow' => $countRow,
         'columnNumber' => 6,
@@ -178,7 +178,7 @@ use common\modules\report\controllers\DefaultController;
         'form_id' => 'cli-org-focused-form',
         'customStyle' => 'text-align:right;',
         'enableComment' => Yii::$app->user->can('gad_comment_ps') ? 'true' : 'false',
-        'enableEdit' => in_array($plan['record_status'],DefaultController::Can("edit_plan")) ? "true" : "false",
+        'enableEdit' => in_array($plan['record_status'],Tools::Can("edit_plan")) ? "true" : "false",
         'enableViewComment' => 'true',
         'countRow' => $countRow,
         'columnNumber' => 7,
@@ -200,7 +200,7 @@ use common\modules\report\controllers\DefaultController;
         'form_id' => 'cli-org-focused-form',
         'customStyle' => 'text-align:right;',
         'enableComment' => Yii::$app->user->can('gad_comment_co') ? 'true' : 'false',
-        'enableEdit' => in_array($plan['record_status'],DefaultController::Can("edit_plan")) ? "true" : "false",
+        'enableEdit' => in_array($plan['record_status'],Tools::Can("edit_plan")) ? "true" : "false",
         'enableViewComment' => 'true',
         'countRow' => $countRow,
         'columnNumber' => 8,
@@ -222,7 +222,7 @@ use common\modules\report\controllers\DefaultController;
         'form_id' => 'cli-org-focused-form',
         'customStyle' => 'border-bottom:none;',
         'enableComment' => Yii::$app->user->can('gad_comment_lead') ? 'true' : 'false',
-        'enableEdit' => in_array($plan['record_status'],DefaultController::Can("edit_plan")) ? "true" : "false",
+        'enableEdit' => in_array($plan['record_status'],Tools::Can("edit_plan")) ? "true" : "false",
         'enableViewComment' => 'true',
         'countRow' => $countRow,
         'columnNumber' => 9,

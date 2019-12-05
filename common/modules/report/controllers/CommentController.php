@@ -196,15 +196,15 @@ class CommentController extends ControllerAudit
         }
         else if($attribute_name == "budget_co")
         {
-            $row_value = !empty($qry->budget_co) ? $qry->budget_co : "";
+            $row_value = !empty($qry->budget_co) ? $qry->budget_co : 0;
         }
         else if($attribute_name == "budget_ps")
         {
-            $row_value = !empty($qry->budget_ps) ? $qry->budget_ps : "";
+            $row_value = !empty($qry->budget_ps) ? $qry->budget_ps : 0;
         }
         else if($attribute_name == "budget_mooe")
         {
-            $row_value = !empty($qry->budget_mooe) ? $qry->budget_mooe : "";
+            $row_value = !empty($qry->budget_mooe) ? $qry->budget_mooe : 0;
         }
         else if($attribute_name == "lead_responsible_office")
         {
@@ -221,7 +221,7 @@ class CommentController extends ControllerAudit
         }
         else if($attribute_name == "total_annual_pro_budget")
         {
-            $row_value = !empty($qryAttributed->total_annual_pro_budget) ? $qryAttributed->total_annual_pro_budget : "";
+            $row_value = !empty($qryAttributed->total_annual_pro_budget) ? $qryAttributed->total_annual_pro_budget : 0;
         }
         else if($attribute_name == "ap_lead_responsible_office")
         {

@@ -8,7 +8,7 @@ use yii\web\JsExpression;
 use yii\helpers\ArrayHelper;
 use kartik\typeahead\Typeahead;
 use kartik\select2\Select2;
-use common\modules\report\controllers\DefaultController;
+use common\modules\report\controllers\DefaultController as Tools;
 use richardfan\widget\JSRegister;
 use yii\helpers\Url;
 /* @var $this yii\web\View */
@@ -29,7 +29,7 @@ $this->title = "Annual GAD Plan and Budget";
             <div class="cust-panel-title">
                 <div class="row">
                     <div class="col-sm-6">
-                        <p class="sub-title"><span class="glyphicon glyphicon-info-sign"></span> Primary Information <?= DefaultController::DisplayStatusByTuc($ruc); ?></p>
+                        <p class="sub-title"><span class="glyphicon glyphicon-info-sign"></span> Primary Information <?= Tools::DisplayStatusByTuc($ruc); ?></p>
                     </div>
                     <div class="col-sm-6">
                         <div class="pull-right">
@@ -111,11 +111,13 @@ $this->title = "Annual GAD Plan and Budget";
                             ?>
                             
                         </tr>
-                        <tr>
-                            <td>CITY/MUNICIPALITY </td>
-                            <td> : <?= $recCitymun ?></td>
-                            <td colspan="2"></td>
-                        </tr>
+                        <?php if(!empty($recCitymun)) { ?>
+                            <tr>
+                                <td>CITY/MUNICIPALITY </td>
+                                <td> : <?= $recCitymun ?></td>
+                                <td colspan="2"></td>
+                            </tr>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>
@@ -123,10 +125,10 @@ $this->title = "Annual GAD Plan and Budget";
                 $urluploadfile = '@web/report/gad-plan-budget/upload-form-endorsement-file?ruc='.$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
                 if(Yii::$app->user->can("gad_lgu_permission"))
                 {
-                    if(DefaultController::CountUploadedFile($ruc,"GadRecord") != 0)
+                    if(Tools::CountUploadedFile($ruc,"GadRecord") != 0)
                     {
                         echo "<div class='btn-group'>";
-                        echo "<button class='btn btn-default btn-md'>".' ('.(DefaultController::CountUploadedFile($ruc,"GadRecord")).")</button>";
+                        echo "<button class='btn btn-default btn-md'>".' ('.(Tools::CountUploadedFile($ruc,"GadRecord")).")</button>";
                         echo Html::button('<span class="glyphicon glyphicon-paperclip"> </span> View file(s) attached by the Reviewer', ['value'=>Url::to($urluploadfile),
                             'class' => 'btn btn-primary btn-md modalButton ','title' => 'Upload Files',]);
                         echo "</div>";
@@ -134,10 +136,10 @@ $this->title = "Annual GAD Plan and Budget";
                 }
                 else if(Yii::$app->user->can("gad_lgu_province_permission"))
                 {
-                    if(DefaultController::CountUploadedFile($ruc,"GadRecord") != 0)
+                    if(Tools::CountUploadedFile($ruc,"GadRecord") != 0)
                     {
                         echo "<div class='btn-group'>";
-                        echo "<button class='btn btn-default btn-md'>".' ('.(DefaultController::CountUploadedFile($ruc,"GadRecord")).")</button>";
+                        echo "<button class='btn btn-default btn-md'>".' ('.(Tools::CountUploadedFile($ruc,"GadRecord")).")</button>";
                         echo Html::button('<span class="glyphicon glyphicon-paperclip"> </span> View file(s) attached by the Reviewer', ['value'=>Url::to($urluploadfile),
                             'class' => 'btn btn-primary btn-md modalButton ','title' => 'Upload Files',]);
                         echo "</div>";
@@ -146,7 +148,7 @@ $this->title = "Annual GAD Plan and Budget";
                 else if(Yii::$app->user->can("gad_province_permission"))
                 {
                     echo "<div class='btn-group'>";
-                    echo "<button class='btn btn-default btn-md'>".' ('.(DefaultController::CountUploadedFile($ruc,"GadRecord")).")</button>";
+                    echo "<button class='btn btn-default btn-md'>".' ('.(Tools::CountUploadedFile($ruc,"GadRecord")).")</button>";
                     echo Html::button('<span class="glyphicon glyphicon-paperclip"> </span> Click this to attach document(s) needed by the LGU', ['value'=>Url::to($urluploadfile),
                         'class' => 'btn btn-primary btn-md modalButton ','title' => 'Upload Files',]);
                     echo "</div>";
@@ -154,7 +156,7 @@ $this->title = "Annual GAD Plan and Budget";
                 else if(Yii::$app->user->can("gad_region_permission"))
                 {
                     echo "<div class='btn-group'>";
-                    echo "<button class='btn btn-default btn-md'>".' ('.(DefaultController::CountUploadedFile($ruc,"GadRecord")).")</button>";
+                    echo "<button class='btn btn-default btn-md'>".' ('.(Tools::CountUploadedFile($ruc,"GadRecord")).")</button>";
                     echo Html::button('<span class="glyphicon glyphicon-paperclip"> </span> Click this to attach document(s) needed by the LGU', ['value'=>Url::to($urluploadfile),
                         'class' => 'btn btn-primary btn-md modalButton ','title' => 'Upload Files',]);
                     echo "</div>";
@@ -162,7 +164,7 @@ $this->title = "Annual GAD Plan and Budget";
                 else if(Yii::$app->user->can("gad_ppdo_permission"))
                 {
                     echo "<div class='btn-group'>";
-                    echo "<button class='btn btn-default btn-md'>".' ('.(DefaultController::CountUploadedFile($ruc,"GadRecord")).")</button>";
+                    echo "<button class='btn btn-default btn-md'>".' ('.(Tools::CountUploadedFile($ruc,"GadRecord")).")</button>";
                     echo Html::button('<span class="glyphicon glyphicon-paperclip"> </span> Click this to attach document(s) needed by the LGU', ['value'=>Url::to($urluploadfile),
                         'class' => 'btn btn-primary btn-md modalButton ','title' => 'Upload Files',]);
                     echo "</div>";
@@ -203,7 +205,7 @@ $this->title = "Annual GAD Plan and Budget";
                     ?>
                     <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
                     
-                    <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_plan"))){ 
+                    <?php if(in_array($qryReportStatus,Tools::Can("encode_plan"))){ 
                             $available_actions = 1;
                         ?>
                         <li>
@@ -243,13 +245,13 @@ $this->title = "Annual GAD Plan and Budget";
                 <?php } ?>
 
                 <?php 
-                    if(in_array($qryReportStatus, DefaultController::Can("create_general_observation")))
+                    if(in_array($qryReportStatus, Tools::Can("create_general_observation")))
                     {
                         $available_actions = 1;
                         echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create General Observation/Recommendation',['/cms/document/form-view', 'category_id' => 7, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
                         echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Certificate of Review and Endorsement',['/cms/document/form-view', 'category_id' => 9, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
                     }
-                    else if(in_array($qryReportStatus, DefaultController::Can("create_letter_review_endorsement_ppdo")))
+                    else if(in_array($qryReportStatus, Tools::Can("create_letter_review_endorsement_ppdo")))
                     {
                         $available_actions = 1;
                         echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Letter of Review and Endorsement from the Provincial Planning and Coordinating Office ',['/cms/document/form-view', 'category_id' => 8, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
@@ -261,13 +263,11 @@ $this->title = "Annual GAD Plan and Budget";
 
                     if($available_actions == 0)
                     {
-                        echo "<li><a href='#'>No Available Action(s)</a></li>";
+                        echo "<li><a href='#'>No more available action(s) ..</a></li>";
                     }
                 ?>
                 <?php
-                    $urlsearchplan = '@web/report/gad-plan-budget/search-plan?ruc='.$ruc."&onstep=".$onstep."&tocreate=".$tocreate;;
-                    // echo Html::button('<span class="glyphicon glyphicon-search"> </span> Search', ['value'=>Url::to($urlsearchplan),
-                    //         'class' => 'btn btn-default btn-md modalButton ','title' => '','style' => '']);
+                    $urlsearchplan = '@web/report/gad-plan-budget/search-plan?ruc='.$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
                 ?>
                 </ul>
             </div>
@@ -278,7 +278,6 @@ $this->title = "Annual GAD Plan and Budget";
         <div class="col-sm-6">
             <br/>
             <?php
-                // $t = '@web/report/gad-plan-budget/form-change-report-status?qryReportStatus='.$qryReportStatus."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."";
                 $t = '@web/report/report-history/create?qryReportStatus='.$qryReportStatus."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."";
                 if(!empty($recordOne_attached_ar_record_id) && ($grand_total_pb > $fivePercentTotalLguBudget))
                 {
@@ -292,127 +291,6 @@ $this->title = "Annual GAD Plan and Budget";
                                 'class' => 'btn btn-info btn-md modalButton pull-right']);
                     }
                 }
-
-                // if(Yii::$app->user->can("gad_lgu_permission"))
-                // {
-                //     if(Yii::$app->user->identity->userinfo->REGION_C == "13" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC")
-                //     {
-                //          // show in encoding process || returned to LGU || encoding process huc || returned by region
-                //         if($qryReportStatus == 6 || $qryReportStatus == 8 || $qryReportStatus == 11 || $qryReportStatus == 21)
-                //         {
-                //             if(!empty($recordOne_attached_ar_record_id) && ($grand_total_pb > $fivePercentTotalLguBudget))
-                //             {
-                //                 if($grand_total_pb > $recTotalLguBudget)
-                //                 {
-                                    
-                //                 }
-                //                 else
-                //                 {
-                //                     echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
-                //                 'class' => 'btn btn-info btn-md modalButton pull-right']);
-                //                 }
-                //             }
-                //         }
-                //         else
-                //         {
-                //             // // pending submission to regional office
-                //             // echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 11],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
-                //             //                               'confirm' => 'Are you sure you want to perform this action?',
-                //             //                               'method' => 'post']]);
-                //         }
-                //     }
-                //     else // NON HUC
-                //     {
-                //         if($qryReportStatus == 0  || $qryReportStatus == 7 || $qryReportStatus == 12 || $qryReportStatus == 16 || $qryReportStatus == 20)
-                //         {
-                //             if(!empty($recordOne_attached_ar_record_id) && ($grand_total_pb > $fivePercentTotalLguBudget))
-                //             {
-                //                 if($grand_total_pb > $recTotalLguBudget)
-                //                 {
-
-                //                 }
-                //                 else
-                //                 {
-                //                     echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
-                //                 'class' => 'btn btn-info btn-md modalButton pull-right']);
-                //                 }
-                //             }
-                //         }
-                //         else
-                //         {  // pending submission to ppdo
-                           
-                //             // echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 12],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
-                //             //                               'confirm' => 'Are you sure you want to perform this action?',
-                //             //                               'method' => 'post']]);
-                //         }
-                //     }
-                   
-                // }
-                // else if(Yii::$app->user->can("gad_lgu_province_permission"))
-                // {   
-                //     // encoding process || returned by dilg region 
-                //     if($qryReportStatus == 9 || $qryReportStatus == 6 || $qryReportStatus == 11 || $qryReportStatus == 21)
-                //     {
-                //         if(!empty($recordOne_attached_ar_record_id) && ($grand_total_pb > $fivePercentTotalLguBudget))
-                //         {
-                //             if($grand_total_pb > $recTotalLguBudget)
-                //             {
-
-                //             }
-                //             else
-                //             {
-                //                 echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
-                //                 'class' => 'btn btn-info btn-md modalButton pull-right']);
-                //             }
-                //         }
-                //     }
-                //     else
-                //     {
-                        
-                //         // echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 11],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
-                //         //                                   'confirm' => 'Are you sure you want to perform this action?',
-                //         //                                   'method' => 'post']]);
-                //     }
-                // }
-                // else if(Yii::$app->user->can("gad_ppdo_permission"))
-                // {
-                //     // for review || returned by dilg province
-                //     if($qryReportStatus == 1 || $qryReportStatus == 5)
-                //     {
-                //         echo Html::button('<span class="glyphicon glyphicon-send"></span> Submit', ['value'=>Url::to($t),
-                //         'class' => 'btn btn-info btn-md modalButton pull-right']);
-                //     }
-                // }
-                // else if(Yii::$app->user->can("gad_province_permission"))
-                // {
-                //     // for review of dilg province || returned by dilg province
-                //     if($qryReportStatus == 2 || $qryReportStatus == 17 || $qryReportStatus == 15)
-                //     {
-                //         echo Html::button('<span class="fa fa-paper-plane-o"></span> Process', ['value'=>Url::to($t),
-                //         'class' => 'btn btn-info btn-md modalButton pull-right']);
-                //     }
-                //     else
-                //     {
-                //         echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 15],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
-                //                                           'confirm' => 'Are you sure you want to perform this action?',
-                //                                           'method' => 'post']]);
-                //     }
-                // }
-                // else if(Yii::$app->user->can("gad_region_permission"))
-                // {
-                //     // for review of dilg region
-                //     if($qryReportStatus == 3 || $qryReportStatus == 18 || $qryReportStatus == 14)
-                //     {
-                //         echo Html::button('<span class="fa fa-paper-plane-o"></span> Process', ['value'=>Url::to($t),
-                //         'class' => 'btn btn-info btn-md modalButton pull-right']);
-                //     }
-                //     else
-                //     {
-                //         echo Html::a('<span class="glyphicon glyphicon-remove""></span>  Cancel Endorsement',['cancel','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate,'status' => 14],['class'=>' btn btn-warning pull-right','style' => 'margin-top:-10px;','data' => [
-                //                                           'confirm' => 'Are you sure you want to perform this action?',
-                //                                           'method' => 'post']]);
-                //     }
-                // }
             ?>
         </div>
     </div>
@@ -441,7 +319,7 @@ $this->title = "Annual GAD Plan and Budget";
     ?>
             <!-- /////////////////////////////////////////////////////////////// Remarks Form End -->
     <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-       <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_plan"))){ ?>
+       <?php if(in_array($qryReportStatus,Tools::Can("encode_plan"))){ ?>
             <?php if(Yii::$app->session["encode_gender_pb"] == "open"){  ?>
             <div class="cust-panel input-form" id="inputFormPlan">
             <?php }else{ ?>
@@ -617,9 +495,9 @@ $this->title = "Annual GAD Plan and Budget";
                                 ?>
                                 <td style="border-bottom: none;">
                                     <?php
-                                        if(in_array($qryReportStatus,DefaultController::Can("delete_row_plan")))
+                                        if(in_array($qryReportStatus,Tools::Can("delete_row_plan")))
                                         {
-                                            echo "<button class='btn btn-danger btn-xs' title='Delete' id='delete_plan_".$plan['id']."'><span class='glyphicon glyphicon-trash'></span></button>";
+                                            echo "<button class='btn btn-danger btn-xs btn-block' title='Delete' id='delete_plan_".$plan['id']."'><span class='glyphicon glyphicon-trash'></span> Delete row</button>";
                                         }
                                     ?>
                                     <?php JSRegister::begin() ?>
@@ -652,32 +530,33 @@ $this->title = "Annual GAD Plan and Budget";
                                     
 
                                     <?php
-                                        if(in_array($qryReportStatus,DefaultController::Can("plan_upload_files_row")))
+                                        if(in_array($qryReportStatus,Tools::Can("plan_upload_files_row")))
                                         {
                                             $t = '@web/report/gad-plan-budget/update?id='.$plan['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
-                                            if(in_array($qryReportStatus,DefaultController::HasStatus("encode_plan"))){
-                                                echo "&nbsp;".Html::button('<span class="glyphicon glyphicon-paperclip"></span> ', ['value'=>Url::to($t),
-                                                'class' => 'btn btn-default btn-xs modalButton','title' => 'Upload File(s)',]);
+                                            if(in_array($qryReportStatus,Tools::Can("encode_plan"))){
+                                                echo Html::button('<span class="glyphicon glyphicon-paperclip"></span> Attach', ['value'=>Url::to($t),
+                                                'class' => 'btn btn-default btn-xs modalButton btn-block','title' => 'Upload File(s)',]);
                                             }
                                         }
 
-                                        if(DefaultController::GetUploadStatus($plan["id"],"GadPlanBudget") == 1)
+                                        if(Tools::GetUploadStatus($plan["id"],"GadPlanBudget") == 1)
                                         { // if has uploaded files show button to view file
                                             $t = '@web/report/gad-plan-budget/view?row_id='.$plan['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadPlanBudget";
-                                            echo "&nbsp;".Html::button('<span class="glyphicon glyphicon-file"></span> ', ['value'=>Url::to($t),
+                                            echo Html::button('<span class="glyphicon glyphicon-file"></span> ', ['value'=>Url::to($t),
                                             'class' => 'btn btn-info btn-xs modalButton','title' => 'View Uploaded File(s)']);
                                         }
                                         else
                                         { // else no uploaded file yet
-                                            if(DefaultController::PlanUploadStatus($plan['id']) == 0)
+                                            if(Tools::PlanUploadStatus($plan['id']) == 0)
                                             { // the upload_status = 0 means no uploaded file or not upload later
                                                 // echo "<button id='upload_later_".$plan['id']."' class='btn btn-default btn-xs'>Upload Later</button>";
                                                 if(Yii::$app->user->can("gad_upload_later"))
                                                 {
-                                                    echo "<span class='label label-warning btn-block' id='label_nuf_noplan_".$plan['id']."'>No File(s) uploaded </span>";
+                                                    // echo "<span class='label label-warning btn-block' id='label_nuf_noplan_".$plan['id']."'>No File(s) uploaded </span>";
+                                                    echo "<span style='font-size:10px; color:red;'><i class='fa fa-question-circle'></i> No file(s) attached</span> <br/>";
                                                 }
                                             }
-                                            else if(DefaultController::PlanUploadStatus($plan['id']) == 1)
+                                            else if(Tools::PlanUploadStatus($plan['id']) == 1)
                                             {
                                                 // echo "<span class='label label-warning btn-block' id='label_nufplan_".$plan['id']."'>Upload later </span>";
                                             }
@@ -688,8 +567,8 @@ $this->title = "Annual GAD Plan and Budget";
 
                                     <?php
                                         $url_viewDetails = '@web/report/gad-plan-budget/view-other-details-plan?model_id='.$plan['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
-                                            echo "&nbsp;".Html::button('<span class="glyphicon glyphicon-info-sign"></span> Other details', ['value'=>Url::to($url_viewDetails),
-                                            'class' => 'btn btn-default btn-xs modalButton','title' => 'View other details',]);
+                                            echo Html::button('<span class="glyphicon glyphicon-info-sign"></span> Other details', ['value'=>Url::to($url_viewDetails),
+                                            'class' => 'btn btn-default btn-xs modalButton btn-block','title' => 'View other details',]);
                                     ?>
 
                                     <?php $url_upload_status = \yii\helpers\Url::to(['/report/default/update-upload-status']); ?>
@@ -782,7 +661,7 @@ $this->title = "Annual GAD Plan and Budget";
                             <td colspan="5">
                                 <b>ATTRIBUTED PROGRAMS</b> 
                                 <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-                                    <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_plan"))){ ?>
+                                    <?php if(in_array($qryReportStatus,Tools::Can("encode_plan"))){ ?>
                                         <button id="btn_encode_attributed_program" type="button" class="btn btn-success btn-sm">
                                             <span class="glyphicon glyphicon-pencil"></span>
                                             Encode
@@ -816,7 +695,7 @@ $this->title = "Annual GAD Plan and Budget";
                             <td style="border-top: none; border-bottom: none;"></td>
                         </tr>
                         <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-                            <?php if(in_array($qryReportStatus,DefaultController::HasStatus("encode_plan"))){ ?>
+                            <?php if(in_array($qryReportStatus,Tools::Can("encode_plan"))){ ?>
                                 <?php if(Yii::$app->session["encode_attribute_pb"] == "open"){ ?>
                                     <tr class="attributed_program_form">
                                 <?php }else{ ?>
@@ -871,7 +750,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'padding-top:13px;',
                                         'enableComment' => Yii::$app->user->can("gad_comment_lgu_program") ? 'true' : 'false',
-                                        'enableEdit' => in_array($qryReportStatus,DefaultController::Can("edit_plan")) ? "true" : "false",
+                                        'enableEdit' => in_array($qryReportStatus,Tools::Can("edit_plan")) ? "true" : "false",
                                         'enableViewComment' => 'true',
                                         'countRow' => $countRowAttribute,
                                         'columnNumber' => 1,
@@ -937,7 +816,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; padding-top:13px;',
                                         'enableComment' => Yii::$app->user->can("gad_comment_hgdg_score") ? 'true' : 'false',
-                                        'enableEdit' => in_array($qryReportStatus,DefaultController::Can("edit_plan")) ? "true" : "false",
+                                        'enableEdit' => in_array($qryReportStatus,Tools::Can("edit_plan")) ? "true" : "false",
                                         'enableViewComment' => 'true',
                                         'countRow' => $countRowAttribute,
                                         'columnNumber' => 2,
@@ -958,7 +837,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:right;',
                                         'enableComment' => Yii::$app->user->can("gad_comment_total_annual_pro_budget") ? 'true' : 'false',
-                                        'enableEdit' => in_array($qryReportStatus,DefaultController::Can("edit_plan")) ? "true" : "false",
+                                        'enableEdit' => in_array($qryReportStatus,Tools::Can("edit_plan")) ? "true" : "false",
                                         'enableViewComment' => 'true',
                                         'countRow' => $countRowAttribute,
                                         'columnNumber' => 3,
@@ -995,7 +874,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; padding-top:13px;',
                                         'enableComment' => Yii::$app->user->can("gad_comment_lead") ? 'true' : 'false',
-                                        'enableEdit' => in_array($qryReportStatus,DefaultController::Can("edit_plan")) ? "true" : "false",
+                                        'enableEdit' => in_array($qryReportStatus,Tools::Can("edit_plan")) ? "true" : "false",
                                         'enableViewComment' => 'true',
                                         'countRow' => $countRowAttribute,
                                         'columnNumber' => 5,
@@ -1022,9 +901,9 @@ $this->title = "Annual GAD Plan and Budget";
                                             //         'confirm' => 'Are you sure you want to perform this action?',
                                             //         'method' => 'post']
                                             // ]);
-                                            if(in_array($qryReportStatus,DefaultController::HasStatus("encode_plan")))
+                                            if(in_array($qryReportStatus,Tools::Can("encode_plan")))
                                             {
-                                                echo "<button class='btn btn-danger btn-block btn-xs' title='Delete' id='delete_ap_".$dap['id']."'><span class='glyphicon glyphicon-trash'></span> Delete Row</button>";
+                                                echo "<button class='btn btn-danger btn-block btn-xs btn-block' title='Delete' id='delete_ap_".$dap['id']."'><span class='glyphicon glyphicon-trash'></span> Delete row</button>";
                                             }
                                         }
                                     ?>
@@ -1053,24 +932,24 @@ $this->title = "Annual GAD Plan and Budget";
                                     </script>
                                     <?php JSRegister::end() ?>
                                     <?php
-                                        if(in_array($qryReportStatus,DefaultController::can("plan_upload_files_row")))
+                                        if(in_array($qryReportStatus,Tools::can("plan_upload_files_row")))
                                         {
-                                            if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadAttributedProgram",5) == 0)
+                                            if(Tools::GetUploadStatusByFileCat($dap["id"],"GadAttributedProgram",5) == 0)
                                             {
                                                 $t = '@web/report/gad-plan-budget/update-upload-form-attributed-program?id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&file_cat=5&model_name=GadAttributedProgram";
-                                                echo Html::button('<span class="glyphicon glyphicon-paperclip"></span> Project Proposal', ['value'=>Url::to($t),
+                                                echo Html::button('<span class="glyphicon glyphicon-paperclip"></span> Attach Project Proposal', ['value'=>Url::to($t),
                                                     'class' => 'btn btn-default btn-xs modalButton btn-block','title' => 'Upload Files',]);
                                             }
                                             
-                                            if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadAttributedProgram",2) == 0)
+                                            if(Tools::GetUploadStatusByFileCat($dap["id"],"GadAttributedProgram",2) == 0)
                                             {
                                                 $t2 = '@web/report/gad-plan-budget/update-upload-form-attributed-program?id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&file_cat=2&model_name=GadAttributedProgram";
-                                                echo Html::button('<span class="glyphicon glyphicon-paperclip"></span> HGDG Result', ['value'=>Url::to($t2),
+                                                echo Html::button('<span class="glyphicon glyphicon-paperclip"></span> Attach HGDG Result', ['value'=>Url::to($t2),
                                                 'class' => 'btn btn-default btn-xs modalButton btn-block','title' => 'Upload Files',]);
                                             }
                                         }
 
-                                        if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadAttributedProgram",5) == 1)
+                                        if(Tools::GetUploadStatusByFileCat($dap["id"],"GadAttributedProgram",5) == 1)
                                         { // if has uploaded files show button to view file
                                             $t3 = '@web/report/gad-plan-budget/view?row_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadAttributedProgram"."&file_cat=5";
                                             echo Html::button('<span class="glyphicon glyphicon-file"></span> Project Proposal', ['value'=>Url::to($t3),
@@ -1078,11 +957,10 @@ $this->title = "Annual GAD Plan and Budget";
                                         }
                                         else
                                         { // else no uploaded file yet
-                                            
-                                            echo "<label class='label label-warning '>No Project Proposal Attachment</label> ";
+                                            echo "<span style='font-size:10px; color:red;'><i class='fa fa-question-circle'></i> No Project Proposal Attachment</span> <br/>";
                                         }
 
-                                        if(DefaultController::GetUploadStatusByFileCat($dap["id"],"GadAttributedProgram",2) == 1)
+                                        if(Tools::GetUploadStatusByFileCat($dap["id"],"GadAttributedProgram",2) == 1)
                                         { // if has uploaded files show button to view file
                                             $t4 = '@web/report/gad-plan-budget/view?row_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadAttributedProgram"."&file_cat=2";
                                             echo Html::button('<span class="glyphicon glyphicon-file"></span> HGDG Result', ['value'=>Url::to($t4),
@@ -1090,8 +968,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         }
                                         else
                                         { // else no uploaded file yet
-                                            
-                                            echo "<label class='label label-warning btn-block'>No HGDG Result Attachment</label>";
+                                             echo "<span style='font-size:10px; color:red;'><i class='fa fa-question-circle'></i> No HGDG Result Attachment</span> <br/>";
                                         }
                                     ?>
                                     <?php
@@ -1145,7 +1022,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'controller_id' => "gad-plan-budget",
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; font-size:20px;',
-                                        'disableSelect' => in_array($qryReportStatus,DefaultController::Can("edit_plan")) ? "false" : "true",
+                                        'disableSelect' => in_array($qryReportStatus,Tools::Can("edit_plan")) ? "false" : "true",
                                     ]);
                                 ?>
                                 <?php
@@ -1161,7 +1038,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'controller_id' => "gad-plan-budget",
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; font-size:20px;',
-                                        'disableSelect' =>  in_array($qryReportStatus,DefaultController::Can("edit_plan")) ? "false" : "true",
+                                        'disableSelect' =>  in_array($qryReportStatus,Tools::Can("edit_plan")) ? "false" : "true",
                                     ]);
                                 ?>
                                 <?php

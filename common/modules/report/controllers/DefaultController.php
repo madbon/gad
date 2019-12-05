@@ -17,6 +17,7 @@ use common\models\GadArAttributedProgram;
 use common\models\GadRecord;
 use common\models\GadAccomplishmentReport;
 use common\models\GadReportHistory;
+use common\models\GadFocused;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
@@ -34,6 +35,19 @@ use common\models\GadStatusAssignment;
  */
 class DefaultController extends ControllerAudit
 {
+    public function GetFocusedTitle($id)
+    {
+        $qry = GadFocused::find()->where(['id' => $id])->one();
+
+        return !empty($qry->title) ? $qry->title : "";
+    }
+
+    public function GetInnerCatTitle($id)
+    {
+        $qry = GadInnerCategory::find()->where(['id' => $id])->one();
+        return !empty($qry->title) ? $qry->title : "";
+    }
+
     public function GetRoleName()
     {
         $arrayRole = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id));
