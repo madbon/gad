@@ -2,10 +2,10 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use common\modules\report\controllers\GadPlanBudgetController;
-use common\modules\report\controllers\GadAccomplishmentReportController;
-use common\modules\report\controllers\DefaultController;
-use common\modules\report\controllers\GadRecordController;
+use common\modules\report\controllers\GadPlanBudgetController as PlanActions;
+use common\modules\report\controllers\GadAccomplishmentReportController as ArActions;
+use common\modules\report\controllers\DefaultController as Tools;
+use common\modules\report\controllers\GadRecordController as RecordActions;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
@@ -157,11 +157,11 @@ $this->title = $index_title;
                                     {
                                         if($report_type == "accomplishment")
                                         {
-                                            return GadAccomplishmentReportController::ComputeAccomplishment($model['record_tuc']);
+                                            return ArActions::ComputeAccomplishment($model['record_tuc']);
                                         }
                                         else
                                         {
-                                            return GadPlanBudgetController::ComputeGadBudget($model['record_tuc']);
+                                            return PlanActions::ComputeGadBudget($model['record_tuc']);
                                         }
                                     }
                                 ],
@@ -172,15 +172,15 @@ $this->title = $index_title;
                                     'value' => function($model) use ($report_type)
                                     {
 
-                                        return DefaultController::DisplayStatus($model["record_status"]);
+                                        return Tools::DisplayStatus($model["record_status"]);
                                     }
                                 ],
                                 [
-                                    'label' => 'Date',
+                                    'label' => 'Date Processed',
                                     'value' => function($model)
                                     {
                                         
-                                        return !empty(GadRecordController::GenerateLatestDate($model['record_tuc'])) ? GadRecordController::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
+                                        return !empty(RecordActions::GenerateLatestDate($model['record_tuc'])) ? RecordActions::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
                                     }
                                 ],
                                 // [
@@ -189,7 +189,7 @@ $this->title = $index_title;
                                 //     'format' => 'raw',
                                 //     'value' => function($model)
                                 //     {
-                                //         return DefaultController::CreatePlanStatus($model["record_tuc"]);
+                                //         return Tools::CreatePlanStatus($model["record_tuc"]);
                                 //     }
                                 // ],
                                 
@@ -198,7 +198,7 @@ $this->title = $index_title;
                                     'contentOptions' => ['class' => 'remarks_class'],
                                     'value' => function($model)
                                     {
-                                        return GadRecordController::GenerateRemarks($model["record_tuc"]);
+                                        return RecordActions::GenerateRemarks($model["record_tuc"]);
                                     }
                                 ],
                                 [
@@ -206,10 +206,10 @@ $this->title = $index_title;
                                     'format' => 'raw',
                                     'value' => function($model)
                                     {
-                                        if(DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord") != 0)
+                                        if(Tools::CountUploadedFile($model['record_tuc'],"GadRecord") != 0)
                                         {
                                             $urluploadfile = '@web/report/gad-plan-budget/upload-form-endorsement-file?ruc='.$model["record_tuc"]."&onstep=to_create_gpb&tocreate=gad_plan_budget";
-                                            return Html::button('<span class="glyphicon glyphicon-file"> </span> ('.DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord").")", ['value'=>Url::to($urluploadfile),
+                                            return Html::button('<span class="glyphicon glyphicon-file"> </span> ('.Tools::CountUploadedFile($model['record_tuc'],"GadRecord").")", ['value'=>Url::to($urluploadfile),
                             'class' => 'btn btn-primary btn-sm modalButton ','title' => 'Attached file(s) by the reviewer',]);
                                         }
                                         else
@@ -235,7 +235,7 @@ $this->title = $index_title;
                                             return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
                                         },
                                         'delete'=>function ($url, $model) {
-                                            if(in_array($model['record_status'],DefaultController::HasStatus("delete_report_for_lgu")) || in_array($model['record_status'],DefaultController::HasStatus("delete_report_for_huc")))
+                                            if(in_array($model['record_status'],Tools::HasStatus("delete_report_for_lgu")) || in_array($model['record_status'],Tools::HasStatus("delete_report_for_huc")))
                                             {
                                                 return Html::a('<i class="glyphicon glyphicon-trash"></i> Delete', 
                                                 [
@@ -254,7 +254,7 @@ $this->title = $index_title;
                                             }
                                         },
                                         'archive' => function($url,$model) use ($urlReport,$report_type){
-                                            if(in_array($model['record_status'],DefaultController::HasStatus("archive_report_for_lgu")) || in_array($model['record_status'],DefaultController::HasStatus("archive_report_for_huc")))
+                                            if(in_array($model['record_status'],Tools::HasStatus("archive_report_for_lgu")) || in_array($model['record_status'],Tools::HasStatus("archive_report_for_huc")))
                                             {
                                                 return Html::a('<i class="fa fa-archive"></i> &nbsp;Archive ', 
                                                 [
@@ -307,11 +307,11 @@ $this->title = $index_title;
                                     {
                                         if($report_type == "accomplishment")
                                         {
-                                            return GadAccomplishmentReportController::ComputeAccomplishment($model['record_tuc']);
+                                            return ArActions::ComputeAccomplishment($model['record_tuc']);
                                         }
                                         else
                                         {
-                                            return GadPlanBudgetController::ComputeGadBudget($model['record_tuc']);
+                                            return PlanActions::ComputeGadBudget($model['record_tuc']);
                                         }
                                     }
                                 ],
@@ -322,15 +322,15 @@ $this->title = $index_title;
                                     'value' => function($model) use ($report_type)
                                     {
 
-                                        return DefaultController::DisplayStatus($model["record_status"]);
+                                        return Tools::DisplayStatus($model["record_status"]);
                                     }
                                 ],
                                 [
-                                    'label' => 'Date',
+                                    'label' => 'Date Processed',
                                     'value' => function($model)
                                     {
                                         
-                                        return !empty(GadRecordController::GenerateLatestDate($model['record_tuc'])) ? GadRecordController::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
+                                        return !empty(RecordActions::GenerateLatestDate($model['record_tuc'])) ? RecordActions::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
                                     }
                                 ],
                                 [
@@ -338,7 +338,7 @@ $this->title = $index_title;
                                     'contentOptions' => ['class' => 'remarks_class'],
                                     'value' => function($model)
                                     {
-                                        return GadRecordController::GenerateRemarks($model["record_tuc"]);
+                                        return RecordActions::GenerateRemarks($model["record_tuc"]);
                                     }
                                 ],
                                 [
@@ -346,10 +346,10 @@ $this->title = $index_title;
                                     'format' => 'raw',
                                     'value' => function($model)
                                     {
-                                        if(DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord") != 0)
+                                        if(Tools::CountUploadedFile($model['record_tuc'],"GadRecord") != 0)
                                         {
                                             $urluploadfile = '@web/report/gad-plan-budget/upload-form-endorsement-file?ruc='.$model["record_tuc"]."&onstep=to_create_gpb&tocreate=gad_plan_budget";
-                                            return Html::button('<span class="glyphicon glyphicon-file"> </span> ('.DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord").")", ['value'=>Url::to($urluploadfile),
+                                            return Html::button('<span class="glyphicon glyphicon-file"> </span> ('.Tools::CountUploadedFile($model['record_tuc'],"GadRecord").")", ['value'=>Url::to($urluploadfile),
                             'class' => 'btn btn-primary btn-sm modalButton ','title' => 'Attached file(s) by the reviewer',]);
                                         }
                                         else
@@ -375,7 +375,7 @@ $this->title = $index_title;
                                             return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
                                         },
                                         'delete'=>function ($url, $model) {
-                                            if(in_array($model['record_status'],DefaultController::HasStatus("delete_report_for_lgu_province")))
+                                            if(in_array($model['record_status'],Tools::HasStatus("delete_report_for_lgu_province")))
                                             {
                                                 return Html::a('<i class="glyphicon glyphicon-trash"></i> Delete', 
                                             [
@@ -394,7 +394,7 @@ $this->title = $index_title;
                                             }
                                         },
                                         'archive' => function($url,$model) use ($urlReport,$report_type){
-                                            if(in_array($model['record_status'],DefaultController::HasStatus("archive_report_for_lgu_province")))
+                                            if(in_array($model['record_status'],Tools::HasStatus("archive_report_for_lgu_province")))
                                             {
                                                 return Html::a('<i class="fa fa-archive"></i> &nbsp;Archive ', 
                                                 [
@@ -455,11 +455,11 @@ $this->title = $index_title;
                                     {
                                         if($report_type == "accomplishment")
                                         {
-                                            return GadAccomplishmentReportController::ComputeAccomplishment($model['record_tuc']);
+                                            return ArActions::ComputeAccomplishment($model['record_tuc']);
                                         }
                                         else
                                         {
-                                            return GadPlanBudgetController::ComputeGadBudget($model['record_tuc']);
+                                            return PlanActions::ComputeGadBudget($model['record_tuc']);
                                         }
                                     }
                                 ],
@@ -470,15 +470,15 @@ $this->title = $index_title;
                                     'value' => function($model) use ($report_type)
                                     {
 
-                                        return DefaultController::DisplayStatus($model["record_status"]);
+                                        return Tools::DisplayStatus($model["record_status"]);
                                     }
                                 ],
                                 [
-                                    'label' => 'Date',
+                                    'label' => 'Date Processed',
                                     'value' => function($model)
                                     {
                                         
-                                        return !empty(GadRecordController::GenerateLatestDate($model['record_tuc'])) ? GadRecordController::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
+                                        return !empty(RecordActions::GenerateLatestDate($model['record_tuc'])) ? RecordActions::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
                                     }
                                 ],
                                 [
@@ -486,7 +486,7 @@ $this->title = $index_title;
                                     'contentOptions' => ['class' => 'remarks_class'],
                                     'value' => function($model)
                                     {
-                                        return GadRecordController::GenerateRemarks($model["record_tuc"]);
+                                        return RecordActions::GenerateRemarks($model["record_tuc"]);
                                     }
                                 ],
                                 [
@@ -494,10 +494,10 @@ $this->title = $index_title;
                                     'format' => 'raw',
                                     'value' => function($model)
                                     {
-                                        if(DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord") != 0)
+                                        if(Tools::CountUploadedFile($model['record_tuc'],"GadRecord") != 0)
                                         {
                                             $urluploadfile = '@web/report/gad-plan-budget/upload-form-endorsement-file?ruc='.$model["record_tuc"]."&onstep=to_create_gpb&tocreate=gad_plan_budget";
-                                            return Html::button('<span class="glyphicon glyphicon-file"> </span> ('.DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord").")", ['value'=>Url::to($urluploadfile),
+                                            return Html::button('<span class="glyphicon glyphicon-file"> </span> ('.Tools::CountUploadedFile($model['record_tuc'],"GadRecord").")", ['value'=>Url::to($urluploadfile),
                             'class' => 'btn btn-primary btn-sm modalButton ','title' => 'Attached file(s) by the reviewer',]);
                                         }
                                         else
@@ -511,7 +511,7 @@ $this->title = $index_title;
                                     'template' => '{view} {track} {archive}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
-                                            if(in_array($model['record_status'],DefaultController::HasStatus("view_report_for_region")))
+                                            if(in_array($model['record_status'],Tools::HasStatus("view_report_for_region")))
                                             {
                                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
                                                     'ruc' => $model['record_tuc'], 
@@ -526,7 +526,7 @@ $this->title = $index_title;
                                             return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
                                         },
                                         'archive' => function($url,$model) use ($urlReport,$report_type){
-                                            if(in_array($model['record_status'],DefaultController::HasStatus("archive_report_for_region")))
+                                            if(in_array($model['record_status'],Tools::HasStatus("archive_report_for_region")))
                                             {
                                                 return Html::a('<i class="fa fa-archive"></i> &nbsp;Archive ', 
                                                 [
@@ -583,11 +583,11 @@ $this->title = $index_title;
                                     {
                                         if($report_type == "accomplishment")
                                         {
-                                            return GadAccomplishmentReportController::ComputeAccomplishment($model['record_tuc']);
+                                            return ArActions::ComputeAccomplishment($model['record_tuc']);
                                         }
                                         else
                                         {
-                                            return GadPlanBudgetController::ComputeGadBudget($model['record_tuc']);
+                                            return PlanActions::ComputeGadBudget($model['record_tuc']);
                                         }
                                     }
                                 ],
@@ -598,15 +598,15 @@ $this->title = $index_title;
                                     'value' => function($model) use ($report_type)
                                     {
 
-                                        return DefaultController::DisplayStatus($model["record_status"]);
+                                        return Tools::DisplayStatus($model["record_status"]);
                                     }
                                 ],
                                 [
-                                    'label' => 'Date',
+                                    'label' => 'Date Processed',
                                     'value' => function($model)
                                     {
                                         
-                                        return !empty(GadRecordController::GenerateLatestDate($model['record_tuc'])) ? GadRecordController::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
+                                        return !empty(RecordActions::GenerateLatestDate($model['record_tuc'])) ? RecordActions::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
                                     }
                                 ],
                                 [
@@ -614,7 +614,7 @@ $this->title = $index_title;
                                     'contentOptions' => ['class' => 'remarks_class'],
                                     'value' => function($model)
                                     {
-                                        return GadRecordController::GenerateRemarks($model["record_tuc"]);
+                                        return RecordActions::GenerateRemarks($model["record_tuc"]);
                                     }
                                 ],
                                 [
@@ -622,10 +622,10 @@ $this->title = $index_title;
                                     'format' => 'raw',
                                     'value' => function($model)
                                     {
-                                        if(DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord") != 0)
+                                        if(Tools::CountUploadedFile($model['record_tuc'],"GadRecord") != 0)
                                         {
                                             $urluploadfile = '@web/report/gad-plan-budget/upload-form-endorsement-file?ruc='.$model["record_tuc"]."&onstep=to_create_gpb&tocreate=gad_plan_budget";
-                                            return Html::button('<span class="glyphicon glyphicon-file"> </span> ('.DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord").")", ['value'=>Url::to($urluploadfile),
+                                            return Html::button('<span class="glyphicon glyphicon-file"> </span> ('.Tools::CountUploadedFile($model['record_tuc'],"GadRecord").")", ['value'=>Url::to($urluploadfile),
                             'class' => 'btn btn-primary btn-sm modalButton ','title' => 'Attached file(s) by the reviewer',]);
                                         }
                                         else
@@ -639,7 +639,7 @@ $this->title = $index_title;
                                     'template' => '{view} {track} {archive}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
-                                            if(in_array($model['record_status'],DefaultController::HasStatus("view_report_for_ppdo")))
+                                            if(in_array($model['record_status'],Tools::HasStatus("view_report_for_ppdo")))
                                             {
                                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
                                                     'ruc' => $model['record_tuc'], 
@@ -659,7 +659,7 @@ $this->title = $index_title;
                                             return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
                                         },
                                         'archive' => function($url,$model) use ($urlReport,$report_type){
-                                            if(in_array($model['record_status'],DefaultController::HasStatus("archive_report_for_ppdo")))
+                                            if(in_array($model['record_status'],Tools::HasStatus("archive_report_for_ppdo")))
                                             {
                                                 return Html::a('<i class="fa fa-archive"></i> &nbsp;Archive ', 
                                                 [
@@ -716,11 +716,11 @@ $this->title = $index_title;
                                     {
                                         if($report_type == "accomplishment")
                                         {
-                                            return GadAccomplishmentReportController::ComputeAccomplishment($model['record_tuc']);
+                                            return ArActions::ComputeAccomplishment($model['record_tuc']);
                                         }
                                         else
                                         {
-                                            return GadPlanBudgetController::ComputeGadBudget($model['record_tuc']);
+                                            return PlanActions::ComputeGadBudget($model['record_tuc']);
                                         }
                                     }
                                 ],
@@ -731,15 +731,15 @@ $this->title = $index_title;
                                     'value' => function($model) use ($report_type)
                                     {
 
-                                        return DefaultController::DisplayStatus($model["record_status"]);
+                                        return Tools::DisplayStatus($model["record_status"]);
                                     }
                                 ],
                                 [
-                                    'label' => 'Date',
+                                    'label' => 'Date Processed',
                                     'value' => function($model)
                                     {
                                         
-                                        return !empty(GadRecordController::GenerateLatestDate($model['record_tuc'])) ? GadRecordController::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
+                                        return !empty(RecordActions::GenerateLatestDate($model['record_tuc'])) ? RecordActions::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
                                     }
                                 ],
                                 [
@@ -747,7 +747,7 @@ $this->title = $index_title;
                                     'contentOptions' => ['class' => 'remarks_class'],
                                     'value' => function($model)
                                     {
-                                        return GadRecordController::GenerateRemarks($model["record_tuc"]);
+                                        return RecordActions::GenerateRemarks($model["record_tuc"]);
                                     }
                                 ],
                                 [
@@ -755,10 +755,10 @@ $this->title = $index_title;
                                     'format' => 'raw',
                                     'value' => function($model)
                                     {
-                                        if(DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord") != 0)
+                                        if(Tools::CountUploadedFile($model['record_tuc'],"GadRecord") != 0)
                                         {
                                             $urluploadfile = '@web/report/gad-plan-budget/upload-form-endorsement-file?ruc='.$model["record_tuc"]."&onstep=to_create_gpb&tocreate=gad_plan_budget";
-                                            return Html::button('<span class="glyphicon glyphicon-file"> </span> ('.DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord").")", ['value'=>Url::to($urluploadfile),
+                                            return Html::button('<span class="glyphicon glyphicon-file"> </span> ('.Tools::CountUploadedFile($model['record_tuc'],"GadRecord").")", ['value'=>Url::to($urluploadfile),
                             'class' => 'btn btn-primary btn-sm modalButton ','title' => 'Attached file(s) by the reviewer',]);
                                         }
                                         else
@@ -772,7 +772,7 @@ $this->title = $index_title;
                                     'template' => '{view} {track} {archive}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
-                                            if(in_array($model['record_status'],DefaultController::HasStatus("view_report_for_province")))
+                                            if(in_array($model['record_status'],Tools::HasStatus("view_report_for_province")))
                                             {
                                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
                                                     'ruc' => $model['record_tuc'], 
@@ -791,7 +791,7 @@ $this->title = $index_title;
                                             return Html::button('<span class="glyphicon glyphicon-time"></span> Track', ['value'=>Url::to($url_track), 'class' => 'btn btn-default btn-xs btn-block modalButton ','style' => '']);
                                         },
                                         'archive' => function($url,$model) use ($urlReport,$report_type){
-                                            if(in_array($model['record_status'],DefaultController::HasStatus("archive_report_for_province")))
+                                            if(in_array($model['record_status'],Tools::HasStatus("archive_report_for_province")))
                                             {
                                                 return Html::a('<i class="fa fa-archive"></i> &nbsp;Archive ', 
                                                 [
@@ -856,11 +856,11 @@ $this->title = $index_title;
                                     {
                                         if($report_type == "accomplishment")
                                         {
-                                            return GadAccomplishmentReportController::ComputeAccomplishment($model['record_tuc']);
+                                            return ArActions::ComputeAccomplishment($model['record_tuc']);
                                         }
                                         else
                                         {
-                                            return GadPlanBudgetController::ComputeGadBudget($model['record_tuc']);
+                                            return PlanActions::ComputeGadBudget($model['record_tuc']);
                                         }
                                     }
                                 ],
@@ -871,15 +871,15 @@ $this->title = $index_title;
                                     'value' => function($model) use ($report_type)
                                     {
 
-                                        return DefaultController::DisplayStatus($model["record_status"]);
+                                        return Tools::DisplayStatus($model["record_status"]);
                                     }
                                 ],
                                 [
-                                    'label' => 'Date',
+                                    'label' => 'Date Processed',
                                     'value' => function($model)
                                     {
                                         
-                                        return !empty(GadRecordController::GenerateLatestDate($model['record_tuc'])) ? GadRecordController::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
+                                        return !empty(RecordActions::GenerateLatestDate($model['record_tuc'])) ? RecordActions::GenerateLatestDate($model['record_tuc']) : date("F j, Y", strtotime(date($model['date_created'])));
                                     }
                                 ],
                                 [
@@ -887,7 +887,7 @@ $this->title = $index_title;
                                     'contentOptions' => ['class' => 'remarks_class'],
                                     'value' => function($model)
                                     {
-                                        return GadRecordController::GenerateRemarks($model["record_tuc"]);
+                                        return RecordActions::GenerateRemarks($model["record_tuc"]);
                                     }
                                 ],
                                 [
@@ -895,10 +895,10 @@ $this->title = $index_title;
                                     'format' => 'raw',
                                     'value' => function($model)
                                     {
-                                        if(DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord") != 0)
+                                        if(Tools::CountUploadedFile($model['record_tuc'],"GadRecord") != 0)
                                         {
                                             $urluploadfile = '@web/report/gad-plan-budget/upload-form-endorsement-file?ruc='.$model["record_tuc"]."&onstep=to_create_gpb&tocreate=gad_plan_budget";
-                                            return Html::button('<span class="glyphicon glyphicon-file"> </span> ('.DefaultController::CountUploadedFile($model['record_tuc'],"GadRecord").")", ['value'=>Url::to($urluploadfile),
+                                            return Html::button('<span class="glyphicon glyphicon-file"> </span> ('.Tools::CountUploadedFile($model['record_tuc'],"GadRecord").")", ['value'=>Url::to($urluploadfile),
                             'class' => 'btn btn-primary btn-sm modalButton ','title' => 'Attached file(s) by the reviewer',]);
                                         }
                                         else
@@ -912,7 +912,7 @@ $this->title = $index_title;
                                     'template' => '{view} {track} {archive}',
                                     'buttons' => [
                                         'view' => function($url, $model) use ($urlReport,$report_type){
-                                            if(in_array($model['record_status'],DefaultController::HasStatus("gad_all_status")))
+                                            if(in_array($model['record_status'],Tools::HasStatus("gad_all_status")))
                                             {
                                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span> View', [$urlReport,
                                                     'ruc' => $model['record_tuc'], 

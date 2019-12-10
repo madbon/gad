@@ -35,6 +35,13 @@ use common\models\GadStatusAssignment;
  */
 class DefaultController extends ControllerAudit
 {
+    public function GetPlanTypeTitle($code)
+    {
+        $query = \common\models\GadPlanType::find()->where(['code' => $code])->one();
+
+        return !empty($query->title) ? $query->title : "";
+    }
+
     public function GetFocusedTitle($id)
     {
         $qry = GadFocused::find()->where(['id' => $id])->one();

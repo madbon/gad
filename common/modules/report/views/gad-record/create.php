@@ -51,7 +51,9 @@ $this->params['breadcrumbs'][] = $this->title;
 			  			'onstep' => $onstep,
 			  			'tocreate' => $tocreate,
 			  			'linkClass' => '',
-			  			'url' => '/report/gad-plan-budget/index'
+			  			'url' => '/report/gad-plan-budget/index',
+			  			'plan_type' => $plan_type,
+			  			'query_all_existing_plan' => $query_all_existing_plan
 			  		]);
 			  	?>
 
@@ -69,7 +71,8 @@ $this->params['breadcrumbs'][] = $this->title;
 			  			'onstep' => $onstep,
 			  			'tocreate' => $tocreate,
 			  			'linkClass' => '',
-			  			'url' => '/report/gad-accomplishment-report/index'
+			  			'url' => '/report/gad-accomplishment-report/index',
+			  			'query_all_existing_plan' => $query_all_existing_plan
 			  		]);
 			  	?>
 			  		<?php if(Yii::$app->user->can("gad_lgu_permission")){ ?>
@@ -86,7 +89,9 @@ $this->params['breadcrumbs'][] = $this->title;
 				  			'onstep' => $onstep,
 				  			'tocreate' => $tocreate,
 				  			'linkClass' => 'disabled',
-				  			'url' => ''
+				  			'plan_type' => $plan_type,
+				  			'url' => '',
+				  			'query_all_existing_plan' => $query_all_existing_plan
 				  		]);
 				  	?>
 				  	<?php if(Yii::$app->user->can("gad_lgu_permission")){ ?>
@@ -106,7 +111,8 @@ $this->params['breadcrumbs'][] = $this->title;
 				  			'onstep' => $onstep,
 				  			'tocreate' => $tocreate,
 				  			'linkClass' => 'disabled',
-				  			'url' => ''
+				  			'url' => '',
+				  			'query_all_existing_plan' => $query_all_existing_plan,
 				  		]);
 				  	?>
 				  	<?php if(Yii::$app->user->can("gad_lgu_permission")){ ?>
@@ -131,6 +137,9 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'model' => $model,
 		        'onstep' => $onstep,
 		        'create_plan_status' => $create_plan_status,
+		        'plan_type' => $plan_type,
+		        'tocreate' => $tocreate,
+		        'query_all_existing_plan' =>  $query_all_existing_plan,
 		    ]) ?>
 	    </div>
 	</div>

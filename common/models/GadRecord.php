@@ -38,8 +38,8 @@ class GadRecord extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'form_type', 'status', 'is_archive','report_type_id','office_c','isdilg'], 'integer'],
-            [['year','create_status_id'],'integer'],
+            [['user_id', 'form_type', 'status', 'is_archive','report_type_id','office_c','isdilg','plan_type_code'], 'integer'],
+            [['year','create_status_id','supplemental_record_id'],'integer'],
             [['total_lgu_budget'], 'number'],
             [['date_created'], 'safe'],
             [['time_created'], 'string', 'max' => 10],
@@ -47,10 +47,11 @@ class GadRecord extends \yii\db\ActiveRecord
             [['tuc','prepared_by','approved_by'], 'string', 'max' => 150],
             // [['year','total_lgu_budget','create_status_id'], 'required'],
             // [['create_status_id'], 'required'],
+            [['plan_type_code'], Yii::$app->controller->action->id == "gad-record" && Yii::$app->controller->action->id == "create" && Yii::$app->session["activelink"] == "gad_plan_budget" ? "required" : "safe"],
             [['prepared_by'], Yii::$app->controller->action->id == "update-pb-prepared-by" ? "required" : "safe"],
             [['approved_by'], Yii::$app->controller->action->id == "update-pb-approved-by" ? "required" : "safe"],
             [['footer_date'], Yii::$app->controller->action->id == "update-pb-footer-date" ? "required" : "safe"],
-            // [['for_revision_record_id'], 'required','message' => 'Please select One(1) Returned Reports listed below ', 'when' => function ($model) { return $model->create_status_id != 1; }, 'whenClient' => "function (attribute, value) { return $('#gadrecord-create_status_id').val() != '1'; }"],
+            [['supplemental_record_id'], 'required','message' => '* Please select One(1) existing GAD plan which needs to be supplemented. ', 'when' => function ($model) { return $model->plan_type_code == 2; }, 'whenClient' => "function (attribute, value) { return $('#gadrecord-plan_type_code').val() == '2'; }"],
         ];
     }
 
@@ -72,7 +73,9 @@ class GadRecord extends \yii\db\ActiveRecord
             'is_archive' => 'Is Archive',
             'date_created' => 'Date Created',
             'time_created' => 'Time Created',
-            'create_status_id' => 'Plan Category'
+            'create_status_id' => 'Plan Category',
+            'plan_type_code' => 'Type of Plan',
+            'supplemental_record_id' => 'Selection of supplemental plan',
         ];
     }
 }

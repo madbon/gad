@@ -11,7 +11,7 @@ use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
-use common\modules\report\controllers\DefaultController;
+use common\modules\report\controllers\DefaultController as Tools;
 AppAsset::register($this);
 ?>
 
@@ -329,6 +329,7 @@ nav.navbar-default div.navbar-header a
                                 <a href="#"><i class="fa fa-search"></i> Search Reports<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level collapse">
                             <?php } ?>
+
                                 <?php if(Yii::$app->user->can('gad_viewreport_planbudget')){ ?>
                                     <?php if(Yii::$app->session["activelink"] == "plan_budget" || Yii::$app->session["activelink"] == "gad_plan_budget"){ ?>
                                         <li class="activelink">
@@ -337,7 +338,9 @@ nav.navbar-default div.navbar-header a
                                     <?php } ?>
                                             <?php echo Html::a("Plan & Budget",['/report/gad-record/','report_type' => 'plan_budget']); ?>
                                         </li>
+                                    
                                 <?php } ?>
+
                                 <?php if(Yii::$app->user->can('gad_viewreport_accomplishment')){ ?>
                                     <?php if(Yii::$app->session["activelink"] == "accomplishment" || Yii::$app->session["activelink"] == "accomp_report"){ ?>
                                         <li class="activelink">
@@ -347,6 +350,7 @@ nav.navbar-default div.navbar-header a
                                             <?php echo Html::a("Accomplishment",['/report/gad-record/','report_type' => 'accomplishment']); ?>
                                         </li>
                                 <?php } ?>
+
                                 </ul>
                                 <!-- /.nav-second-level -->
                             </li>
@@ -382,7 +386,7 @@ nav.navbar-default div.navbar-header a
                         <?php } ?>
                         
                         <?php 
-                            if(DefaultController::HasAction("menu_document"))
+                            if(Tools::HasAction("menu_document"))
                             {
                                 if(Yii::$app->controller->id == "document")
                                 {
