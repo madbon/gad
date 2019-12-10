@@ -245,13 +245,17 @@ $this->title = "Annual GAD Plan and Budget";
                 <?php } ?>
 
                 <?php 
-                    if(in_array($qryReportStatus, Tools::Can("create_general_observation")))
+                    if(Tools::HasAction("create_general_observation"))
                     {
                         $available_actions = 1;
                         echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create General Observation/Recommendation',['/cms/document/form-view', 'category_id' => 7, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
                         echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Certificate of Review and Endorsement',['/cms/document/form-view', 'category_id' => 9, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
                     }
-                    else if(in_array($qryReportStatus, Tools::Can("create_letter_review_endorsement_ppdo")))
+                    else {
+                        $available_actions = 0;
+                    }
+
+                    if(Tools::HasAction("create_letter_review_endorsement_ppdo"))
                     {
                         $available_actions = 1;
                         echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Letter of Review and Endorsement from the Provincial Planning and Coordinating Office ',['/cms/document/form-view', 'category_id' => 8, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
