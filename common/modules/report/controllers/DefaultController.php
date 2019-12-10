@@ -42,6 +42,30 @@ class DefaultController extends ControllerAudit
         return !empty($query->title) ? $query->title : "";
     }
 
+    public function DispPlanTypeByRuc($ruc)
+    {
+        $query = GadRecord::find()->where(['tuc' => $ruc])->one();
+
+        $plan_type_code = !empty($query->plan_type_code) ? $query->plan_type_code : "";
+
+        if($plan_type_code == 1) // New Plan
+        {
+            return "<label class='label label-primary' style='font-size:11px; border-radius:15px; font-weight:normal;'> <span class='fa fa-flag'></span> ".(DefaultController::GetPlanTypeTitle($plan_type_code))." </label>";
+        }
+        else if($plan_type_code == 2) // Supplemental plan
+        {
+            return "<label class='label label-info' style='font-size:11px; border-radius:15px; font-weight:normal;'><span class='fa fa-flag'></span>  ".(DefaultController::GetPlanTypeTitle($plan_type_code))."</label>";
+        }
+        else if($plan_type_code == 3) // For Revision plan
+        {
+            return "<label class='label label-success' style='font-size:11px; border-radius:15px; font-weight:normal;'> <span class='fa fa-flag'></span> ".(DefaultController::GetPlanTypeTitle($plan_type_code))."</label>";
+        }
+        else
+        {
+            return "No Plan Type Selected";
+        }
+    }
+
     public function GetFocusedTitle($id)
     {
         $qry = GadFocused::find()->where(['id' => $id])->one();
@@ -398,6 +422,13 @@ class DefaultController extends ControllerAudit
         $Query = GadRecord::find()->where(['tuc' => $ruc])->one();
 
         return !empty($Query->year) ? $Query->year : "No set Year";
+    }
+
+    public function GetRecordYearById($id)
+    {
+        $Query = GadRecord::find()->where(['id' => $id])->one();
+
+        return !empty($Query->year) ? $Query->year : null;
     }
 
     public function actionDeleteAccomplishmentAttrib($ar_attrib_id)

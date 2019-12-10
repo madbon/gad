@@ -23,7 +23,7 @@ class GadRecordSearch extends GadRecord
         return [
             [['id', 'user_id', 'region_c', 'province_c', 'citymun_c', 'year', 'form_type', 'status', 'is_archive'], 'integer'],
             [['total_lgu_budget', 'total_gad_budget'], 'number'],
-            [['date_created', 'time_created','record_tuc','report_type_id'], 'safe'],
+            [['date_created', 'time_created','record_tuc','report_type_id','plan_type_code'], 'safe'],
         ];
     }
 
@@ -105,7 +105,8 @@ class GadRecordSearch extends GadRecord
             'GR.id as record_id',
             'OFC.OFFICE_M as office_name',
             'GR.date_created',
-            'GR.report_type_id'
+            'GR.report_type_id',
+            'PT.title as plan_type_title'
         ])
         ->from('gad_record GR')
         ->leftJoin(['UI' => 'user_info'], 'UI.user_id = GR.user_id')
@@ -113,6 +114,7 @@ class GadRecordSearch extends GadRecord
         ->leftJoin(['PROV' => 'tblprovince'], 'PROV.province_c = GR.province_c')
         ->leftJoin(['CTY' => 'tblcitymun'], 'CTY.citymun_c = GR.citymun_c and CTY.province_c = GR.province_c')
         ->leftJoin(['OFC' => 'tbloffice'], 'OFC.OFFICE_C = GR.office_c')
+        ->leftJoin(['PT' => 'gad_plan_type'], 'PT.code = GR.plan_type_code')
         // ->leftJoin(['HIST' => 'gad_report_history'],'HIST.tuc = GR.tuc')
         ->where(Yii::$app->controller->id == "archive" ? [] : $filteredByRole)
         ->andWhere(['GR.is_archive' => Yii::$app->controller->id == "archive" ? 1 : 0])
@@ -123,6 +125,7 @@ class GadRecordSearch extends GadRecord
         ->andFilterWhere(['GR.status' => $this->status])
         ->andFilterWhere(['GR.year' => $this->year])
         ->andFilterWhere(['GR.status' => $this->status])
+        ->andFilterWhere(['GR.plan_type_code' => $this->plan_type_code])
         ->groupBy(['GR.id'])
         ->orderBy(['GR.id' => SORT_DESC]);
 

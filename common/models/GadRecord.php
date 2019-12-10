@@ -47,11 +47,13 @@ class GadRecord extends \yii\db\ActiveRecord
             [['tuc','prepared_by','approved_by'], 'string', 'max' => 150],
             // [['year','total_lgu_budget','create_status_id'], 'required'],
             // [['create_status_id'], 'required'],
-            [['plan_type_code'], Yii::$app->controller->action->id == "gad-record" && Yii::$app->controller->action->id == "create" && Yii::$app->session["activelink"] == "gad_plan_budget" ? "required" : "safe"],
+            [['plan_type_code'], Yii::$app->controller->id == "gad-record" && Yii::$app->controller->action->id == "create" && Yii::$app->session["activelink"] == "gad_plan_budget" ? "required" : "safe"],
             [['prepared_by'], Yii::$app->controller->action->id == "update-pb-prepared-by" ? "required" : "safe"],
             [['approved_by'], Yii::$app->controller->action->id == "update-pb-approved-by" ? "required" : "safe"],
             [['footer_date'], Yii::$app->controller->action->id == "update-pb-footer-date" ? "required" : "safe"],
             [['supplemental_record_id'], 'required','message' => '* Please select One(1) existing GAD plan which needs to be supplemented. ', 'when' => function ($model) { return $model->plan_type_code == 2; }, 'whenClient' => "function (attribute, value) { return $('#gadrecord-plan_type_code').val() == '2'; }"],
+            [['has_additional_lgu_budget'], 'required','message' => 'This field cannot be blank ', 'when' => function ($model) { return $model->plan_type_code == 2; }, 'whenClient' => "function (attribute, value) { return $('#gadrecord-plan_type_code').val() == '2'; }"],
+            [['total_lgu_budget'], 'required','message' => 'Total LGU Budget cannot be blank ', 'when' => function ($model) { return $model->has_additional_lgu_budget == "yes" && $model->plan_type_code == "2"; }, 'whenClient' => "function (attribute, value) { return $('#gadrecord-has_additional_lgu_budget').val() == 'yes' && $('#gadrecord-plan_type_code').val() == '2'; }"],
         ];
     }
 
@@ -76,6 +78,7 @@ class GadRecord extends \yii\db\ActiveRecord
             'create_status_id' => 'Plan Category',
             'plan_type_code' => 'Type of Plan',
             'supplemental_record_id' => 'Selection of supplemental plan',
+            'has_additional_lgu_budget' => 'Is there additional LGU Budget?',
         ];
     }
 }

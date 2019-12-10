@@ -51,59 +51,88 @@ use common\modules\report\controllers\GadRecordController as RecordActions;
                             'select2:select'=>'
                                 function(){
                                     var val = this.value;
-                                    if(val == 1)
+                                    if(val == 1) // new plan
                                     {
                                         $("#new_plan").slideDown(300);
                                         $("#table_records").slideUp(300);
+                                        $("#div_has_additional_lgu_budget").slideUp(300);
+                                        $("#div_total_lgu_budget").slideDown(300);
                                     }
                                     else
                                     {
                                         $("#new_plan").slideUp(300);
                                         $("#table_records").slideDown(300);
+                                        $("#div_has_additional_lgu_budget").slideDown(300);
                                     }
                                 }',
-                        ]
+                        ],
                     ]);
                 }
             ?>
 
-           <?php  
-               if($tocreate == "accomp_report"){
+            <?php  
+                if($tocreate == "accomp_report"){
                     echo "<div id='new_accomp'>";
-               }
-               else{
+                }
+                else{
                     echo '<div id="new_plan" style="display: none;" >';
-               }
-           ?>
-            
-                <?= $form->field($model, 'total_lgu_budget')->textInput(['maxlength' => 18]) ?>
+                }
+            ?>
 
-                <?php
-                    echo $form->field($model, 'year')->widget(DatePicker::classname(), [
-                        'options' => ['placeholder' => 'Select Year'],
-                        'pluginOptions' => [
-                            'format' => 'yyyy',
-                            'autoclose' => true,
-                            'minViewMode' => 'years',
-                            'viewmode' => 'years',
-                            // 'endDate' => "-0d",
-                            'orientation' => 'bottom',
-                        ],
-                    ]);
-                ?>
+            <?php
+                echo $form->field($model, 'year')->widget(DatePicker::classname(), [
+                    'options' => ['placeholder' => 'Select Year'],
+                    'pluginOptions' => [
+                        'format' => 'yyyy',
+                        'autoclose' => true,
+                        'minViewMode' => 'years',
+                        'viewmode' => 'years',
+                        // 'endDate' => "-0d",
+                        'orientation' => 'bottom',
+                    ],
+                ]);
+            ?>
             </div>
-        </div>
-        <div class="col-sm-8 table-responsive">
-            <?php // $form->field($model, 'for_revision_record_id')->hiddenInput(['maxlength' => 18])->label(false) ?>
-            
         </div>
     </div>
 
-    <!-- <p>Select an existing GAD plan that needs to be supplemented</p> -->
     <?= $form->field($model, 'supplemental_record_id')->hiddenInput()->label(false) ?>
-    
+
+    <div class="row">
+        <div class="col-sm-4" id="div_has_additional_lgu_budget" style="display: none;">
+            <?php
+                echo $form->field($model, 'has_additional_lgu_budget')->widget(Select2::classname(), [
+                    'data' =>  ["yes" => "Yes", "no" => "No"],
+                    'options' => ['placeholder' => 'Nothing Selected (Yes or No)'],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],
+                    'pluginEvents'=>[
+                        'select2:select'=>'
+                            function(){
+                                var val = this.value;
+                                if(val == "yes") // new plan
+                                {
+                                    $("#div_total_lgu_budget").slideDown(300);
+                                }
+                                else
+                                {
+                                    $("#div_total_lgu_budget").slideUp(300);
+                                    $("#gadrecord-total_lgu_budget").val("");
+                                }
+                            }',
+                    ],
+                ]);
+            ?>
+        </div>
+        <div class="col-sm-4" id="div_total_lgu_budget" style="display: none;">
+            <?= $form->field($model, 'total_lgu_budget')->textInput(['maxlength' => 18]) ?>
+        </div>
+    </div>
+
     <?php if($tocreate != "accomp_report"){ ?>
         <div class="table-responsive"  id="table_records" style="display: none;">
+             <p style="font-size: 15px;"><span class="fa fa-info-o"></span> Important note : <i style="color:red;">Select an endorsed GAD plan that needs to be supplemented.</i></p> 
             <table class="table table-hover" >
                 <thead>
                     <tr>
@@ -118,7 +147,6 @@ use common\modules\report\controllers\GadRecordController as RecordActions;
                             {
                                 echo "<th>Province</th>";
                             }
-
                         ?>
                         
                         <th>Year</th>
@@ -131,54 +159,61 @@ use common\modules\report\controllers\GadRecordController as RecordActions;
                 </thead>
                 <tbody>
                     <?php
-                        foreach ($query_all_existing_plan as $key => $row) {
-
-                            if($model->supplemental_record_id == $row["id"])
+                        if(!empty($query_all_existing_plan))
+                        {
+                            foreach ($query_all_existing_plan as $key => $row) 
                             {
-                                echo 
-                                "
-                                <tr id='tr-".($row['id'])."'>
-                                    <td><button type='button' class='btn btn-info btn-sm selectbuttons' id='select-button-".$row['id']."'>Selected</button></td>
+                                if($model->supplemental_record_id == $row["id"])
+                                {
+                                    echo 
+                                    "
+                                    <tr id='tr-".($row['id'])."'>
+                                        <td><button type='button' class='btn btn-info btn-sm selectbuttons' id='select-button-".$row['id']."'>Selected</button></td>
+                                    ";
+                                }
+                                else
+                                {
+                                    echo 
+                                    "
+                                    <tr>
+                                        <td><button type='button' class='btn btn-success btn-sm selectbuttons' id='select-button-".$row['id']."'>Select</button></td>
+                                    ";
+                                }
+
+                                $this->registerJs("
+                                    $('#select-button-".$row['id']."').click(function(){
+                                        $('#gadrecord-supplemental_record_id').val(".($row['id']).");
+                                        $('.selectbuttons').text('Select');
+                                        $('#select-button-".($row['id'])."').text('Selected');
+                                        $('.selectbuttons').addClass('btn-success');
+                                        $('#select-button-".($row['id'])."').removeClass('btn-success').addClass('btn-info');
+                                    });
+                                ");
+                                
+                                echo "<td>".(Tools::GetPlanTypeTitle($row['plan_type_code']))."</td>";
+                                if(Yii::$app->user->can("gad_lgu"))
+                                {
+                                    echo "<td>".(Tools::GetCitymunName($row['tuc']))."</td>";
+                                }
+                                else if(Yii::$app->user->can("gad_lgu_province"))
+                                {
+                                    echo "<td>".(Tools::GetProvinceName($row['tuc']))."</td>";
+                                }
+                                echo "
+
+                                    <td>".($row['year'])."</td>
+                                    <td> Php ".(number_format($row['total_lgu_budget'],2))."</td>
+                                    <td>".(PlanActions::ComputeGadBudget($row['tuc']))."</td>
+                                    <td>".(Tools::DisplayStatus($row['status']))."</td>
+                                    <td style='font-size:10px;'>".(RecordActions::GenerateRemarks($row["tuc"]))."</td>
+                                    <td>".(RecordActions::GenerateLatestDate($row['tuc']))."</td>
+                                </tr>
                                 ";
                             }
-                            else
-                            {
-                                echo 
-                                "
-                                <tr>
-                                    <td><button type='button' class='btn btn-success btn-sm selectbuttons' id='select-button-".$row['id']."'>Select</button></td>
-                                ";
-                            }
-
-                            $this->registerJs("
-                                $('#select-button-".$row['id']."').click(function(){
-                                    $('#gadrecord-supplemental_record_id').val(".($row['id']).");
-                                    $('.selectbuttons').text('Select');
-                                    $('#select-button-".($row['id'])."').text('Selected');
-                                    $('.selectbuttons').addClass('btn-success');
-                                    $('#select-button-".($row['id'])."').removeClass('btn-success').addClass('btn-info');
-                                });
-                            ");
-                            
-                            echo "<td>".(Tools::GetPlanTypeTitle($row['plan_type_code']))."</td>";
-                            if(Yii::$app->user->can("gad_lgu"))
-                            {
-                                echo "<td>".(Tools::GetCitymunName($row['tuc']))."</td>";
-                            }
-                            else if(Yii::$app->user->can("gad_lgu_province"))
-                            {
-                                echo "<td>".(Tools::GetProvinceName($row['tuc']))."</td>";
-                            }
-                            echo "
-
-                                <td>".($row['year'])."</td>
-                                <td> Php ".(number_format($row['total_lgu_budget'],2))."</td>
-                                <td>".(PlanActions::ComputeGadBudget($row['tuc']))."</td>
-                                <td>".(Tools::DisplayStatus($row['status']))."</td>
-                                <td style='font-size:10px;'>".(RecordActions::GenerateRemarks($row["tuc"]))."</td>
-                                <td>".(RecordActions::GenerateLatestDate($row['tuc']))."</td>
-                            </tr>
-                            ";
+                        }
+                        else
+                        {
+                            echo "<tr><td style='color:red;' colspan='9'><span class='fa fa-warning'></span> No endorsed GAD plan found.</td></tr>";
                         }
                     ?>
                 </tbody>
@@ -192,11 +227,23 @@ use common\modules\report\controllers\GadRecordController as RecordActions;
             {
                 $('#table_records').slideUp(300);
                 $('#new_plan').slideDown(300);
+                $('#div_total_lgu_budget').slideDown(300);
+                $('#div_has_additional_lgu_budget').slideUp(300);
             }
             else
             {
                 $('#table_records').slideDown(300);
                 $('#new_plan').slideUp(300);
+                $('#div_has_additional_lgu_budget').slideDown(300);
+            }
+
+            if($('#gadrecord-has_additional_lgu_budget').val() == 'yes' || $('#gadrecord-has_additional_lgu_budget').val() == '')
+            {
+                $('#div_total_lgu_budget').slideDown(300);
+            }
+            else 
+            {
+                $('#div_total_lgu_budget').slideUp(300);
             }
         ");
     ?>

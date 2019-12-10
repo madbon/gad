@@ -18,7 +18,7 @@ use common\models\GadStatus;
 use common\models\GadYear;
 use niksko12\auditlogs\classes\ControllerAudit;
 use common\models\ArchiveHistory;
-
+use common\models\GadPlanType;
 /**
  * GadRecordController implements the CRUD actions for GadRecord model.
  */
@@ -325,6 +325,7 @@ class GadRecordController extends ControllerAudit
         $citymun = ArrayHelper::map(Citymun::find()->where($citymunCondition)->all(), 'citymun_c', 'citymun_m');
         $statusList = ArrayHelper::map(GadStatus::find()->where(['code' => $statusCondition])->orderBy(['title' => SORT_ASC])->all(), 'code', 'title');
         $arrayYear = ArrayHelper::map(GadYear::find()->orderBy(['value' => SORT_DESC])->all(), 'value', 'value');
+        $plan_type_title = ArrayHelper::map(GadPlanType::find()->all(), 'code', 'title');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -336,7 +337,8 @@ class GadRecordController extends ControllerAudit
             'province' => $province,
             'citymun' => $citymun,
             'statusList' => $statusList,
-            'arrayYear' => $arrayYear
+            'arrayYear' => $arrayYear,
+            'plan_type_title' => $plan_type_title
         ]);
     }
 
@@ -360,6 +362,7 @@ class GadRecordController extends ControllerAudit
      */
     public function actionCreate($ruc,$onstep,$tocreate)
     {
+        // print_r(Yii::$app->session['activelink']); exit;
         $model = new GadRecord();
         $model->region_c = Yii::$app->user->identity->userinfo->region->region_c;
         $model->province_c = Yii::$app->user->identity->userinfo->province->province_c;
@@ -373,17 +376,17 @@ class GadRecordController extends ControllerAudit
         {
             if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
             {
-                $filteredByRole = ['province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'status'=>Tools::ViewStatus('gad_lgu_huc')];
+                $filteredByRole = ['province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'status'=>Tools::ViewStatus('filter_endorsed_plan')];
             }
             else
             {
-                $filteredByRole = ['province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'status' => Tools::ViewStatus('gad_lgu_non_huc')];
+                $filteredByRole = ['province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'status' => Tools::ViewStatus('filter_endorsed_plan')];
             }
         }
         else if(Yii::$app->user->can("gad_lgu_province_permission")) // all plan submitted by this province
         {
             $filteredByRole = ['province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,
-            'status' => Tools::ViewStatus('gad_province_lgu'),'office_c' => 2];
+            'status' => Tools::ViewStatus('filter_endorsed_plan'),'office_c' => 2];
         }
 
         $query_all_existing_plan = GadRecord::find()
@@ -446,7 +449,7 @@ class GadRecordController extends ControllerAudit
 
         $modelUpdate = GadRecord::find()->where(['tuc' => $ruc])->one();
         if ($model->load(Yii::$app->request->post())) {
-            if($onstep == "to_create_gpb")
+            if($onstep == "to_create_gpb") // during the process of updating plan
             {
                 $modelUpdate->total_lgu_budget = $model->total_lgu_budget;
                 $modelUpdate->total_gad_budget = $model->total_gad_budget;
@@ -454,18 +457,36 @@ class GadRecordController extends ControllerAudit
                 $modelUpdate->create_status_id = $model->create_status_id;
                 $modelUpdate->for_revision_record_id = $model->for_revision_record_id;
                 $modelUpdate->plan_type_code = $model->plan_type_code;
-                if($model->plan_type_code == 2 || $model->plan_type_code == 3) // supplemental
+
+                if($model->plan_type_code == 2 || $model->plan_type_code == 3) // supplemental or for revision plan
                 {
                     $modelUpdate->supplemental_record_id = $model->supplemental_record_id;
+                    $modelUpdate->year = Tools::GetRecordYearById($model->supplemental_record_id); // get year of record by id inserted in supplemental field
+                    $modelUpdate->has_additional_lgu_budget = $model->has_additional_lgu_budget;
+
+                    if($model->has_additional_lgu_budget == "yes")
+                    {
+                        $modelUpdate->total_lgu_budget = $model->total_lgu_budget;
+                    }
+                    else
+                    {
+                        $modelUpdate->total_lgu_budget = null;
+                    }
+
+                    if($model->plan_type_code == 3)
+                    {
+                        $modelUpdate->has_additional_lgu_budget = null;
+                    }
                 }
-                else
+                else // new plan
                 {
                     $modelUpdate->supplemental_record_id = null;
+                    $modelUpdate->has_additional_lgu_budget = null;
                 }
                 
                 $modelUpdate->save();   
             }
-            else
+            else // creating new plan
             {
                 $miliseconds = round(microtime(true) * 1000);
                 $hash =  md5(date('Y-m-d')."-".date("h-i-sa")."-".$miliseconds);
@@ -474,6 +495,20 @@ class GadRecordController extends ControllerAudit
                 if($model->plan_type_code == 1) // new plan
                 {
                     $model->supplemental_record_id = null;
+                }
+                else // supplemental plan or for revision plan
+                {
+                    $model->year = Tools::GetRecordYearById($model->supplemental_record_id);
+
+                    if($model->has_additional_lgu_budget == "no")
+                    {
+                        $model->total_lgu_budget = null;
+                    }
+
+                    if($model->plan_type_code == 3)
+                    {
+                        $model->has_additional_lgu_budget = null;
+                    }
                 }
 
                 $model->save();

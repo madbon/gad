@@ -103,7 +103,7 @@ $this->title = $index_title;
         <br/>
             <?php
                 // $function = new DefaultController();
-                echo $this->render('_search', ['model' => $searchModel, 'region' => $region,'province' => $province,'citymun' => $citymun,'report_type' => $report_type,'statusList' => $statusList,'arrayYear' => $arrayYear]);
+                echo $this->render('_search', ['model' => $searchModel, 'region' => $region,'province' => $province,'citymun' => $citymun,'report_type' => $report_type,'statusList' => $statusList,'arrayYear' => $arrayYear,'plan_type_title' => $plan_type_title]);
             ?>
             <?php
                 if(Yii::$app->user->can("gad_archive_filtered_result"))
@@ -130,6 +130,14 @@ $this->title = $index_title;
                             'options' => ['table-responsive'],
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
+                                [
+                                    'label' => $report_type == "plan_budget" ? 'Type of Plan' : false,
+                                    'format' => 'raw',
+                                    'value' => function($model) use ($report_type)
+                                    {
+                                        return  $report_type == "plan_budget" ? Tools::DispPlanTypeByRuc($model['record_tuc']) : false;
+                                    }
+                                ],
                                 [
                                     'label' => 'Office',
                                     'attribute' => 'office_name',
@@ -281,6 +289,14 @@ $this->title = $index_title;
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
                                 [
+                                    'label' => $report_type == "plan_budget" ? 'Type of Plan' : false,
+                                    'format' => 'raw',
+                                    'value' => function($model) use ($report_type)
+                                    {
+                                        return  $report_type == "plan_budget" ? Tools::DispPlanTypeByRuc($model['record_tuc']) : false;
+                                    }
+                                ],
+                                [
                                     'label' => 'Office',
                                     'attribute' => 'office_name',
                                 ],
@@ -421,6 +437,14 @@ $this->title = $index_title;
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
                                 [
+                                    'label' => $report_type == "plan_budget" ? 'Type of Plan' : false,
+                                    'format' => 'raw',
+                                    'value' => function($model) use ($report_type)
+                                    {
+                                        return  $report_type == "plan_budget" ? Tools::DispPlanTypeByRuc($model['record_tuc']) : false;
+                                    }
+                                ],
+                                [
                                     'label' => 'Office',
                                     'attribute' => 'office_name',
                                 ],
@@ -552,6 +576,14 @@ $this->title = $index_title;
                             'dataProvider' => $dataProvider,
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
+                                [
+                                    'label' => $report_type == "plan_budget" ? 'Type of Plan' : false,
+                                    'format' => 'raw',
+                                    'value' => function($model) use ($report_type)
+                                    {
+                                        return  $report_type == "plan_budget" ? Tools::DispPlanTypeByRuc($model['record_tuc']) : false;
+                                    }
+                                ],
                                 [
                                     'label' => 'Office',
                                     'attribute' => 'office_name',
@@ -686,6 +718,14 @@ $this->title = $index_title;
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
                                 [
+                                    'label' => $report_type == "plan_budget" ? 'Type of Plan' : false,
+                                    'format' => 'raw',
+                                    'value' => function($model) use ($report_type)
+                                    {
+                                        return  $report_type == "plan_budget" ? Tools::DispPlanTypeByRuc($model['record_tuc']) : false;
+                                    }
+                                ],
+                                [
                                     'label' => 'Office',
                                     'attribute' => 'office_name',
                                 ],
@@ -817,6 +857,14 @@ $this->title = $index_title;
                             'dataProvider' => $dataProvider,
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
+                                [
+                                    'label' => $report_type == "plan_budget" ? 'Type of Plan' : false,
+                                    'format' => 'raw',
+                                    'value' => function($model) use ($report_type)
+                                    {
+                                        return  $report_type == "plan_budget" ? Tools::DispPlanTypeByRuc($model['record_tuc']) : false;
+                                    }
+                                ],
                                 [
                                     'label' => 'Office',
                                     'attribute' => 'office_name',

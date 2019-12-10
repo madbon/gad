@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use common\modules\report\controllers\DefaultController;
+use common\modules\report\controllers\DefaultController as Tools;
 /* @var $this yii\web\View */
 /* @var $model common\models\GadRecord */
 
@@ -15,7 +15,7 @@ else if($tocreate == "accomp_report")
 }
 else
 {
-	throw new \yii\web\HttpException(404, 'The requested Item could not be found.');
+	throw new \yii\web\HttpException(404, 'The requested page could not be found.');
 }
 
 // $this->params['breadcrumbs'][] = ['label' => 'List of GAD Plan and Budget', 'url' => ['index']];
@@ -24,16 +24,16 @@ $this->params['breadcrumbs'][] = $this->title;
 <style>
 	
 </style>
-<?php if($tocreate == "gad_plan_budget"){ ?>
+<?php if($tocreate == "gad_plan_budget"){  ?>
 	<h3 style="text-align: center; font-weight: bold; padding-top: 0; margin-top: 0;">GAD Plan and Budget
 		<?php if($ruc != "empty"){ ?>
-			 FY <?= DefaultController::GetPlanYear($ruc) ?>
+			 FY <?= Tools::GetPlanYear($ruc) ?> <?= Tools::DispPlanTypeByRuc($ruc) ?>
 		<?php } ?>
 	</h3>
 <?php }else{ ?>
 	<h3 style="text-align: center; font-weight: bold; padding-top: 0; margin-top: 0;">GAD Accomplishment Report 
 		<?php if($ruc != "empty"){ ?>
-			 FY <?= DefaultController::GetPlanYear($ruc) ?>
+			 FY <?= Tools::GetPlanYear($ruc) ?>
 		<?php } ?>
 	</h3>
 <?php } ?>
