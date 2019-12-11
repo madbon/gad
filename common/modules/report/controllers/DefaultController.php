@@ -35,6 +35,48 @@ use common\models\GadStatusAssignment;
  */
 class DefaultController extends ControllerAudit
 {
+    public function GetRucById($id)
+    {
+        $query = GadRecord::find()->where(['id' => $id])->one();
+
+        return !empty($query->tuc) ? $query->tuc : null;
+    }
+
+    public function GetHasAdditionalLguBudgetByRuc($ruc)
+    {
+        $query = GadRecord::find()->where(['tuc' => $ruc])->one();
+
+        return !empty($query->has_additional_lgu_budget) ? $query->has_additional_lgu_budget : null;
+    }
+
+    public function GetRevisionIdByRuc($ruc)
+    {
+        $query = GadRecord::find()->where(['tuc' => $ruc])->one();
+
+        return !empty($query->for_revision_record_id) ? $query->for_revision_record_id : null;
+    }
+
+    public function GetSupplementalIdByRuc($ruc)
+    {
+        $query = GadRecord::find()->where(['tuc' => $ruc])->one();
+
+        return !empty($query->supplemental_record_id) ? $query->supplemental_record_id : null;
+    }
+
+    public function GetLguBudgetById($record_id)
+    {
+        $query = GadRecord::find()->where(['id' => $record_id])->one();
+
+        return !empty($query->total_lgu_budget) ? $query->total_lgu_budget : null;
+    }
+
+    public function GetPlanTypeCodeByRuc($ruc)
+    {
+        $query = GadRecord::find()->where(['tuc' => $ruc])->one();
+
+        return !empty($query->plan_type_code) ? $query->plan_type_code : null;
+    }
+
     public function GetPlanTypeTitle($code)
     {
         $query = \common\models\GadPlanType::find()->where(['code' => $code])->one();

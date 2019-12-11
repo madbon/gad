@@ -28,6 +28,7 @@ use niksko12\auditlogs\classes\ControllerAudit;
 use common\models\GadReportHistory;
 
 
+
 /**
  * GadPlanBudgetController implements the CRUD actions for GadPlanBudget model.
  */
@@ -249,6 +250,122 @@ class GadPlanBudgetController extends ControllerAudit
             $model2->save(false);
         }
         return $this->redirect(['index', 'ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate]);
+    }
+
+    public function GetGadBudgetByRuc($ruc)
+    {
+        $dataAttributedProgram = (new \yii\db\Query())
+        ->select([
+            'AP.id',
+            // 'IF(AP.ppa_attributed_program_id = 0, AP.ppa_attributed_program_others, PAP.title) as ap_ppa_value',
+            'AP.lgu_program_project',
+            'AP.hgdg',
+            'AP.total_annual_pro_budget',
+            'AP.attributed_pro_budget',
+            'AP.ap_lead_responsible_office',
+            'AP.record_tuc',
+            'AP.controller_id'
+        ])
+        ->from('gad_attributed_program AP')
+        ->leftJoin(['PAP' => 'gad_ppa_attributed_program'], 'PAP.id = AP.ppa_attributed_program_id')
+        ->where(['AP.record_tuc' => $ruc])
+        ->groupBy(['AP.id'])
+        ->orderBy(['AP.id' => SORT_ASC,'AP.lgu_program_project' => SORT_ASC])
+        ->all();
+
+        $varTotalGadAttributedProBudget = 0;
+        foreach ($dataAttributedProgram as $key => $dap) {
+            $varHgdg = $dap["hgdg"];
+            $varTotalAnnualProBudget = $dap["total_annual_pro_budget"];
+            $computeGadAttributedProBudget = 0;
+            $HgdgMessage = null;
+            $HgdgWrongSign = "";
+            
+            if((float)$varHgdg < 4) // 0%
+            {
+                $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
+            }
+            else if((float)$varHgdg >= 4 && (float)$varHgdg <= 7.99) // 25%
+            {
+                $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.25);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
+            }
+            else if((float)$varHgdg >= 8 && (float)$varHgdg <= 14.99) // 50%
+            {
+                $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.50);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
+            }
+            else if((float)$varHgdg <= 19.99 && (float)$varHgdg >= 15) // 75%
+            {
+                $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 0.75);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
+            }
+            else if((float)$varHgdg == 20) // 100%
+            {
+                $computeGadAttributedProBudget = ($varTotalAnnualProBudget * 1);
+                $varTotalGadAttributedProBudget += $computeGadAttributedProBudget;
+            }
+            else
+            {
+                
+            }
+        }
+
+        $dataPlanBudget = (new \yii\db\Query())
+        ->select([
+            'PB.id',
+            'PB.ppa_value',
+            // 'IF(PB.ppa_focused_id = 0, PB.cause_gender_issue,CF.title) as activity_category',
+            'PB.cause_gender_issue as other_activity_category',
+            'PB.objective',
+            'PB.relevant_lgu_program_project',
+            'PB.activity',
+            'PB.performance_target',
+            'PB.performance_indicator',
+            'PB.budget_mooe',
+            'PB.budget_ps',
+            'PB.budget_co',
+            'PB.lead_responsible_office',
+            'COUNT(GC.plan_budget_id) as count_comment',
+            'GC.attribute_name as attr_name',
+            'PB.record_tuc as record_uc',
+            'GF.title as gad_focused_title',
+            'IC.title as inner_category_title',
+            'GC.id as gad_focused_id',
+            'IC.id as inner_category_id',
+            'PB.focused_id'
+        ])
+        ->from('gad_plan_budget PB')
+        // ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = PB.ppa_focused_id')
+        ->leftJoin(['GC' => 'gad_comment'], 'GC.plan_budget_id = PB.id')
+        ->leftJoin(['GF' => 'gad_focused'], 'GF.id = PB.focused_id')
+        ->leftJoin(['IC' => 'gad_inner_category'], 'IC.id = PB.inner_category_id')
+        ->where(['PB.record_tuc' => $ruc])
+        ->orderBy(['PB.focused_id' => SORT_ASC,'PB.inner_category_id' => SORT_ASC,'PB.ppa_value' => SORT_ASC,'PB.id' => SORT_ASC])
+        ->groupBy(['PB.id'])
+        ->all();
+        // echo "<pre>";
+        // print_r($dataPlanBudget); exit;
+
+        $sum_dbp_mooe = 0;
+        $sum_dbp_ps = 0;
+        $sum_dbp_co = 0;
+        $sum_db_budget = 0;
+        foreach ($dataPlanBudget as $key => $dpb) {
+            $sum_dbp_mooe += $dpb["budget_mooe"];
+            $sum_dbp_ps += $dpb["budget_ps"];
+            $sum_dbp_co += $dpb["budget_co"];
+        }
+        $sum_db_budget = ($sum_dbp_co + $sum_dbp_mooe + $sum_dbp_ps);
+        $grand_total_pb = ($sum_db_budget + $varTotalGadAttributedProBudget);
+
+        $qryRecord = GadRecord::find()->where(['tuc' => $ruc])->one();
+        $recTotalLguBudget = $qryRecord->total_lgu_budget;
+
+        $fivePercentTotalLguBudget = ($recTotalLguBudget * 0.05);
+
+        return $grand_total_pb;
     }
 
     public function ComputeGadBudget($ruc)
@@ -598,11 +715,45 @@ class GadPlanBudgetController extends ControllerAudit
         $recRegion = !empty($qryRecord['region_name']) ? $qryRecord['region_name'] : "";
         $recProvince = !empty($qryRecord['province_name']) ? $qryRecord['province_name'] : "";
         $recCitymun = !empty($qryRecord['citymun_name']) ? $qryRecord['citymun_name'] : "";
-        $recTotalLguBudget = !empty($qryRecord['total_lgu_budget']) ? $qryRecord['total_lgu_budget'] : 0;
         $recTotalGadBudget = !empty($qryRecord['total_gad_budget']) ? $qryRecord['total_gad_budget'] : 0;
-
+        $recTotalLguBudget = !empty($qryRecord['total_lgu_budget']) ? $qryRecord['total_lgu_budget'] : 0;
         $fivePercentTotalLguBudget = ($recTotalLguBudget * 0.05);
 
+        if(Tools::GetPlanTypeCodeByRuc($ruc) == 1) // new plan
+        {
+            $recTotalLguBudget = !empty($qryRecord['total_lgu_budget']) ? $qryRecord['total_lgu_budget'] : 0;
+            $fivePercentTotalLguBudget = ($recTotalLguBudget * 0.05);
+        }
+        else
+        {
+            if(Tools::GetPlanTypeCodeByRuc($ruc) == 2) // supplemental
+            {
+                if(Tools::GetHasAdditionalLguBudgetByRuc($ruc) == "yes")
+                { // if yes get the current total lgu budget based on current RUC
+                    $recTotalLguBudget = !empty($qryRecord['total_lgu_budget']) ? $qryRecord['total_lgu_budget'] : 0;
+                    $fivePercentTotalLguBudget = ($recTotalLguBudget * 0.05);
+                }
+                else
+                {
+                    if(Tools::GetHasAdditionalLguBudgetByRuc($ruc) == "no")
+                    { // if no get the original LGU budget based on the supplemental ID
+                        $fivePercentTotalLguBudget = (Tools::GetLguBudgetById(Tools::GetSupplementalIdByRuc($ruc)) * 0.05);
+                        $recTotalLguBudget = Tools::GetLguBudgetById(Tools::GetSupplementalIdByRuc($ruc));
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+            else // for revision
+            {
+                $fivePercentTotalLguBudget = Tools::GetLguBudgetById(Tools::GetSupplementalIdByRuc($ruc));
+                $recTotalLguBudget = Tools::GetLguBudgetById(Tools::GetRevisionIdByRuc($ruc));
+            }
+        }
+
+        
 
         $dataPlanBudget = $searchModel->search(Yii::$app->request->queryParams);
         // echo "<pre>";
@@ -617,12 +768,40 @@ class GadPlanBudgetController extends ControllerAudit
             $sum_dbp_ps += $dpb["budget_ps"];
             $sum_dbp_co += $dpb["budget_co"];
         }
-
         
         $sum_db_budget = ($sum_dbp_co + $sum_dbp_mooe + $sum_dbp_ps);
-        $grand_total_pb = ($sum_db_budget + $varTotalGadAttributedProBudget);
 
+        if(Tools::GetPlanTypeCodeByRuc($ruc) ==  1) // new plan
+        {
+            $grand_total_pb = ($sum_db_budget + $varTotalGadAttributedProBudget);
+        }
+        else
+        {
+            if(Tools::GetPlanTypeCodeByRuc($ruc) == 2) // supplemental
+            {
+                if(Tools::GetHasAdditionalLguBudgetByRuc($ruc) == "yes")
+                { // if yes get the current total GAD budget based on current RUC
+                    $grand_total_pb = ($sum_db_budget + $varTotalGadAttributedProBudget);
+                }
+                else
+                {
+                    if(Tools::GetHasAdditionalLguBudgetByRuc($ruc) == "no")
+                    { // if no get the original GAD budget based on the supplemental ID
+                       $grand_total_pb = GadPlanBudgetController::GetGadBudgetByRuc(Tools::GetRucById(Tools::GetSupplementalIdByRuc($ruc)));
+                    }
+                    else
+                    {
 
+                    }
+                }
+            }
+            else // for revision
+            {
+                
+            }
+        }
+
+        
 
         $objective_type = ArrayHelper::getColumn(GadPlanBudget::find()->select(['objective'])->distinct()->all(), 'objective');
         $relevant_type       = ArrayHelper::getColumn(GadPlanBudget::find()

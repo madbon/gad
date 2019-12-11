@@ -9,6 +9,7 @@ use yii\helpers\ArrayHelper;
 use kartik\typeahead\Typeahead;
 use kartik\select2\Select2;
 use common\modules\report\controllers\DefaultController as Tools;
+use common\modules\report\controllers\GadPlanBudgetController as PlanActions;
 use richardfan\widget\JSRegister;
 use yii\helpers\Url;
 /* @var $this yii\web\View */
@@ -85,39 +86,130 @@ $this->title = "Annual GAD Plan and Budget";
                             <td style="width:1px;">REGION </td>
                             <td> : <?= $recRegion ?></td>
                             <td style="width: 180px;">TOTAL LGU BUDGET</td>
-                            <td> : Php <?= number_format($recTotalLguBudget,2) ?></td>
-                        </tr>
-                        <tr>
-                            <td>PROVINCE </td>
-                            <td> : <?= $recProvince ?></td>
-                            <td>TOTAL GAD BUDGET</td>
                             <?php
-                                if($grand_total_pb < $fivePercentTotalLguBudget)
+                                if(Tools::GetPlanTypeCodeByRuc($ruc) == 1)
                                 {
-                                    echo "<td style='color:red;'> : Php ".number_format($grand_total_pb,2)."</td>";
+                                    echo "<td> : Php".number_format($recTotalLguBudget,2)."</td>";
                                 }
                                 else
                                 {
-                                    if($grand_total_pb > $recTotalLguBudget)
+                                    if(Tools::GetPlanTypeCodeByRuc($ruc) == 2)
+                                    {
+                                        if(Tools::GetHasAdditionalLguBudgetByRuc($ruc) == "yes")
+                                        {
+                                            echo "<td> : Php ".number_format($recTotalLguBudget,2)." <label class='label label-info'>Additional LGU Budget</label></td>";
+                                        }
+                                        else
+                                        {
+                                            if(Tools::GetHasAdditionalLguBudgetByRuc($ruc) == "no")
+                                            {
+                                                echo "<td> : Php ".number_format($recTotalLguBudget,2)." <label class='label label-info'>Old LGU Budget</label></td>";
+                                            }
+                                            else
+                                            {
+                                                echo "<td> : Php ".number_format($recTotalLguBudget,2)." </td>";
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        echo "<td> : Php".number_format($recTotalLguBudget,2)."</td>";
+                                    }
+                                }
+                            ?>
+                        </tr>
+                        <tr>
+                            <td>PROVINCE 
+                                <br/><br/>
+                                <?= !empty($recCitymun) ? "CITY/MUNICIPALITY" : ""; ?>    
+                            </td>
+                            <td> : <?= $recProvince ?>
+                                <br/><br/>
+                                 : <?= !empty($recCitymun) ? $recCitymun : ""; ?>
+                            </td>
+                            <td>TOTAL GAD BUDGET</td>
+                            <?php
+                                if(Tools::GetPlanTypeCodeByRuc($ruc) == 1) // new plan
+                                {
+                                    if($grand_total_pb < $fivePercentTotalLguBudget)
                                     {
                                         echo "<td style='color:red;'> : Php ".number_format($grand_total_pb,2)."</td>";
                                     }
                                     else
                                     {
-                                        echo "<td style='color:blue;'> : Php ".number_format($grand_total_pb,2)."</td>";
+                                        if($grand_total_pb > $recTotalLguBudget)
+                                        {
+                                            echo "<td style='color:red;'> : Php ".number_format($grand_total_pb,2)."</td>";
+                                        }
+                                        else
+                                        {
+                                            echo "<td style='color:blue;'> : Php ".number_format($grand_total_pb,2)."</td>";
+                                        }
                                     }
-                                    
+                                }
+                                else
+                                {
+                                    if(Tools::GetPlanTypeCodeByRuc($ruc) == 2) // supplemental plan
+                                    {
+                                        if(Tools::GetHasAdditionalLguBudgetByRuc($ruc) == "yes") // if has additional LGU budget
+                                        {
+                                            if($grand_total_pb < $fivePercentTotalLguBudget)
+                                            {
+                                                echo "<td style='color:red;'> : Php ".number_format($grand_total_pb,2)." <label class='label label-info'>Supplemental GAD Budget</label></td>";
+                                            }
+                                            else
+                                            {
+                                                if($grand_total_pb > $recTotalLguBudget)
+                                                {
+                                                    echo "<td style='color:red;'> : Php ".number_format($grand_total_pb,2)." <label class='label label-info'>Supplemental GAD Budget</label></td>";
+                                                }
+                                                else
+                                                {
+                                                    echo "<td style='color:blue;'> : Php ".number_format($grand_total_pb,2)." <label class='label label-info'>Supplemental GAD Budget</label></td>";
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if(Tools::GetHasAdditionalLguBudgetByRuc($ruc) == "no") // if no additional LGU budget
+                                            {
+                                                if($grand_total_pb < $fivePercentTotalLguBudget)
+                                                {
+                                                    echo "<td style='color:red;'> : Php ".number_format($grand_total_pb,2)." <label class='label label-info'>Old GAD Budget</label>";
+                                                    echo "<br/><br/><p> : Php ".(number_format(PlanActions::GetGadBudgetByRuc($ruc),2))." <label class='label label-info'>Supplemental GAD Budget</label></p>";
+                                                    echo "</td>";
+                                                }
+                                                else
+                                                {
+                                                    if($grand_total_pb > $recTotalLguBudget)
+                                                    {
+                                                        echo "<td style='color:red;'> : Php ".number_format($grand_total_pb,2)." <label class='label label-info'>Old GAD Budget</label>";
+                                                        echo "<br/><br/><p> : Php ".(number_format(PlanActions::GetGadBudgetByRuc($ruc),2))." <label class='label label-info'>Supplemental GAD Budget</label></p>";
+                                                        echo "</td>";
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "<td style='color:blue;'> : Php ".number_format($grand_total_pb,2)." <label class='label label-info'>Old GAD Budget</label>";
+                                                        echo "<br/><br/><p> : Php ".(number_format(PlanActions::GetGadBudgetByRuc($ruc),2))." <label class='label label-info'>Supplemental GAD Budget</label></p>";
+                                                        echo "</td>";
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+
+                                            }
+                                        }
+                                    }
+                                    else // for Revision
+                                    {
+
+                                    }
                                 }
                             ?>
-                            
                         </tr>
-                        <?php if(!empty($recCitymun)) { ?>
-                            <tr>
-                                <td>CITY/MUNICIPALITY </td>
-                                <td> : <?= $recCitymun ?></td>
-                                <td colspan="2"></td>
-                            </tr>
-                        <?php } ?>
+
+                        
                     </tbody>
                 </table>
             </div>
