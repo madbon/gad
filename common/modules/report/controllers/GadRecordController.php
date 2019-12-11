@@ -448,43 +448,79 @@ class GadRecordController extends ControllerAudit
         $model->footer_date = date('Y-m-d');
 
         $modelUpdate = GadRecord::find()->where(['tuc' => $ruc])->one();
+
+        // --------- loading of data to fields
+        if($onstep == "create_new")
+        {
+
+        }
+        else
+        {
+            if($modelUpdate->plan_type_code == 1) // new plan
+            {
+                $modelUpdate->supplemental_record_id = null;
+                $modelUpdate->for_revision_record_id = null;
+                $modelUpdate->has_additional_lgu_budget = null;
+            }
+            else
+            {
+                if($modelUpdate->plan_type_code == 2) // supplemental
+                {
+                    $modelUpdate->for_revision_record_id = null;
+                }
+                else // for revision
+                {
+                    $modelUpdate->supplemental_record_id = $modelUpdate->for_revision_record_id;
+                    $modelUpdate->total_lgu_budget = null;
+                    $modelUpdate->has_additional_lgu_budget = null;
+                }
+            }
+        }
+
         if ($model->load(Yii::$app->request->post())) {
-            if($onstep == "to_create_gpb") // during the process of updating plan
+            $post_data = Yii::$app->request->post();
+            $post_supplemental_record_id = $post_data['GadRecord']['supplemental_record_id'];
+
+            if($onstep == "to_create_gpb") // during the process of updating primary information of plan
             {
                 $modelUpdate->total_lgu_budget = $model->total_lgu_budget;
-                $modelUpdate->total_gad_budget = $model->total_gad_budget;
                 $modelUpdate->year = $model->year;
-                $modelUpdate->create_status_id = $model->create_status_id;
-                $modelUpdate->for_revision_record_id = $model->for_revision_record_id;
                 $modelUpdate->plan_type_code = $model->plan_type_code;
 
                 if($model->plan_type_code == 2 || $model->plan_type_code == 3) // supplemental or for revision plan
                 {
-                    $modelUpdate->supplemental_record_id = $model->supplemental_record_id;
-                    $modelUpdate->year = Tools::GetRecordYearById($model->supplemental_record_id); // get year of record by id inserted in supplemental field
-                    $modelUpdate->has_additional_lgu_budget = $model->has_additional_lgu_budget;
-
-                    if($model->has_additional_lgu_budget == "yes")
-                    {
-                        $modelUpdate->total_lgu_budget = $model->total_lgu_budget;
-                    }
-                    else
-                    {
-                        $modelUpdate->total_lgu_budget = null;
-                    }
-
-                    if($model->plan_type_code == 3)
+                    if($model->plan_type_code == 3) // for revision
                     {
                         $modelUpdate->has_additional_lgu_budget = null;
+                        $modelUpdate->for_revision_record_id = $post_supplemental_record_id;
+                        $modelUpdate->supplemental_record_id = null;
+                        $modelUpdate->total_lgu_budget = null;
+                    }
+                    else // supplemental
+                    {
+                        $modelUpdate->supplemental_record_id = $model->supplemental_record_id;
+                        $modelUpdate->year = Tools::GetRecordYearById($model->supplemental_record_id); // get year of record by id inserted in supplemental field
+                        $modelUpdate->has_additional_lgu_budget = $model->has_additional_lgu_budget;
+                        $modelUpdate->for_revision_record_id = null;
+
+                        if($model->has_additional_lgu_budget == "yes") // if has additional lgu budget
+                        {
+                            $modelUpdate->total_lgu_budget = $model->total_lgu_budget;
+                        }
+                        else // if no additional lgu budget
+                        {
+                            $modelUpdate->total_lgu_budget = null;
+                        }
                     }
                 }
                 else // new plan
                 {
                     $modelUpdate->supplemental_record_id = null;
                     $modelUpdate->has_additional_lgu_budget = null;
+                    $modelUpdate->for_revision_record_id = null;
                 }
                 
-                $modelUpdate->save();   
+                $modelUpdate->save(false);   
             }
             else // creating new plan
             {
@@ -495,19 +531,26 @@ class GadRecordController extends ControllerAudit
                 if($model->plan_type_code == 1) // new plan
                 {
                     $model->supplemental_record_id = null;
+                    $model->has_additional_lgu_budget = null;
+                    $model->for_revision_record_id = null;
                 }
                 else // supplemental plan or for revision plan
                 {
                     $model->year = Tools::GetRecordYearById($model->supplemental_record_id);
+                    $model->for_revision_record_id = null;
 
                     if($model->has_additional_lgu_budget == "no")
                     {
                         $model->total_lgu_budget = null;
                     }
 
-                    if($model->plan_type_code == 3)
+                    if($model->plan_type_code == 3) // for revision
                     {
+                        $model->for_revision_record_id = $model->supplemental_record_id;
                         $model->has_additional_lgu_budget = null;
+                        $model->total_lgu_budget = null;
+                        $model->supplemental_record_id = null;
+                        $model->save(false);
                     }
                 }
 

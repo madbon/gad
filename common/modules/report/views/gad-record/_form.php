@@ -57,12 +57,24 @@ use common\modules\report\controllers\GadRecordController as RecordActions;
                                         $("#table_records").slideUp(300);
                                         $("#div_has_additional_lgu_budget").slideUp(300);
                                         $("#div_total_lgu_budget").slideDown(300);
+                                        $("#label_total_lgu_budget").text("Total LGU Budget");
                                     }
                                     else
                                     {
                                         $("#new_plan").slideUp(300);
                                         $("#table_records").slideDown(300);
-                                        $("#div_has_additional_lgu_budget").slideDown(300);
+
+                                        if(val == 2) // supplemental
+                                        {
+                                            $("#div_has_additional_lgu_budget").slideDown(300);
+                                            $("#label_total_lgu_budget").text("Additional LGU Budget");
+                                        }
+                                        else // for revision
+                                        {
+                                            $("#div_has_additional_lgu_budget").slideUp(300);
+                                            $("#div_total_lgu_budget").slideUp(300);
+                                            $("#gadrecord-total_lgu_budget").val("");
+                                        }
                                     }
                                 }',
                         ],
@@ -96,8 +108,6 @@ use common\modules\report\controllers\GadRecordController as RecordActions;
         </div>
     </div>
 
-    <?= $form->field($model, 'supplemental_record_id')->hiddenInput()->label(false) ?>
-
     <div class="row">
         <div class="col-sm-4" id="div_has_additional_lgu_budget" style="display: none;">
             <?php
@@ -126,10 +136,13 @@ use common\modules\report\controllers\GadRecordController as RecordActions;
             ?>
         </div>
         <div class="col-sm-4" id="div_total_lgu_budget" style="display: none;">
-            <?= $form->field($model, 'total_lgu_budget')->textInput(['maxlength' => 18]) ?>
+            <label id="label_total_lgu_budget">Total LGU Budget</label>
+            <?= $form->field($model, 'total_lgu_budget')->textInput(['maxlength' => 18])->label(false) ?>
         </div>
     </div>
 
+    <?= $form->field($model, 'supplemental_record_id')->hiddenInput()->label(false) ?>
+    <?php // $form->field($model, 'for_revision_record_id')->textInput()->label() ?>
     <?php if($tocreate != "accomp_report"){ ?>
         <div class="table-responsive"  id="table_records" style="display: none;">
              <p style="font-size: 15px;"><span class="fa fa-info-o"></span> Important note : <i style="color:red;">Select an endorsed GAD plan that needs to be supplemented.</i></p> 
@@ -168,7 +181,11 @@ use common\modules\report\controllers\GadRecordController as RecordActions;
                                     echo 
                                     "
                                     <tr id='tr-".($row['id'])."'>
-                                        <td><button type='button' class='btn btn-info btn-sm selectbuttons' id='select-button-".$row['id']."'>Selected</button></td>
+                                        <td>
+                                            <button type='button' class='btn btn-success btn-sm selectbuttons' id='select-button-".$row['id']."'>
+                                                <span class='fa fa-circle icon' id='span-icon-".$row['id']."'></span> <span class='button-title' id='button-title-".$row['id']."'>Selected</span>
+                                            </button>
+                                        </td>
                                     ";
                                 }
                                 else
@@ -176,17 +193,35 @@ use common\modules\report\controllers\GadRecordController as RecordActions;
                                     echo 
                                     "
                                     <tr>
-                                        <td><button type='button' class='btn btn-success btn-sm selectbuttons' id='select-button-".$row['id']."'>Select</button></td>
+                                        <td>
+                                            <button type='button' class='btn btn-success btn-sm selectbuttons' id='select-button-".$row['id']."'>
+                                                <span class='fa fa-circle-o icon' id='span-icon-".$row['id']."'></span> <span class='button-title' id='button-title-".$row['id']."'>Select</span>
+                                            </button>
+                                        </td>
                                     ";
                                 }
 
+                                // Click action select button
                                 $this->registerJs("
                                     $('#select-button-".$row['id']."').click(function(){
-                                        $('#gadrecord-supplemental_record_id').val(".($row['id']).");
-                                        $('.selectbuttons').text('Select');
-                                        $('#select-button-".($row['id'])."').text('Selected');
-                                        $('.selectbuttons').addClass('btn-success');
-                                        $('#select-button-".($row['id'])."').removeClass('btn-success').addClass('btn-info');
+                                        
+                                        $('.button-title').text('Select');
+
+                                        if($('#span-icon-".$row['id']."').hasClass('fa-circle')) // if selected
+                                        {
+                                            $('.icon').removeClass('fa-circle').addClass('fa-circle-o');
+                                            $('#span-icon-".$row['id']."').removeClass('fa-circle').addClass('fa-circle-o');
+                                            $('#gadrecord-supplemental_record_id').val('');
+                                            $('#button-title-".$row['id']."').text('Select');
+                                        }
+                                        else 
+                                        {
+                                            $('.icon').removeClass('fa-circle').addClass('fa-circle-o');
+                                            $('#span-icon-".$row['id']."').removeClass('fa-circle-o').addClass('fa-circle');
+                                            $('#gadrecord-supplemental_record_id').val(".($row['id']).");
+                                            $('#button-title-".$row['id']."').text('Selected');
+                                        }
+
                                     });
                                 ");
                                 
@@ -233,23 +268,34 @@ use common\modules\report\controllers\GadRecordController as RecordActions;
             else
             {
                 $('#table_records').slideDown(300);
-                $('#new_plan').slideUp(300);
-                $('#div_has_additional_lgu_budget').slideDown(300);
+                if($('#gadrecord-plan_type_code').val() == '3')
+                {
+                    $('#div_has_additional_lgu_budget').slideUp(300);
+                    $('#div_total_lgu_budget').slideUp(300);
+                }
+                else
+                {
+                    $('#table_records').slideDown(300);
+                    $('#new_plan').slideUp(300);
+                    $('#div_has_additional_lgu_budget').slideDown(300);
+
+                    if($('#gadrecord-has_additional_lgu_budget').val() == 'yes' || $('#gadrecord-has_additional_lgu_budget').val() == '')
+                    {
+                        $('#div_total_lgu_budget').slideDown(300);
+                    }
+                    else 
+                    {
+                        $('#div_total_lgu_budget').slideUp(300);
+                    }
+                }
             }
 
-            if($('#gadrecord-has_additional_lgu_budget').val() == 'yes' || $('#gadrecord-has_additional_lgu_budget').val() == '')
-            {
-                $('#div_total_lgu_budget').slideDown(300);
-            }
-            else 
-            {
-                $('#div_total_lgu_budget').slideUp(300);
-            }
+            
         ");
     ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('<span class="fa fa-save"></span> Save', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
