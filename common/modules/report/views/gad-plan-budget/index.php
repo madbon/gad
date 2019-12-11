@@ -245,18 +245,16 @@ $this->title = "Annual GAD Plan and Budget";
                 <?php } ?>
 
                 <?php 
-                // print_r(Tools::Can("create_general_observation")); exit;
                     if(Tools::HasAction("create_general_observation"))
                     {
                         $available_actions = 1;
                         echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create General Observation/Recommendation',['/cms/document/form-view', 'category_id' => 7, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
                         echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Certificate of Review and Endorsement',['/cms/document/form-view', 'category_id' => 9, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
                     }
-                    else
-                    {
+                    else {
                         $available_actions = 0;
                     }
-                    
+
                     if(Tools::HasAction("create_letter_review_endorsement_ppdo"))
                     {
                         $available_actions = 1;
