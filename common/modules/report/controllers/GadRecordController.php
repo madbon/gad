@@ -480,6 +480,7 @@ class GadRecordController extends ControllerAudit
         if ($model->load(Yii::$app->request->post())) {
             $post_data = Yii::$app->request->post();
             $post_supplemental_record_id = $post_data['GadRecord']['supplemental_record_id'];
+            $post_year = $post_data['GadRecord']['year'];
 
             if($onstep == "to_create_gpb") // during the process of updating primary information of plan
             {
@@ -528,29 +529,32 @@ class GadRecordController extends ControllerAudit
                 $hash =  md5(date('Y-m-d')."-".date("h-i-sa")."-".$miliseconds);
                 $model->tuc = $hash;
 
-                if($model->plan_type_code == 1) // new plan
+                if($tocreate == "gad_plan_budget")
                 {
-                    $model->supplemental_record_id = null;
-                    $model->has_additional_lgu_budget = null;
-                    $model->for_revision_record_id = null;
-                }
-                else // supplemental plan or for revision plan
-                {
-                    $model->year = Tools::GetRecordYearById($model->supplemental_record_id);
-                    $model->for_revision_record_id = null;
-
-                    if($model->has_additional_lgu_budget == "no")
+                    if($model->plan_type_code == 1) // new plan
                     {
-                        $model->total_lgu_budget = null;
-                    }
-
-                    if($model->plan_type_code == 3) // for revision
-                    {
-                        $model->for_revision_record_id = $model->supplemental_record_id;
-                        $model->has_additional_lgu_budget = null;
-                        $model->total_lgu_budget = null;
                         $model->supplemental_record_id = null;
-                        $model->save(false);
+                        $model->has_additional_lgu_budget = null;
+                        $model->for_revision_record_id = null;
+                    }
+                    else // supplemental plan or for revision plan
+                    {
+                        $model->year = Tools::GetRecordYearById($model->supplemental_record_id);
+                        $model->for_revision_record_id = null;
+
+                        if($model->has_additional_lgu_budget == "no")
+                        {
+                            $model->total_lgu_budget = null;
+                        }
+
+                        if($model->plan_type_code == 3) // for revision
+                        {
+                            $model->for_revision_record_id = $model->supplemental_record_id;
+                            $model->has_additional_lgu_budget = null;
+                            $model->total_lgu_budget = null;
+                            $model->supplemental_record_id = null;
+                            $model->save(false);
+                        }
                     }
                 }
 
@@ -630,6 +634,30 @@ class GadRecordController extends ControllerAudit
             'create_plan_status' => $create_plan_status,
             'plan_type' => $plan_type,
             'query_all_existing_plan' => $query_all_existing_plan
+        ]);
+    }
+
+    public function actionEditForm($ruc,$onstep,$tocreate)
+    {
+
+        $model = $this->findModel(Tools::GetRecordIdByRuc($ruc));
+
+        if ($model->load(Yii::$app->request->post())) {
+
+            $model->save();
+
+            if($tocreate == "accomp_report")
+            {
+                return $this->redirect(['gad-accomplishment-report/index', 'ruc' => $ruc,'onstep' =>  $onstep, 'tocreate' => $tocreate]);
+            }
+            else
+            {
+                return $this->redirect(['gad-plan-budget/index', 'ruc' => $ruc,'onstep' =>  $onstep, 'tocreate' => $tocreate]);
+            }
+        }
+
+        return $this->renderAjax('_edit_form', [
+            'model' => $model,
         ]);
     }
 

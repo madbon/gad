@@ -109,33 +109,40 @@ use common\modules\report\controllers\GadRecordController as RecordActions;
     </div>
 
     <div class="row">
-        <div class="col-sm-4" id="div_has_additional_lgu_budget" style="display: none;">
-            <?php
-                echo $form->field($model, 'has_additional_lgu_budget')->widget(Select2::classname(), [
-                    'data' =>  ["yes" => "Yes", "no" => "No"],
-                    'options' => ['placeholder' => 'Nothing Selected (Yes or No)'],
-                    'pluginOptions' => [
-                        'allowClear' => true,
-                    ],
-                    'pluginEvents'=>[
-                        'select2:select'=>'
-                            function(){
-                                var val = this.value;
-                                if(val == "yes") // new plan
-                                {
-                                    $("#div_total_lgu_budget").slideDown(300);
-                                }
-                                else
-                                {
-                                    $("#div_total_lgu_budget").slideUp(300);
-                                    $("#gadrecord-total_lgu_budget").val("");
-                                }
-                            }',
-                    ],
-                ]);
-            ?>
-        </div>
-        <div class="col-sm-4" id="div_total_lgu_budget" style="display: none;">
+        <?php  if($tocreate == "gad_plan_budget"){ ?>
+            <div class="col-sm-4" id="div_has_additional_lgu_budget" style="display: none;">
+                <?php
+                    echo $form->field($model, 'has_additional_lgu_budget')->widget(Select2::classname(), [
+                        'data' =>  ["yes" => "Yes", "no" => "No"],
+                        'options' => ['placeholder' => 'Nothing Selected (Yes or No)'],
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                        ],
+                        'pluginEvents'=>[
+                            'select2:select'=>'
+                                function(){
+                                    var val = this.value;
+                                    if(val == "yes") // new plan
+                                    {
+                                        $("#div_total_lgu_budget").slideDown(300);
+                                    }
+                                    else
+                                    {
+                                        $("#div_total_lgu_budget").slideUp(300);
+                                        $("#gadrecord-total_lgu_budget").val("");
+                                    }
+                                }',
+                        ],
+                    ]);
+                ?>
+            </div>
+        <?php } ?>
+
+        <?php if($tocreate == "gad_plan_budget"){ ?>
+            <div class="col-sm-4" id="div_total_lgu_budget" style="display: none;">
+        <?php }else{ ?>
+            <div class="col-sm-4">
+        <?php } ?>
             <label id="label_total_lgu_budget">Total LGU Budget</label>
             <?= $form->field($model, 'total_lgu_budget')->textInput(['maxlength' => 18])->label(false) ?>
         </div>

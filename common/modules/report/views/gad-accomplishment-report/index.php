@@ -16,7 +16,7 @@ $this->title = "Annual GAD Accomplishment Reports";
 
     <!-- <h1><?php // Html::encode($this->title) ?></h1> -->
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-    
+<div class="fixed-div">
     <div class="cust-panel basic-information inner-panel">
         <!-- <div class="cust-panel-header gad-color">
         </div> -->
@@ -31,7 +31,16 @@ $this->title = "Annual GAD Accomplishment Reports";
                             <td style="width:1px;">REGION </td>
                             <td> : <?= $recRegion ?></td>
                             <td style="width: 180px;">TOTAL LGU BUDGET</td>
-                            <td> : Php <?= number_format($recTotalLguBudget,2) ?></td>
+                            <td> : Php <?= number_format($recTotalLguBudget,2) ?> 
+                                <?php
+                                    if(in_array($qryReportStatus,Tools::Can("edit_ar")))
+                                    {
+                                        $url_edit_record = '@web/report/gad-record/edit-form?ruc='.$ruc.'&onstep='.$onstep.'&tocreate='.$tocreate;
+                                        echo Html::button('<span class="fa fa-edit"></span> Edit ', ['value'=>Url::to($url_edit_record),
+                                    'class' => 'btn btn-primary btn-sm modalButton ']);
+                                    }
+                                ?>
+                            </td>
                         </tr>
                         <tr>
                             <td>PROVINCE </td>
@@ -119,7 +128,7 @@ $this->title = "Annual GAD Accomplishment Reports";
             ?>
         </div>
     </div>
-    
+    </div>
 
 
     <?php
@@ -177,7 +186,8 @@ $this->title = "Annual GAD Accomplishment Reports";
                 </div>
         <?php } ?>
     <?php } ?>
-    <br/>
+
+<br/>
 
     <div class="cust-panel tabular-report">
         <div class="cust-panel-header gad-color">

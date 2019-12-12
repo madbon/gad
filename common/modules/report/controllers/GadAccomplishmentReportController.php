@@ -7,7 +7,7 @@ use common\models\GadAccomplishmentReport;
 use common\models\GadPlanBudget;
 use common\models\GadArAttributedProgram;
 use common\models\GadAttributedProgram;
-use common\modules\report\controllers\DefaultController;
+use common\modules\report\controllers\DefaultController as Tools;
 use common\modules\report\models\GadAccomplishmentReportSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -51,12 +51,24 @@ class GadAccomplishmentReportController extends ControllerAudit
 
     public function actionCopyInsertPlan($ruc,$onstep,$tocreate,$selected_plan_ruc)
     {
-        $query = GadPlanBudget::find()->where(['record_tuc' => $selected_plan_ruc])->groupBy(['id'])->all();
+        $selected_record_id = Tools::GetRecordIdByRuc($selected_plan_ruc);
+
+        $record_query = GadRecord::find()->select(['id','tuc'])->where(['supplemental_record_id' => $selected_record_id,'status' => 4])->orWhere(['id' => $selected_record_id])->all();
+
+        $arr_record_id = [];
+        $arr_record_tuc = [];
+        foreach ($record_query as $key1 => $rec) {
+            $arr_record_id[] = $rec['id'];
+            $arr_record_tuc[] = $rec['tuc'];
+        }
+
+        // print_r($arr_record_id); exit;
+        $query = GadPlanBudget::find()->where(['record_tuc' => $arr_record_tuc])->groupBy(['id'])->all();
 
         foreach ($query as $key => $plan) {
             $ar = new GadAccomplishmentReport();
             $ar->plan_budget_id = $plan['id'];
-            $ar->record_id = DefaultController::GetRecordIdByRuc($ruc);
+            $ar->record_id = Tools::GetRecordIdByRuc($ruc);
             $ar->focused_id = $plan['focused_id'];
             $ar->inner_category_id = $plan['inner_category_id'];
             $ar->gi_sup_data = $plan['gi_sup_data'];
@@ -71,10 +83,11 @@ class GadAccomplishmentReportController extends ControllerAudit
             $gad_budget = ($plan['budget_mooe'] + $plan['budget_ps'] + $plan['budget_co']);
             $ar->total_approved_gad_budget = $gad_budget;
             $ar->record_tuc = $ruc;
+            $ar->plan_type_code = Tools::GetPlanTypeCodeByRuc($plan['record_tuc']);
             $ar->save(false);
         }
 
-        $attribQuery = GadAttributedProgram::find()->where(['record_tuc' => $selected_plan_ruc])->groupBy(['id'])->all();
+        $attribQuery = GadAttributedProgram::find()->where(['record_tuc' => $arr_record_tuc])->groupBy(['id'])->all();
 
         foreach ($attribQuery as $key2 => $attrib) {
             $ar_attrib = new GadArAttributedProgram();
@@ -85,6 +98,7 @@ class GadAccomplishmentReportController extends ControllerAudit
             $ar_attrib->checklist_id = $attrib['checklist_id'];
             $ar_attrib->hgdg_pimme = $attrib['hgdg'];
             $ar_attrib->total_annual_pro_cost = $attrib['total_annual_pro_budget'];
+            $ar_attrib->plan_type_code = Tools::GetPlanTypeCodeByRuc($attrib['record_tuc']);
             $ar_attrib->save(false);
 
         }
@@ -161,7 +175,7 @@ class GadAccomplishmentReportController extends ControllerAudit
             'tags_ppaSectors' => $tags_ppaSectors,
             'tags_checkList' => $tags_checkList,
             'select_scoreType' => $select_scoreType,
-            'status' => DefaultController::GetStatusByRuc($ruc),
+            'status' => Tools::GetStatusByRuc($ruc),
         ]);
     }
 
@@ -193,7 +207,7 @@ class GadAccomplishmentReportController extends ControllerAudit
             'modelUpdate' => $modelUpdate,
             'tags_ppaSectors' => $tags_ppaSectors,
             'tags_activityCategory' => $tags_activityCategory,
-            'status' => DefaultController::GetStatusByRuc($ruc),
+            'status' => Tools::GetStatusByRuc($ruc),
             'opt_focused' => $opt_focused,
             'gender_issue' => $gender_issue,
         ]);

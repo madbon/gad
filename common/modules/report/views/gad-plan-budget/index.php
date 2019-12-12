@@ -85,7 +85,17 @@ $this->title = "Annual GAD Plan and Budget";
                         <tr>
                             <td style="width:1px;">REGION </td>
                             <td> : <?= $recRegion ?></td>
-                            <td style="width: 180px;">TOTAL LGU BUDGET</td>
+                            <td style="width: 180px;">TOTAL LGU BUDGET
+                                <?php
+                                    // if(in_array($qryReportStatus,Tools::Can("edit_plan")))
+                                    // {
+                                    //     $url_edit_record = '@web/report/gad-record/edit-form?ruc='.$ruc.'&onstep='.$onstep.'&tocreate='.$tocreate;
+                                    //         echo Html::button('<span class="fa fa-edit"></span> Edit ', ['value'=>Url::to($url_edit_record),
+                                    // 'class' => 'btn btn-primary btn-sm modalButton ']);
+                                    // }
+                                ?>
+                            </td>
+
                             <?php
                                 if(Tools::GetPlanTypeCodeByRuc($ruc) == 1)
                                 {
