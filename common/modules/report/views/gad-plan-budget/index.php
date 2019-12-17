@@ -213,7 +213,8 @@ $this->title = "Annual GAD Plan and Budget";
                                     }
                                     else // for Revision
                                     {
-
+                                        echo "<td style='color:blue;'> : Php ".number_format($grand_total_pb,2);
+                                        echo "</td>";
                                     }
                                 }
                             ?>

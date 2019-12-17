@@ -797,7 +797,7 @@ class GadPlanBudgetController extends ControllerAudit
             }
             else // for revision
             {
-                
+                $grand_total_pb = GadPlanBudgetController::GetGadBudgetByRuc(Tools::GetRucById(Tools::GetRevisionIdByRuc($ruc)));
             }
         }
 

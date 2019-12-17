@@ -5,6 +5,7 @@ namespace common\modules\report\controllers;
 use Yii;
 use common\modules\report\controllers\DefaultController as Tools;
 use common\models\GadRecord;
+use common\models\GadPlanBudget;
 use common\models\GadReportHistory;
 use common\modules\report\models\GadRecordSearch;
 use yii\web\Controller;
@@ -449,6 +450,7 @@ class GadRecordController extends ControllerAudit
 
         $modelUpdate = GadRecord::find()->where(['tuc' => $ruc])->one();
 
+        $current_for_revision_record_id = !empty($modelUpdate->for_revision_record_id) ? $modelUpdate->for_revision_record_id : null;
         // --------- loading of data to fields
         if($onstep == "create_new")
         {
@@ -496,8 +498,50 @@ class GadRecordController extends ControllerAudit
                         $modelUpdate->for_revision_record_id = $post_supplemental_record_id;
                         $modelUpdate->supplemental_record_id = null;
                         $modelUpdate->total_lgu_budget = null;
+                        $modelUpdate->year = Tools::GetRecordYearById($model->supplemental_record_id);
+                        $modelUpdate->attached_ar_record_id = Tools::GetAttachedArById($model->supplemental_record_id);
+
+                        $sup_record_tuc = Tools::GetRucById($model->supplemental_record_id);
+                        $query_plan_data = GadPlanBudget::find()->where(['record_tuc' => $sup_record_tuc])->all();
+
+                        if($model->supplemental_record_id != $current_for_revision_record_id)
+                        {
+                            if(GadPlanBudget::deleteAll(['record_tuc' => $ruc]))
+                            {
+                                foreach ($query_plan_data as $keyplan => $row) {
+                                    $gpb_model = new GadPlanBudget();
+
+                                    $gpb_model->old_plan_id = $row['id'];
+                                    $gpb_model->record_id = Tools::GetRecordIdByRuc($ruc);
+                                    $gpb_model->focused_id = $row['focused_id'];
+                                    $gpb_model->inner_category_id = $row['inner_category_id'];
+                                    $gpb_model->gi_sup_data = $row['gi_sup_data'];
+                                    $gpb_model->source = $row['source'];
+                                    $gpb_model->cliorg_ppa_attributed_program_id = $row['cliorg_ppa_attributed_program_id']; 
+                                    $gpb_model->ppa_value = $row['ppa_value'];
+                                    $gpb_model->objective = $row['objective'];
+                                    $gpb_model->relevant_lgu_program_project = $row['relevant_lgu_program_project'];
+                                    $gpb_model->activity_category_id = $row['activity_category_id'];
+                                    $gpb_model->activity = $row['activity'];
+                                    $gpb_model->date_implement_start = $row['date_implement_start'];
+                                    $gpb_model->date_implement_end = $row['date_implement_end'];
+                                    $gpb_model->performance_target = $row['performance_target'];
+                                    $gpb_model->budget_mooe = $row['budget_mooe'];
+                                    $gpb_model->budget_ps = $row['budget_ps'];
+                                    $gpb_model->budget_co = $row['budget_co'];
+                                    $gpb_model->lead_responsible_office = $row['lead_responsible_office'];
+                                    $gpb_model->record_tuc = $ruc;
+                                    $gpb_model->save(false);
+                                }
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                        
                     }
-                    else // supplemental
+                    else // new
                     {
                         $modelUpdate->supplemental_record_id = $model->supplemental_record_id;
                         $modelUpdate->year = Tools::GetRecordYearById($model->supplemental_record_id); // get year of record by id inserted in supplemental field
@@ -550,10 +594,41 @@ class GadRecordController extends ControllerAudit
                         if($model->plan_type_code == 3) // for revision
                         {
                             $model->for_revision_record_id = $model->supplemental_record_id;
+                            $model->attached_ar_record_id = Tools::GetAttachedArById($model->supplemental_record_id);
                             $model->has_additional_lgu_budget = null;
                             $model->total_lgu_budget = null;
-                            $model->supplemental_record_id = null;
                             $model->save(false);
+
+                            $sup_record_tuc = Tools::GetRucById($model->supplemental_record_id);
+                            $query_plan_data = GadPlanBudget::find()->where(['record_tuc' => $sup_record_tuc])
+                            // ->createCommand()->rawSql;
+                            ->all();
+                            
+                            foreach ($query_plan_data as $keyplan2 => $row2) {
+                                $gpb_model = new GadPlanBudget();
+
+                                $gpb_model->old_plan_id = $row2['id'];
+                                $gpb_model->record_id = $model->id;
+                                $gpb_model->focused_id = $row2['focused_id'];
+                                $gpb_model->inner_category_id = $row2['inner_category_id'];
+                                $gpb_model->gi_sup_data = $row2['gi_sup_data'];
+                                $gpb_model->source = $row2['source'];
+                                $gpb_model->cliorg_ppa_attributed_program_id = $row2['cliorg_ppa_attributed_program_id']; 
+                                $gpb_model->ppa_value = $row2['ppa_value'];
+                                $gpb_model->objective = $row2['objective'];
+                                $gpb_model->relevant_lgu_program_project = $row2['relevant_lgu_program_project'];
+                                $gpb_model->activity_category_id = $row2['activity_category_id'];
+                                $gpb_model->activity = $row2['activity'];
+                                $gpb_model->date_implement_start = $row2['date_implement_start'];
+                                $gpb_model->date_implement_end = $row2['date_implement_end'];
+                                $gpb_model->performance_target = $row2['performance_target'];
+                                $gpb_model->budget_mooe = $row2['budget_mooe'];
+                                $gpb_model->budget_ps = $row2['budget_ps'];
+                                $gpb_model->budget_co = $row2['budget_co'];
+                                $gpb_model->lead_responsible_office = $row2['lead_responsible_office'];
+                                $gpb_model->record_tuc = $hash;
+                                $gpb_model->save(false);
+                            }
                         }
                     }
                 }

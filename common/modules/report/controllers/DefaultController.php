@@ -35,6 +35,13 @@ use common\models\GadStatusAssignment;
  */
 class DefaultController extends ControllerAudit
 {
+    public function GetAttachedArById($id)
+    {
+        $query = GadRecord::find()->where(['id' => $id])->one();
+
+        return !empty($query->attached_ar_record_id) ? $query->attached_ar_record_id : null;
+    }
+
     public function GetRucById($id)
     {
         $query = GadRecord::find()->where(['id' => $id])->one();
@@ -1264,17 +1271,24 @@ class DefaultController extends ControllerAudit
         $qry = GadRecord::find()->where(['id' => $uid])->one();
         $qry->approved_by = $upd8_value;
 
-        if($qry->save())
+        if(empty($upd8_value))
         {
-            $is_save = $upd8_value;
-        }else
+            $is_save = "Approved by cannot be blank";
+        }
+        else
         {
-            $is_save = "";
-            foreach ($qry->errors as $key => $value) {
-                $is_save = $value[0];
+            if($qry->save(false))
+            {
+                $is_save = $upd8_value;
+            }else
+            {
+                $is_save = "";
+                foreach ($qry->errors as $key => $value) {
+                    $is_save = $value[0];
+                }
             }
         }
-        
+
         return $is_save;
     }
     public function actionUpdatePbPreparedBy($uid,$upd8_value)
@@ -1282,14 +1296,22 @@ class DefaultController extends ControllerAudit
         $qry = GadRecord::find()->where(['id' => $uid])->one();
         $qry->prepared_by = $upd8_value;
 
-        if($qry->save())
+        if(empty($upd8_value))
         {
-            $is_save = $upd8_value;
-        }else
+            $is_save = "Prepared By cannot be blank.";
+        }
+        else
         {
-            $is_save = "";
-            foreach ($qry->errors as $key => $value) {
-                $is_save = $value[0];
+            if($qry->save(false))
+            {
+                $is_save = $upd8_value;
+            }
+            else
+            {
+                $is_save = "";
+                foreach ($qry->errors as $key => $value) {
+                    $is_save = $value[0];
+                }
             }
         }
         

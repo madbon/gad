@@ -53,7 +53,7 @@ class GadAccomplishmentReportController extends ControllerAudit
     {
         $selected_record_id = Tools::GetRecordIdByRuc($selected_plan_ruc);
 
-        $record_query = GadRecord::find()->select(['id','tuc'])->where(['supplemental_record_id' => $selected_record_id,'status' => 4])->orWhere(['id' => $selected_record_id])->all();
+        $record_query = GadRecord::find()->select(['id','tuc'])->where(['supplemental_record_id' => $selected_record_id,'status' => [4,10,28]])->orWhere(['id' => $selected_record_id])->all();
 
         $arr_record_id = [];
         $arr_record_tuc = [];
@@ -136,7 +136,8 @@ class GadAccomplishmentReportController extends ControllerAudit
         ->leftJoin(['PROV' => 'tblprovince'], 'PROV.province_c = GR.province_c')
         ->leftJoin(['CTY' => 'tblcitymun'], 'CTY.citymun_c = GR.citymun_c and CTY.province_c = GR.province_c')
         ->leftJoin(['OFC' => 'tbloffice'], 'OFC.OFFICE_C = GR.office_c')
-        ->andWhere(['GR.report_type_id' => 1, 'GR.is_archive' => 0])
+        ->andWhere(['GR.report_type_id' => 1, 'GR.is_archive' => 0,'GR.plan_type_code' => 1])
+        ->andWhere(['GR.status' => [4,10,28]])
         ->andFilterWhere($filter)
         ->groupBy(['GR.id'])
         ->orderBy(['GR.id' => SORT_DESC])

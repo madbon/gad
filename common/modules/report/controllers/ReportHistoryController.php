@@ -91,11 +91,11 @@ class ReportHistoryController extends Controller
         {
             if(empty($prepared_by))
             {
-                echo 'Prepared by cannot be blank';
+                echo '<p style="color:red;">Prepared by (Chairperson, GFPS TWG) is a required field.</p>';
             }
             else if(empty($approved_by))
             {
-                echo 'Approved by cannot be blank';
+                echo '<p style="color:red;">Approved by (Local Chief Executive) is a required field.</p>';
             }
             else
             {
