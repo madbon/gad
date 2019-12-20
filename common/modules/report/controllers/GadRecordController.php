@@ -570,8 +570,6 @@ class GadRecordController extends ControllerAudit
                             {
                                 throw new \yii\web\HttpException(403, 'Connection Error');
                             }
-
-                            // $query_file_plan = GadFileAttached::find()->where([''])
                         }
                     }
                     else // new
