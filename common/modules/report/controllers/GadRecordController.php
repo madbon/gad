@@ -8,6 +8,7 @@ use common\models\GadRecord;
 use common\models\GadPlanBudget;
 use common\models\GadAttributedProgram;
 use common\models\GadReportHistory;
+use common\models\GadFileAttached;
 use common\modules\report\models\GadRecordSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -504,7 +505,7 @@ class GadRecordController extends ControllerAudit
 
                         $sup_record_tuc = Tools::GetRucById($model->supplemental_record_id);
                         $query_plan_data = GadPlanBudget::find()->where(['record_tuc' => $sup_record_tuc])->all();
-
+                        $plan_ids = [];
                         if($model->supplemental_record_id != $current_for_revision_record_id)
                         {
                             if(GadPlanBudget::deleteAll(['record_tuc' => $ruc]))
@@ -512,6 +513,7 @@ class GadRecordController extends ControllerAudit
                                 foreach ($query_plan_data as $keyplan => $row) {
                                     $gpb_model = new GadPlanBudget();
 
+                                    $plan_ids[] = $row['id'];
                                     $gpb_model->old_plan_id = $row['id'];
                                     $gpb_model->record_id = Tools::GetRecordIdByRuc($ruc);
                                     $gpb_model->focused_id = $row['focused_id'];
@@ -568,6 +570,8 @@ class GadRecordController extends ControllerAudit
                             {
                                 throw new \yii\web\HttpException(403, 'Connection Error');
                             }
+
+                            // $query_file_plan = GadFileAttached::find()->where([''])
                         }
                     }
                     else // new
