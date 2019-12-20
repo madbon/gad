@@ -6,6 +6,7 @@ use Yii;
 use common\modules\report\controllers\DefaultController as Tools;
 use common\models\GadRecord;
 use common\models\GadPlanBudget;
+use common\models\GadAttributedProgram;
 use common\models\GadReportHistory;
 use common\modules\report\models\GadRecordSearch;
 use yii\web\Controller;
@@ -531,15 +532,43 @@ class GadRecordController extends ControllerAudit
                                     $gpb_model->budget_co = $row['budget_co'];
                                     $gpb_model->lead_responsible_office = $row['lead_responsible_office'];
                                     $gpb_model->record_tuc = $ruc;
+                                    $gpb_model->date_created = date('Y-m-d');
+                                    $gpb_model->time_created = date("h:i:sa");
                                     $gpb_model->save(false);
                                 }
                             }
                             else
                             {
+                                throw new \yii\web\HttpException(403, 'Connection Error');
+                            }
 
+                            $query_attrib_program = GadAttributedProgram::find()->where(['record_tuc' => $sup_record_tuc])->all();
+
+                            if(GadAttributedProgram::deleteAll(['record_tuc' => $ruc]))
+                            {
+                                foreach ($query_attrib_program as $keyap => $row1) {
+                                    $ap_model = new GadAttributedProgram();
+
+                                    $ap_model->record_id = Tools::GetRecordIdByRuc($ruc);
+                                    $ap_model->record_tuc = $ruc;
+                                    $ap_model->old_row_id = $row1['id'];
+                                    $ap_model->controller_id = $row1['controller_id'];
+                                    $ap_model->ppa_attributed_program_id = $row1['ppa_attributed_program_id'];
+                                    $ap_model->lgu_program_project = $row1['lgu_program_project'];
+                                    $ap_model->checklist_id = $row1['checklist_id'];
+                                    $ap_model->hgdg = $row1['hgdg'];
+                                    $ap_model->total_annual_pro_budget = $row1['total_annual_pro_budget'];
+                                    $ap_model->ap_lead_responsible_office = $row1['ap_lead_responsible_office'];
+                                    $ap_model->date_created = date('Y-m-d');
+                                    $ap_model->time_created = date("h:i:sa");
+                                    $ap_model->save(false);
+                                }
+                            }
+                            else
+                            {
+                                throw new \yii\web\HttpException(403, 'Connection Error');
                             }
                         }
-                        
                     }
                     else // new
                     {
@@ -628,6 +657,26 @@ class GadRecordController extends ControllerAudit
                                 $gpb_model->lead_responsible_office = $row2['lead_responsible_office'];
                                 $gpb_model->record_tuc = $hash;
                                 $gpb_model->save(false);
+                            }
+
+                            $query_attrib_program = GadAttributedProgram::find()->where(['record_tuc' => $sup_record_tuc])->all();
+                            
+                            foreach ($query_attrib_program as $keyap2 => $row3) {
+                                $ap_model = new GadAttributedProgram();
+
+                                $ap_model->record_id = $model->id;
+                                $ap_model->record_tuc = $hash;
+                                $ap_model->old_row_id = $row3['id'];
+                                $ap_model->controller_id = $row3['controller_id'];
+                                $ap_model->ppa_attributed_program_id = $row3['ppa_attributed_program_id'];
+                                $ap_model->lgu_program_project = $row3['lgu_program_project'];
+                                $ap_model->checklist_id = $row3['checklist_id'];
+                                $ap_model->hgdg = $row3['hgdg'];
+                                $ap_model->total_annual_pro_budget = $row3['total_annual_pro_budget'];
+                                $ap_model->ap_lead_responsible_office = $row3['ap_lead_responsible_office'];
+                                $ap_model->date_created = date('Y-m-d');
+                                $ap_model->time_created = date("h:i:sa");
+                                $ap_model->save(false);
                             }
                         }
                     }

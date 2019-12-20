@@ -52,6 +52,7 @@ use kartik\date\DatePicker;
 	</tbody>
 </table>
 
+
 <?php if(in_array($status,Tools::Can("edit_plan"))) { ?>
 <div class="panel panel-primary">
 	<div class="panel-heading">

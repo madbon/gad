@@ -648,7 +648,8 @@ class GadPlanBudgetController extends ControllerAudit
             'AP.ap_lead_responsible_office',
             'AP.record_tuc',
             'AP.controller_id',
-            'REC.status as record_status'
+            'REC.status as record_status',
+            'AP.old_row_id',
         ])
         ->from('gad_attributed_program AP')
         ->leftJoin(['PAP' => 'gad_ppa_attributed_program'], 'PAP.id = AP.ppa_attributed_program_id')
@@ -748,7 +749,7 @@ class GadPlanBudgetController extends ControllerAudit
             }
             else // for revision
             {
-                $fivePercentTotalLguBudget = Tools::GetLguBudgetById(Tools::GetSupplementalIdByRuc($ruc));
+                $fivePercentTotalLguBudget = (Tools::GetLguBudgetById(Tools::GetRevisionIdByRuc($ruc)) * 0.05);
                 $recTotalLguBudget = Tools::GetLguBudgetById(Tools::GetRevisionIdByRuc($ruc));
             }
         }
@@ -1254,8 +1255,7 @@ class GadPlanBudgetController extends ControllerAudit
     public function actionUpdate($id,$ruc,$onstep,$tocreate){
            $upload = new GadFileAttached();
            $folder_type = ArrayHelper::map(\common\models\GadFileFolderType::find()->all(), 'id', 'title');
-
-
+           $upload->file_folder_type_id = 8;
            if($upload->load(Yii::$app->request->post()))
            {
                 $upload->file_name = UploadedFile::getInstances($upload,'file_name');
