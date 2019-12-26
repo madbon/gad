@@ -228,6 +228,7 @@ class GadRecordController extends ControllerAudit
         $searchModel->report_type_id = $report_type == "plan_budget" ? 1 : 2;
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
         $regionCondition = [];
         $provinceCondition = [];
         $citymunCondition = [];

@@ -8,7 +8,7 @@ use common\models\GadRecord;
 use yii\db\Query;
 use Yii;
 use yii\db\Expression;
-use \common\modules\report\controllers\DefaultController;
+use \common\modules\report\controllers\DefaultController as Tools;
 /**
  * GadRecordSearch represents the model behind the search form of `common\models\GadRecord`.
  */
@@ -53,11 +53,11 @@ class GadRecordSearch extends GadRecord
         {
             if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
             {
-                $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'GR.status'=>DefaultController::ViewStatus($this->report_type_id == 1 ? 'gad_lgu_huc' : 'ar_filtered_status_huc')];
+                $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'GR.status'=>Tools::ViewStatus($this->report_type_id == 1 ? 'gad_lgu_huc' : 'ar_filtered_status_huc')];
             }
             else
             {
-                $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'GR.status' => DefaultController::ViewStatus($this->report_type_id == 1 ? 'gad_lgu_non_huc' : 'ar_filtered_status_lgu_ccm')];
+                $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'GR.status' => Tools::ViewStatus($this->report_type_id == 1 ? 'gad_lgu_non_huc' : 'ar_filtered_status_lgu_ccm')];
             }
         }
         else if(Yii::$app->user->can("gad_field_permission"))
@@ -66,20 +66,20 @@ class GadRecordSearch extends GadRecord
         }
         else if(Yii::$app->user->can("gad_province_permission")) // all lower level lgu under its province
         {
-            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.status'=>DefaultController::ViewStatus($this->report_type_id == 1 ? 'gad_province_dilg' : 'ar_filtered_status_province_dilg')];
+            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.status'=>Tools::ViewStatus($this->report_type_id == 1 ? 'gad_province_dilg' : 'ar_filtered_status_province_dilg')];
         }
         else if(Yii::$app->user->can("gad_lgu_province_permission")) // all plan submitted by this province
         {
             $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,
-            'GR.status' => DefaultController::ViewStatus($this->report_type_id == 1 ? 'gad_province_lgu' : 'ar_filtered_status_lgu_province'),'GR.office_c' => 2];
+            'GR.status' => Tools::ViewStatus($this->report_type_id == 1 ? 'gad_province_lgu' : 'ar_filtered_status_lgu_province'),'GR.office_c' => 2];
         }
         else if(Yii::$app->user->can("gad_region_permission"))
         {
-            $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,'GR.status' =>  DefaultController::ViewStatus($this->report_type_id == 1 ? 'gad_region_dilg' : 'ar_filtered_status_region')];
+            $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,'GR.status' =>  Tools::ViewStatus($this->report_type_id == 1 ? 'gad_region_dilg' : 'ar_filtered_status_region')];
         }
         else if(Yii::$app->user->can("gad_ppdo_permission"))
         {
-            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.status'=> DefaultController::ViewStatus($this->report_type_id ? 'gad_ppdo' : 'ar_filtered_status_ppdo')];
+            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.status'=> Tools::ViewStatus($this->report_type_id ? 'gad_ppdo' : 'ar_filtered_status_ppdo')];
         }
         else
         {

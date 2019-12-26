@@ -23,7 +23,7 @@ use kartik\select2\Select2;/* @var $this yii\web\View */
                 'data' =>  $region,
                 'options' => ['placeholder' => 'Select Region',],
                 'pluginOptions' => [
-                    'allowClear' => true,
+                    'allowClear' => false,
                 ],
                 'pluginEvents'=>[
                         'select2:select'=>'
@@ -61,7 +61,7 @@ use kartik\select2\Select2;/* @var $this yii\web\View */
                 'data' =>  $province,
                 'options' => ['placeholder' => 'Province'],
                 'pluginOptions' => [
-                    'allowClear' => true,
+                    'allowClear' => false,
                 ],
                 'pluginEvents'=>[
                         'select2:select'=>'
@@ -97,7 +97,7 @@ use kartik\select2\Select2;/* @var $this yii\web\View */
                     'data' => $citymun,
                     'options' => ['placeholder' => 'City/Municipality'],
                     'pluginOptions' => [
-                        'allowClear' => true,
+                        'allowClear' => false,
                     ],
                     'pluginEvents'=>[
                             'select2:select'=>'
