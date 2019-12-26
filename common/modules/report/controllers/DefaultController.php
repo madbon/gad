@@ -30,6 +30,7 @@ use yii\web\UploadedFile;
 use niksko12\auditlogs\classes\ControllerAudit;
 use yii\helpers\ArrayHelper;
 use common\models\GadStatusAssignment;
+use common\models\GadUpdateHistory;
 /**
  * Default controller for the `report` module
  */
@@ -1271,6 +1272,7 @@ class DefaultController extends ControllerAudit
         $qry = GadRecord::find()->where(['id' => $uid])->one();
         $qry->approved_by = $upd8_value;
 
+        $this::CreateUpdateHistory($uid,"approved_by","GadRecord");
         if(empty($upd8_value))
         {
             $is_save = "Approved by cannot be blank";
@@ -1296,12 +1298,14 @@ class DefaultController extends ControllerAudit
         $qry = GadRecord::find()->where(['id' => $uid])->one();
         $qry->prepared_by = $upd8_value;
 
+        
         if(empty($upd8_value))
         {
             $is_save = "Prepared By cannot be blank.";
         }
         else
         {
+            $this::CreateUpdateHistory($uid,"prepared_by","GadRecord");
             if($qry->save(false))
             {
                 $is_save = $upd8_value;
@@ -1322,6 +1326,7 @@ class DefaultController extends ControllerAudit
         $qry = GadAttributedProgram::find()->where(['id' => $uid])->one();
         $qry->ap_lead_responsible_office = $upd8_value;
 
+        $this::CreateUpdateHistory($uid,"ap_lead_responsible_office","GadAttributedProgram");
         if($qry->save())
         {
             $is_save = $upd8_value;
@@ -1394,6 +1399,7 @@ class DefaultController extends ControllerAudit
         $qry = GadAttributedProgram::find()->where(['id' => $uid])->one();
         $qry->lgu_program_project = $upd8_value;
 
+        $this::CreateUpdateHistory($uid,"lgu_program_project","GadAttributedProgram");
         if($qry->save())
         {
             $is_save = $upd8_value;
@@ -2082,7 +2088,144 @@ class DefaultController extends ControllerAudit
             \Yii::$app->response->format = 'json';
             return $model->errors;
         }
+    }
 
+    public function GetPlanRecordRuc($id)
+    {
+        $model = GadPlanBudget::find()->where(['id' => $id])->one();
+        
+        return !empty($model->record_tuc) ? $model->record_tuc : null;
+    }
+
+    public function GetAttribProgRecordRuc($id)
+    {
+        $model = GadAttributedProgram::find()->where(['id' => $id])->one();
+        
+        return !empty($model->record_tuc) ? $model->record_tuc : null;
+    }
+
+    public function DisplayUpdateHistory($row_id,$column_title,$model_name,$ruc)
+    {
+        $model = GadUpdateHistory::find()->select(['value'])->where(['row_id' => $row_id,'record_tuc' => $ruc,'column_title' => $column_title,'model_name' => $model_name])->orderBy(['id' => SORT_DESC])->all();
+
+        return $model;
+    }
+
+    public function CreateUpdateHistory($row_id,$column_title,$model_name)
+    {
+        $model = new GadUpdateHistory();
+        date_default_timezone_set("Asia/Manila");
+        $model->date_created = date('Y-m-d');
+        $model->time_created = date("h:i:sa");
+        
+        $model->fullname = Yii::$app->user->identity->userinfo->fullName;
+        $model->user_id = !empty(Yii::$app->user->identity->id) ? Yii::$app->user->identity->id : null;
+        
+        if($model_name == "GadPlanBudget")
+        {
+            $qry = GadPlanBudget::find()->where(['id' => $row_id])->one();
+            $model->row_id = $row_id;
+            $model->record_id = $this::GetRecordIdByRuc($this::GetPlanRecordRuc($row_id));
+            $model->record_tuc = $this::GetPlanRecordRuc($row_id);
+
+            switch ($column_title) {
+                case 'ppa_value':
+                   $model->value = !empty($qry->ppa_value) ? $qry->ppa_value : null;
+                break;
+                case 'objective':
+                   $model->value = !empty($qry->objective) ? $qry->objective : null;
+                break;
+                case 'relevant_lgu_program_project':
+                   $model->value = !empty($qry->relevant_lgu_program_project) ? $qry->relevant_lgu_program_project : null;
+                break;
+                case 'activity':
+                   $model->value = !empty($qry->activity) ? $qry->activity : null;
+                break;
+                case 'performance_target':
+                   $model->value = !empty($qry->performance_target) ? $qry->performance_target : null;
+                break;
+                case 'budget_mooe':
+                   $model->value = !empty($qry->budget_mooe) ? $qry->budget_mooe : null;
+                break;
+                case 'budget_ps':
+                   $model->value = !empty($qry->budget_ps) ? $qry->budget_ps : null;
+                break;
+                case 'budget_co':
+                   $model->value = !empty($qry->budget_co) ? $qry->budget_co : null;
+                break;
+                case 'lead_responsible_office':
+                   $model->value = !empty($qry->lead_responsible_office) ? $qry->lead_responsible_office : null;
+                break;
+                
+                default:
+                    $model->value = null;
+                break;
+            }
+        }
+        else if($model_name == "GadAttributedProgram")
+        {
+            $qry = GadAttributedProgram::find()->where(['id' => $row_id])->one();
+            $model->row_id = $row_id;
+            $model->record_id = $this::GetRecordIdByRuc($this::GetAttribProgRecordRuc($row_id));
+            $model->record_tuc = $this::GetAttribProgRecordRuc($row_id);
+            switch ($column_title) {
+                case 'lgu_program_project':
+                   $model->value = !empty($qry->lgu_program_project) ? $qry->lgu_program_project : null;
+                break;
+                case 'ap_lead_responsible_office':
+                   $model->value = !empty($qry->ap_lead_responsible_office) ? $qry->ap_lead_responsible_office : null;
+                break;
+                
+                default:
+                    $model->value = null;
+                break;
+            }
+        }
+        else if($model_name == "GadRecord")
+        {
+            $qry = GadRecord::find()->where(['id' => $row_id])->one();
+            $model->row_id = $row_id;
+            $model->record_id = $row_id;
+            $model->record_tuc = $this::GetRucById($row_id);
+            switch ($column_title) {
+                case 'prepared_by':
+                   $model->value = !empty($qry->prepared_by) ? $qry->prepared_by : null;
+                break;
+                case 'approved_by':
+                   $model->value = !empty($qry->approved_by) ? $qry->approved_by : null;
+                break;
+                
+                default:
+                    $model->value = null;
+                break;
+            }
+        }
+        
+        $model->column_title = $column_title;
+        $model->model_name = $model_name;
+
+        if($model_name == "GadRecord")
+        {
+            if($this::GetPlanTypeCodeByRuc($this::GetRucById($row_id)) == 3)
+            {
+                $model->save(false);
+            }
+        }
+        else if($model_name == "GadAttributedProgram")
+        {
+            if($this::GetPlanTypeCodeByRuc($this::GetAttribProgRecordRuc($row_id)) == 3)
+            {
+                $model->save(false);
+            }
+        }
+        else
+        {
+            if($this::GetPlanTypeCodeByRuc($this::GetPlanRecordRuc($row_id)) == 3)
+            {
+                $model->save(false);
+            }
+        }
+        
     }
 
     public function actionUpdatePbLeadResponsibleOffice($uid,$upd8_value)
@@ -2090,9 +2233,11 @@ class DefaultController extends ControllerAudit
         $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
         $qry->lead_responsible_office = $upd8_value;
 
+        $this::CreateUpdateHistory($uid,"lead_responsible_office","GadPlanBudget");
+
         if($qry->save())
         {
-            $is_save = $upd8_value;
+            $is_save = $upd8_value;            
         }else
         {
             $is_save = "";
@@ -2100,6 +2245,8 @@ class DefaultController extends ControllerAudit
                 $is_save = $value[0];
             }
         }
+
+
         
         return $is_save;
     }
@@ -2108,6 +2255,7 @@ class DefaultController extends ControllerAudit
         $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
         $qry->budget_co = $upd8_value;
 
+        $this::CreateUpdateHistory($uid,"budget_co","GadPlanBudget");
         if($qry->save())
         {
             $is_save = $upd8_value;
@@ -2126,6 +2274,7 @@ class DefaultController extends ControllerAudit
         $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
         $qry->budget_ps = $upd8_value;
 
+        $this::CreateUpdateHistory($uid,"budget_ps","GadPlanBudget");
         if($qry->save())
         {
             $is_save = $upd8_value;
@@ -2145,6 +2294,7 @@ class DefaultController extends ControllerAudit
         $qry->budget_mooe = $upd8_value;
 
         // print_r(Yii::$app->controller->action->id); exit;
+        $this::CreateUpdateHistory($uid,"budget_mooe","GadPlanBudget");
         if($qry->save())
         {
             $is_save = $upd8_value;
@@ -2163,6 +2313,7 @@ class DefaultController extends ControllerAudit
         $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
         $qry->performance_indicator = $upd8_value;
 
+        $this::CreateUpdateHistory($uid,"performance_indicator","GadPlanBudget");
         if($qry->save())
         {
             $is_save = $upd8_value;
@@ -2182,6 +2333,7 @@ class DefaultController extends ControllerAudit
         $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
         $qry->performance_target = $upd8_value;
 
+        $this::CreateUpdateHistory($uid,"performance_target","GadPlanBudget");
         if($qry->save())
         {
             $is_save = $upd8_value;
@@ -2201,6 +2353,7 @@ class DefaultController extends ControllerAudit
         $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
         $qry->activity = $upd8_value;
 
+        $this::CreateUpdateHistory($uid,"activity","GadPlanBudget");
         if($qry->save())
         {
             $is_save = $upd8_value;
@@ -2220,6 +2373,7 @@ class DefaultController extends ControllerAudit
         $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
         $qry->ppa_value = $upd8_value;
 
+        $this::CreateUpdateHistory($uid,"ppa_value","GadPlanBudget");
         if($qry->save())
         {
             $is_save = $upd8_value;
@@ -2257,9 +2411,10 @@ class DefaultController extends ControllerAudit
 
     public function actionUpdateObjective($uid,$upd8_value)
     {
-       	$qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
+       	$qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();        
         $qry->objective = $upd8_value;
 
+        $this::CreateUpdateHistory($uid,"objective","GadPlanBudget");
         if($qry->save())
         {
             $is_save = $upd8_value;
@@ -2335,6 +2490,7 @@ class DefaultController extends ControllerAudit
         $qry = \common\models\GadPlanBudget::find()->where(['id' => $uid])->one();
         $qry->relevant_lgu_program_project = $upd8_value;
 
+        $this::CreateUpdateHistory($uid,"relevant_lgu_program_project","GadPlanBudget");
         if($qry->save())
         {
             $is_save = $upd8_value;

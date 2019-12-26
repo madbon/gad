@@ -29,6 +29,7 @@ if(Tools::HasComment($record_id,$row_id,$attribute_name,$controller_id) > 0) { ?
                 </button>
             </div>
         </p>
+
     <?php } else{ ?>
         <p style="<?= $customStyle ?> white-space: pre-line;" id="content-<?= $attribute_name ?>-<?= $row_id ?>">
             <?= $display_value ?>  <!-- Display the content of attribute or cell value -->
@@ -38,6 +39,15 @@ if(Tools::HasComment($record_id,$row_id,$attribute_name,$controller_id) > 0) { ?
                 </button>
             </div>
         </p>
+        <?php 
+            if(Tools::GetPlanTypeCodeByRuc($record_unique_code) == 3)
+            {
+                $update_array = Tools::DisplayUpdateHistory($row_id,$attribute_name,$controller_id,$record_unique_code);
+                foreach ($update_array as $key_update_array => $row_up_ar) {
+                    echo "<p style='background:#e4c9c9;'>".($row_up_ar['value'])."</p>";
+                }
+            }
+        ?>
         
         <?php
             $this->registerJs("

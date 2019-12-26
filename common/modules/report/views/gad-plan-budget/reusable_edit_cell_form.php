@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use common\modules\report\controllers\DefaultController;
+use common\modules\report\controllers\DefaultController as Tools;
 ?>
 
 <td style="<?= $customStyle ?>" title="<?= $column_title ?>" colspan="<?= $colspanValue ?>" id="cell-<?= $attribute_name ?>-<?= $row_id ?>" class="common-cell-container"> <!-- remove border if no comment  -->
@@ -20,6 +20,15 @@ use common\modules\report\controllers\DefaultController;
             </button>
         </div>
     </p>
+    <?php 
+        if(Tools::GetPlanTypeCodeByRuc($record_unique_code) == 3)
+        {
+            $update_array = Tools::DisplayUpdateHistory($row_id,$attribute_name,$controller_id,$record_unique_code);
+            foreach ($update_array as $key_update_array => $row_up_ar) {
+                echo "<p style='background:#e4c9c9;'>".($row_up_ar['value'])."</p>";
+            }
+        }
+    ?>
     
     <?php
         $this->registerJs("
@@ -64,7 +73,7 @@ use common\modules\report\controllers\DefaultController;
                 $("#btn-edit-"+attr_name+"-'.$row_id.'").show(); // if active show btn edit
                 $("#btn-comment-"+attr_name+"-'.$row_id.'").show(); // if active show btn common
 
-                var countComment = '.(DefaultController::countComment2($controller_id,$form_id,$row_id,$attribute_name)).';
+                var countComment = '.(Tools::countComment2($controller_id,$form_id,$row_id,$attribute_name)).';
                 if(countComment > 0)
                 {
                     $("#btn-view-comment-"+attr_name+"-'.$row_id.'").show(); // if active show btn common
