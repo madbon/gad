@@ -36,6 +36,86 @@ use common\models\GadUpdateHistory;
  */
 class DefaultController extends ControllerAudit
 {
+    public function GetCitymunNameByCode($citymun_c,$province_c)
+    {
+        $query = Citymun::find()->where(['province_c' => $province_c, 'citymun_c' => $citymun_c])->one();
+
+        return !empty($query->citymun_m) ? $query->citymun_m : "";
+    }
+
+    public function GetRegionNameByCode($region_c)
+    {
+        $query = Region::find()->where(['region_c' => $region_c])->one();
+
+        return !empty($query->region_m) ? $query->region_m : "";
+    }
+
+    public function GetProvinceNameByCode($province_c)
+    {
+        $query = Province::find()->where(['province_c' => $province_c])->one();
+
+        return !empty($query->province_m) ? $query->province_m : "";
+    }
+
+    public function GetReportStatusOfLgu($status_code)
+    {
+        $filteredByRole = [];
+
+        if(Yii::$app->user->can("gad_province_permission")) // all lower level lgu under its province
+        {
+            $filteredByRole = ['province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C];
+        }
+        else if(Yii::$app->user->can("gad_region_permission"))
+        {
+            $filteredByRole = ['region_c' => Yii::$app->user->identity->userinfo->REGION_C];
+        }
+        else if(Yii::$app->user->can("gad_ppdo_permission"))
+        {
+            $filteredByRole = ['province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C];
+        }
+        else
+        {
+            $filteredByRole = [];
+        }
+
+        $query = GadRecord::find()
+        ->select(['id','status','citymun_c','province_c','region_c'])
+        ->where(['status' => $status_code,'is_archive' => 0])
+        ->andWhere(['report_type_id' => 1])
+        ->andFilterWhere($filteredByRole)
+        ->one();
+        // ->createCommand()->rawSql;
+        // print_r($query); exit;
+        
+        $lgu_city = !empty($query->citymun_c) ? $query->citymun_c : null;
+        $lgu_province = !empty($query->province_c) ? $query->province_c : null;
+        $lgu_region = !empty($query->region_c) ? $query->region_c : null;
+
+        if(Yii::$app->user->can("gad_province_permission")) // all lower level lgu under its province
+        {
+            return DefaultController::GetCitymunNameByCode($lgu_city,$lgu_province);
+        }
+        else if(Yii::$app->user->can("gad_region_permission"))
+        {
+            if(!empty($lgu_city))
+            {
+                return DefaultController::GetCitymunNameByCode($lgu_city,$lgu_province);
+            }
+            else
+            {
+                return DefaultController::GetProvinceNameByCode($lgu_province);
+            }
+        }
+        else if(Yii::$app->user->can("gad_ppdo_permission"))
+        { 
+            return DefaultController::GetCitymunNameByCode($lgu_city,$lgu_province);
+        }
+        else
+        {
+            return DefaultController::GetRegionNameByCode($lgu_region);
+        }
+    }
+
     public function GetAttachedArById($id)
     {
         $query = GadRecord::find()->where(['id' => $id])->one();
@@ -134,6 +214,12 @@ class DefaultController extends ControllerAudit
         $arrayRole = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id));
 
         return !empty($arrayRole[0]) ? $arrayRole[0] : "";
+    }
+
+    public function MyRoleName()
+    {
+        $arrayRole = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id));
+        return $arrayRole;
     }
 
     public function HasAction($param)

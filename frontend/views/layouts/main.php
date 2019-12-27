@@ -311,11 +311,11 @@ nav.navbar-default div.navbar-header a
             <!-- /.navbar-top-links -->
 
             <div class="navbar-default navbar-static-side" role="navigation" >
-                <div class="sidebar-collapse" >
+                <div class="sidebar-collapse">
                     <ul class="nav" id="side-menu" style="overflow-y: scroll; max-height: 600px;">
                         <?php if(Yii::$app->user->can('gad_dashboard_menu')){ ?>
                             <?= Yii::$app->controller->id == "dashboard" ? "<li class='activelink'>" : "<li>" ?>
-                                <?= Html::a('<i class="fa fa-dashboard fa-fw"></i> Dashboard',['/report/dashboard']); ?>
+                                <?= Html::a('<i class="fa fa-dashboard fa-fw"></i> Dashboard',['/report/dashboard/view']); ?>
                             </li>
                         <?php } ?>
                         

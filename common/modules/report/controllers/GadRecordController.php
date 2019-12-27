@@ -507,7 +507,8 @@ class GadRecordController extends ControllerAudit
                         $sup_record_tuc = Tools::GetRucById($model->supplemental_record_id);
                         $query_plan_data = GadPlanBudget::find()->where(['record_tuc' => $sup_record_tuc])->all();
                         $plan_ids = [];
-                        if($model->supplemental_record_id != $current_for_revision_record_id)
+
+                        if($model->supplemental_record_id != $current_for_revision_record_id) // if selecting different plan delete old data
                         {
                             if(GadPlanBudget::deleteAll(['record_tuc' => $ruc]))
                             {
@@ -541,7 +542,7 @@ class GadRecordController extends ControllerAudit
                                 }
                             }
                             else
-                            {
+                            { 
                                 throw new \yii\web\HttpException(403, 'Connection Error');
                             }
 
@@ -573,12 +574,13 @@ class GadRecordController extends ControllerAudit
                             }
                         }
                     }
-                    else // new
+                    else // supplemental
                     {
                         $modelUpdate->supplemental_record_id = $model->supplemental_record_id;
                         $modelUpdate->year = Tools::GetRecordYearById($model->supplemental_record_id); // get year of record by id inserted in supplemental field
                         $modelUpdate->has_additional_lgu_budget = $model->has_additional_lgu_budget;
                         $modelUpdate->for_revision_record_id = null;
+                        $modelUpdate->attached_ar_record_id = Tools::GetAttachedArById($model->supplemental_record_id);
 
                         if($model->has_additional_lgu_budget == "yes") // if has additional lgu budget
                         {
@@ -617,6 +619,7 @@ class GadRecordController extends ControllerAudit
                     {
                         $model->year = Tools::GetRecordYearById($model->supplemental_record_id);
                         $model->for_revision_record_id = null;
+                        $model->attached_ar_record_id = Tools::GetAttachedArById($model->supplemental_record_id);
 
                         if($model->has_additional_lgu_budget == "no")
                         {

@@ -48,16 +48,30 @@ class GadRecordSearch extends GadRecord
         $this->load($params);
 
         $filteredByRole = [];
+
+        $filteredByRoleArchive = [];
         
         if(Yii::$app->user->can("gad_lgu_permission"))
         {
             if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
             {
                 $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'GR.status'=>Tools::ViewStatus($this->report_type_id == 1 ? 'gad_lgu_huc' : 'ar_filtered_status_huc')];
+
+                $filteredByRoleArchive = [
+                    'GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,
+                    'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,
+                    'GR.status'=>array_merge(Tools::ViewStatus('gad_lgu_huc'),Tools::ViewStatus('ar_filtered_status_huc')),  
+                ];
             }
             else
             {
                 $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,'GR.status' => Tools::ViewStatus($this->report_type_id == 1 ? 'gad_lgu_non_huc' : 'ar_filtered_status_lgu_ccm')];
+
+                $filteredByRoleArchive = [
+                    'GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,
+                    'GR.citymun_c' => Yii::$app->user->identity->userinfo->CITYMUN_C,
+                    'GR.status' => array_merge(Tools::ViewStatus('gad_lgu_non_huc'),Tools::ViewStatus('ar_filtered_status_lgu_ccm'))
+                ];
             }
         }
         else if(Yii::$app->user->can("gad_field_permission"))
@@ -67,19 +81,40 @@ class GadRecordSearch extends GadRecord
         else if(Yii::$app->user->can("gad_province_permission")) // all lower level lgu under its province
         {
             $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.status'=>Tools::ViewStatus($this->report_type_id == 1 ? 'gad_province_dilg' : 'ar_filtered_status_province_dilg')];
+
+            $filteredByRoleArchive = [
+                'GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,
+                'GR.status'=> array_merge(Tools::ViewStatus('gad_province_dilg'),Tools::ViewStatus('ar_filtered_status_province_dilg'))
+            ];
         }
         else if(Yii::$app->user->can("gad_lgu_province_permission")) // all plan submitted by this province
         {
             $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,
             'GR.status' => Tools::ViewStatus($this->report_type_id == 1 ? 'gad_province_lgu' : 'ar_filtered_status_lgu_province'),'GR.office_c' => 2];
+
+            $filteredByRoleArchive = [
+                'GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,
+                'GR.status' => array_merge(Tools::ViewStatus('gad_province_lgu'),Tools::ViewStatus('ar_filtered_status_lgu_province')),
+                'GR.office_c' => 2
+            ];
         }
         else if(Yii::$app->user->can("gad_region_permission"))
         {
             $filteredByRole = ['GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,'GR.status' =>  Tools::ViewStatus($this->report_type_id == 1 ? 'gad_region_dilg' : 'ar_filtered_status_region')];
+
+            $filteredByRoleArchive = [
+                'GR.region_c' => Yii::$app->user->identity->userinfo->REGION_C,
+                'GR.status' => array_merge(Tools::ViewStatus('gad_region_dilg'),Tools::ViewStatus('ar_filtered_status_region'))    
+            ];
         }
         else if(Yii::$app->user->can("gad_ppdo_permission"))
         {
-            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.status'=> Tools::ViewStatus($this->report_type_id ? 'gad_ppdo' : 'ar_filtered_status_ppdo')];
+            $filteredByRole = ['GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,'GR.status'=> Tools::ViewStatus($this->report_type_id == 1 ? 'gad_ppdo' : 'ar_filtered_status_ppdo')];
+
+            $filteredByRoleArchive = [
+                'GR.province_c' => Yii::$app->user->identity->userinfo->PROVINCE_C,
+                'GR.status'=> array_merge(Tools::ViewStatus('gad_ppdo'),Tools::ViewStatus('ar_filtered_status_ppdo'))
+            ];
         }
         else
         {
@@ -116,7 +151,7 @@ class GadRecordSearch extends GadRecord
         ->leftJoin(['OFC' => 'tbloffice'], 'OFC.OFFICE_C = GR.office_c')
         ->leftJoin(['PT' => 'gad_plan_type'], 'PT.code = GR.plan_type_code')
         // ->leftJoin(['HIST' => 'gad_report_history'],'HIST.tuc = GR.tuc')
-        ->where(Yii::$app->controller->id == "archive" ? [] : $filteredByRole)
+        ->where(Yii::$app->controller->id == "archive" ? $filteredByRoleArchive : $filteredByRole)
         ->andWhere(['GR.is_archive' => Yii::$app->controller->id == "archive" ? 1 : 0])
         ->andFilterWhere(['LIKE','GR.tuc',$this->record_tuc])
         ->andFilterWhere(['GR.region_c' => $this->region_c])
@@ -124,7 +159,6 @@ class GadRecordSearch extends GadRecord
         ->andFilterWhere(['GR.citymun_c' => $this->citymun_c])
         ->andFilterWhere(['GR.status' => $this->status])
         ->andFilterWhere(['GR.year' => $this->year])
-        ->andFilterWhere(['GR.status' => $this->status])
         ->andFilterWhere(['GR.plan_type_code' => $this->plan_type_code])
         ->groupBy(['GR.id'])
         ->orderBy(['GR.id' => SORT_DESC]);
@@ -133,7 +167,7 @@ class GadRecordSearch extends GadRecord
         $dataProvider = new ActiveDataProvider([
                 'query' => $query,
                 'pagination' => [
-                    'pageSize' =>  10,
+                    // 'pageSize' => ,
                 ],
         ]);
 
