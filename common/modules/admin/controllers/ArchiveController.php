@@ -12,7 +12,7 @@ use common\models\GadStatus;
 use common\models\GadYear;
 use common\models\ArchiveHistory;
 use common\models\GadRecord;
-use common\modules\report\controllers\DefaultController;
+use common\modules\report\controllers\DefaultController as Tools;
 
 class ArchiveController extends \yii\web\Controller
 {
@@ -20,7 +20,9 @@ class ArchiveController extends \yii\web\Controller
     {
     	Yii::$app->session["activelink"] = NULL;
     	$searchModel = new GadRecordSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        
+
         $regionCondition = [];
         $provinceCondition = [];
         $citymunCondition = [];
@@ -34,18 +36,18 @@ class ArchiveController extends \yii\web\Controller
 
             if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
             {
-                $statusCondition = DefaultController::ViewStatus("gad_lgu_huc");
+                $statusCondition = array_merge(Tools::ViewStatus('gad_lgu_huc'),Tools::ViewStatus('ar_filtered_status_huc'));
             }
             else
             {
-                $statusCondition = DefaultController::ViewStatus("gad_lgu_non_huc");
+                $statusCondition = array_merge(Tools::ViewStatus('gad_lgu_non_huc'),Tools::ViewStatus('ar_filtered_status_lgu_ccm'));
             }
         }
         else if(Yii::$app->user->can("gad_region_permission")) // Regional Office
         {
             $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
             $provinceCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
-            $statusCondition = DefaultController::ViewStatus("gad_region_dilg");
+            $statusCondition = array_merge(Tools::ViewStatus('gad_region_dilg'),Tools::ViewStatus('ar_filtered_status_region'));
 
             if(!empty($searchModel->citymun_c) || !empty($searchModel->province_c))
             {
@@ -61,35 +63,36 @@ class ArchiveController extends \yii\web\Controller
             $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
             $provinceCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
             $citymunCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
-            $statusCondition = DefaultController::ViewStatus("gad_province_dilg");
+            $statusCondition = array_merge(Tools::ViewStatus('gad_province_dilg'),Tools::ViewStatus('ar_filtered_status_province_dilg'));
         } 
         else if(Yii::$app->user->can("gad_lgu_province_permission"))
         {
             $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
             $provinceCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
             $citymunCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
-            $statusCondition = DefaultController::ViewStatus("gad_province_dilg");
+            $statusCondition = array_merge(Tools::ViewStatus('gad_province_lgu'),Tools::ViewStatus('ar_filtered_status_lgu_province'));
         }
         else if(Yii::$app->user->can("gad_ppdo_permission"))
         {
             $regionCondition = ['region_c' => $searchModel->region_c = Yii::$app->user->identity->userinfo->REGION_C];
             $provinceCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
             $citymunCondition = ['province_c' => $searchModel->province_c  = Yii::$app->user->identity->userinfo->PROVINCE_C];
-            $statusCondition = DefaultController::ViewStatus("gad_ppdo");
+            $statusCondition = array_merge(Tools::ViewStatus('gad_ppdo'),Tools::ViewStatus('ar_filtered_status_ppdo'));
         }
         else if(Yii::$app->user->can("gad_central_permission") || Yii::$app->user->can("gad_admin_permission"))
         {
             $provinceCondition = ['region_c' => $searchModel->region_c];
             $citymunCondition = ['province_c' => $searchModel->province_c];
-            $statusCondition = DefaultController::ViewStatus("gad_all_status");
+            $statusCondition = array_merge(Tools::ViewStatus('ar_filtered_all_status'),Tools::ViewStatus("gad_all_status"));
         }
         else
         {
             $provinceCondition = ['region_c' => $searchModel->region_c];
             $citymunCondition = ['province_c' => $searchModel->province_c];
-            $statusCondition = DefaultController::ViewStatus("gad_all_status");
+            $statusCondition = array_merge(Tools::ViewStatus('ar_filtered_all_status'),Tools::ViewStatus("gad_all_status"));
         }
-
+        
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $region = ArrayHelper::map(Region::find()->where($regionCondition)->all(), 'region_c', 'region_m');
         $province = ArrayHelper::map(Province::find()->where($provinceCondition)->all(), 'province_c', 'province_m');

@@ -43,7 +43,7 @@ class GadArAttributedProgram extends \yii\db\ActiveRecord
             // [['lgu_program_project','ppa_attributed_program_id'],'required'],
             [['ppa_attributed_program_others', 'lgu_program_project', 'ar_ap_variance_remarks'], 'string'],
             [['total_annual_pro_cost', 'gad_attributed_pro_cost','hgdg_pimme'], 'number'],
-            [['date_created', 'date_updated'], 'safe'],
+            [['date_created', 'date_updated','plan_type_code'], 'safe'],
             [['record_tuc', 'controller_id'], 'string', 'max' => 150],
             [['time_created', 'time_updated'], 'string', 'max' => 10],
 

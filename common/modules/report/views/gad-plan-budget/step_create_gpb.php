@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use \common\modules\report\controllers\DefaultController;
+use \common\modules\report\controllers\DefaultController as Tools;
 /* @var $this yii\web\View */
 /* @var $model common\models\GadRecord */
 
@@ -9,7 +9,7 @@ $this->title = 'Annual GAD Plan and Budget';
 // $this->params['breadcrumbs'][] = ['label' => ' Primary Information', 'url' => ['gad-record/create', 'ruc' => $ruc,'onstep' => $onstep], ['class' => 'btn btn-success']];
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
-<h3 style="text-align: center; font-weight: bold; padding-top: 0; margin-top: 0;">GAD Plan and Budget FY <?= DefaultController::GetPlanYear($ruc) ?></h3>
+<h3 style="text-align: center; font-weight: bold; padding-top: 0; margin-top: 0;">GAD Plan and Budget FY <?= Tools::GetPlanYear($ruc) ?> <?= Tools::DispPlanTypeByRuc($ruc) ?></h3>
 <div class="gad-record-create">
 <?php if(Yii::$app->user->can("gad_lgu_province_permission")){ ?>
     <ul class="nav nav-tabs">
@@ -25,7 +25,7 @@ $this->title = 'Annual GAD Plan and Budget';
                     'url' => '/report/gad-record/create'
                 ]);
                 echo $this->render('/common_tools/tabs/tab_encode',[
-                    'tabTitle' => 'GAD Plan and Budget FY '.DefaultController::GetPlanYear($ruc),
+                    'tabTitle' => 'GAD Plan and Budget FY '.Tools::GetPlanYear($ruc),
                     'liClass' => 'active',
                     'ruc' => $ruc,
                     'onstep' => $onstep,
@@ -53,7 +53,7 @@ $this->title = 'Annual GAD Plan and Budget';
                     'url' => '/report/gad-record/create'
                 ]);
                 echo $this->render('/common_tools/tabs/tab_encode',[
-                    'tabTitle' => 'GAD Plan and Budget FY '.DefaultController::GetPlanYear($ruc),
+                    'tabTitle' => 'GAD Plan and Budget FY '.Tools::GetPlanYear($ruc),
                     'liClass' => 'active',
                     'ruc' => $ruc,
                     'onstep' => $onstep,
@@ -77,7 +77,7 @@ $this->title = 'Annual GAD Plan and Budget';
                     'url' => '/report/gad-record/create'
                 ]);
                 echo $this->render('/common_tools/tabs/tab_encode',[
-                    'tabTitle' => 'GAD Plan and Budget FY '.DefaultController::GetPlanYear($ruc),
+                    'tabTitle' => 'GAD Plan and Budget FY '.Tools::GetPlanYear($ruc),
                     'liClass' => 'active',
                     'ruc' => $ruc,
                     'onstep' => $onstep,

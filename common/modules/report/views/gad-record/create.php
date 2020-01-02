@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use common\modules\report\controllers\DefaultController;
+use common\modules\report\controllers\DefaultController as Tools;
 /* @var $this yii\web\View */
 /* @var $model common\models\GadRecord */
 
@@ -15,7 +15,7 @@ else if($tocreate == "accomp_report")
 }
 else
 {
-	throw new \yii\web\HttpException(404, 'The requested Item could not be found.');
+	throw new \yii\web\HttpException(404, 'The requested page could not be found.');
 }
 
 // $this->params['breadcrumbs'][] = ['label' => 'List of GAD Plan and Budget', 'url' => ['index']];
@@ -24,16 +24,16 @@ $this->params['breadcrumbs'][] = $this->title;
 <style>
 	
 </style>
-<?php if($tocreate == "gad_plan_budget"){ ?>
+<?php if($tocreate == "gad_plan_budget"){  ?>
 	<h3 style="text-align: center; font-weight: bold; padding-top: 0; margin-top: 0;">GAD Plan and Budget
 		<?php if($ruc != "empty"){ ?>
-			 FY <?= DefaultController::GetPlanYear($ruc) ?>
+			 FY <?= Tools::GetPlanYear($ruc) ?> <?= Tools::DispPlanTypeByRuc($ruc) ?>
 		<?php } ?>
 	</h3>
 <?php }else{ ?>
 	<h3 style="text-align: center; font-weight: bold; padding-top: 0; margin-top: 0;">GAD Accomplishment Report 
 		<?php if($ruc != "empty"){ ?>
-			 FY <?= DefaultController::GetPlanYear($ruc) ?>
+			 FY <?= Tools::GetPlanYear($ruc) ?>
 		<?php } ?>
 	</h3>
 <?php } ?>
@@ -51,7 +51,9 @@ $this->params['breadcrumbs'][] = $this->title;
 			  			'onstep' => $onstep,
 			  			'tocreate' => $tocreate,
 			  			'linkClass' => '',
-			  			'url' => '/report/gad-plan-budget/index'
+			  			'url' => '/report/gad-plan-budget/index',
+			  			'plan_type' => $plan_type,
+			  			'query_all_existing_plan' => $query_all_existing_plan
 			  		]);
 			  	?>
 
@@ -69,7 +71,8 @@ $this->params['breadcrumbs'][] = $this->title;
 			  			'onstep' => $onstep,
 			  			'tocreate' => $tocreate,
 			  			'linkClass' => '',
-			  			'url' => '/report/gad-accomplishment-report/index'
+			  			'url' => '/report/gad-accomplishment-report/index',
+			  			'query_all_existing_plan' => $query_all_existing_plan
 			  		]);
 			  	?>
 			  		<?php if(Yii::$app->user->can("gad_lgu_permission")){ ?>
@@ -86,7 +89,9 @@ $this->params['breadcrumbs'][] = $this->title;
 				  			'onstep' => $onstep,
 				  			'tocreate' => $tocreate,
 				  			'linkClass' => 'disabled',
-				  			'url' => ''
+				  			'plan_type' => $plan_type,
+				  			'url' => '',
+				  			'query_all_existing_plan' => $query_all_existing_plan
 				  		]);
 				  	?>
 				  	<?php if(Yii::$app->user->can("gad_lgu_permission")){ ?>
@@ -106,7 +111,8 @@ $this->params['breadcrumbs'][] = $this->title;
 				  			'onstep' => $onstep,
 				  			'tocreate' => $tocreate,
 				  			'linkClass' => 'disabled',
-				  			'url' => ''
+				  			'url' => '',
+				  			'query_all_existing_plan' => $query_all_existing_plan,
 				  		]);
 				  	?>
 				  	<?php if(Yii::$app->user->can("gad_lgu_permission")){ ?>
@@ -131,6 +137,9 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'model' => $model,
 		        'onstep' => $onstep,
 		        'create_plan_status' => $create_plan_status,
+		        'plan_type' => $plan_type,
+		        'tocreate' => $tocreate,
+		        'query_all_existing_plan' =>  $query_all_existing_plan,
 		    ]) ?>
 	    </div>
 	</div>

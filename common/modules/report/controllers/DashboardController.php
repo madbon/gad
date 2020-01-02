@@ -2,6 +2,7 @@
 
 namespace common\modules\report\controllers;
 use common\models\GadStatus;
+use common\models\GadStatusAssignment;
 use common\models\GadRecord;
 use Yii;
 use niksko12\auditlogs\classes\ControllerAudit;
@@ -118,6 +119,71 @@ class DashboardController extends ControllerAudit
                 'category_status' => $category_status,
                 'product_status' => $product_status,
                 'queryTable' => $queryTable
+            ]
+        );
+    }
+
+    public function actionView()
+    {
+        $role = [];
+        $rbac_role = [];
+        
+        if(Yii::$app->user->can("gad_lgu_permission"))
+        {
+            if(Yii::$app->user->identity->userinfo->citymun->lgu_type == "HUC" || Yii::$app->user->identity->userinfo->citymun->lgu_type == "ICC" || Yii::$app->user->identity->userinfo->citymun->citymun_m == "PATEROS")
+            {
+                $rbac_role = ["gad_lgu"];
+                $role = ["gad_lgu_huc"];
+            }
+            else
+            {
+                $rbac_role = ["gad_lgu"];
+                $role = ["gad_lgu_non_huc"];
+            }
+        }
+        else if(Yii::$app->user->can("gad_field_permission"))
+        {
+            $rbac_role = ["gad_lgu"];
+            $role = ["gad_lgu_non_huc","gad_lgu_huc"];
+        }
+        else if(Yii::$app->user->can("gad_province_permission")) // all lower level lgu under its province
+        {
+            $rbac_role = ["gad_lgu_province"];
+            $role = ["gad_province_dilg"];
+        }
+        else if(Yii::$app->user->can("gad_lgu_province_permission")) // all plan submitted by this province
+        {
+            $rbac_role = ["gad_lgu_province"];
+            $role = ["gad_province_lgu"];
+        }
+        else if(Yii::$app->user->can("gad_region_permission"))
+        {
+            $rbac_role = ["gad_region"];
+            $role = ["gad_region_dilg"];
+        }
+        else if(Yii::$app->user->can("gad_ppdo_permission"))
+        {
+            $rbac_role = ["gad_ppdo"];
+            $role = ["gad_ppdo"];
+        }
+        else
+        {
+            $rbac_role = [""];
+            $role = ["gad_all_status"];
+        }
+
+        $query = GadStatusAssignment::find()
+        ->select(['status'])
+        ->where(['role' => $role])
+        ->andFilterWhere(['rbac_role' => $rbac_role])
+        ->one();
+        // ->createCommand()->rawSql;
+        // print_r($query); exit;
+
+        $status = !empty($query->status) ? $query->status : "";
+        return $this->render('view',
+            [
+                'status' => $status,
             ]
         );
     }

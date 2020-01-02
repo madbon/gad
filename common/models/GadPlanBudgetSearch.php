@@ -69,7 +69,8 @@ class GadPlanBudgetSearch extends GadPlanBudget
             'PB.focused_id',
             'PB.gi_sup_data as sup_data',
             'REC.status as record_status',
-            'PB.source as source_value'
+            'PB.source as source_value',
+            'PB.old_plan_id'
         ])
         ->from('gad_plan_budget PB')
         // ->leftJoin(['CF' => 'gad_ppa_client_focused'], 'CF.id = PB.ppa_focused_id')

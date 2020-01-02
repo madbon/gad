@@ -9,6 +9,7 @@ use yii\helpers\ArrayHelper;
 use kartik\typeahead\Typeahead;
 use kartik\select2\Select2;
 use common\modules\report\controllers\DefaultController as Tools;
+use common\modules\report\controllers\GadPlanBudgetController as PlanActions;
 use richardfan\widget\JSRegister;
 use yii\helpers\Url;
 /* @var $this yii\web\View */
@@ -55,7 +56,6 @@ $this->title = "Annual GAD Plan and Budget";
                                         echo '<a class="btn btn-success btn-sm"><span class="glyphicon glyphicon-ok"></span> &nbsp;Reached the 5%</a>';
                                     }
                                 ?>
-                                
                             <?php } ?>
                             
                             <?php if(!empty($recordOne_attached_ar_record_id)){ ?>
@@ -84,40 +84,142 @@ $this->title = "Annual GAD Plan and Budget";
                         <tr>
                             <td style="width:1px;">REGION </td>
                             <td> : <?= $recRegion ?></td>
-                            <td style="width: 180px;">TOTAL LGU BUDGET</td>
-                            <td> : Php <?= number_format($recTotalLguBudget,2) ?></td>
-                        </tr>
-                        <tr>
-                            <td>PROVINCE </td>
-                            <td> : <?= $recProvince ?></td>
-                            <td>TOTAL GAD BUDGET</td>
+                            <td style="width: 180px;">TOTAL LGU BUDGET
+                                <?php
+                                    // if(in_array($qryReportStatus,Tools::Can("edit_plan")))
+                                    // {
+                                    //     $url_edit_record = '@web/report/gad-record/edit-form?ruc='.$ruc.'&onstep='.$onstep.'&tocreate='.$tocreate;
+                                    //         echo Html::button('<span class="fa fa-edit"></span> Edit ', ['value'=>Url::to($url_edit_record),
+                                    // 'class' => 'btn btn-primary btn-sm modalButton ']);
+                                    // }
+                                ?>
+                            </td>
+
                             <?php
-                                if($grand_total_pb < $fivePercentTotalLguBudget)
+                                if(Tools::GetPlanTypeCodeByRuc($ruc) == 1)
                                 {
-                                    echo "<td style='color:red;'> : Php ".number_format($grand_total_pb,2)."</td>";
+                                    echo "<td> : Php ".number_format($recTotalLguBudget,2)."</td>";
                                 }
                                 else
                                 {
-                                    if($grand_total_pb > $recTotalLguBudget)
+                                    if(Tools::GetPlanTypeCodeByRuc($ruc) == 2)
+                                    {
+                                        if(Tools::GetHasAdditionalLguBudgetByRuc($ruc) == "yes")
+                                        {
+                                            echo "<td> : Php ".number_format($recTotalLguBudget,2)." <label class='label label-info'>Additional LGU Budget</label></td>";
+                                        }
+                                        else
+                                        {
+                                            if(Tools::GetHasAdditionalLguBudgetByRuc($ruc) == "no")
+                                            {
+                                                echo "<td> : Php ".number_format($recTotalLguBudget,2)." <label class='label label-info'>Old LGU Budget</label></td>";
+                                            }
+                                            else
+                                            {
+                                                echo "<td> : Php ".number_format($recTotalLguBudget,2)." </td>";
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        echo "<td> : Php ".number_format($recTotalLguBudget,2)."</td>";
+                                    }
+                                }
+                            ?>
+                        </tr>
+                        <tr>
+                            <td>PROVINCE 
+                                <br/><br/>
+                                <?= !empty($recCitymun) ? "CITY/MUNICIPALITY" : ""; ?>    
+                            </td>
+                            <td> : <?= $recProvince ?>
+                                <br/><br/>
+                                 : <?= !empty($recCitymun) ? $recCitymun : ""; ?>
+                            </td>
+                            <td>TOTAL GAD BUDGET</td>
+                            <?php
+                                if(Tools::GetPlanTypeCodeByRuc($ruc) == 1) // new plan
+                                {
+                                    if($grand_total_pb < $fivePercentTotalLguBudget)
                                     {
                                         echo "<td style='color:red;'> : Php ".number_format($grand_total_pb,2)."</td>";
                                     }
                                     else
                                     {
-                                        echo "<td style='color:blue;'> : Php ".number_format($grand_total_pb,2)."</td>";
+                                        if($grand_total_pb > $recTotalLguBudget)
+                                        {
+                                            echo "<td style='color:red;'> : Php ".number_format($grand_total_pb,2)."</td>";
+                                        }
+                                        else
+                                        {
+                                            echo "<td style='color:blue;'> : Php ".number_format($grand_total_pb,2)."</td>";
+                                        }
                                     }
-                                    
+                                }
+                                else
+                                {
+                                    if(Tools::GetPlanTypeCodeByRuc($ruc) == 2) // supplemental plan
+                                    {
+                                        if(Tools::GetHasAdditionalLguBudgetByRuc($ruc) == "yes") // if has additional LGU budget
+                                        {
+                                            if($grand_total_pb < $fivePercentTotalLguBudget)
+                                            {
+                                                echo "<td style='color:red;'> : Php ".number_format($grand_total_pb,2)." <label class='label label-info'>Supplemental GAD Budget</label></td>";
+                                            }
+                                            else
+                                            {
+                                                if($grand_total_pb > $recTotalLguBudget)
+                                                {
+                                                    echo "<td style='color:red;'> : Php ".number_format($grand_total_pb,2)." <label class='label label-info'>Supplemental GAD Budget</label></td>";
+                                                }
+                                                else
+                                                {
+                                                    echo "<td style='color:blue;'> : Php ".number_format($grand_total_pb,2)." <label class='label label-info'>Supplemental GAD Budget</label></td>";
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if(Tools::GetHasAdditionalLguBudgetByRuc($ruc) == "no") // if no additional LGU budget
+                                            {
+                                                if($grand_total_pb < $fivePercentTotalLguBudget)
+                                                {
+                                                    echo "<td style='color:red;'> : Php ".number_format($grand_total_pb,2)." <label class='label label-info'>Old GAD Budget</label>";
+                                                    echo "<br/><br/><p> : Php ".(number_format(PlanActions::GetGadBudgetByRuc($ruc),2))." <label class='label label-info'>Supplemental GAD Budget</label></p>";
+                                                    echo "</td>";
+                                                }
+                                                else
+                                                {
+                                                    if($grand_total_pb > $recTotalLguBudget)
+                                                    {
+                                                        echo "<td style='color:red;'> : Php ".number_format($grand_total_pb,2)." <label class='label label-info'>Old GAD Budget</label>";
+                                                        echo "<br/><br/><p> : Php ".(number_format(PlanActions::GetGadBudgetByRuc($ruc),2))." <label class='label label-info'>Supplemental GAD Budget</label></p>";
+                                                        echo "</td>";
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "<td style='color:blue;'> : Php ".number_format($grand_total_pb,2)." <label class='label label-info'>Old GAD Budget</label>";
+                                                        echo "<br/><br/><p> : Php ".(number_format(PlanActions::GetGadBudgetByRuc($ruc),2))." <label class='label label-info'>Supplemental GAD Budget</label></p>";
+                                                        echo "</td>";
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+
+                                            }
+                                        }
+                                    }
+                                    else // for Revision
+                                    {
+                                        echo "<td style='color:blue;'> : Php ".number_format($grand_total_pb,2);
+                                        echo "</td>";
+                                    }
                                 }
                             ?>
-                            
                         </tr>
-                        <?php if(!empty($recCitymun)) { ?>
-                            <tr>
-                                <td>CITY/MUNICIPALITY </td>
-                                <td> : <?= $recCitymun ?></td>
-                                <td colspan="2"></td>
-                            </tr>
-                        <?php } ?>
+
+                        
                     </tbody>
                 </table>
             </div>
@@ -203,55 +305,59 @@ $this->title = "Annual GAD Plan and Budget";
                     <?php
                         $available_actions = 0;
                     ?>
-                    <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-                    
-                    <?php if(in_array($qryReportStatus,Tools::Can("encode_plan"))){ 
-                            $available_actions = 1;
-                        ?>
-                        <li>
-                            <a href="#" class="" id="btn-encode">
-                                <span class="glyphicon glyphicon-pencil" style="color: #7e57b1;"></span> Input Form
-                            </a>
-                        </li>
-                        <li>
-                            <?php 
-                                echo Html::a('<span class="glyphicon glyphicon-cloud-upload" style="color:#5cb85c;"></span> Upload Plan & Budget (excel)',['/upload/plan/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '']);
-                            ?>
-                        </li>
-                        <li>
-                            <?php 
-                                echo Html::a('<span class="glyphicon glyphicon-cloud-upload" style="color:#5cb85c;"></span> Upload Attrbiuted Programs (excel)',['/upload/plan-attributed/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '']);
-                            ?>
-                        </li>
-                        <li>
-                            <?php 
-                                echo Html::a('<span class="glyphicon glyphicon-trash" style="color:red;"></span>  Delete All Rows (Client/Org.focused)',['delete-all','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '','data' => [
-                                                      'confirm' => 'Are you sure you want to delete all rows of client/org. focused?',
-                                                      'method' => 'post']]);
-                            ?>
-                        </li>
-                        <li>
-                            <?php 
-                                echo Html::a('<span class="glyphicon glyphicon-trash" style="color:red;"></span>  Delete All Rows (Attributed Program)',['delete-all-attrib','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '','data' => [
-                                                      'confirm' => 'Are you sure you want to delete all rows of attributed program?',
-                                                      'method' => 'post']]);
-                            ?>
-                        </li>
-                    <?php }else{ 
-                            $available_actions = 0;
-                        ?>
-                        
+                    <?php if(Tools::GetPlanTypeCodeByRuc($ruc) != 3){ ?>
+                        <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
+
+                            <?php if(in_array($qryReportStatus,Tools::Can("encode_plan"))){ 
+                                    $available_actions = 1;
+                                ?>
+                                <li>
+                                    <a href="#" class="" id="btn-encode">
+                                        <span class="glyphicon glyphicon-pencil" style="color: #7e57b1;"></span> Input Form
+                                    </a>
+                                </li>
+                                <li>
+                                    <?php 
+                                        echo Html::a('<span class="glyphicon glyphicon-cloud-upload" style="color:#5cb85c;"></span> Upload Plan & Budget (excel)',['/upload/plan/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '']);
+                                    ?>
+                                </li>
+                                <li>
+                                    <?php 
+                                        echo Html::a('<span class="glyphicon glyphicon-cloud-upload" style="color:#5cb85c;"></span> Upload Attrbiuted Programs (excel)',['/upload/plan-attributed/index','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '']);
+                                    ?>
+                                </li>
+                                <li>
+                                    <?php 
+                                        echo Html::a('<span class="glyphicon glyphicon-trash" style="color:red;"></span>  Delete All Rows (Client/Org.focused)',['delete-all','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '','data' => [
+                                                              'confirm' => 'Are you sure you want to delete all rows of client/org. focused?',
+                                                              'method' => 'post']]);
+                                    ?>
+                                </li>
+                                <li>
+                                    <?php 
+                                        echo Html::a('<span class="glyphicon glyphicon-trash" style="color:red;"></span>  Delete All Rows (Attributed Program)',['delete-all-attrib','ruc' => $ruc, 'onstep' => $onstep, 'tocreate' => $tocreate],['class'=>'','style' => '','data' => [
+                                                              'confirm' => 'Are you sure you want to delete all rows of attributed program?',
+                                                              'method' => 'post']]);
+                                    ?>
+                                </li>
+                            <?php }else{ 
+                                    $available_actions = 0;
+                                ?>
+                        <?php } ?>
                     <?php } ?>
                 <?php } ?>
-
                 <?php 
-                    if(in_array($qryReportStatus, Tools::Can("create_general_observation")))
+                    if(Tools::HasAction("create_general_observation"))
                     {
                         $available_actions = 1;
                         echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create General Observation/Recommendation',['/cms/document/form-view', 'category_id' => 7, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
                         echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Certificate of Review and Endorsement',['/cms/document/form-view', 'category_id' => 9, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
                     }
-                    else if(in_array($qryReportStatus, Tools::Can("create_letter_review_endorsement_ppdo")))
+                    else {
+                        $available_actions = 0;
+                    }
+
+                    if(Tools::HasAction("create_letter_review_endorsement_ppdo"))
                     {
                         $available_actions = 1;
                         echo "<li>".Html::a('<span class="glyphicon glyphicon-pencil"></span> Create Letter of Review and Endorsement from the Provincial Planning and Coordinating Office ',['/cms/document/form-view', 'category_id' => 8, 'ruc' => $ruc,'onstep' => $onstep, 'tocreate' => $tocreate], ['class' => '','style' => ''])."</li>";
@@ -318,47 +424,43 @@ $this->title = "Annual GAD Plan and Budget";
         ");
     ?>
             <!-- /////////////////////////////////////////////////////////////// Remarks Form End -->
-    <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-       <?php if(in_array($qryReportStatus,Tools::Can("encode_plan"))){ ?>
-            <?php if(Yii::$app->session["encode_gender_pb"] == "open"){  ?>
-            <div class="cust-panel input-form" id="inputFormPlan">
-            <?php }else{ ?>
-            <div class="cust-panel input-form" id="inputFormPlan" style="display: none;">
-            <?php } ?>
-                <div class="cust-panel-header gad-color">
-                </div>
-                <div class="cust-panel-body" style="background-image: linear-gradient(141deg, #6437a1 0%, #796692 51%, #a579dc 75%)">
-                    <div class="cust-panel-title">
-                        <p class="sub-title" style="color: white !important;"><span class="glyphicon glyphicon-pencil"></span> Encode Plan</p>
+    <?php if(Tools::GetPlanTypeCodeByRuc($ruc) != 3){ ?>
+        <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
+           <?php if(in_array($qryReportStatus,Tools::Can("encode_plan"))){ ?>
+                <?php if(Yii::$app->session["encode_gender_pb"] == "open"){  ?>
+                <div class="cust-panel input-form" id="inputFormPlan">
+                <?php }else{ ?>
+                <div class="cust-panel input-form" id="inputFormPlan" style="display: none;">
+                <?php } ?>
+                    <div class="cust-panel-header gad-color">
                     </div>
-                    <div class="cust-panel-inner-body">
-                        <?php 
-                            echo $this->render('client_focused_form',[
-                                'opt_cli_focused' => $opt_cli_focused,
-                                'ruc' => $ruc,
-                                'select_GadFocused' => $select_GadFocused,
-                                'select_GadInnerCategory' => $select_GadInnerCategory,
-                                'onstep' => $onstep,
-                                'tocreate' => $tocreate,
-                                'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
-                                'model' => $model,
-                                'recTotalLguBudget' => $recTotalLguBudget,
-                                'select_ActivityCategory' => $select_ActivityCategory,
-                                'grand_total_pb' => $grand_total_pb,
-                            ]);
-                        ?>
+                    <div class="cust-panel-body" style="background-image: linear-gradient(141deg, #6437a1 0%, #796692 51%, #a579dc 75%)">
+                        <div class="cust-panel-title">
+                            <p class="sub-title" style="color: white !important;"><span class="glyphicon glyphicon-pencil"></span> Encode Plan</p>
+                        </div>
+                        <div class="cust-panel-inner-body">
+                            <?php 
+                                echo $this->render('client_focused_form',[
+                                    'opt_cli_focused' => $opt_cli_focused,
+                                    'ruc' => $ruc,
+                                    'select_GadFocused' => $select_GadFocused,
+                                    'select_GadInnerCategory' => $select_GadInnerCategory,
+                                    'onstep' => $onstep,
+                                    'tocreate' => $tocreate,
+                                    'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
+                                    'model' => $model,
+                                    'recTotalLguBudget' => $recTotalLguBudget,
+                                    'select_ActivityCategory' => $select_ActivityCategory,
+                                    'grand_total_pb' => $grand_total_pb,
+                                ]);
+                            ?>
+                        </div>
                     </div>
                 </div>
-            </div>
-        <?php  } ?>
+            <?php  } ?>
+        <?php } ?>
     <?php } ?>
 
-    <?php
-        // echo $this->render('_search',[
-        //     'model'=>$model,
-        //     'select_GadFocused' => $select_GadFocused,
-        // ]);
-    ?>
     <br/>
 
     <div class="cust-panel tabular-report">
@@ -491,13 +593,17 @@ $this->title = "Annual GAD Plan and Budget";
                                     echo $this->render('cliorg_tabular_form',[
                                         'plan' => $plan,
                                         'countRow' => $countRow,
+                                        'ruc' => $ruc,
                                     ]);
                                 ?>
                                 <td style="border-bottom: none;">
                                     <?php
                                         if(in_array($qryReportStatus,Tools::Can("delete_row_plan")))
                                         {
-                                            echo "<button class='btn btn-danger btn-xs btn-block' title='Delete' id='delete_plan_".$plan['id']."'><span class='glyphicon glyphicon-trash'></span> Delete row</button>";
+                                            if(Tools::GetPlanTypeCodeByRuc($ruc) != 3)
+                                            {
+                                                echo "<button class='btn btn-danger btn-xs btn-block' title='Delete' id='delete_plan_".$plan['id']."'><span class='glyphicon glyphicon-trash'></span> Delete row</button>";
+                                            }
                                         }
                                     ?>
                                     <?php JSRegister::begin() ?>
@@ -530,24 +636,25 @@ $this->title = "Annual GAD Plan and Budget";
                                     
 
                                     <?php
+                                        $find_plan_file_id = Tools::GetPlanTypeCodeByRuc($ruc) == 3 ? "old_plan_id" : "id";
                                         if(in_array($qryReportStatus,Tools::Can("plan_upload_files_row")))
                                         {
-                                            $t = '@web/report/gad-plan-budget/update?id='.$plan['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
+                                            $t = '@web/report/gad-plan-budget/update?id='.$plan[$find_plan_file_id]."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate;
                                             if(in_array($qryReportStatus,Tools::Can("encode_plan"))){
                                                 echo Html::button('<span class="glyphicon glyphicon-paperclip"></span> Attach', ['value'=>Url::to($t),
                                                 'class' => 'btn btn-default btn-xs modalButton btn-block','title' => 'Upload File(s)',]);
                                             }
                                         }
 
-                                        if(Tools::GetUploadStatus($plan["id"],"GadPlanBudget") == 1)
+                                        if(Tools::GetUploadStatus($plan[$find_plan_file_id],"GadPlanBudget") == 1)
                                         { // if has uploaded files show button to view file
-                                            $t = '@web/report/gad-plan-budget/view?row_id='.$plan['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadPlanBudget";
-                                            echo Html::button('<span class="glyphicon glyphicon-file"></span> ', ['value'=>Url::to($t),
-                                            'class' => 'btn btn-info btn-xs modalButton','title' => 'View Uploaded File(s)']);
+                                            $t = '@web/report/gad-plan-budget/view?row_id='.$plan[$find_plan_file_id]."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadPlanBudget"."&file_cat=8";
+                                            echo Html::button('<span class="glyphicon glyphicon-file"></span> View file', ['value'=>Url::to($t),
+                                            'class' => 'btn btn-info btn-xs modalButton btn-block','title' => 'View Uploaded File(s)']);
                                         }
                                         else
                                         { // else no uploaded file yet
-                                            if(Tools::PlanUploadStatus($plan['id']) == 0)
+                                            if(Tools::PlanUploadStatus($plan[$find_plan_file_id]) == 0)
                                             { // the upload_status = 0 means no uploaded file or not upload later
                                                 // echo "<button id='upload_later_".$plan['id']."' class='btn btn-default btn-xs'>Upload Later</button>";
                                                 if(Yii::$app->user->can("gad_upload_later"))
@@ -556,7 +663,7 @@ $this->title = "Annual GAD Plan and Budget";
                                                     echo "<span style='font-size:10px; color:red;'><i class='fa fa-question-circle'></i> No file(s) attached</span> <br/>";
                                                 }
                                             }
-                                            else if(Tools::PlanUploadStatus($plan['id']) == 1)
+                                            else if(Tools::PlanUploadStatus($plan[$find_plan_file_id]) == 1)
                                             {
                                                 // echo "<span class='label label-warning btn-block' id='label_nufplan_".$plan['id']."'>Upload later </span>";
                                             }
@@ -660,33 +767,35 @@ $this->title = "Annual GAD Plan and Budget";
                         <tr class="attributed_program_title" style="border-top: none;">
                             <td colspan="5">
                                 <b>ATTRIBUTED PROGRAMS</b> 
-                                <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-                                    <?php if(in_array($qryReportStatus,Tools::Can("encode_plan"))){ ?>
-                                        <button id="btn_encode_attributed_program" type="button" class="btn btn-success btn-sm">
-                                            <span class="glyphicon glyphicon-pencil"></span>
-                                            Encode
-                                        </button>
-                                        <?php
-                                            $this->registerJs("
-                                                $('#btn_encode_attributed_program').click(function(){
-                                                    var trigger = 'open';
-                                                    var form_type = 'attribute';
-                                                    var report_type = 'pb';
-                                                    $.ajax({
-                                                        url: '".$urlSetSession."',
-                                                        data: { 
-                                                                trigger:trigger,
-                                                                form_type:form_type,
-                                                                report_type:report_type
-                                                                }
-                                                        
-                                                        }).done(function(result) {
+                                <?php if(Tools::GetPlanTypeCodeByRuc($ruc) != 3){ ?>
+                                    <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
+                                        <?php if(in_array($qryReportStatus,Tools::Can("encode_plan"))){ ?>
+                                            <button id="btn_encode_attributed_program" type="button" class="btn btn-success btn-sm">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                                Encode
+                                            </button>
+                                            <?php
+                                                $this->registerJs("
+                                                    $('#btn_encode_attributed_program').click(function(){
+                                                        var trigger = 'open';
+                                                        var form_type = 'attribute';
+                                                        var report_type = 'pb';
+                                                        $.ajax({
+                                                            url: '".$urlSetSession."',
+                                                            data: { 
+                                                                    trigger:trigger,
+                                                                    form_type:form_type,
+                                                                    report_type:report_type
+                                                                    }
                                                             
+                                                            }).done(function(result) {
+                                                                
+                                                        });
+                                                        $('.attributed_program_form').slideDown(300);
                                                     });
-                                                    $('.attributed_program_form').slideDown(300);
-                                                });
-                                            ");
-                                        ?>
+                                                ");
+                                            ?>
+                                        <?php } ?>
                                     <?php } ?>
                                 <?php } ?>
                             </td>
@@ -694,27 +803,29 @@ $this->title = "Annual GAD Plan and Budget";
                             <td style="border-top: none;"></td>
                             <td style="border-top: none; border-bottom: none;"></td>
                         </tr>
-                        <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
-                            <?php if(in_array($qryReportStatus,Tools::Can("encode_plan"))){ ?>
-                                <?php if(Yii::$app->session["encode_attribute_pb"] == "open"){ ?>
-                                    <tr class="attributed_program_form">
-                                <?php }else{ ?>
-                                    <tr class="attributed_program_form" style="display: none;">
+                        <?php if(Tools::GetPlanTypeCodeByRuc($ruc) != 3){ ?>
+                            <?php if(Yii::$app->user->can("gad_create_planbudget")){ ?>
+                                <?php if(in_array($qryReportStatus,Tools::Can("encode_plan"))){ ?>
+                                    <?php if(Yii::$app->session["encode_attribute_pb"] == "open"){ ?>
+                                        <tr class="attributed_program_form">
+                                    <?php }else{ ?>
+                                        <tr class="attributed_program_form" style="display: none;">
+                                    <?php } ?>
+                                        <td colspan="10" style="background-color: #1fc8db; background-image: linear-gradient(141deg, #6437a1 0%, #796692 51%, #a579dc 75%)">
+                                            <?php
+                                                echo $this->render('attributed_program_form', [
+                                                    'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
+                                                    'ruc' => $ruc,
+                                                    'onstep' => $onstep,
+                                                    'tocreate' => $tocreate,
+                                                    'upload' => $upload,
+                                                    'folder_type' => $folder_type,
+                                                    'select_Checklist' => $select_Checklist,
+                                                ]);
+                                            ?>
+                                        </td>
+                                    </tr>
                                 <?php } ?>
-                                    <td colspan="10" style="background-color: #1fc8db; background-image: linear-gradient(141deg, #6437a1 0%, #796692 51%, #a579dc 75%)">
-                                        <?php
-                                            echo $this->render('attributed_program_form', [
-                                                'select_PpaAttributedProgram' => $select_PpaAttributedProgram,
-                                                'ruc' => $ruc,
-                                                'onstep' => $onstep,
-                                                'tocreate' => $tocreate,
-                                                'upload' => $upload,
-                                                'folder_type' => $folder_type,
-                                                'select_Checklist' => $select_Checklist,
-                                            ]);
-                                        ?>
-                                    </td>
-                                </tr>
                             <?php } ?>
                         <?php } ?>
                         <tr class="attributed_program_thead">
@@ -816,7 +927,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; padding-top:13px;',
                                         'enableComment' => Yii::$app->user->can("gad_comment_hgdg_score") ? 'true' : 'false',
-                                        'enableEdit' => in_array($qryReportStatus,Tools::Can("edit_plan")) ? "true" : "false",
+                                        'enableEdit' => Tools::GetPlanTypeCodeByRuc($ruc) == 3 ? "false" : (in_array($qryReportStatus,Tools::Can("edit_plan")) ? "true" : "false"),
                                         'enableViewComment' => 'true',
                                         'countRow' => $countRowAttribute,
                                         'columnNumber' => 2,
@@ -837,7 +948,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:right;',
                                         'enableComment' => Yii::$app->user->can("gad_comment_total_annual_pro_budget") ? 'true' : 'false',
-                                        'enableEdit' => in_array($qryReportStatus,Tools::Can("edit_plan")) ? "true" : "false",
+                                        'enableEdit' => Tools::GetPlanTypeCodeByRuc($ruc) == 3 ? "false" : (in_array($qryReportStatus,Tools::Can("edit_plan")) ? "true" : "false"),
                                         'enableViewComment' => 'true',
                                         'countRow' => $countRowAttribute,
                                         'columnNumber' => 3,
@@ -903,7 +1014,10 @@ $this->title = "Annual GAD Plan and Budget";
                                             // ]);
                                             if(in_array($qryReportStatus,Tools::Can("encode_plan")))
                                             {
-                                                echo "<button class='btn btn-danger btn-block btn-xs btn-block' title='Delete' id='delete_ap_".$dap['id']."'><span class='glyphicon glyphicon-trash'></span> Delete row</button>";
+                                                if(Tools::GetPlanTypeCodeByRuc($ruc) != 3)
+                                                {
+                                                    echo "<button class='btn btn-danger btn-block btn-xs btn-block' title='Delete' id='delete_ap_".$dap['id']."'><span class='glyphicon glyphicon-trash'></span> Delete row</button>";
+                                                }
                                             }
                                         }
                                     ?>
@@ -932,26 +1046,28 @@ $this->title = "Annual GAD Plan and Budget";
                                     </script>
                                     <?php JSRegister::end() ?>
                                     <?php
+                                        $find_file_id = Tools::GetPlanTypeCodeByRuc($ruc) == 3 ? 'old_row_id' : 'id';
                                         if(in_array($qryReportStatus,Tools::can("plan_upload_files_row")))
                                         {
-                                            if(Tools::GetUploadStatusByFileCat($dap["id"],"GadAttributedProgram",5) == 0)
+                                            
+                                            if(Tools::GetUploadStatusByFileCat($dap[$find_file_id],"GadAttributedProgram",5) == 0)
                                             {
-                                                $t = '@web/report/gad-plan-budget/update-upload-form-attributed-program?id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&file_cat=5&model_name=GadAttributedProgram";
+                                                $t = '@web/report/gad-plan-budget/update-upload-form-attributed-program?id='.$dap[$find_file_id]."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&file_cat=5&model_name=GadAttributedProgram";
                                                 echo Html::button('<span class="glyphicon glyphicon-paperclip"></span> Attach Project Proposal', ['value'=>Url::to($t),
                                                     'class' => 'btn btn-default btn-xs modalButton btn-block','title' => 'Upload Files',]);
                                             }
                                             
                                             if(Tools::GetUploadStatusByFileCat($dap["id"],"GadAttributedProgram",2) == 0)
                                             {
-                                                $t2 = '@web/report/gad-plan-budget/update-upload-form-attributed-program?id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&file_cat=2&model_name=GadAttributedProgram";
+                                                $t2 = '@web/report/gad-plan-budget/update-upload-form-attributed-program?id='.$dap[$find_file_id]."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&file_cat=2&model_name=GadAttributedProgram";
                                                 echo Html::button('<span class="glyphicon glyphicon-paperclip"></span> Attach HGDG Result', ['value'=>Url::to($t2),
                                                 'class' => 'btn btn-default btn-xs modalButton btn-block','title' => 'Upload Files',]);
                                             }
                                         }
 
-                                        if(Tools::GetUploadStatusByFileCat($dap["id"],"GadAttributedProgram",5) == 1)
+                                        if(Tools::GetUploadStatusByFileCat($dap[$find_file_id],"GadAttributedProgram",5) == 1)
                                         { // if has uploaded files show button to view file
-                                            $t3 = '@web/report/gad-plan-budget/view?row_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadAttributedProgram"."&file_cat=5";
+                                            $t3 = '@web/report/gad-plan-budget/view?row_id='.$dap[$find_file_id]."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadAttributedProgram"."&file_cat=5";
                                             echo Html::button('<span class="glyphicon glyphicon-file"></span> Project Proposal', ['value'=>Url::to($t3),
                                             'class' => 'btn btn-info btn-xs modalButton btn-block','title' => 'View Uploaded Files',]);
                                         }
@@ -960,9 +1076,9 @@ $this->title = "Annual GAD Plan and Budget";
                                             echo "<span style='font-size:10px; color:red;'><i class='fa fa-question-circle'></i> No Project Proposal Attachment</span> <br/>";
                                         }
 
-                                        if(Tools::GetUploadStatusByFileCat($dap["id"],"GadAttributedProgram",2) == 1)
+                                        if(Tools::GetUploadStatusByFileCat($dap[$find_file_id],"GadAttributedProgram",2) == 1)
                                         { // if has uploaded files show button to view file
-                                            $t4 = '@web/report/gad-plan-budget/view?row_id='.$dap['id']."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadAttributedProgram"."&file_cat=2";
+                                            $t4 = '@web/report/gad-plan-budget/view?row_id='.$dap[$find_file_id]."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&model_name=GadAttributedProgram"."&file_cat=2";
                                             echo Html::button('<span class="glyphicon glyphicon-file"></span> HGDG Result', ['value'=>Url::to($t4),
                                             'class' => 'btn btn-info btn-xs modalButton btn-block','title' => 'View Uploaded Files',]);
                                         }
@@ -1019,7 +1135,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-pb-prepared-by']),
                                         'column_title' => 'Chairperson, GFPS TWG',
                                         'colspanValue' => '2',
-                                        'controller_id' => "gad-plan-budget",
+                                        'controller_id' => "GadRecord",
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; font-size:20px;',
                                         'disableSelect' => in_array($qryReportStatus,Tools::Can("edit_plan")) ? "false" : "true",
@@ -1035,7 +1151,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-pb-approved-by']),
                                         'column_title' => 'Local Chief Executive',
                                         'colspanValue' => '3',
-                                        'controller_id' => "gad-plan-budget",
+                                        'controller_id' => "GadRecord",
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; font-size:20px;',
                                         'disableSelect' =>  in_array($qryReportStatus,Tools::Can("edit_plan")) ? "false" : "true",
@@ -1051,7 +1167,7 @@ $this->title = "Annual GAD Plan and Budget";
                                         'urlUpdateAttribute' => \yii\helpers\Url::to(['/report/default/update-pb-footer-date']),
                                         'column_title' => 'Date',
                                         'colspanValue' => '3',
-                                        'controller_id' => "gad-plan-budget",
+                                        'controller_id' => "GadRecord",
                                         'form_id' => 'attributed-program',
                                         'customStyle' => 'text-align:center; font-size:20px;',
                                         'disableSelect' => 'true',

@@ -23,7 +23,7 @@ use kartik\select2\Select2;/* @var $this yii\web\View */
                 'data' =>  $region,
                 'options' => ['placeholder' => 'Select Region',],
                 'pluginOptions' => [
-                    'allowClear' => true,
+                    'allowClear' => false,
                 ],
                 'pluginEvents'=>[
                         'select2:select'=>'
@@ -61,7 +61,7 @@ use kartik\select2\Select2;/* @var $this yii\web\View */
                 'data' =>  $province,
                 'options' => ['placeholder' => 'Province'],
                 'pluginOptions' => [
-                    'allowClear' => true,
+                    'allowClear' => false,
                 ],
                 'pluginEvents'=>[
                         'select2:select'=>'
@@ -97,7 +97,7 @@ use kartik\select2\Select2;/* @var $this yii\web\View */
                     'data' => $citymun,
                     'options' => ['placeholder' => 'City/Municipality'],
                     'pluginOptions' => [
-                        'allowClear' => true,
+                        'allowClear' => false,
                     ],
                     'pluginEvents'=>[
                             'select2:select'=>'
@@ -109,9 +109,30 @@ use kartik\select2\Select2;/* @var $this yii\web\View */
             }
         ?>
     </div>
+    <?php
+        if($report_type == "plan_budget")
+        {
+            echo "<div class='col-sm-4'>";
+            echo $form->field($model, 'plan_type_code')->widget(Select2::classname(), [
+                'data' => $plan_type_title,
+                'options' => ['placeholder' => 'Plan Type'],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    'multiple' => true,
+                    // 'disabled' => true,
+                ],
+                'pluginEvents'=>[
+                        'select2:select'=>'
+                            function(){
+                                
+                            }',
+                ]
+            ])->label(false);
+            echo "</div>";
+        }
+    ?>
     <div class="col-sm-4">
         <?php
-            
             echo $form->field($model, 'status')->widget(Select2::classname(), [
                 'data' => $statusList,
                 'options' => ['placeholder' => 'Report Status'],
