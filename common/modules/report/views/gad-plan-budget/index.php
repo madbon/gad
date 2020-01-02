@@ -1057,7 +1057,7 @@ $this->title = "Annual GAD Plan and Budget";
                                                     'class' => 'btn btn-default btn-xs modalButton btn-block','title' => 'Upload Files',]);
                                             }
                                             
-                                            if(Tools::GetUploadStatusByFileCat($dap["id"],"GadAttributedProgram",2) == 0)
+                                            if(Tools::GetUploadStatusByFileCat($dap[$find_file_id],"GadAttributedProgram",2) == 0)
                                             {
                                                 $t2 = '@web/report/gad-plan-budget/update-upload-form-attributed-program?id='.$dap[$find_file_id]."&ruc=".$ruc."&onstep=".$onstep."&tocreate=".$tocreate."&file_cat=2&model_name=GadAttributedProgram";
                                                 echo Html::button('<span class="glyphicon glyphicon-paperclip"></span> Attach HGDG Result', ['value'=>Url::to($t2),

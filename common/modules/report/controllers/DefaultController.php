@@ -172,6 +172,28 @@ class DefaultController extends ControllerAudit
         return !empty($query->title) ? $query->title : "";
     }
 
+    public function GetPlanTypeLabel($code)
+    {
+        $plan_type_code = $code;
+
+        if($plan_type_code == 1) // New Plan
+        {
+            return "<label class='label label-primary' style='font-size:11px; border-radius:15px; font-weight:normal;'> <span class='fa fa-flag'></span> ".(DefaultController::GetPlanTypeTitle($plan_type_code))." </label>";
+        }
+        else if($plan_type_code == 2) // Supplemental plan
+        {
+            return "<label class='label label-info' style='font-size:11px; border-radius:15px; font-weight:normal;'><span class='fa fa-flag'></span>  ".(DefaultController::GetPlanTypeTitle($plan_type_code))."</label>";
+        }
+        else if($plan_type_code == 3) // For Revision plan
+        {
+            return "<label class='label label-success' style='font-size:11px; border-radius:15px; font-weight:normal;'> <span class='fa fa-flag'></span> ".(DefaultController::GetPlanTypeTitle($plan_type_code))."</label>";
+        }
+        else
+        {
+            return "No Plan Type Selected";
+        }
+    }
+
     public function DispPlanTypeByRuc($ruc)
     {
         $query = GadRecord::find()->where(['tuc' => $ruc])->one();

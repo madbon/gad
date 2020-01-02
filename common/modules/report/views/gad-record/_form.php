@@ -302,7 +302,19 @@ use common\modules\report\controllers\GadRecordController as RecordActions;
     ?>
 
     <div class="form-group">
-        <?= Html::submitButton('<span class="fa fa-save"></span> Save', ['class' => 'btn btn-success']) ?>
+        <?php 
+            if(Tools::GetPlanTypeCodeByRuc($ruc) == 3 || Tools::GetPlanTypeCodeByRuc($ruc) == 2)
+            {
+                echo Html::submitButton('<span class="fa fa-save"></span> Save', ['class' => 'btn btn-success','data' => [
+                'confirm' => 'The changes you have made will be deleted. Click OK if you want to proceed.'
+                ]]);
+            }
+            else
+            {
+                echo Html::submitButton('<span class="fa fa-save"></span> Save', ['class' => 'btn btn-success']);
+            }
+            
+        ?>
     </div>
 
     <?php ActiveForm::end(); ?>

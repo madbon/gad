@@ -140,6 +140,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'plan_type' => $plan_type,
 		        'tocreate' => $tocreate,
 		        'query_all_existing_plan' =>  $query_all_existing_plan,
+		        'ruc' => $ruc,
 		    ]) ?>
 	    </div>
 	</div>

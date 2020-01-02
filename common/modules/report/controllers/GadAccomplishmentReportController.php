@@ -129,7 +129,8 @@ class GadAccomplishmentReportController extends ControllerAudit
             'GR.prepared_by',
             'GR.approved_by',
             'GR.footer_date',
-            'GR.status'
+            'GR.status',
+            'GR.plan_type_code'
         ])
         ->from('gad_record GR')
         ->leftJoin(['REG' => 'tblregion'], 'REG.region_c = GR.region_c')

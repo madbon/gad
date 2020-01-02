@@ -508,71 +508,68 @@ class GadRecordController extends ControllerAudit
                         $query_plan_data = GadPlanBudget::find()->where(['record_tuc' => $sup_record_tuc])->all();
                         $plan_ids = [];
 
-                        if($model->supplemental_record_id != $current_for_revision_record_id) // if selecting different plan delete old data
-                        {
-                            if(GadPlanBudget::deleteAll(['record_tuc' => $ruc]))
-                            {
-                                foreach ($query_plan_data as $keyplan => $row) {
-                                    $gpb_model = new GadPlanBudget();
+                        // if($model->supplemental_record_id != $current_for_revision_record_id) // if selecting different plan delete old data
+                        // {
+                        //     GadPlanBudget::deleteAll(['record_tuc' => $ruc]);
+                        //     GadAttributedProgram::deleteAll(['record_tuc' => $ruc]);
+                        // }
 
-                                    $plan_ids[] = $row['id'];
-                                    $gpb_model->old_plan_id = $row['id'];
-                                    $gpb_model->record_id = Tools::GetRecordIdByRuc($ruc);
-                                    $gpb_model->focused_id = $row['focused_id'];
-                                    $gpb_model->inner_category_id = $row['inner_category_id'];
-                                    $gpb_model->gi_sup_data = $row['gi_sup_data'];
-                                    $gpb_model->source = $row['source'];
-                                    $gpb_model->cliorg_ppa_attributed_program_id = $row['cliorg_ppa_attributed_program_id']; 
-                                    $gpb_model->ppa_value = $row['ppa_value'];
-                                    $gpb_model->objective = $row['objective'];
-                                    $gpb_model->relevant_lgu_program_project = $row['relevant_lgu_program_project'];
-                                    $gpb_model->activity_category_id = $row['activity_category_id'];
-                                    $gpb_model->activity = $row['activity'];
-                                    $gpb_model->date_implement_start = $row['date_implement_start'];
-                                    $gpb_model->date_implement_end = $row['date_implement_end'];
-                                    $gpb_model->performance_target = $row['performance_target'];
-                                    $gpb_model->budget_mooe = $row['budget_mooe'];
-                                    $gpb_model->budget_ps = $row['budget_ps'];
-                                    $gpb_model->budget_co = $row['budget_co'];
-                                    $gpb_model->lead_responsible_office = $row['lead_responsible_office'];
-                                    $gpb_model->record_tuc = $ruc;
-                                    $gpb_model->date_created = date('Y-m-d');
-                                    $gpb_model->time_created = date("h:i:sa");
-                                    $gpb_model->save(false);
-                                }
-                            }
-                            else
-                            { 
-                                throw new \yii\web\HttpException(403, 'Connection Error');
-                            }
+                        GadPlanBudget::deleteAll(['record_tuc' => $ruc]);
+                        GadAttributedProgram::deleteAll(['record_tuc' => $ruc]);
+                        foreach ($query_plan_data as $keyplan => $row) {
 
-                            $query_attrib_program = GadAttributedProgram::find()->where(['record_tuc' => $sup_record_tuc])->all();
-
-                            if(GadAttributedProgram::deleteAll(['record_tuc' => $ruc]))
-                            {
-                                foreach ($query_attrib_program as $keyap => $row1) {
-                                    $ap_model = new GadAttributedProgram();
-
-                                    $ap_model->record_id = Tools::GetRecordIdByRuc($ruc);
-                                    $ap_model->record_tuc = $ruc;
-                                    $ap_model->old_row_id = $row1['id'];
-                                    $ap_model->controller_id = $row1['controller_id'];
-                                    $ap_model->ppa_attributed_program_id = $row1['ppa_attributed_program_id'];
-                                    $ap_model->lgu_program_project = $row1['lgu_program_project'];
-                                    $ap_model->checklist_id = $row1['checklist_id'];
-                                    $ap_model->hgdg = $row1['hgdg'];
-                                    $ap_model->total_annual_pro_budget = $row1['total_annual_pro_budget'];
-                                    $ap_model->ap_lead_responsible_office = $row1['ap_lead_responsible_office'];
-                                    $ap_model->date_created = date('Y-m-d');
-                                    $ap_model->time_created = date("h:i:sa");
-                                    $ap_model->save(false);
-                                }
-                            }
-                            else
-                            {
-                                throw new \yii\web\HttpException(403, 'Connection Error');
-                            }
+                            $gpb_model = new GadPlanBudget();
+                            $plan_ids[] = $row['id'];
+                            $gpb_model->old_plan_id = $row['id'];
+                            $gpb_model->record_id = Tools::GetRecordIdByRuc($ruc);
+                            $gpb_model->focused_id = $row['focused_id'];
+                            $gpb_model->inner_category_id = $row['inner_category_id'];
+                            $gpb_model->gi_sup_data = $row['gi_sup_data'];
+                            $gpb_model->source = $row['source'];
+                            $gpb_model->cliorg_ppa_attributed_program_id = $row['cliorg_ppa_attributed_program_id']; 
+                            $gpb_model->ppa_value = $row['ppa_value'];
+                            $gpb_model->objective = $row['objective'];
+                            $gpb_model->relevant_lgu_program_project = $row['relevant_lgu_program_project'];
+                            $gpb_model->activity_category_id = $row['activity_category_id'];
+                            $gpb_model->activity = $row['activity'];
+                            $gpb_model->date_implement_start = $row['date_implement_start'];
+                            $gpb_model->date_implement_end = $row['date_implement_end'];
+                            $gpb_model->performance_target = $row['performance_target'];
+                            $gpb_model->budget_mooe = $row['budget_mooe'];
+                            $gpb_model->budget_ps = $row['budget_ps'];
+                            $gpb_model->budget_co = $row['budget_co'];
+                            $gpb_model->lead_responsible_office = $row['lead_responsible_office'];
+                            $gpb_model->record_tuc = $ruc;
+                            $gpb_model->date_created = date('Y-m-d');
+                            $gpb_model->time_created = date("h:i:sa");
+                            $gpb_model->save(false);
                         }
+
+                        $query_attrib_program = GadAttributedProgram::find()->where(['record_tuc' => $sup_record_tuc])->all();
+                        foreach ($query_attrib_program as $keyap => $row1) {
+                            $ap_model = new GadAttributedProgram();
+
+                            $ap_model->record_id = Tools::GetRecordIdByRuc($ruc);
+                            $ap_model->record_tuc = $ruc;
+                            $ap_model->old_row_id = $row1['id'];
+                            $ap_model->controller_id = $row1['controller_id'];
+                            $ap_model->ppa_attributed_program_id = $row1['ppa_attributed_program_id'];
+                            $ap_model->lgu_program_project = $row1['lgu_program_project'];
+                            $ap_model->checklist_id = $row1['checklist_id'];
+                            $ap_model->hgdg = $row1['hgdg'];
+                            $ap_model->total_annual_pro_budget = $row1['total_annual_pro_budget'];
+                            $ap_model->ap_lead_responsible_office = $row1['ap_lead_responsible_office'];
+                            $ap_model->date_created = date('Y-m-d');
+                            $ap_model->time_created = date("h:i:sa");
+                            $ap_model->save(false);
+                        }
+
+                        $get_one_record = GadRecord::find()->where(['id' => $current_for_revision_record_id])->one();
+                        $get_prepared_by = !empty($get_one_record->prepared_by) ? $get_one_record->prepared_by : null;
+                        $get_approved_by = !empty($get_one_record->approved_by) ? $get_one_record->approved_by : null;
+                        $modelUpdate->prepared_by = $get_prepared_by;
+                        $modelUpdate->approved_by = $get_approved_by;
+
                     }
                     else // supplemental
                     {

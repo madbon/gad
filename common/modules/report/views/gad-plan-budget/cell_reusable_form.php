@@ -44,7 +44,7 @@ if(Tools::HasComment($record_id,$row_id,$attribute_name,$controller_id) > 0) { ?
             {
                 $update_array = Tools::DisplayUpdateHistory($row_id,$attribute_name,$controller_id,$record_unique_code);
                 foreach ($update_array as $key_update_array => $row_up_ar) {
-                    echo "<p style='background:#e4c9c9;'>".($row_up_ar['value'])."</p>";
+                    echo "<p style='background:#e4c9c9; white-space:pre-line;'>".($row_up_ar['value'])."</p>";
                 }
             }
         ?>
