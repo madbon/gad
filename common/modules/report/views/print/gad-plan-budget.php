@@ -206,9 +206,9 @@ use common\modules\report\controllers\GadPlanBudgetController as PlanActions;
                 <td style="white-space: pre-line;"><?= $plan["relevant_lgu_program_project"] ?></td>
                 <td style="white-space: pre-line;"><?= $plan["activity"] ?></td>
                 <td style="white-space: pre-line;"><?= $plan["performance_target"] ?></td>
-                <td style="text-align: right;"><?= $plan["budget_mooe"] ?></td>
-                <td style="text-align: right;"><?= $plan["budget_ps"] ?></td>
-                <td style="text-align: right;"><?= $plan["budget_co"] ?></td>
+                <td style="text-align: right;"><?= number_format($plan["budget_mooe"],2) ?></td>
+                <td style="text-align: right;"><?= number_format($plan["budget_ps"],2) ?></td>
+                <td style="text-align: right;"><?= number_format($plan["budget_co"],2) ?></td>
                 <td><?= $plan["lead_responsible_office"] ?></td>
             </tr>
         <!-- Display Sub-Total -->
