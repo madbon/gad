@@ -60,6 +60,12 @@ class PrintController extends ControllerAudit
         	'dataRecord' => Yii::$app->session["session_arDataRecord"],
         	'dataAttributedProgram' => Yii::$app->session["session_arDataAttributedProgram"],
             'year' => DefaultController::GetPlanYear($ruc),
+            'region' => $region,
+            'province' => $province,
+            'citymun' => $citymun,
+            'grand_total' => $grand_total,
+            'total_lgu_budget' => $total_lgu_budget,
+            'ruc' => $ruc,
         ]);
     }
 
@@ -70,6 +76,12 @@ class PrintController extends ControllerAudit
         	'dataAR' => Yii::$app->session["session_arDataAccomplishment"],
         	'dataRecord' => Yii::$app->session["session_arDataRecord"],
             'year' => DefaultController::GetPlanYear($ruc),
+            'region' => $region,
+            'province' => $province,
+            'citymun' => $citymun,
+            'grand_total' => $grand_total,
+            'total_lgu_budget' => $total_lgu_budget,
+            'ruc' => $ruc,
         ]);
     }
 

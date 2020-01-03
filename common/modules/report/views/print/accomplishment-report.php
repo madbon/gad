@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use common\modules\report\controllers\DefaultController;
+use common\modules\report\controllers\DefaultController as Tools;
 use richardfan\widget\JSRegister;
 use yii\helpers\Url;
 /* @var $this yii\web\View */
@@ -12,9 +12,25 @@ use yii\helpers\Url;
 $this->title = "Annual GAD Accomplishment Reports";
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
-
+<style>
+    table thead tr th.no_border
+    {
+        border:none;
+    }
+    table thead tr th.align_left
+    {
+        text-align: left;
+    }
+</style>
+<p style="text-align: center; font-weight: bold;">ACCOMPLISHMENT REPORT FY <?= Tools::GetPlanYear($ruc) ?></p>
 <table class="table ar table-responsive table-bordered" style="border: 1px solid black;">
     <thead>
+        <tr>
+            <th style="border:none; text-align: left; font-size:12px; font-weight: normal;">Region <br/> Province : <br/> City / Municipality : </th>
+            <th style="border:none; text-align: left; font-size:12px; font-weight: bold;" colspan="3"><?= $region ?> <br/> <?= $province ?> <br/> <?= $citymun ?></th>
+            <th style="border:none; text-align: left; font-size:12px; font-weight: normal;">Total LGU Budget : <br/> Total GAD Budget <br/><br/></th>
+            <th style="border:none; text-align: left; font-size:12px; font-weight: bold;" colspan="4">Php <?= number_format($total_lgu_budget,2) ?> <br/> Php <?= number_format($grand_total,2) ?> <br/><br/></th>
+        </tr>
         <tr>
             <th>Gender Issues or GAD Mandate</th>
             <!-- <th>Cause of the Gender Issue</th> -->
