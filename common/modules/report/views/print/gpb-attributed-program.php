@@ -5,10 +5,7 @@
 
     <tbody>
         <!-- CLIENT-FOCUSED -->
-       
-
         <!-- Start of Attributed Program -->
-
         <tr class="attributed_program_title" style="border-top: none;">
             <td colspan="5">
                 <b>ATTRIBUTED PROGRAMS</b> 

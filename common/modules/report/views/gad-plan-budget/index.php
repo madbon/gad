@@ -218,8 +218,6 @@ $this->title = "Annual GAD Plan and Budget";
                                 }
                             ?>
                         </tr>
-
-                        
                     </tbody>
                 </table>
             </div>

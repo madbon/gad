@@ -1,15 +1,119 @@
 <?php
 /* @var $this yii\web\View */
+use common\modules\report\controllers\DefaultController as Tools;
+use common\modules\report\controllers\GadPlanBudgetController as PlanActions;
 ?>
+<style>
+    table thead tr th.no_border
+    {
+        border:none;
+    }
+    table thead tr th.align_left
+    {
+        text-align: left;
+    }
+</style>
 
-<p style="text-align: center; font-weight: bold;">ANNUAL GENDER AND DEVELOPMENT (GAD) PLAN AND BUDGET FY <?= $year ?></p>
+<p style="text-align: center; font-weight: bold;">ANNUAL GENDER AND DEVELOPMENT (GAD) PLAN AND BUDGET FY <?= Tools::GetPlanYear($ruc) ?> <?= Tools::DispPlanTypeByRuc($ruc) ?></p>
 <table class="table table-responsive table-bordered gad-plan-budget" style="border: none;">
     <thead>
         <tr>
-            <th style="border:none; text-align: left; font-size:12px; font-weight: normal;">Region <br/> Province : <br/> City / Municipality : </th>
-            <th style="border:none; text-align: left; font-size:12px; font-weight: bold;" colspan="3"><?= $region ?> <br/> <?= $province ?> <br/> <?= $citymun ?></th>
-            <th style="border:none; text-align: left; font-size:12px; font-weight: normal;">Total LGU Budget : <br/> Total GAD Budget <br/><br/></th>
-            <th style="border:none; text-align: left; font-size:12px; font-weight: bold;" colspan="4">Php <?= number_format($total_lgu_budget,2) ?> <br/> Php <?= number_format($grand_total,2) ?> <br/><br/></th>
+            <th class="no_border align_left">REGION </th>
+            <th class="no_border align_left" colspan="2"> : <?= $region ?></th>
+            <th class="no_border align_left">TOTAL LGU BUDGET
+                <?php
+                    // if(in_array($qryReportStatus,Tools::Can("edit_plan")))
+                    // {
+                    //     $url_edit_record = '@web/report/gad-record/edit-form?ruc='.$ruc.'&onstep='.$onstep.'&tocreate='.$tocreate;
+                    //         echo Html::button('<span class="fa fa-edit"></span> Edit ', ['value'=>Url::to($url_edit_record),
+                    // 'class' => 'btn btn-primary btn-sm modalButton ']);
+                    // }
+                ?>
+            </th>
+
+            <?php
+                if(Tools::GetPlanTypeCodeByRuc($ruc) == 1)
+                {
+                    echo "<th class='no_border align_left' colspan='5'> : Php ".number_format($total_lgu_budget,2)."</th>";
+                }
+                else
+                {
+                    if(Tools::GetPlanTypeCodeByRuc($ruc) == 2)
+                    {
+                        if(Tools::GetHasAdditionalLguBudgetByRuc($ruc) == "yes")
+                        {
+                            echo "<th class='no_border align_left' colspan='5'> : Php ".number_format($total_lgu_budget,2)." <label class='label label-default'>Additional LGU Budget</label></th>";
+                        }
+                        else
+                        {
+                            if(Tools::GetHasAdditionalLguBudgetByRuc($ruc) == "no")
+                            {
+                                echo "<th class='no_border align_left' colspan='5'> : Php ".number_format($total_lgu_budget,2)." <label class='label label-default'>Old LGU Budget</label></th>";
+                            }
+                            else
+                            {
+                                echo "<th class='no_border align_left'  colspan='5'> : Php ".number_format($total_lgu_budget,2)." </th>";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        echo "<th class='no_border align_left' colspan='5'> : Php ".number_format($total_lgu_budget,2)."</th>";
+                    }
+                }
+            ?>
+        </tr>
+        <tr>
+            <th class="no_border align_left">PROVINCE 
+                <br/><br/>
+                <?= !empty($citymun) ? "CITY/MUNICIPALITY" : ""; ?>    
+            </th>
+            <th class="no_border align_left" colspan="2" style="text-align: left;"> : <?= $province ?>
+                <br/><br/>
+                 : <?= !empty($citymun) ? $citymun : ""; ?>
+            </th>
+            <th class="no_border align_left">TOTAL GAD BUDGET</th>
+            <?php
+                if(Tools::GetPlanTypeCodeByRuc($ruc) == 1) // new plan
+                {
+                    echo "<th class='no_border align_left' colspan='5'> : Php ".number_format($grand_total,2)."</th>";
+                }
+                else
+                {
+                    if(Tools::GetPlanTypeCodeByRuc($ruc) == 2) // supplemental plan
+                    {
+                        if(Tools::GetHasAdditionalLguBudgetByRuc($ruc) == "yes") // if has additional LGU budget
+                        {
+                            if($grand_total < $fivePercentTotalLguBudget)
+                            {
+                                echo "<th class='no_border align_left' style='color:red;' colspan='5'> : Php ".number_format($grand_total,2)." <label class='label label-default'>Supplemental GAD Budget</label></th>";
+                            }
+                            else
+                            {
+                                echo "<th class='no_border align_left' colspan='5'> : Php ".number_format($grand_total,2)." <label class='label label-default'>Supplemental GAD Budget</label></th>";
+                            }
+                        }
+                        else
+                        {
+                            if(Tools::GetHasAdditionalLguBudgetByRuc($ruc) == "no") // if no additional LGU budget
+                            {
+                                echo "<th class='no_border align_left' colspan='5'> : Php ".number_format($grand_total,2)." <label class='label label-default'>Old GAD Budget</label>";
+                                echo "<br/><br/><p> : Php ".(number_format(PlanActions::GetGadBudgetByRuc($ruc),2))." <label class='label label-default'>Supplemental GAD Budget</label></p>";
+                                echo "</th>";
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                    }
+                    else // for Revision
+                    {
+                        echo "<th class='no_border align_left' colspan='5'> : Php ".number_format($grand_total,2);
+                        echo "</th>";
+                    }
+                }
+            ?>
         </tr>
         <tr>
             <th style="border-bottom: none;">Gender Issue or GAD Mandate </th>
@@ -193,7 +297,7 @@
 </table>
 
 <?php
-	// $this->registerJs("
-	// 	window.print();
-	// ");
+	$this->registerJs("
+		window.print();
+	");
 ?>

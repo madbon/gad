@@ -22,6 +22,7 @@ class PrintController extends ControllerAudit
             'grand_total' => $grand_total,
             'total_lgu_budget' => $total_lgu_budget,
             'year' => DefaultController::GetPlanYear($ruc),
+            'ruc' => $ruc
         ]);
     }
 
@@ -38,6 +39,7 @@ class PrintController extends ControllerAudit
             'grand_total' => $grand_total,
             'total_lgu_budget' => $total_lgu_budget,
             'year' => DefaultController::GetPlanYear($ruc),
+            'ruc' => $ruc
         ]);
     }
 
